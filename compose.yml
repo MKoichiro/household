@@ -1,0 +1,21 @@
+# file名のdocker-compose.ymlは非推奨。
+# https://github.com/compose-spec/compose-spec/blob/main/spec.md#compose-file
+
+# version: "3.8" バージョンの明示は後方互換性で残っているだけで非推奨。
+# https://github.com/compose-spec/compose-spec/blob/main/04-version-and-name.md
+
+services:
+  app:
+    build: .
+    ports:
+      # ホストの 3000 番ポート → コンテナの 5173 番ポートにマッピング（必要に応じて変更可）
+      # 5137で困ることも無いでしょう。
+      - "5173:5173"
+    volumes:
+      # ホストのプロジェクトディレクトリを /app にマウント（ソースコードのリアルタイム反映）
+      - .:/home/node/app
+      # 上のバインドマウントにより.../app/node_modulesはコピーされるが、それを名前付きボリュームで上書き
+      - my_app_node_modules:/home/node/app/node_modules
+
+volumes:
+  my_app_node_modules:
