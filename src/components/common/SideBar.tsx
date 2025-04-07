@@ -1,15 +1,8 @@
 import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material"
-import HomeIcon from '@mui/icons-material/Home';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
+import { Home, Equalizer, Settings } from '@mui/icons-material'
 import React, { CSSProperties } from "react";
 import { NavLink } from "react-router-dom";
-
-interface SidebarProps {
-  drawerWidth: number,
-  mobileOpen: boolean,
-  handleDrawerClose: () => void,
-  handleDrawerTransitionEnd: () => void,
-}
+import { sideBarWidth } from "../../constants/ui";
 
 interface menuItem {
   text: string,
@@ -17,27 +10,33 @@ interface menuItem {
   icon: React.ComponentType
 }
 
+const MenuItems: menuItem[] = [
+  {text: "ホーム", path: "/app/home", icon: Home},
+  {text: "月間レポート", path: "/app/report", icon: Equalizer},
+  {text: "設定", path: "/app/settings", icon: Settings}
+]
+
+const baseLinkStyle: CSSProperties = {
+  textDecoration: "none",
+  color: "inherit",
+  display: "block",
+}
+
+const activeLinkStyle: CSSProperties = {
+  backgroundColor: "rgba(0 0 0 / 0.08)"
+}
+
+interface SidebarProps {
+  mobileSideBarOpen: boolean,
+  handleDrawerClose: () => void,
+  handleDrawerTransitionEnd: () => void,
+}
+
 const SideBar = ({
-  drawerWidth,
-  mobileOpen,
+  mobileSideBarOpen,
   handleDrawerClose,
   handleDrawerTransitionEnd,
 }: SidebarProps) => {
-
-  const MenuItems: menuItem[] = [
-    {text: "Home", path: "/", icon: HomeIcon},
-    {text: "Report", path: "/report", icon: EqualizerIcon},
-  ]
-
-  const baseLinkStyle: CSSProperties = {
-    textDecoration: "none",
-    color: "inherit",
-    display: "block",
-  }
-
-  const activeLinkStyle: CSSProperties = {
-    backgroundColor: "rgba(0 0 0 / 0.08)"
-  }
 
   const drawer = (
     <div>
@@ -69,23 +68,23 @@ const SideBar = ({
         ))}
       </List>
     </div>
-  );
+  )
 
   return (
     <Box
       component="nav"
-      sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+      sx={{ width: { md: sideBarWidth }, flexShrink: { md: 0 } }}
       aria-label="mailbox folders"
     >
       {/* モバイル用 */}
       <Drawer
         variant="temporary"
-        open={mobileOpen}
+        open={mobileSideBarOpen}
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         sx={{
           display: { xs: 'block', sm: 'none' }, // 表示制御
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: sideBarWidth },
         }}
         slotProps={{
           root: {
@@ -101,7 +100,7 @@ const SideBar = ({
         variant="permanent"
         sx={{
           display: { xs: 'none', md: 'block' }, // 表示制御
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: sideBarWidth },
         }}
         open
       >

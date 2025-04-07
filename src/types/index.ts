@@ -20,6 +20,7 @@ interface BaseTransaction<
   date: string;
   category: U;
   content: string;
+  uid: string
 }
 
 export type IncomeTransaction  = BaseTransaction<"income", IncomeCategory>;

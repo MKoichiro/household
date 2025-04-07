@@ -11,7 +11,6 @@ interface DailySummaryProps {
 
 const DailySummary = ({
   dailyTransactions,
-  isUnderLG
 }: DailySummaryProps) => {
 
   const { income, expense, balance } = financeCalculations(dailyTransactions)

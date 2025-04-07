@@ -17,8 +17,8 @@ import DailySummary from "./DailySummary"
 import {  Transaction } from "../types";
 import { formatCurrency } from "../utils/formatting"
 import IconComponents from "./common/IconComponents"
+import { headerHeight, sidePanelWidth } from "../constants/ui";
 
-const drawerWidth = 320
 
 
 interface TransactionMenuProps {
@@ -44,9 +44,9 @@ const TransactionMenu = ({
   return (
     <Drawer
       sx={{
-        width: isUnderLG ? "auto" : drawerWidth,
+        width: isUnderLG ? "auto" : sidePanelWidth,
         "& .MuiDrawer-paper": {
-          width: isUnderLG ? "auto" : drawerWidth,
+          width: isUnderLG ? "auto" : sidePanelWidth,
           boxSizing: "border-box",
           p: 2,
           ...(isUnderLG && {
@@ -54,9 +54,9 @@ const TransactionMenu = ({
             borderTopRightRadius: 8,
             borderTopLeftRadius: 8,
           }),
-          ...(isUnderLG && {
-            top: 64,
-            height: `calc(100% - 64px)`, // AppBarの高さを引いたビューポートの高さ
+          ...(!isUnderLG && {
+            top: headerHeight,
+            height: `calc(100% - ${headerHeight}px)`, // AppBarの高さを引いたビューポートの高さ
           })
         },
       }}

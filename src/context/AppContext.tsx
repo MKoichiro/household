@@ -1,10 +1,12 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 import { Transaction, TransactionFormValues } from "../types";
 import { useMediaQuery } from "@mui/material";
 import { theme } from "../theme/theme";
 import { getFormattedTody, parseIntFromCommaSeparated } from "../utils/formatting";
-import { addDoc, collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import { db } from "../firebase";
+import { useAuth } from "./AuthContext";
+
 
 // Firestoreによるエラーかを判定する型ガード
 function isFirestoreError(error: unknown): error is {code: string, message: string} {
@@ -31,6 +33,8 @@ interface AppContext {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   selectedDay: string;
   setSelectedDay: Dispatch<SetStateAction<string>>;
+  isSideBarOpen: boolean;
+  setIsSideBarOpen: Dispatch<SetStateAction<boolean>>;
   isUnderLG: boolean;
   handleSaveTransaction: (transaction: TransactionFormValues) => Promise<void>;
   handleDeleteTransaction: (transactionIds: string | readonly string[]) => Promise<void>;
@@ -42,19 +46,69 @@ const AppContext = createContext<AppContext | undefined>(undefined)
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const COLLECTION_NAME = "Transactions"
 
+  const { user } = useAuth()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
   const [selectedDay, setSelectedDay] = useState(getFormattedTody())
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true)
   const isUnderLG = useMediaQuery(theme.breakpoints.down("lg")) // windowオブジェクトを操作
+
+  // ユーザーの取引一覧をリアルタイム取得
+  useEffect(() => {
+    if (!user) return;
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where('uid', '==', user.uid)  // 自分のUIDに一致するドキュメントのみ取得
+    );
+
+    // クリーンアップ
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Transaction[];
+      setTransactions(data);
+    });
+    return unsubscribe;
+  }, [user])
+
+  // （旧）ユーザーの取引一覧を取得
+  // useEffect(() => {
+  //   const fetchTransactions = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(collection(db, "Transactions"))
+  //       const transactions = querySnapshot.docs.map(doc => {
+  //         return {
+  //           ...doc.data(),
+  //           id: doc.id,
+  //         } as Transaction // 型アサーション。自動解決されない時のエラー回避。ただし開発者がマニュアルで確認しなくてはいけない。
+  //       })
+  //       // console.log(transactions)
+  //       setTransactions(transactions)
+  //     } catch(error) {
+  //       outputErrors(error)
+  //     } finally {
+  //       setIsLoading(false)
+  //     }
+  //   }
+  //   fetchTransactions()
+  // }, [])
 
   // 取引を保存する処理
   const handleSaveTransaction = async (transaction: TransactionFormValues) => {
     try {
+      if (!user) {
+        // エッジケース？
+        // ログインページにリダイレクト？
+        throw new Error("ユーザーが認証されていません")
+      }
+
       // Firestore側の更新処理
       const formattedData = {
         ...transaction,
-        amount: parseIntFromCommaSeparated(transaction.amount)
+        amount: parseIntFromCommaSeparated(transaction.amount),
+        uid: user.uid
       }
       const docRef = await addDoc(collection(db, COLLECTION_NAME), formattedData)
       // console.log("Document written with ID: ", docRef.id)
@@ -123,6 +177,8 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading,
     selectedDay,
     setSelectedDay,
+    isSideBarOpen,
+    setIsSideBarOpen,
     isUnderLG,
     handleSaveTransaction,
     handleDeleteTransaction,
