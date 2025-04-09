@@ -138,7 +138,8 @@ const TransactionTable = ({
     setSelected([])
   }
 
-  const handleClick = (e: MouseEvent<unknown>, id: string) => {
+  // MEMO: 使っていないが、残しておきたい引数は_で始めると、noUnusedParametersのオプションによるパーサーエラーを回避できる
+  const handleClick = (_e: MouseEvent<unknown>, id: string) => {
     const selectedIndex = selected.indexOf(id)
     let newSelected: readonly string[] = []
 
@@ -157,7 +158,7 @@ const TransactionTable = ({
     setSelected(newSelected)
   }
 
-  const handleChangePage = (e: unknown, newPage: number) => {
+  const handleChangePage = (_e: unknown, newPage: number) => {
     setPage(newPage)
   }
 
@@ -166,7 +167,7 @@ const TransactionTable = ({
     setPage(0)
   }
 
-  const handleDeleteClick = (e: MouseEvent<unknown>) => {
+  const handleDeleteClick = (_e: MouseEvent<unknown>) => {
     onDeleteTransaction(selected)
     setSelected([])
   }
@@ -186,7 +187,7 @@ const TransactionTable = ({
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%' }}>
 
-        <Grid container textAlign="center">
+        <Grid container sx={{ textAlign: "center" }}>
           {[
             { title: "支出", color: "expenseColor.main", amount: formatCurrency(expense) },
             { title: "収入", color: "incomeColor.main", amount: formatCurrency(income) },
@@ -295,11 +296,7 @@ const TransactionTable = ({
 
               {/* パディング用の空行定義部分 */}
               {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 53 * emptyRows,
-                  }}
-                >
+                <TableRow sx={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}

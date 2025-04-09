@@ -34,6 +34,6 @@ export function formatCurrency(amount: number | string):string {
 }
 // console.log('001,234', formatCurrency("001,234"))
 
-export function getFormattedTody() {
+export function getFormattedToday() {
   return format(new Date(), "yyyy-MM-dd")
 }

@@ -5,24 +5,27 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Toolbar from '@mui/material/Toolbar'
 import SideBar from '../common/SideBar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAppContext } from '../../context/AppContext'
 import { sideBarWidth } from '../../constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
 import { Button } from '@mui/material'
-import { NavLink, Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-// import { useLogoutRedirect } from '../../hooks/useRedirects'
 
 const AuthedLayout = () => {
   const [mobileSideBarOpen, setMobileSideBarOpen] = useState(false)
   const { isSideBarOpen, setIsSideBarOpen } = useAppContext()
-  const { handleLogout } = useAuth()
+  
+  const { user, handleLogout } = useAuth()
+  const navigate = useNavigate()
 
-  // ログアウト済みならリダイレクト
-  // エッジケース？起こり得ない？
-  // useLogoutRedirect("/auth/login")
+  // アクセス時認証ガード: App.tsx
+  // ログアウト発火時:     サーバーとの非同期通信がレンダリング以上に時間がかかる場合に重要、userの変化をトリガーにリダイレクト
+  useEffect(() => {
+    if (!user) navigate("/auth/login", { replace: true })
+  }, [user])
 
   const handleDrawerClose = () => {
     setIsSideBarOpen(false)
@@ -63,20 +66,18 @@ const AuthedLayout = () => {
           <HeaderTitle />
 
           <Box sx={{ ml: "auto" }}>
-            <NavLink to="/auth/login">
-              <Button
-                variant="outlined"
-                aria-label="log out"
-                sx={{
-                  color: "white",
-                  borderColor: "white",
-                }}
-                endIcon={<LogoutIcon />}
-                onClick={handleLogout}
-              >
-                Log out
-              </Button>
-            </NavLink>
+            <Button
+              variant="outlined"
+              aria-label="log out"
+              sx={{
+                color: "white",
+                borderColor: "white",
+              }}
+              endIcon={<LogoutIcon />}
+              onClick={handleLogout}
+            >
+              Log out
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,25 +1,27 @@
 // AuthContext.tsx - 認証状態を提供するContext
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth'
 import { auth } from '../firebase'
+import AppProvider from './AppContext';
 
 interface AuthContextValue {
   user: User | null;
-  handleLogin: (email: string, password: string) => Promise<void>;
+  handleSignup: (email: string, password: string) => () => Promise<void>;
+  handleLogin: (email: string, password: string) => () => Promise<void>;
   handleLogout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
-  handleLogin: async () => {},
+  handleSignup: () => async () => {},
+  handleLogin: () => async () => {},
   handleLogout: async () => {},
 })
 
-// 他のコンポーネントで利用するためのカスタムフック
-export const useAuth = () => useContext(AuthContext)
+
 
 // プロバイダコンポーネント
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -32,21 +34,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
-  // ログイン処理
-  const handleLogin = async (email: string, password: string) => {
+  const handleSignup = (email: string, password: string) => async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-    } catch (err) {
-      console.error("ログインに失敗しました:", err);
+      await createUserWithEmailAndPassword(auth, email, password)
+    } catch (error) {
+      console.error("登録失敗:", error)
       // TODO: エラーメッセージの表示など
     }
   }
 
-  // ログアウト処理
+  const handleLogin = (email: string, password: string) => async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+    } catch (error) {
+      console.error("ログインに失敗しました:", error)
+      // TODO: エラーメッセージの表示など
+    }
+  }
+
   const handleLogout = async () => {
     try {
+      console.log("clicked")
       await signOut(auth)
-      // navigate('/auth/login', { replace: true }) // Loginページへ
     } catch (error) {
       console.error('ログアウトに失敗しました:', error)
       // TODO: エラーメッセージの表示など
@@ -55,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     user,
+    handleSignup,
     handleLogin,
     handleLogout,
   }
@@ -70,3 +80,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   )
 }
+
+export default AppProvider
+
+// 他のコンポーネントで利用するためのカスタムフック
+export const useAuth = () => useContext(AuthContext)

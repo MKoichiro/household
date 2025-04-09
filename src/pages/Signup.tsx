@@ -1,24 +1,20 @@
 // SignUp.tsx - 新規登録ページコンポーネント
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, TextField, Button, Typography } from '@mui/material'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../firebase'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const SignUp = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const { user, handleSignup } = useAuth()
   const navigate = useNavigate()
 
-  const handleSignUp = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      navigate("/home")  // 登録成功時にHomeページへ遷移
-    } catch (err) {
-      console.error("登録失敗:", err)
-      // TODO: エラーハンドリング
-    }
-  }
+  // アクセス時ガード: App.tsx
+  // サインアップ発火時: サーバーとの非同期通信がレンダリング以上に時間がかかる場合に重要、userの変化をトリガーにリダイレクト
+  useEffect(() => {
+    if (user) navigate("/app/home", { replace: true })
+  }, [user])
 
   return (
     <Container maxWidth="xs">
@@ -41,14 +37,14 @@ const SignUp = () => {
       />
       <Button 
         variant="contained" color="primary" fullWidth 
-        onClick={handleSignUp}
+        onClick={handleSignup(email, password)}
       >
         アカウント作成
       </Button>
       <Button 
         color="secondary" fullWidth 
-        onClick={() => navigate('/login')}
-        style={{ marginTop: 8 }}
+        onClick={() => navigate('/auth/login')}
+        sx={{ mt: 2 }}
       >
         ログインはこちら
       </Button>

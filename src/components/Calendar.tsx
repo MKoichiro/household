@@ -5,7 +5,7 @@ import "../calendar.css"
 import { DatesSetArg, EventContentArg } from "@fullcalendar/core/index.js"
 import { CalendarContent, DailyBalances, Transaction } from "../types"
 import { calculateDailyBalances } from "../utils/financeCalculations"
-import { formatCurrency, getFormattedTody } from "../utils/formatting"
+import { formatCurrency, getFormattedToday } from "../utils/formatting"
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
 import { useTheme } from "@mui/material"
 import { isSameMonth } from "date-fns"
@@ -76,7 +76,7 @@ const Calendar = ({
     setCurrentMonth(currentMonth)
 
     const todayDate = new Date()
-    isSameMonth(todayDate, currentMonth) && setSelectedDay(getFormattedTody())
+    isSameMonth(todayDate, currentMonth) && setSelectedDay(getFormattedToday())
   }
 
   const selectedEvent = {

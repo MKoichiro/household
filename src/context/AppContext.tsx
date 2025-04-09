@@ -2,7 +2,7 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffe
 import { Transaction, TransactionFormValues } from "../types";
 import { useMediaQuery } from "@mui/material";
 import { theme } from "../theme/theme";
-import { getFormattedTody, parseIntFromCommaSeparated } from "../utils/formatting";
+import { getFormattedToday, parseIntFromCommaSeparated } from "../utils/formatting";
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "./AuthContext";
@@ -50,50 +50,30 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedDay, setSelectedDay] = useState(getFormattedTody())
+  const [selectedDay, setSelectedDay] = useState(getFormattedToday())
   const [isSideBarOpen, setIsSideBarOpen] = useState(true)
-  const isUnderLG = useMediaQuery(theme.breakpoints.down("lg")) // windowオブジェクトを操作
+  const isUnderLG = useMediaQuery(theme.breakpoints.down("lg")) // 副作用: windowオブジェクトを操作
 
+  // TODO: 次回以降handle*Transaction関数でのフロントエンド処理と重複する。
   // ユーザーの取引一覧をリアルタイム取得
   useEffect(() => {
-    if (!user) return;
+    if (!user) return
     const q = query(
       collection(db, COLLECTION_NAME),
       where('uid', '==', user.uid)  // 自分のUIDに一致するドキュメントのみ取得
-    );
+    )
 
     // クリーンアップ
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      })) as Transaction[];
-      setTransactions(data);
-    });
-    return unsubscribe;
+      })) as Transaction[]
+      setTransactions(data)
+      setIsLoading(false)
+    })
+    return unsubscribe
   }, [user])
-
-  // （旧）ユーザーの取引一覧を取得
-  // useEffect(() => {
-  //   const fetchTransactions = async () => {
-  //     try {
-  //       const querySnapshot = await getDocs(collection(db, "Transactions"))
-  //       const transactions = querySnapshot.docs.map(doc => {
-  //         return {
-  //           ...doc.data(),
-  //           id: doc.id,
-  //         } as Transaction // 型アサーション。自動解決されない時のエラー回避。ただし開発者がマニュアルで確認しなくてはいけない。
-  //       })
-  //       // console.log(transactions)
-  //       setTransactions(transactions)
-  //     } catch(error) {
-  //       outputErrors(error)
-  //     } finally {
-  //       setIsLoading(false)
-  //     }
-  //   }
-  //   fetchTransactions()
-  // }, [])
 
   // 取引を保存する処理
   const handleSaveTransaction = async (transaction: TransactionFormValues) => {
@@ -110,15 +90,15 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
         amount: parseIntFromCommaSeparated(transaction.amount),
         uid: user.uid
       }
-      const docRef = await addDoc(collection(db, COLLECTION_NAME), formattedData)
-      // console.log("Document written with ID: ", docRef.id)
-
+      await addDoc(collection(db, COLLECTION_NAME), formattedData)
+      // const docRef = await addDoc(collection(db, COLLECTION_NAME), formattedData)
+      
       // transactionsを更新してフロント側へ即時反映
-      const newTransaction = {
-        ...formattedData,
-        id: docRef.id,
-      } as Transaction
-      setTransactions(prev => ([...prev, newTransaction ]))
+      // const newTransaction = {
+      //   ...formattedData,
+      //   id: docRef.id,
+      // } as Transaction
+      // setTransactions(prev => ([...prev, newTransaction ]))
     } catch(error) {
       outputErrors(error)
     }
@@ -136,8 +116,8 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // フロント側
-      const newTransactions = transactions.filter(t => !ids.includes(t.id))
-      setTransactions(newTransactions)
+      // const newTransactions = transactions.filter(t => !ids.includes(t.id))
+      // setTransactions(newTransactions)
     } catch (error) {
       outputErrors(error)
     }
@@ -155,12 +135,12 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
       await updateDoc(transactionRef, formattedData);
 
       // フロント側
-      const newTransactions = transactions.map(t => {
-        return (t.id === transactionId)
-          ? { ...t, ...formattedData }
-          : t
-      }) as Transaction[]
-      setTransactions(newTransactions)
+      // const newTransactions = transactions.map(t => {
+      //   return (t.id === transactionId)
+      //     ? { ...t, ...formattedData }
+      //     : t
+      // }) as Transaction[]
+      // setTransactions(newTransactions)
     } catch (error) {
       outputErrors(error)
     }
@@ -198,7 +178,7 @@ export default AppProvider
 export const useAppContext = () => {
   const context = useContext(AppContext)
   if (!context) {
-    throw new Error("グローバルなデータはプロバイダーの中で取得してください")
+    throw new Error("useAppContext: グローバルなデータはプロバイダーの中で取得してください")
   }
   return context
 }

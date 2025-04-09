@@ -1,27 +1,20 @@
 // Login.tsx - ログインページコンポーネント
-import { useState } from 'react';
-import { Container, TextField, Button, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // ページ遷移に使用
+import { useEffect, useState } from 'react'
+import { Container, TextField, Button, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom' // ページ遷移に使用
 import { useAuth } from '../context/AuthContext';
-import { useLoginRedirect } from '../hooks/useRedirects';
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const { user, handleLogin } = useAuth()
   const navigate = useNavigate()
-  const { handleLogin: login } = useAuth()
 
-  // ログイン済みのユーザーが"/auth/login"にアクセスした場合にリダイレクト
-  useLoginRedirect("/app/home")
-
-  const handleLogin = async (email: string, password: string) => {
-    try {
-      login(email, password)
-      // navigate("/app/home", { replace: true })
-    } catch (error) {
-      console.error("ログインに失敗しました:", error)
-    }
-  }
+  // アクセス時ガード: App.tsx
+  // ログイン発火時: サーバーとの非同期通信がレンダリング以上に時間がかかる場合に重要、userの変化をトリガーにリダイレクト
+  useEffect(() => {
+    if (user) navigate("/app/home", { replace: true })
+  }, [user])
 
   return (
     <Container maxWidth="xs">
@@ -43,15 +36,15 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <Button 
-        variant="contained" color="primary" fullWidth 
-        onClick={() => handleLogin(email, password)}
+        variant="contained" color="primary" fullWidth
+        onClick={handleLogin(email, password)}
       >
         ログイン
       </Button>
       <Button 
         color="secondary" fullWidth 
-        onClick={() => navigate('/signup')}
-        style={{ marginTop: 8 }}
+        onClick={() => navigate('/auth/signup')}
+        sx={{ mt: 2 }}
       >
         アカウント作成はこちら
       </Button>

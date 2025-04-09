@@ -56,11 +56,11 @@ const TransactionMenu = ({
           }),
           ...(!isUnderLG && {
             top: headerHeight,
-            height: `calc(100% - ${headerHeight}px)`, // AppBarの高さを引いたビューポートの高さ
+            height: `calc(100% - ${headerHeight}px)`,
           })
         },
       }}
-      variant={ isUnderLG ? "temporary" : "permanent" } // 常時表示の指定
+      variant={ isUnderLG ? "temporary" : "permanent" } // 表示の指定
       anchor={ isUnderLG ? "bottom" : "right" }
       open={isDrawerOpen}
       onClose={handleDrawerClose}
@@ -135,7 +135,7 @@ const TransactionMenu = ({
                           <Grid size={{xs: 1}}>
                             {IconComponents[transaction.category]}
                           </Grid>
-                          <Grid size={{xs: 2.5}}>
+                          <Grid size={{xs: 2}}>
                             <Typography
                               variant="caption"
                               display="block"
@@ -149,7 +149,7 @@ const TransactionMenu = ({
                               {transaction.content}
                             </Typography>
                           </Grid>
-                          <Grid size={{xs: 4.5}}>
+                          <Grid size={{xs: 4}}>
                             <Typography
                               gutterBottom
                               textAlign={"right"}

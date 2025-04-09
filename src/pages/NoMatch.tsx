@@ -24,7 +24,7 @@ const NoMatch = () => {
     setTimeoutId(timer)
 
     return () => clearTimeout(timer)
-  }, [navigate, user])
+  }, [user])
 
   const handleStopClick = () => {
     if (intervalId) clearInterval(intervalId)
@@ -101,6 +101,3 @@ const NoMatch = () => {
 }
 
 export default NoMatch
-
-// ログインページに移動したときにuserがいるならホームへ移動
-// 

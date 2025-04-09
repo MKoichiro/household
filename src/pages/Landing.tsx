@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material"
-import { useLoginRedirect } from "../hooks/useRedirects"
+// import { useLoginRedirect } from "../hooks/useRedirects"
 
 const Landing = () => {
 
   // ログイン済みのユーザーが"/"にアクセスした場合にリダイレクト
-  useLoginRedirect("/app/home")
+  // useLoginRedirect("/app/home")
 
   return (
     <Box>
