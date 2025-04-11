@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
-import useTimer from "../hooks/useTimer"
-import { Box, Button, Divider, Typography } from "@mui/material"
-import { theme } from "../theme/theme"
-import { headerHeight } from "../constants/ui"
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import useTimer from '../hooks/useTimer'
+import { Box, Button, Divider, Typography } from '@mui/material'
+import { theme } from '../theme/theme'
+import { headerHeight } from '../constants/ui'
+import { useAuth } from '../hooks/useContexts'
 
 const NoMatch = () => {
-  const home = { path: "/app/home", display: "ホーム" }
-  const login = { path: "/auth/login", display: "ログインページ" }
+  const home = { path: '/app/home', display: 'ホーム' }
+  const login = { path: '/auth/login', display: 'ログインページ' }
 
   const { user } = useAuth()
   const navigate = useNavigate()
-  const { count, intervalId } = useTimer({init: 30, type: "decrement"})
+  const { count, intervalId } = useTimer({ init: 30, type: 'decrement' })
   const [isStopped, setIsStopped] = useState(false)
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | number | null>(null)
+  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | number | null>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,7 +24,7 @@ const NoMatch = () => {
     setTimeoutId(timer)
 
     return () => clearTimeout(timer)
-  }, [user])
+  }, [user, home.path, login.path, navigate])
 
   const handleStopClick = () => {
     if (intervalId) clearInterval(intervalId)
@@ -40,57 +40,45 @@ const NoMatch = () => {
     <Box
       sx={{
         height: `calc(100% - ${headerHeight}px)`,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        p: 3
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        p: 3,
       }}
     >
       {/* 上部 */}
       <Box>
-        <Typography variant="h2">
-          404: Not Found.
-        </Typography>
+        <Typography variant="h2">404: Not Found.</Typography>
         <Typography variant="h5" component="p">
           このページは既に削除されたか、存在していません。
         </Typography>
       </Box>
 
       {/* 下部 */}
-      <Divider sx={{ mt: "auto", mb: 1 }}/>
+      <Divider sx={{ mt: 'auto', mb: 1 }} />
 
-      <Box sx={{ display: "flex", flexDirection: "column", textAlign: "right", gap: 1 }}>
-          <Box sx={{ display: "flex", alignItems: "baseline", justifyContent: "right", gap: 1}}>
-            <Typography
-              component="time"
-              variant="h5"
-              sx={{ verticalAlign: "bottom" }}
-              dateTime={`PT${count}S`}
-              color={ isStopped ? theme.palette.grey[500] : 'inherit' }
-            >
-              {count} 秒
-            </Typography>
-            <Typography
-              color={ isStopped ? theme.palette.grey[500] : 'inherit' }
-            >
-              後に自動的に{user ? home.display : login.display}へ遷移します。
-            </Typography>
-          </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'right', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'right', gap: 1 }}>
+          <Typography
+            component="time"
+            variant="h5"
+            sx={{ verticalAlign: 'bottom' }}
+            dateTime={`PT${count}S`}
+            color={isStopped ? theme.palette.grey[500] : 'inherit'}
+          >
+            {count} 秒
+          </Typography>
+          <Typography color={isStopped ? theme.palette.grey[500] : 'inherit'}>
+            後に自動的に{user ? home.display : login.display}へ遷移します。
+          </Typography>
+        </Box>
         <Box>
           {!isStopped ? (
-            <Button
-              variant="contained"
-              onClick={handleStopClick}
-              disabled={isStopped}
-            >
+            <Button variant="contained" onClick={handleStopClick} disabled={isStopped}>
               タイマーを止める
             </Button>
           ) : (
-            <Button
-              variant="contained"
-              onClick={handleHomeClick}
-              disabled={!isStopped}
-            >
+            <Button variant="contained" onClick={handleHomeClick} disabled={!isStopped}>
               {user ? home.display : login.display}へ
             </Button>
           )}

@@ -7,25 +7,24 @@ import Toolbar from '@mui/material/Toolbar'
 import SideBar from '../common/SideBar'
 import { useEffect, useState } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { useAppContext } from '../../context/AppContext'
 import { sideBarWidth } from '../../constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
 import { Button } from '@mui/material'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
+import { useAuth, useApp } from '../../hooks/useContexts'
 
 const AuthedLayout = () => {
   const [mobileSideBarOpen, setMobileSideBarOpen] = useState(false)
-  const { isSideBarOpen, setIsSideBarOpen } = useAppContext()
-  
+  const { isSideBarOpen, setIsSideBarOpen } = useApp()
+
   const { user, handleLogout } = useAuth()
   const navigate = useNavigate()
 
   // アクセス時認証ガード: App.tsx
   // ログアウト発火時:     サーバーとの非同期通信がレンダリング以上に時間がかかる場合に重要、userの変化をトリガーにリダイレクト
   useEffect(() => {
-    if (!user) navigate("/auth/login", { replace: true })
-  }, [user])
+    if (!user) navigate('/auth/login', { replace: true })
+  }, [user, navigate])
 
   const handleDrawerClose = () => {
     setIsSideBarOpen(false)
@@ -43,7 +42,7 @@ const AuthedLayout = () => {
   }
 
   return (
-    <Box sx={{ display: { md: 'flex' }, bgcolor: (theme) => theme.palette.grey[100], minHeight: "100vh" }}>
+    <Box sx={{ display: { md: 'flex' }, bgcolor: (theme) => theme.palette.grey[100], minHeight: '100vh' }}>
       {/* ヘッダー */}
       <AppBar
         position="fixed"
@@ -65,13 +64,13 @@ const AuthedLayout = () => {
 
           <HeaderTitle />
 
-          <Box sx={{ ml: "auto" }}>
+          <Box sx={{ ml: 'auto' }}>
             <Button
               variant="outlined"
               aria-label="log out"
               sx={{
-                color: "white",
-                borderColor: "white",
+                color: 'white',
+                borderColor: 'white',
               }}
               endIcon={<LogoutIcon />}
               onClick={handleLogout}
@@ -90,10 +89,7 @@ const AuthedLayout = () => {
       />
 
       {/* メインコンテンツ */}
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${sideBarWidth}px)` } }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${sideBarWidth}px)` } }}>
         <Toolbar />
         <Outlet />
       </Box>

@@ -1,18 +1,6 @@
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-
-  CategoryScale,
-  LinearScale,
-  BarElement,
-
-  ArcElement,
-} from 'chart.js'
+import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement } from 'chart.js'
 
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-
 
 ChartJS.register(
   // common
@@ -27,8 +15,7 @@ ChartJS.register(
 
   // for Pie Chart
   ArcElement,
-  ChartDataLabels, //グラフ内ラベル書き込みのための拡張機能
+  ChartDataLabels //グラフ内ラベル書き込みのための拡張機能
 )
 
-ChartJS.register(
-)
+ChartJS.register()

@@ -1,35 +1,28 @@
 // AuthContext.tsx - 認証状態を提供するContext
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth'
+
+import { ReactNode, useEffect, useState } from 'react'
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  User,
+} from 'firebase/auth'
 import { auth } from '../firebase'
-import AppProvider from './AppContext';
-
-interface AuthContextValue {
-  user: User | null;
-  handleSignup: (email: string, password: string) => () => Promise<void>;
-  handleLogin: (email: string, password: string) => () => Promise<void>;
-  handleLogout: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextValue>({
-  user: null,
-  handleSignup: () => async () => {},
-  handleLogin: () => async () => {},
-  handleLogout: async () => {},
-})
-
-
+import { outputDBErrors } from '../utils/errorHandlings'
+import LoadingOverlay from '../components/common/LoadingOverlay'
+import { AuthContext } from '../hooks/useContexts'
 
 // プロバイダコンポーネント
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   // Firebase Authのユーザー状態を監視し、状態が変わるたびにuserを更新
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser)
-      setLoading(false)
+      setIsLoading(false)
     })
     return () => unsubscribe()
   }, [])
@@ -38,8 +31,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
     } catch (error) {
-      console.error("登録失敗:", error)
-      // TODO: エラーメッセージの表示など
+      outputDBErrors(error)
     }
   }
 
@@ -47,18 +39,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
     } catch (error) {
-      console.error("ログインに失敗しました:", error)
-      // TODO: エラーメッセージの表示など
+      outputDBErrors(error)
     }
   }
 
   const handleLogout = async () => {
     try {
-      console.log("clicked")
       await signOut(auth)
     } catch (error) {
-      console.error('ログアウトに失敗しました:', error)
-      // TODO: エラーメッセージの表示など
+      outputDBErrors(error)
     }
   }
 
@@ -70,18 +59,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   // ユーザー状態の確認が完了するまでローディング表示
-  if (loading) {
-    return <div>Loading...</div>
+  if (isLoading) {
+    return <LoadingOverlay isLoading={isLoading} />
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
-export default AppProvider
-
-// 他のコンポーネントで利用するためのカスタムフック
-export const useAuth = () => useContext(AuthContext)
+export default AuthProvider

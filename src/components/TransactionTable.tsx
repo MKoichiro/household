@@ -1,4 +1,4 @@
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 import {
   Box,
   Table,
@@ -17,27 +17,22 @@ import {
   Grid,
   Divider,
 } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Transaction } from '../types';
-import { useMemo, useState, MouseEvent, ChangeEvent } from 'react';
-import { financeCalculations } from '../utils/financeCalculations';
-import { formatCurrency } from '../utils/formatting';
-import IconComponents from './common/IconComponents';
-import { compareAsc, parseISO } from 'date-fns';
+import DeleteIcon from '@mui/icons-material/Delete'
+import { Transaction } from '../types'
+import { useMemo, useState, MouseEvent, ChangeEvent } from 'react'
+import { financeCalculations } from '../utils/financeCalculations'
+import { formatCurrency } from '../utils/formatting'
+import IconComponents from './common/IconComponents'
+import { compareAsc, parseISO } from 'date-fns'
 
 // テーブルヘッド部分
 interface TransactionTableHeadProps {
-  numSelected: number;
-  onSelectAllClick: (e: ChangeEvent<HTMLInputElement>) => void;
-  rowCount: number;
+  numSelected: number
+  onSelectAllClick: (e: ChangeEvent<HTMLInputElement>) => void
+  rowCount: number
 }
 
-const TransactionTableHead = ({
-  onSelectAllClick,
-  numSelected,
-  rowCount,
-}: TransactionTableHeadProps) => {
-
+const TransactionTableHead = ({ onSelectAllClick, numSelected, rowCount }: TransactionTableHeadProps) => {
   return (
     <TableHead>
       <TableRow>
@@ -64,8 +59,8 @@ const TransactionTableHead = ({
 
 // ツールバー部分
 interface TransactionTableToolbarProps {
-  numSelected: number;
-  onDeleteClick: (e: MouseEvent<unknown>) => void;
+  numSelected: number
+  onDeleteClick: (e: MouseEvent<unknown>) => void
 }
 
 function TransactionTableToolbar({ numSelected, onDeleteClick }: TransactionTableToolbarProps) {
@@ -77,29 +72,17 @@ function TransactionTableToolbar({ numSelected, onDeleteClick }: TransactionTabl
           pr: { xs: 1, sm: 1 },
         },
         numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         },
       ]}
     >
-
       {/* "* selected" Or Title*/}
       {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
+        <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
           月の収支
         </Typography>
       )}
@@ -115,16 +98,12 @@ function TransactionTableToolbar({ numSelected, onDeleteClick }: TransactionTabl
   )
 }
 
-
 interface TransactionTableProps {
-  monthlyTransactions: Transaction[];
-  onDeleteTransaction: (transactionIds: string | readonly string[]) => Promise<void>;
+  monthlyTransactions: Transaction[]
+  onDeleteTransaction: (transactionIds: string | readonly string[]) => Promise<void>
 }
 
-const TransactionTable = ({
-  monthlyTransactions: transactions,
-  onDeleteTransaction
-}: TransactionTableProps) => {
+const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransaction }: TransactionTableProps) => {
   const [selected, setSelected] = useState<readonly string[]>([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -150,15 +129,12 @@ const TransactionTable = ({
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1))
     } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      )
+      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1))
     }
     setSelected(newSelected)
   }
 
-  const handleChangePage = (_e: unknown, newPage: number) => {
+  const handleChangePage = (_e: ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage)
   }
 
@@ -173,27 +149,28 @@ const TransactionTable = ({
   }
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - transactions.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - transactions.length) : 0
 
-  const visibleRows = useMemo(() => (
-    [...transactions]
-      .sort((a, b) => compareAsc(parseISO(a.date), parseISO(b.date)))
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-  ), [page, rowsPerPage, transactions])
+  const visibleRows = useMemo(
+    () =>
+      [...transactions]
+        .sort((a, b) => compareAsc(parseISO(a.date), parseISO(b.date)))
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [page, rowsPerPage, transactions]
+  )
 
   const { income, expense, balance } = financeCalculations(transactions)
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%' }}>
-
-        <Grid container sx={{ textAlign: "center" }}>
+        <Grid container sx={{ textAlign: 'center' }}>
           {[
-            { title: "支出", color: "expenseColor.main", amount: formatCurrency(expense) },
-            { title: "収入", color: "incomeColor.main", amount: formatCurrency(income) },
-            { title: "残高", color: "balanceColor.dark", amount: formatCurrency(balance) },
-          ].map(item => (
-            <Grid size={{ xs: 4 }}>
+            { title: '支出', color: 'expenseColor.main', amount: formatCurrency(expense) },
+            { title: '収入', color: 'incomeColor.main', amount: formatCurrency(income) },
+            { title: '残高', color: 'balanceColor.dark', amount: formatCurrency(balance) },
+          ].map((item) => (
+            <Grid key={item.title} size={{ xs: 4 }}>
               <Typography variant="subtitle1" component="h3">
                 {item.title}
               </Typography>
@@ -202,8 +179,8 @@ const TransactionTable = ({
                 fontWeight="fontWeightBold"
                 sx={{
                   color: item.color,
-                  fontSize: { xs: ".8rem", sm: "1rem", md: "1.2rem" },
-                  wordBreak: "break-word"
+                  fontSize: { xs: '.8rem', sm: '1rem', md: '1.2rem' },
+                  wordBreak: 'break-word',
                 }}
               >
                 ￥{item.amount}
@@ -212,19 +189,14 @@ const TransactionTable = ({
           ))}
         </Grid>
 
-        <Divider/>
+        <Divider />
 
         {/* ヘッダーツールバー部分 */}
         <TransactionTableToolbar onDeleteClick={handleDeleteClick} numSelected={selected.length} />
 
         {/* テーブル本体部分 */}
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size='medium'
-          >
-
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="medium">
             {/* テーブルヘッド */}
             <TransactionTableHead
               numSelected={selected.length}
@@ -236,8 +208,8 @@ const TransactionTable = ({
             <TableBody>
               {/* レコードでイテレートして行を定義 */}
               {visibleRows.map((t, index) => {
-                const isItemSelected = selected.includes(t.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+                const isItemSelected = selected.includes(t.id)
+                const labelId = `enhanced-table-checkbox-${index}`
 
                 return (
                   // 一行の定義部分
@@ -263,17 +235,12 @@ const TransactionTable = ({
                     </TableCell>
 
                     {/* 日付 */}
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
+                    <TableCell component="th" id={labelId} scope="row" padding="none">
                       {t.date}
                     </TableCell>
 
                     {/* カテゴリ */}
-                    <TableCell align="left" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <TableCell align="left" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       {IconComponents[t.category]}
                       {t.category}
                     </TableCell>
@@ -282,16 +249,16 @@ const TransactionTable = ({
                     <TableCell
                       align="left"
                       sx={{
-                        color: (t.type === "income") ? "incomeColor.main" : "expenseColor.main"
+                        color: t.type === 'income' ? 'incomeColor.main' : 'expenseColor.main',
                       }}
                     >
                       {t.amount}
                     </TableCell>
-                    
+
                     {/* 内容 */}
                     <TableCell align="left">{t.content}</TableCell>
                   </TableRow>
-                );
+                )
               })}
 
               {/* パディング用の空行定義部分 */}

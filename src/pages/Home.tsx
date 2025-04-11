@@ -1,67 +1,46 @@
-import { Box } from "@mui/material"
-import MonthlySummary from "../components/MonthlySummary"
-import Calendar from "../components/Calendar"
-import TransactionMenu from "../components/TransactionMenu"
-import TransactionForm from "../components/TransactionForm"
-import { Transaction, TransactionFormValues, TransactionType } from "../types"
-import { useState } from "react"
-import { DateClickArg } from "@fullcalendar/interaction/index.js"
-import { ControllerRenderProps, FormProvider, SubmitHandler, useForm } from "react-hook-form"
-import { useAppContext } from "../context/AppContext"
-import { formatMonth } from "../utils/formatting"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { transactionSchema } from "../validations/schema"
+import { Box } from '@mui/material'
+import MonthlySummary from '../components/MonthlySummary'
+import Calendar from '../components/Calendar'
+import TransactionMenu from '../components/TransactionMenu'
+import TransactionForm from '../components/TransactionForm'
+import { Transaction, TransactionFormValues, TransactionType } from '../types'
+import { useState } from 'react'
+import { DateClickArg } from '@fullcalendar/interaction/index.js'
+import { ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { formatMonth } from '../utils/formatting'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { transactionSchema } from '../validations/schema'
+import { useApp, useTransaction } from '../hooks/useContexts'
 
 const Home = () => {
+  const { isUnderLG, currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
 
-  const {
-    isUnderLG,
-    transactions,
-    currentMonth,
-    setCurrentMonth,
-    selectedDay,
-    setSelectedDay,
-    handleSaveTransaction,
-    handleUpdateTransaction,
-    handleDeleteTransaction,
-  } = useAppContext()
-
-
-
+  const { transactions, handleSaveTransaction, handleUpdateTransaction, handleDeleteTransaction } = useTransaction()
 
   const initialFormValues: TransactionFormValues = {
-    type: "expense",
+    type: 'expense',
     date: selectedDay,
-    amount: "",
-    category: "",
-    content: "",
+    amount: '',
+    category: '',
+    content: '',
   }
 
   const methods = useForm<TransactionFormValues>({
     defaultValues: initialFormValues,
-    resolver: zodResolver(transactionSchema)
+    resolver: zodResolver(transactionSchema),
   })
 
-  const {
-    formState,
-    handleSubmit,
-    control,
-    setValue,
-    watch,
-    reset,
-  } = methods
+  const { formState, handleSubmit, control, setValue, watch, reset } = methods
 
   const [isEntryDrawerOpen, setIsEntryDrawerOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
   const [isDetailDrawerOpen, setIsDetailDrawerOpen] = useState(isUnderLG ? false : true)
   const [isFormModalOpen, setIsFormModalOpen] = useState(false)
   // 現在の収益タイプを監視
-  const currentType: TransactionType = watch("type")
+  const currentType: TransactionType = watch('type')
 
-  const monthlyTransactions = transactions.filter(t => (
-    t.date.startsWith(formatMonth(currentMonth))
-  ))
-  const dailyTransactions = monthlyTransactions.filter(transaction => transaction.date === selectedDay)
+  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(currentMonth)))
+  const dailyTransactions = monthlyTransactions.filter((transaction) => transaction.date === selectedDay)
 
   // TransactionDrawer のロジック部分
   const handleDetailDrawerOpen = () => {
@@ -77,22 +56,21 @@ const Home = () => {
   const handleDateClick = (dateInfo: DateClickArg) => {
     // console.log(dateInfo);
     setSelectedDay(dateInfo.dateStr)
-    setValue("date", dateInfo.dateStr)
+    setValue('date', dateInfo.dateStr)
     handleDetailDrawerOpen()
   }
-
 
   // 内訳追加ボタンのクリック
   const handleTransactionAddClick = () => {
     if (isUnderLG) {
       setIsFormModalOpen(true)
       if (selectedTransaction === null) {
-        setIsFormModalOpen(prev => !prev)
+        setIsFormModalOpen((prev) => !prev)
         return
       }
     } else {
       if (selectedTransaction === null) {
-        setIsEntryDrawerOpen(prev => !prev)
+        setIsEntryDrawerOpen((prev) => !prev)
         return
       }
       setIsEntryDrawerOpen(true)
@@ -104,18 +82,20 @@ const Home = () => {
   // 内訳カードのクリック
   const handleTransactionCardClick = (transaction: Transaction) => {
     return () => {
-      isUnderLG
-        ? setIsFormModalOpen(true)
-        : setIsEntryDrawerOpen(true)
+      if (isUnderLG) {
+        setIsFormModalOpen(true)
+      } else {
+        setIsEntryDrawerOpen(true)
+      }
 
       // 選択transactionでフォームを初期化
       setSelectedTransaction(transaction)
       reset({
-        type:     transaction.type,
-        amount:   String(transaction.amount),
-        date:     transaction.date,
+        type: transaction.type,
+        amount: String(transaction.amount),
+        date: transaction.date,
         category: transaction.category,
-        content:  transaction.content,
+        content: transaction.content,
       })
     }
   }
@@ -128,10 +108,11 @@ const Home = () => {
 
   // 入力ドロワー/ダイアログの閉じるボタン
   const handleEntryCloseClick = () => {
-    isUnderLG
-    ? setIsFormModalOpen(false)
-    : setIsEntryDrawerOpen(false)
-
+    if (isUnderLG) {
+      setIsFormModalOpen(false)
+    } else {
+      setIsEntryDrawerOpen(false)
+    }
     setSelectedTransaction(null)
   }
 
@@ -140,20 +121,20 @@ const Home = () => {
     // console.log(data)
     if (selectedTransaction) {
       handleUpdateTransaction(data, selectedTransaction.id)
-      .then(() => {
-        reset(data) // resetを呼ぶことでisDirtyによる差分監視の開始ポイントも変更
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+        .then(() => {
+          reset(data) // resetを呼ぶことでisDirtyによる差分監視の開始ポイントも変更
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     } else {
       handleSaveTransaction(data)
-      .then(() => {
-        clearForm()
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+        .then(() => {
+          clearForm()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   }
 
@@ -164,22 +145,22 @@ const Home = () => {
   const handleTypeClick = (type: TransactionType) => {
     return () => {
       // shouldDirty: trueで差分と認識させる
-      setValue("type", type, { shouldDirty: true })
-      setValue("category", "", { shouldDirty: true })
-      setValue("amount", "", { shouldDirty: true })
-      setValue("content", "", { shouldDirty: true })
+      setValue('type', type, { shouldDirty: true })
+      setValue('category', '', { shouldDirty: true })
+      setValue('amount', '', { shouldDirty: true })
+      setValue('content', '', { shouldDirty: true })
     }
   }
 
-  const handleAmountBlur = (field: ControllerRenderProps<TransactionFormValues, "amount">) => {
+  const handleAmountBlur = (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => {
     return () => {
-      if (field.value === "0") {
-        field.onChange("")
+      if (field.value === '0') {
+        field.onChange('')
       }
       // カンマ区切り文字列は受け付けられないので今後の課題とする。
       // オーバーレイコンポーネントを用意してそこで表示したりしなくてはいけなくなる。
       // else { field.onChange(formatCurrency(field.value)) }
-      field.onBlur();
+      field.onBlur()
     }
   }
 
@@ -195,13 +176,12 @@ const Home = () => {
     reset(initialFormValues)
   }
 
-
   return (
     <FormProvider {...methods}>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         {/* 左側 */}
-        <Box sx={{flexGrow: 1}}>
-          <MonthlySummary monthlyTransactions={monthlyTransactions}/>
+        <Box sx={{ flexGrow: 1 }}>
+          <MonthlySummary monthlyTransactions={monthlyTransactions} />
           <Calendar
             monthlyTransactions={monthlyTransactions}
             setCurrentMonth={setCurrentMonth}

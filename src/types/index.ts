@@ -1,53 +1,50 @@
-export type TransactionType = "income" | "expense";
+export type TransactionType = 'income' | 'expense'
 
 // 読み取り専用の定義
-const expenseLiteralsConst = ["食費", "日用品", "住居費", "交際費", "娯楽", "交通費"] as const;
-const incomeLiteralsConst = ["給与", "副収入", "お小遣い"] as const;
+const expenseLiteralsConst = ['食費', '日用品', '住居費', '交際費', '娯楽', '交通費'] as const
+const incomeLiteralsConst = ['給与', '副収入', 'お小遣い'] as const
 
-export type ExpenseCategory = typeof expenseLiteralsConst[number];
-export type IncomeCategory = typeof incomeLiteralsConst[number];
+export type ExpenseCategory = (typeof expenseLiteralsConst)[number]
+export type IncomeCategory = (typeof incomeLiteralsConst)[number]
 
 export const expenseLiterals: ExpenseCategory[] = [...expenseLiteralsConst]
 export const incomeLiterals: IncomeCategory[] = [...incomeLiteralsConst]
 
-interface BaseTransaction<
-  T extends TransactionType,
-  U extends IncomeCategory | ExpenseCategory
-> {
-  id: string;
-  amount: number;
-  type: T;
-  date: string;
-  category: U;
-  content: string;
+interface BaseTransaction<T extends TransactionType, U extends IncomeCategory | ExpenseCategory> {
+  id: string
+  amount: number
+  type: T
+  date: string
+  category: U
+  content: string
   uid: string
 }
 
-export type IncomeTransaction  = BaseTransaction<"income", IncomeCategory>;
-export type ExpenseTransaction = BaseTransaction<"expense", ExpenseCategory>;
-export type Transaction = IncomeTransaction | ExpenseTransaction;
+export type IncomeTransaction = BaseTransaction<'income', IncomeCategory>
+export type ExpenseTransaction = BaseTransaction<'expense', ExpenseCategory>
+export type Transaction = IncomeTransaction | ExpenseTransaction
 
 export interface Balance {
-  income: number;
-  expense: number;
-  balance: number;
+  income: number
+  expense: number
+  balance: number
 }
 
 export type DailyBalances = Record<string, Balance>
 
 export interface CalendarContent {
-  start: string;
-  income: string; // e.g.) "1,000"
-  expense: string;
-  balance: string;
+  start: string
+  income: string // e.g.) "1,000"
+  expense: string
+  balance: string
 }
 
 // useFormのジェネリクス、初期値を含めた緩い型
 // zodのvalidationで初期値の禁止（""など）ははじく
 export interface TransactionFormValues {
-  amount: string;
-  type: TransactionType;
-  date: string;
-  category: IncomeCategory | ExpenseCategory | "";
-  content: string | ""
+  amount: string
+  type: TransactionType
+  date: string
+  category: IncomeCategory | ExpenseCategory | ''
+  content: string | ''
 }

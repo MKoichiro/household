@@ -1,43 +1,48 @@
-import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material"
+import {
+  Box,
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+} from '@mui/material'
 import { Home, Equalizer, Settings } from '@mui/icons-material'
-import React, { CSSProperties } from "react";
-import { NavLink } from "react-router-dom";
-import { sideBarWidth } from "../../constants/ui";
+import React, { CSSProperties } from 'react'
+import { NavLink } from 'react-router-dom'
+import { sideBarWidth } from '../../constants/ui'
 
 interface menuItem {
-  text: string,
-  path: string,
+  text: string
+  path: string
   icon: React.ComponentType
 }
 
 const MenuItems: menuItem[] = [
-  {text: "ホーム", path: "/app/home", icon: Home},
-  {text: "月間レポート", path: "/app/report", icon: Equalizer},
-  {text: "設定", path: "/app/settings", icon: Settings}
+  { text: 'ホーム', path: '/app/home', icon: Home },
+  { text: '月間レポート', path: '/app/report', icon: Equalizer },
+  { text: '設定', path: '/app/settings', icon: Settings },
 ]
 
 const baseLinkStyle: CSSProperties = {
-  textDecoration: "none",
-  color: "inherit",
-  display: "block",
+  textDecoration: 'none',
+  color: 'inherit',
+  display: 'block',
 }
 
 const activeLinkStyle: CSSProperties = {
-  backgroundColor: "rgba(0 0 0 / 0.08)"
+  backgroundColor: 'rgba(0 0 0 / 0.08)',
 }
 
 interface SidebarProps {
-  mobileSideBarOpen: boolean,
-  handleDrawerClose: () => void,
-  handleDrawerTransitionEnd: () => void,
+  mobileSideBarOpen: boolean
+  handleDrawerClose: () => void
+  handleDrawerTransitionEnd: () => void
 }
 
-const SideBar = ({
-  mobileSideBarOpen,
-  handleDrawerClose,
-  handleDrawerTransitionEnd,
-}: SidebarProps) => {
-
+const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionEnd }: SidebarProps) => {
   const drawer = (
     <div>
       {/* 上部の余白 */}
@@ -46,15 +51,14 @@ const SideBar = ({
       <Divider />
 
       <List>
-        {MenuItems.map(item => (
+        {MenuItems.map((item) => (
           <NavLink
             key={item.text}
             to={item.path}
-            style={({isActive}) => ({
+            style={({ isActive }) => ({
               ...baseLinkStyle,
-              ...(isActive ? activeLinkStyle : {})
-              })
-            }
+              ...(isActive ? activeLinkStyle : {}),
+            })}
           >
             <ListItem disablePadding>
               <ListItemButton>
@@ -71,11 +75,7 @@ const SideBar = ({
   )
 
   return (
-    <Box
-      component="nav"
-      sx={{ width: { md: sideBarWidth }, flexShrink: { md: 0 } }}
-      aria-label="mailbox folders"
-    >
+    <Box component="nav" sx={{ width: { md: sideBarWidth }, flexShrink: { md: 0 } }} aria-label="mailbox folders">
       {/* モバイル用 */}
       <Drawer
         variant="temporary"

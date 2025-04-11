@@ -1,14 +1,15 @@
-import FullCalendar from "@fullcalendar/react"
-import dayGridPlugin from "@fullcalendar/daygrid"
-import jaLocal from "@fullcalendar/core/locales/ja"
-import "../calendar.css"
-import { DatesSetArg, EventContentArg } from "@fullcalendar/core/index.js"
-import { CalendarContent, DailyBalances, Transaction } from "../types"
-import { calculateDailyBalances } from "../utils/financeCalculations"
-import { formatCurrency, getFormattedToday } from "../utils/formatting"
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import jaLocal from '@fullcalendar/core/locales/ja'
+import '../calendar.css'
+import { DatesSetArg, EventContentArg } from '@fullcalendar/core/index.js'
+import { CalendarContent, DailyBalances, Transaction } from '../types'
+import { calculateDailyBalances } from '../utils/financeCalculations'
+import { formatCurrency, getFormattedToday } from '../utils/formatting'
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
-import { useTheme } from "@mui/material"
-import { isSameMonth } from "date-fns"
+import { useTheme } from '@mui/material'
+import { isSameMonth } from 'date-fns'
+import { Dispatch, SetStateAction } from 'react'
 
 // const events = [
 //   { title: 'Meeting', start: "2025-03-31",  },
@@ -32,13 +33,12 @@ const renderEventContent = (eventInfo: EventContentArg) => {
 }
 
 interface CalendarProps {
-  monthlyTransactions: Transaction[];
-  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
-  selectedDay: string;
-  setSelectedDay: React.Dispatch<React.SetStateAction<string>>;
-  onDateClick: (dateInfo: DateClickArg) => void;
+  monthlyTransactions: Transaction[]
+  setCurrentMonth: Dispatch<SetStateAction<Date>>
+  selectedDay: string
+  setSelectedDay: Dispatch<SetStateAction<string>>
+  onDateClick: (dateInfo: DateClickArg) => void
 }
-
 
 const Calendar = ({
   monthlyTransactions: transactions,
@@ -55,7 +55,7 @@ const Calendar = ({
 
   const eventsCreator = (dailyBalances: DailyBalances): CalendarContent[] => {
     const dates: string[] = Object.keys(dailyBalances)
-    return dates.map(date => {
+    return dates.map((date) => {
       const { income, expense, balance } = dailyBalances[date]
       return {
         start: date,
@@ -76,12 +76,14 @@ const Calendar = ({
     setCurrentMonth(currentMonth)
 
     const todayDate = new Date()
-    isSameMonth(todayDate, currentMonth) && setSelectedDay(getFormattedToday())
+    if (isSameMonth(todayDate, currentMonth)) {
+      setSelectedDay(getFormattedToday())
+    }
   }
 
   const selectedEvent = {
     start: selectedDay,
-    display: "background",
+    display: 'background',
     backgroundColor: theme.palette.incomeColor.light,
   }
 
@@ -94,7 +96,7 @@ const Calendar = ({
   return (
     <FullCalendar
       locale={jaLocal}
-      plugins={[dayGridPlugin, interactionPlugin ]}
+      plugins={[dayGridPlugin, interactionPlugin]}
       initialView="dayGridMonth"
       events={[...calendarEvents, selectedEvent]}
       eventContent={renderEventContent}
@@ -107,12 +109,12 @@ const Calendar = ({
       }}
       customButtons={{
         myCustomButton: {
-            text: 'test',
-            click: function() {
-                alert('clicked the custom button!');
-            }
-        }
-    }}
+          text: 'test',
+          click: function () {
+            alert('clicked the custom button!')
+          },
+        },
+      }}
     />
   )
 }
