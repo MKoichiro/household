@@ -39,8 +39,8 @@ const Home = () => {
   // 現在の収益タイプを監視
   const currentType: TransactionType = watch('type')
 
-  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(currentMonth)))
-  const dailyTransactions = monthlyTransactions.filter((transaction) => transaction.date === selectedDay)
+  const monthlyTransactions = transactions.filter(t => t.date.startsWith(formatMonth(currentMonth)))
+  const dailyTransactions = monthlyTransactions.filter(transaction => transaction.date === selectedDay)
 
   // TransactionDrawer のロジック部分
   const handleDetailDrawerOpen = () => {
@@ -65,12 +65,12 @@ const Home = () => {
     if (isUnderLG) {
       setIsFormModalOpen(true)
       if (selectedTransaction === null) {
-        setIsFormModalOpen((prev) => !prev)
+        setIsFormModalOpen(prev => !prev)
         return
       }
     } else {
       if (selectedTransaction === null) {
-        setIsEntryDrawerOpen((prev) => !prev)
+        setIsEntryDrawerOpen(prev => !prev)
         return
       }
       setIsEntryDrawerOpen(true)
@@ -117,14 +117,14 @@ const Home = () => {
   }
 
   // 提出時の処理
-  const submitHandler: SubmitHandler<TransactionFormValues> = (data) => {
+  const submitHandler: SubmitHandler<TransactionFormValues> = data => {
     // console.log(data)
     if (selectedTransaction) {
       handleUpdateTransaction(data, selectedTransaction.id)
         .then(() => {
           reset(data) // resetを呼ぶことでisDirtyによる差分監視の開始ポイントも変更
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error)
         })
     } else {
@@ -132,7 +132,7 @@ const Home = () => {
         .then(() => {
           clearForm()
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error)
         })
     }

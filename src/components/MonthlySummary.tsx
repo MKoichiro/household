@@ -52,7 +52,11 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
               fontWeight={'fontWeightBold'}
               sx={{
                 wordBreak: 'break-word',
-                fontSize: { xs: '.8rem', sm: '1rem', md: '1.2rem' },
+                fontSize: {
+                  xs: '.8rem',
+                  sm: '1rem',
+                  md: '1.2rem',
+                },
               }}
             >
               ￥{income}
@@ -82,7 +86,11 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
               fontWeight={'fontWeightBold'}
               sx={{
                 wordBreak: 'break-word',
-                fontSize: { xs: '.8rem', sm: '1rem', md: '1.2rem' },
+                fontSize: {
+                  xs: '.8rem',
+                  sm: '1rem',
+                  md: '1.2rem',
+                },
               }}
             >
               ￥{expense}
@@ -112,7 +120,11 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
               fontWeight={'fontWeightBold'}
               sx={{
                 wordBreak: 'break-word',
-                fontSize: { xs: '.8rem', sm: '1rem', md: '1.2rem' },
+                fontSize: {
+                  xs: '.8rem',
+                  sm: '1rem',
+                  md: '1.2rem',
+                },
               }}
             >
               ￥{balance}

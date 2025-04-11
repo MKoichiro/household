@@ -51,7 +51,7 @@ const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionE
       <Divider />
 
       <List>
-        {MenuItems.map((item) => (
+        {MenuItems.map(item => (
           <NavLink
             key={item.text}
             to={item.path}
@@ -84,7 +84,10 @@ const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionE
         onClose={handleDrawerClose}
         sx={{
           display: { xs: 'block', sm: 'none' }, // 表示制御
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: sideBarWidth },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: sideBarWidth,
+          },
         }}
         slotProps={{
           root: {
@@ -100,7 +103,10 @@ const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionE
         variant="permanent"
         sx={{
           display: { xs: 'none', md: 'block' }, // 表示制御
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: sideBarWidth },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: sideBarWidth,
+          },
         }}
         open
       >

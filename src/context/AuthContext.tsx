@@ -20,7 +20,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Firebase Authのユーザー状態を監視し、状態が変わるたびにuserを更新
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, firebaseUser => {
       setUser(firebaseUser)
       setIsLoading(false)
     })

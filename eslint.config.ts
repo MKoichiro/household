@@ -8,11 +8,21 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import tseslint, { ConfigArray } from 'typescript-eslint'
 import tsParser from '@typescript-eslint/parser'
-import eslintPluginPrettierRecommended  from 'eslint-plugin-prettier/recommended'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 // グローバル設定
 const globalConfigs: Linter.Config[] = defineConfig([
-  globalIgnores(['node_modules', 'dist', 'build', 'personal', 'src/assets', 'public', '*.config.ts']),
+  globalIgnores([
+    'node_modules',
+    'dist',
+    'build',
+    'personal',
+    'src/assets',
+    'public',
+    'trash',
+    '*.config.ts',
+    '*.config.js',
+  ]),
   {
     name: 'base',
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -45,7 +55,7 @@ const vanillaConfigs: Linter.Config[] = defineConfig([
   },
 ])
 
-// Reactの設定
+// React
 const reactConfigs: Linter.Config[] = defineConfig([
   // Recommended
   jsxA11y.flatConfigs.recommended,
@@ -65,14 +75,13 @@ const reactConfigs: Linter.Config[] = defineConfig([
     // see: https://ja.legacy.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
     name: 'react/custom',
     rules: {
-      "react/jsx-uses-react": "off",
-      "react/react-in-jsx-scope": "off"
+      'react/jsx-uses-react': 'off',
+      'react/react-in-jsx-scope': 'off',
     },
   },
 ])
 
-
-// TypeScriptの設定にファイルパターンを追加
+// TypeScript
 const tsConfig: ConfigArray = tseslint.config(
   // Recommended
   // tseslint.configs.recommended より厳格な設定を適用
@@ -95,17 +104,20 @@ const tsConfig: ConfigArray = tseslint.config(
       // アンダースコアで始まる変数・引数は未使用を許可
       // see: https://typescript-eslint.io/rules/no-unused-vars
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': [ 'warn', {
-        args: 'all',
-        argsIgnorePattern: '^_',
-        caughtErrors: 'all',
-        caughtErrorsIgnorePattern: '^_',
-        destructuredArrayIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-      }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
     },
-  },
+  }
 )
 
 // その他の設定

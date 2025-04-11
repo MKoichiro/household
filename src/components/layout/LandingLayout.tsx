@@ -7,7 +7,13 @@ import HeaderTitle from '../common/HeaderTitle'
 
 const LandingLayout = () => {
   return (
-    <Box sx={{ display: { md: 'flex' }, bgcolor: theme.palette.grey[100], minHeight: '100vh' }}>
+    <Box
+      sx={{
+        display: { md: 'flex' },
+        bgcolor: theme.palette.grey[100],
+        minHeight: '100vh',
+      }}
+    >
       {/* ヘッダー */}
       <AppBar position="fixed" sx={{ width: '100%', ml: 2 }}>
         <Toolbar>

@@ -78,11 +78,11 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
 
   // 支出データの準備
   // 支出タイプのtransactionsを取得
-  const expenseTransactions: ExpenseTransaction[] = transactions.filter((t) => t.type === 'expense')
+  const expenseTransactions: ExpenseTransaction[] = transactions.filter(t => t.type === 'expense')
 
   // カテゴリ毎の合計を算出
   // e.g.) [ {"食費": 1950 }, {"日用品": 24000}, {"交際費": 0} ... ]
-  const expenseCategorySums: ExpenseCategorySum[] = expenseLiterals.map((label) => {
+  const expenseCategorySums: ExpenseCategorySum[] = expenseLiterals.map(label => {
     const sum = expenseTransactions.reduce((acc, t) => {
       return t.category === label ? (acc += t.amount) : acc
     }, 0)
@@ -98,11 +98,11 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
   // ラベルのみの配列を用意
   // Object.key()の返り値は常にstring[]型になるためアサーションで明示
   // e.g.) ["食費", "交際費"]
-  const expenseLabels = expenseSortedSums.map((item) => Object.keys(item)[0]) as ExpenseCategory[]
+  const expenseLabels = expenseSortedSums.map(item => Object.keys(item)[0]) as ExpenseCategory[]
 
   // マッピングを参照して各部分の色を準備
-  const expenseBackgroundColors = expenseLabels.map((label) => expenseCategoryColorMap.backgroundColor[label])
-  const expenseBorderColors = expenseLabels.map((label) => expenseCategoryColorMap.borderColor[label])
+  const expenseBackgroundColors = expenseLabels.map(label => expenseCategoryColorMap.backgroundColor[label])
+  const expenseBorderColors = expenseLabels.map(label => expenseCategoryColorMap.borderColor[label])
 
   // Pieコンポーネントに渡すデータを定義
   const expenseData: ChartData<'pie'> = {
@@ -110,7 +110,7 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
     datasets: [
       {
         label: '支出',
-        data: expenseSortedSums.map((item) => Object.values(item)[0]),
+        data: expenseSortedSums.map(item => Object.values(item)[0]),
         backgroundColor: expenseBackgroundColors,
         borderColor: expenseBorderColors,
         borderWidth: 0, // 現状非表示
@@ -122,9 +122,9 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
   }
 
   // 収入データの準備ここから
-  const incomeTransactions: IncomeTransaction[] = transactions.filter((t) => t.type === 'income')
+  const incomeTransactions: IncomeTransaction[] = transactions.filter(t => t.type === 'income')
 
-  const incomeCategorySums: IncomeCategorySum[] = incomeLiterals.map((label) => {
+  const incomeCategorySums: IncomeCategorySum[] = incomeLiterals.map(label => {
     const sum = incomeTransactions.reduce((acc, t) => {
       return t.category === label ? acc + t.amount : acc
     }, 0)
@@ -136,17 +136,17 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
   const incomeSortedSums = incomeCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
   // console.log(incomeSortedSums)
 
-  const incomeLabels = incomeSortedSums.map((item) => Object.keys(item)[0]) as IncomeCategory[]
+  const incomeLabels = incomeSortedSums.map(item => Object.keys(item)[0]) as IncomeCategory[]
 
-  const incomeBackgroundColors = incomeLabels.map((label) => incomeCategoryColorMap.backgroundColor[label])
-  const incomeBorderColors = incomeLabels.map((label) => incomeCategoryColorMap.borderColor[label])
+  const incomeBackgroundColors = incomeLabels.map(label => incomeCategoryColorMap.backgroundColor[label])
+  const incomeBorderColors = incomeLabels.map(label => incomeCategoryColorMap.borderColor[label])
 
   const incomeData: ChartData<'pie'> = {
     labels: incomeLabels,
     datasets: [
       {
         label: '収入',
-        data: incomeSortedSums.map((item) => Object.values(item)[0]),
+        data: incomeSortedSums.map(item => Object.values(item)[0]),
         backgroundColor: incomeBackgroundColors,
         borderColor: incomeBorderColors,
         borderWidth: 0, // 現状非表示
@@ -204,7 +204,9 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
               <Radio
                 sx={{
                   color: theme.palette.expenseColor.main,
-                  '&.Mui-checked': { color: theme.palette.expenseColor.main },
+                  '&.Mui-checked': {
+                    color: theme.palette.expenseColor.main,
+                  },
                 }}
               />
             }
@@ -216,7 +218,9 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
               <Radio
                 sx={{
                   color: theme.palette.incomeColor.main,
-                  '&.Mui-checked': { color: theme.palette.incomeColor.main },
+                  '&.Mui-checked': {
+                    color: theme.palette.incomeColor.main,
+                  },
                 }}
               />
             }

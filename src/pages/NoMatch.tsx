@@ -57,8 +57,22 @@ const NoMatch = () => {
       {/* 下部 */}
       <Divider sx={{ mt: 'auto', mb: 1 }} />
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'right', gap: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'right', gap: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          textAlign: 'right',
+          gap: 1,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'right',
+            gap: 1,
+          }}
+        >
           <Typography
             component="time"
             variant="h5"
@@ -69,7 +83,8 @@ const NoMatch = () => {
             {count} 秒
           </Typography>
           <Typography color={isStopped ? theme.palette.grey[500] : 'inherit'}>
-            後に自動的に{user ? home.display : login.display}へ遷移します。
+            後に自動的に{user ? home.display : login.display}
+            へ遷移します。
           </Typography>
         </Box>
         <Box>

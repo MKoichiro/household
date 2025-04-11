@@ -104,7 +104,7 @@ const TransactionMenu = ({
           <List aria-label="取引履歴">
             <Stack spacing={2}>
               {/* 内訳マップ部分 */}
-              {dailyTransactions.map((transaction) => (
+              {dailyTransactions.map(transaction => (
                 <ListItem disablePadding key={transaction.id}>
                   <Card
                     sx={{

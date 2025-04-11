@@ -27,7 +27,7 @@ const SignUp = () => {
         fullWidth
         margin="normal"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
       />
       <TextField
         label="パスワード"
@@ -35,7 +35,7 @@ const SignUp = () => {
         fullWidth
         margin="normal"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
       />
       <Button variant="contained" color="primary" fullWidth onClick={handleSignup(email, password)}>
         アカウント作成

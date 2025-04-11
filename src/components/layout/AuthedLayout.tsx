@@ -42,7 +42,13 @@ const AuthedLayout = () => {
   }
 
   return (
-    <Box sx={{ display: { md: 'flex' }, bgcolor: (theme) => theme.palette.grey[100], minHeight: '100vh' }}>
+    <Box
+      sx={{
+        display: { md: 'flex' },
+        bgcolor: theme => theme.palette.grey[100],
+        minHeight: '100vh',
+      }}
+    >
       {/* ヘッダー */}
       <AppBar
         position="fixed"
@@ -89,7 +95,14 @@ const AuthedLayout = () => {
       />
 
       {/* メインコンテンツ */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${sideBarWidth}px)` } }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { md: `calc(100% - ${sideBarWidth}px)` },
+        }}
+      >
         <Toolbar />
         <Outlet />
       </Box>

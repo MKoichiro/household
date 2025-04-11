@@ -17,7 +17,13 @@ const Settings = () => {
     <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
       <Card sx={{ maxWidth: 400, width: '100%' }}>
         <CardContent>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <Avatar
               alt={user.displayName || user.email || 'User'}
               src={user.photoURL || undefined}

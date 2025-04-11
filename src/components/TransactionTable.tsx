@@ -72,7 +72,7 @@ function TransactionTableToolbar({ numSelected, onDeleteClick }: TransactionTabl
           pr: { xs: 1, sm: 1 },
         },
         numSelected > 0 && {
-          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          bgcolor: theme => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         },
       ]}
     >
@@ -110,7 +110,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
 
   const handleSelectAllClick = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      const newSelected = transactions.map((n) => n.id)
+      const newSelected = transactions.map(n => n.id)
       setSelected(newSelected)
       return
     }
@@ -166,10 +166,22 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
       <Paper sx={{ width: '100%' }}>
         <Grid container sx={{ textAlign: 'center' }}>
           {[
-            { title: '支出', color: 'expenseColor.main', amount: formatCurrency(expense) },
-            { title: '収入', color: 'incomeColor.main', amount: formatCurrency(income) },
-            { title: '残高', color: 'balanceColor.dark', amount: formatCurrency(balance) },
-          ].map((item) => (
+            {
+              title: '支出',
+              color: 'expenseColor.main',
+              amount: formatCurrency(expense),
+            },
+            {
+              title: '収入',
+              color: 'incomeColor.main',
+              amount: formatCurrency(income),
+            },
+            {
+              title: '残高',
+              color: 'balanceColor.dark',
+              amount: formatCurrency(balance),
+            },
+          ].map(item => (
             <Grid key={item.title} size={{ xs: 4 }}>
               <Typography variant="subtitle1" component="h3">
                 {item.title}
@@ -179,7 +191,11 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
                 fontWeight="fontWeightBold"
                 sx={{
                   color: item.color,
-                  fontSize: { xs: '.8rem', sm: '1rem', md: '1.2rem' },
+                  fontSize: {
+                    xs: '.8rem',
+                    sm: '1rem',
+                    md: '1.2rem',
+                  },
                   wordBreak: 'break-word',
                 }}
               >
@@ -215,7 +231,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
                   // 一行の定義部分
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, t.id)}
+                    onClick={event => handleClick(event, t.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -240,7 +256,14 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
                     </TableCell>
 
                     {/* カテゴリ */}
-                    <TableCell align="left" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                      }}
+                    >
                       {IconComponents[t.category]}
                       {t.category}
                     </TableCell>

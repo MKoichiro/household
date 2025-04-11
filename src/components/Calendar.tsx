@@ -55,7 +55,7 @@ const Calendar = ({
 
   const eventsCreator = (dailyBalances: DailyBalances): CalendarContent[] => {
     const dates: string[] = Object.keys(dailyBalances)
-    return dates.map((date) => {
+    return dates.map(date => {
       const { income, expense, balance } = dailyBalances[date]
       return {
         start: date,

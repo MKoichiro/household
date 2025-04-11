@@ -29,7 +29,13 @@ const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) 
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Button color={'error'} variant="contained" onClick={handlePrevClick}>
           先月
         </Button>

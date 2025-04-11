@@ -15,9 +15,9 @@ const useTimer = ({ init = 0, type = 'increment', delay = 1000 }: TimerOptions =
   useEffect(() => {
     const id = setInterval(() => {
       if (type === 'increment') {
-        setCount((prev) => prev + 1)
+        setCount(prev => prev + 1)
       } else {
-        setCount((prev) => prev - 1)
+        setCount(prev => prev - 1)
       }
     }, delay)
 
