@@ -105,7 +105,7 @@ const TransactionForm = ({
       </Box>
 
       {/* フォーム要素 */}
-      <Box component={'form'} onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           {/* 収支切り替えボタン */}
           <Controller

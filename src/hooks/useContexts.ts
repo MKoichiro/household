@@ -4,15 +4,15 @@ import { User } from 'firebase/auth'
 
 interface AuthContextValue {
   user: User | null
-  handleSignup: (email: string, password: string) => () => Promise<void>
-  handleLogin: (email: string, password: string) => () => Promise<void>
+  handleSignup: (email: string, password: string) => Promise<void>
+  handleLogin: (email: string, password: string) => Promise<void>
   handleLogout: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextValue>({
   user: null,
-  handleSignup: () => async () => {},
-  handleLogin: () => async () => {},
+  handleSignup: async () => {},
+  handleLogin: async () => {},
   handleLogout: async () => {},
 })
 
@@ -40,6 +40,21 @@ export const useTransaction = () => {
   const context = useContext(TransactionContext)
   if (!context) {
     throw new Error('useTransaction: グローバルなデータはプロバイダーの中で取得してください')
+  }
+  return context
+}
+
+interface NotificationContextType {
+  message: string
+  setMessage: Dispatch<SetStateAction<string>>
+}
+
+export const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
+
+export const useNotification = () => {
+  const context = useContext(NotificationContext)
+  if (!context) {
+    throw new Error('useNotification: グローバルなデータはプロバイダーの中で取得してください')
   }
   return context
 }

@@ -3,6 +3,29 @@ import { useEffect, useState } from 'react'
 import { Container, TextField, Button, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useContexts'
+import { z } from 'zod'
+
+// 前半部分の条件:
+// 英字が少なくとも1文字含まれることをチェック (?=.[A-Za-z])
+// 数字が少なくとも1桁含まれることをチェック (?=.[0-9])
+// 後半部分:
+// 文字列全体が半角英数字と半角記号（ASCII 33～126、スペース除く）で構成されていることを確認
+const passwordRegex = /^(?=.[A-Za-z])(?=.[0-9])[A-Za-z0-9!-/:-@[-`{-~]+$/
+
+// zodスキーマでバリデーションルールを定義
+const loginSchema = z.object({
+  email: z
+    .string()
+    .nonempty({ message: 'メールアドレスは必須です' })
+    .max(255, { message: 'メールアドレスは255文字以内である必要があります' })
+    .email({ message: '有効なメールアドレスを入力してください' }),
+  password: z
+    .string()
+    .nonempty({ message: 'パスワードは必須です' })
+    .min(8, { message: 'パスワードは8文字以上である必要があります' })
+    .max(72, { message: 'パスワードは72文字以内である必要があります' }) // has_secure_passwordの仕様と合わせる
+    .regex(passwordRegex, { message: 'パスワードは英文字、数字を含む必要があります' }),
+})
 
 const SignUp = () => {
   const [email, setEmail] = useState('')

@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
-  const handleSignup = (email: string, password: string) => async () => {
+  const handleSignup = async (email: string, password: string) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
     } catch (error) {
@@ -35,7 +35,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const handleLogin = (email: string, password: string) => async () => {
+  const handleLogin = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
     } catch (error) {

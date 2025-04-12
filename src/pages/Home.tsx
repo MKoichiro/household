@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Alert, Box, Snackbar } from '@mui/material'
 import MonthlySummary from '../components/MonthlySummary'
 import Calendar from '../components/Calendar'
 import TransactionMenu from '../components/TransactionMenu'
@@ -10,7 +10,8 @@ import { ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'rea
 import { formatMonth } from '../utils/formatting'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { transactionSchema } from '../validations/schema'
-import { useApp, useTransaction } from '../hooks/useContexts'
+import { useApp, useNotification, useTransaction } from '../hooks/useContexts'
+import { useLocation } from 'react-router-dom'
 
 const Home = () => {
   const { isUnderLG, currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
@@ -141,7 +142,6 @@ const Home = () => {
   // 収支タイプを切り替える関数
   // type="submit"ではないButtonはreact-hook-formにフォームパーツとして認識されない。
   // そのため、更新処理はonClickを使って手動で行う。
-  // const [tempTransaction, setTempTransaction] = useState<null | TransactionFormValues>(null)
   const handleTypeClick = (type: TransactionType) => {
     return () => {
       // shouldDirty: trueで差分と認識させる
@@ -176,8 +176,29 @@ const Home = () => {
     reset(initialFormValues)
   }
 
+  // フラッシュメッセージの受け取り
+  // const location = useLocation()
+  // state に flashMessage が存在していれば表示する
+  // const [flashMessage, setFlashMessage] = useState<string | null>(location.state?.message ?? null)
+  // console.log('location', location) // {pathname: '/app/home', search: '', hash: '', state: null, key: 'zr64rle1'}
+  // console.log('flashMessage:', flashMessage) // null
+
+  const { message, setMessage } = useNotification()
+  const handleNotificationClose = () => {
+    setMessage('')
+  }
+
   return (
     <FormProvider {...methods}>
+
+      {message && (
+        <Snackbar sx={{}} open autoHideDuration={3000} onClose={handleNotificationClose}>
+          <Alert severity="success" onClose={handleNotificationClose}>
+            {message}
+          </Alert>
+        </Snackbar>
+      )}
+
       <Box sx={{ display: 'flex' }}>
         {/* 左側 */}
         <Box sx={{ flexGrow: 1 }}>

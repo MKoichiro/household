@@ -3,8 +3,9 @@ import { ArrowUpward, ArrowDownward, AccountBalance } from '@mui/icons-material'
 import { theme } from '../theme/theme'
 import { Transaction } from '../types'
 import { financeCalculations } from '../utils/financeCalculations'
+import { formatCurrency } from '../utils/formatting'
 
-// map用
+// map用型
 // interface GridMapType {
 //   bgcolor: string
 //   text: '収入' | '支出' | '残高'
@@ -12,22 +13,19 @@ import { financeCalculations } from '../utils/financeCalculations'
 //   amount: number
 // }
 
+// map用配列
+// const GridMap: GridMapTypeMapType[] = [
+//   { bgcolor: theme.palette.incomeColor.main, text: "収入", icon: ArrowUpward, amount: income },
+//   { bgcolor: theme.palette.expenseColor.main, text: "支出", icon: ArrowDownward, amount: expense },
+//   { bgcolor: theme.palette.balanceColor.main, text: "残高", icon: AccountBalance, amount: balance },
+// ]
+
 interface MonthlySummaryProps {
   monthlyTransactions: Transaction[]
 }
 
 const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
   const { income, expense, balance } = financeCalculations(monthlyTransactions)
-  // console.log(income);
-  // console.log(expense);
-  // console.log(balance);
-
-  // map用
-  // const GridMap: GridMapTypeMapType[] = [
-  //   { bgcolor: theme.palette.incomeColor.main, text: "収入", icon: ArrowUpward, amount: income },
-  //   { bgcolor: theme.palette.expenseColor.main, text: "支出", icon: ArrowDownward, amount: expense },
-  //   { bgcolor: theme.palette.balanceColor.main, text: "残高", icon: AccountBalance, amount: balance },
-  // ]
 
   return (
     <Grid container spacing={{ xs: 1, sm: 2 }} mb={2}>
@@ -59,7 +57,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                 },
               }}
             >
-              ￥{income}
+              ￥{formatCurrency(income)}
             </Typography>
           </CardContent>
         </Card>
@@ -93,7 +91,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                 },
               }}
             >
-              ￥{expense}
+              ￥{formatCurrency(expense)}
             </Typography>
           </CardContent>
         </Card>
@@ -127,7 +125,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                 },
               }}
             >
-              ￥{balance}
+              ￥{formatCurrency(balance)}
             </Typography>
           </CardContent>
         </Card>
