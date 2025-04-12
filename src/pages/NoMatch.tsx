@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useTimer from '../hooks/useTimer'
 import { Box, Button, Divider, Typography } from '@mui/material'
@@ -12,27 +12,18 @@ const NoMatch = () => {
 
   const { user } = useAuth()
   const navigate = useNavigate()
-  const { count, intervalId } = useTimer({ init: 30, type: 'decrement' })
-  const [isStopped, setIsStopped] = useState(false)
-  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | number | null>(null)
+  const { count, isRunning, stop: handleStopClick, kill } = useTimer({ init: 30, type: 'decrement', startNow: true })
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    if (count <= 0) {
+      kill()
       // 未ログインならログインページへ、ログイン済みならHomeページへリダイレクト
       navigate(user ? home.path : login.path, { replace: true })
-    }, 30000)
-    setTimeoutId(timer)
-
-    return () => clearTimeout(timer)
-  }, [user, home.path, login.path, navigate])
-
-  const handleStopClick = () => {
-    if (intervalId) clearInterval(intervalId)
-    if (timeoutId) clearTimeout(timeoutId)
-    setIsStopped(true)
-  }
+    }
+  }, [count, user, home.path, login.path, navigate])
 
   const handleHomeClick = () => {
+    kill()
     navigate(user ? home.path : login.path, { replace: true })
   }
 
@@ -50,7 +41,7 @@ const NoMatch = () => {
       <Box>
         <Typography variant="h2">404: Not Found.</Typography>
         <Typography variant="h5" component="p">
-          このページは既に削除されたか、存在していません。
+          お探しのページは見つかりませんでした。
         </Typography>
       </Box>
 
@@ -78,22 +69,22 @@ const NoMatch = () => {
             variant="h5"
             sx={{ verticalAlign: 'bottom' }}
             dateTime={`PT${count}S`}
-            color={isStopped ? theme.palette.grey[500] : 'inherit'}
+            color={isRunning ? 'inherit' : theme.palette.grey[500]}
           >
             {count} 秒
           </Typography>
-          <Typography color={isStopped ? theme.palette.grey[500] : 'inherit'}>
+          <Typography color={isRunning ? 'inherit' : theme.palette.grey[500]}>
             後に自動的に{user ? home.display : login.display}
             へ遷移します。
           </Typography>
         </Box>
         <Box>
-          {!isStopped ? (
-            <Button variant="contained" onClick={handleStopClick} disabled={isStopped}>
+          {isRunning ? (
+            <Button variant="contained" onClick={handleStopClick} disabled={!isRunning}>
               タイマーを止める
             </Button>
           ) : (
-            <Button variant="contained" onClick={handleHomeClick} disabled={!isStopped}>
+            <Button variant="contained" onClick={handleHomeClick} disabled={isRunning}>
               {user ? home.display : login.display}へ
             </Button>
           )}

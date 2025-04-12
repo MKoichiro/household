@@ -48,6 +48,7 @@ export const useTransaction = () => {
 
 export interface NotificationProps {
   severity: AlertColor
+  autoHideDuration?: number
 }
 
 interface NotificationContextType {

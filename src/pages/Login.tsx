@@ -1,5 +1,5 @@
 // Login.tsx - ログインページコンポーネント
-// ログイン後のリダイレクト処理はCheckAuthコンポーネントに一任
+// ログイン後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
 import { Container, TextField, Button, Typography, Paper, Box, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, useNotification } from '../hooks/useContexts'
@@ -33,9 +33,9 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
-      // handleLoginで認証処理を実行
       await handleLogin(data.email, data.password)
       setMessage('ログインしました！')
+      // リダイレクトはCheckAuthガードコンポーネントで行う
     } catch (error) {
       console.error('ログイン失敗:', error)
       setMessage('ログインに失敗しました。再度お試しください。')
@@ -45,7 +45,7 @@ const Login = () => {
 
   // void 演算子でsubmitHandler(onSubmit)()関数の返り値のハンドリングはしないことを示す
   // （onSubmit関数内のエラーハンドリングは活きている）
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     void submitHandler(onSubmit)(e)
   }
 
@@ -106,7 +106,6 @@ const Login = () => {
         <Button
           onClick={() => void navigate('/auth/signup')}
           color="secondary"
-          // fullWidth
           sx={{ display: 'block', mt: 3, ml: 'auto' }}
         >
           アカウントの新規作成はこちらから

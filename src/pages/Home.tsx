@@ -181,7 +181,7 @@ const Home = () => {
   return (
     <FormProvider {...methods}>
       {/* ログイン成功後のフラッシュメッセージ表示部分 */}
-      <Notification severity="success" />
+      <Notification severity="success" autoHideDuration={4000}/>
 
       <Box sx={{ display: 'flex' }}>
         {/* 左側 */}

@@ -1,33 +1,71 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type TimerType = 'increment' | 'decrement'
 
 type TimerOptions = {
   init?: number
   type?: TimerType
+  step?: number
   delay?: number
+  startNow?: boolean
 }
 
-const useTimer = ({ init = 0, type = 'increment', delay = 1000 }: TimerOptions = {}) => {
+const useTimer = ({
+  init = 0,
+  step = 1,
+  type = 'increment',
+  delay = 1000,
+  startNow = false
+}: TimerOptions = {}) => {
+  const [isAlive, setIsAlive] = useState(startNow)
+  const [isRunning, setIsRunning] = useState(startNow)
   const [count, setCount] = useState(init)
-  const [intervalId, setIntervalId] = useState<ReturnType<typeof setInterval> | number | null>(null)
+  // intervalIdはレンダリングの影響を受けないRefを使う
+  const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
-    const id = setInterval(() => {
-      if (type === 'increment') {
-        setCount((prev) => prev + 1)
-      } else {
-        setCount((prev) => prev - 1)
+    // "startNow: false" またはkill()後
+    if (!isAlive) return
+
+    intervalId.current = setInterval(() => {
+      if (!isRunning) return
+      switch (type) {
+        case 'increment':
+          setCount((prev) => prev + step)
+          break
+        case 'decrement':
+          setCount((prev) => prev - step)
+          break
+        default:
+          return
       }
     }, delay)
 
-    setIntervalId(id)
+    // "startNow: true"でuseTimerを呼び出すと、コンポーネントのライフサイクルにゆだねる
+    // クリーンアップ: コンポーネントがアンマウントされるとタイマーは終了
+    return () => {
+      if (intervalId.current) clearInterval(intervalId.current)
+      intervalId.current = null
+    }
+  }, [isAlive, isRunning, type, step, delay])
 
-    // クリーンアップ: コンポーネントがアンマウントされるとタイマーをクリア
-    return () => clearInterval(id)
-  }, [type, delay])
+  // 外部から明示的にタイマーを操作する場合
+  const start = () => {
+    setIsAlive(true)
+    setIsRunning(true)
+  }
+  const kill = () => {
+    setIsAlive(false)
+    setIsRunning(false)
+    setCount(init)
+    if (intervalId.current) clearInterval(intervalId.current)
+    intervalId.current = null
+  }
+  const reset = () => setCount(init)
+  const stop = () => setIsRunning(false)
+  const restart = () => setIsRunning(true)
 
-  return { count, intervalId }
+  return { count, isRunning, setIsRunning, start, kill, reset, restart, stop }
 }
 
 export default useTimer
