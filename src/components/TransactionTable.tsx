@@ -144,7 +144,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
   }
 
   const handleDeleteClick = (_e: MouseEvent<unknown>) => {
-    onDeleteTransaction(selected)
+    void onDeleteTransaction(selected)
     setSelected([])
   }
 

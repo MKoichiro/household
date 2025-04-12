@@ -3,7 +3,6 @@ import { NotificationContext, NotificationProps } from '../hooks/useContexts'
 import { Alert, CircularProgress, Snackbar, Stack, Typography } from '@mui/material'
 import useTimer from '../hooks/useTimer'
 
-
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [message, setMessage] = useState('')
 
@@ -11,43 +10,42 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     setMessage('')
   }
 
-  const Notification = ({ severity, autoHideDuration = 0 }: NotificationProps) => {
-    // autoHideDurationが0の場合は、カウントダウンしない
-    if (autoHideDuration === 0) {
-      return (
-        <Snackbar open={!!message} onClose={handleNotificationClose}>
-          <Alert severity={severity} onClose={handleNotificationClose}>
-            <Typography variant="body2" color="inherit">
-              {message}
-            </Typography>
-          </Alert>
-        </Snackbar>
-      )
-    }
-
-    // それ以外の場合は、カウントダウンを開始する
+  const Notification = ({ severity, autoHideDuration = undefined }: NotificationProps) => {
     const delay = 200
-    const step = delay / 1000 / autoHideDuration * 100 * 1000
-    const { count, start, kill } = useTimer({ init: 100, step, type: 'decrement', delay })
+    // autoHideDurationがundefinedまたは0以下の場合は無制限表示
+    const isIndefinite = autoHideDuration === undefined || autoHideDuration <= 0
+    const step = !isIndefinite ? (delay / 1000 / autoHideDuration) * 100 * 1000 : undefined
+    const { count, start, kill } = useTimer({
+      init: 100,
+      step,
+      type: 'decrement',
+      delay,
+      startNow: false, // (デフォルト値だがわかりやすさのため明示)
+    })
 
     useEffect(() => {
-      (message) ? start() : kill()
-    }, [message])
+      if (isIndefinite) return // タイマーを作動させない
+      if (message) {
+        start()
+      } else {
+        kill()
+      }
+      // messageの有無でタイマー制動するので必要。Notificationの外側だが、この場合実害はないので無視。
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [message, start, kill, autoHideDuration])
 
     return (
       <>
-        {/* {message && ( */}
-          <Snackbar open={!!message} autoHideDuration={4000} onClose={handleNotificationClose}>
-            <Alert severity={severity} onClose={handleNotificationClose}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <Typography variant="body2" color="inherit">
-                  {message}
-                </Typography>
-                <CircularProgress color="secondary" size='1rem' variant="determinate" value={count} />
-              </Stack>
-            </Alert>
-          </Snackbar>
-        {/* )} */}
+        <Snackbar open={!!message} autoHideDuration={autoHideDuration} onClose={handleNotificationClose}>
+          <Alert severity={severity} onClose={handleNotificationClose}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Typography variant="body2" color="inherit">
+                {message}
+              </Typography>
+              {!isIndefinite && <CircularProgress color="secondary" size="1rem" variant="determinate" value={count} />}
+            </Stack>
+          </Alert>
+        </Snackbar>
       </>
     )
   }

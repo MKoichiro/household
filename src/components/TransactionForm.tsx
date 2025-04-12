@@ -29,7 +29,7 @@ import {
 } from '@mui/icons-material'
 import { Control, Controller, ControllerRenderProps, FormState } from 'react-hook-form'
 import { ExpenseCategory, IncomeCategory, Transaction, TransactionFormValues, TransactionType } from '../types'
-import { BaseSyntheticEvent, JSX } from 'react'
+import { FormEvent, JSX } from 'react'
 
 const formWidth = 320
 
@@ -55,7 +55,7 @@ interface TransactionFormProps {
   isEntryDrawerOpen: boolean
   isModalOpen: boolean
   // handlers
-  onSubmit: (e?: BaseSyntheticEvent) => Promise<void>
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void
   onAmountBlur: (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => () => void
   onTypeClick: (type: TransactionType) => () => void
   onDeleteClick: () => void
@@ -64,7 +64,6 @@ interface TransactionFormProps {
   // react-hook-form
   formState: FormState<TransactionFormValues>
   control: Control<TransactionFormValues, object, TransactionFormValues>
-  // control: Control<TransactionFormValues, any, TransactionFormValues>
   currentType: TransactionType
 }
 

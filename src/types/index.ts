@@ -46,5 +46,5 @@ export interface TransactionFormValues {
   type: TransactionType
   date: string
   category: IncomeCategory | ExpenseCategory | ''
-  content: string | ''
+  content: string
 }

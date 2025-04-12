@@ -5,26 +5,26 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Toolbar from '@mui/material/Toolbar'
 import SideBar from '../common/SideBar'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { sideBarWidth } from '../../constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
 import { Button } from '@mui/material'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { useAuth, useApp } from '../../hooks/useContexts'
 
 const AuthedLayout = () => {
   const [mobileSideBarOpen, setMobileSideBarOpen] = useState(false)
   const { isSideBarOpen, setIsSideBarOpen } = useApp()
 
-  const { user, handleLogout } = useAuth()
-  const navigate = useNavigate()
+  const { handleLogout } = useAuth()
+  // const navigate = useNavigate()
 
   // アクセス時認証ガード: App.tsx
   // ログアウト発火時:     サーバーとの非同期通信がレンダリング以上に時間がかかる場合に重要、userの変化をトリガーにリダイレクト
-  useEffect(() => {
-    if (!user) navigate('/auth/login', { replace: true })
-  }, [user, navigate])
+  // useEffect(() => {
+  //   if (!user) navigate('/auth/login', { replace: true })
+  // }, [user, navigate])
 
   const handleDrawerClose = () => {
     setIsSideBarOpen(false)
@@ -36,9 +36,19 @@ const AuthedLayout = () => {
   }
 
   const handleDrawerToggle = () => {
-    if (isSideBarOpen) {
-      setMobileSideBarOpen(!mobileSideBarOpen)
-    }
+    if (isSideBarOpen) setMobileSideBarOpen(!mobileSideBarOpen)
+  }
+
+  const handleLogoutClick = () => {
+    handleLogout()
+      .then(() => {
+        // リダイレクト処理はCheckAuthガードコンポーネントが行う
+        // フラッシュメッセージ
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error)
+        // フラッシュメッセージ
+      })
   }
 
   return (
@@ -79,7 +89,7 @@ const AuthedLayout = () => {
                 borderColor: 'white',
               }}
               endIcon={<LogoutIcon />}
-              onClick={handleLogout}
+              onClick={handleLogoutClick}
             >
               Log out
             </Button>

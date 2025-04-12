@@ -46,6 +46,7 @@ export const useTransaction = () => {
   return context
 }
 
+// autoHideDurationを指定しない場合は、Notificationは無制限表示になる。
 export interface NotificationProps {
   severity: AlertColor
   autoHideDuration?: number

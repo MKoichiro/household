@@ -10,13 +10,13 @@ type TimerOptions = {
   startNow?: boolean
 }
 
-const useTimer = ({
-  init = 0,
-  step = 1,
-  type = 'increment',
-  delay = 1000,
-  startNow = false
-}: TimerOptions = {}) => {
+const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startNow = false }: TimerOptions = {}) => {
+  // 0ステップと短すぎるdelayの場合にはエラーを投げる
+  const isInValid = step === 0 && delay < 30
+  if (isInValid) {
+    throw new Error('Invalid arguments: step must not be 0 and delay must be greater than 30.')
+  }
+
   const [isAlive, setIsAlive] = useState(startNow)
   const [isRunning, setIsRunning] = useState(startNow)
   const [count, setCount] = useState(init)
@@ -63,7 +63,9 @@ const useTimer = ({
   }
   const reset = () => setCount(init)
   const stop = () => setIsRunning(false)
-  const restart = () => setIsRunning(true)
+  const restart = () => {
+    setIsRunning(true)
+  }
 
   return { count, isRunning, setIsRunning, start, kill, reset, restart, stop }
 }

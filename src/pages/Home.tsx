@@ -4,7 +4,7 @@ import Calendar from '../components/Calendar'
 import TransactionMenu from '../components/TransactionMenu'
 import TransactionForm from '../components/TransactionForm'
 import { Transaction, TransactionFormValues, TransactionType } from '../types'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { DateClickArg } from '@fullcalendar/interaction/index.js'
 import { ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { formatMonth } from '../utils/formatting'
@@ -117,8 +117,7 @@ const Home = () => {
   }
 
   // 提出時の処理
-  const submitHandler: SubmitHandler<TransactionFormValues> = (data) => {
-    // console.log(data)
+  const onSubmit: SubmitHandler<TransactionFormValues> = (data) => {
     if (selectedTransaction) {
       handleUpdateTransaction(data, selectedTransaction.id)
         .then(() => {
@@ -136,6 +135,10 @@ const Home = () => {
           console.error(error)
         })
     }
+  }
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    void handleSubmit(onSubmit)(e)
   }
 
   // 収支タイプを切り替える関数
@@ -164,11 +167,17 @@ const Home = () => {
   }
 
   const handleDeleteClick = () => {
-    if (selectedTransaction) {
-      handleDeleteTransaction(selectedTransaction.id)
-      setSelectedTransaction(null)
-      clearForm()
-    }
+    if (!selectedTransaction) return
+    handleDeleteTransaction(selectedTransaction.id)
+      .then(() => {
+        setSelectedTransaction(null)
+        clearForm()
+        // フラッシュメッセージの表示など
+      })
+      .catch((error) => {
+        console.error('削除に失敗しました:', error)
+        // フラッシュメッセージの表示など
+      })
   }
 
   const clearForm = () => {
@@ -181,7 +190,7 @@ const Home = () => {
   return (
     <FormProvider {...methods}>
       {/* ログイン成功後のフラッシュメッセージ表示部分 */}
-      <Notification severity="success" autoHideDuration={4000}/>
+      <Notification severity="success" autoHideDuration={4000} />
 
       <Box sx={{ display: 'flex' }}>
         {/* 左側 */}
@@ -214,7 +223,7 @@ const Home = () => {
             isEntryDrawerOpen={isEntryDrawerOpen}
             isModalOpen={isFormModalOpen}
             // handlers
-            onSubmit={handleSubmit(submitHandler)}
+            onSubmit={handleFormSubmit}
             onAmountBlur={handleAmountBlur}
             onTypeClick={handleTypeClick}
             onDeleteClick={handleDeleteClick}

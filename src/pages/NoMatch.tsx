@@ -18,13 +18,13 @@ const NoMatch = () => {
     if (count <= 0) {
       kill()
       // 未ログインならログインページへ、ログイン済みならHomeページへリダイレクト
-      navigate(user ? home.path : login.path, { replace: true })
+      void navigate(user ? home.path : login.path, { replace: true })
     }
-  }, [count, user, home.path, login.path, navigate])
+  }, [count, home.path, kill, login.path, navigate, user])
 
   const handleHomeClick = () => {
     kill()
-    navigate(user ? home.path : login.path, { replace: true })
+    void navigate(user ? home.path : login.path, { replace: true })
   }
 
   return (

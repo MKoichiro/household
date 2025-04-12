@@ -58,7 +58,7 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
   // CHECK: 常に配列で指定する仕様とすることで簡略化可能？
   const handleDeleteTransaction = async (transactionIds: string | readonly string[]) => {
     try {
-      const ids = Array.isArray(transactionIds) ? transactionIds : [transactionIds]
+      const ids = (Array.isArray(transactionIds) ? transactionIds : [transactionIds]) as string[] | readonly string[]
       for (const id of ids) {
         await deleteDoc(doc(db, COLLECTION_NAME, id))
       }
