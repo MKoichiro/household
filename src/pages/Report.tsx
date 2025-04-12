@@ -23,7 +23,7 @@ const Report = () => {
   const { transactions, isLoading, handleDeleteTransaction } = useTransaction()
   const [selectedMonth, setSelectedMonth] = useState(new Date())
 
-  const monthlyTransactions = transactions.filter(t => t.date.startsWith(formatMonth(selectedMonth)))
+  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(selectedMonth)))
 
   return (
     <>

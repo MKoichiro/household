@@ -1,6 +1,8 @@
 import { createContext, Dispatch, SetStateAction, useContext } from 'react'
 import { Transaction, TransactionFormValues } from '../types'
 import { User } from 'firebase/auth'
+import { JSX } from 'react'
+import { AlertColor } from '@mui/material'
 
 interface AuthContextValue {
   user: User | null
@@ -44,9 +46,15 @@ export const useTransaction = () => {
   return context
 }
 
+export interface NotificationProps {
+  severity: AlertColor
+}
+
 interface NotificationContextType {
   message: string
   setMessage: Dispatch<SetStateAction<string>>
+  handleNotificationClose: () => void
+  Notification: (props: NotificationProps) => JSX.Element
 }
 
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined)

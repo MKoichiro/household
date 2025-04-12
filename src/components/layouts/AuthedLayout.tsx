@@ -45,7 +45,7 @@ const AuthedLayout = () => {
     <Box
       sx={{
         display: { md: 'flex' },
-        bgcolor: theme => theme.palette.grey[100],
+        bgcolor: (theme) => theme.palette.grey[100],
         minHeight: '100vh',
       }}
     >

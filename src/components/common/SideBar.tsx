@@ -51,7 +51,7 @@ const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionE
       <Divider />
 
       <List>
-        {MenuItems.map(item => (
+        {MenuItems.map((item) => (
           <NavLink
             key={item.text}
             to={item.path}

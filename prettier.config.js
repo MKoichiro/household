@@ -8,7 +8,7 @@ const config = {
   tabWidth: 2,
   trailingComma: 'es5',
   printWidth: 120,
-  arrowParens: 'avoid',
+  arrowParens: 'always',
   endOfLine: 'lf',
 }
 

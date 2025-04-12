@@ -12,4 +12,5 @@ export const outputDBErrors = (error: unknown) => {
   } else {
     console.error('非Firestore由来のエラー: ', error)
   }
+  throw error // throwしないと、下流Promiseにエラーが伝播せずcatchできない
 }

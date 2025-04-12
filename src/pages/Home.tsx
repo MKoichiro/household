@@ -1,4 +1,4 @@
-import { Alert, Box, Snackbar } from '@mui/material'
+import { Box } from '@mui/material'
 import MonthlySummary from '../components/MonthlySummary'
 import Calendar from '../components/Calendar'
 import TransactionMenu from '../components/TransactionMenu'
@@ -11,7 +11,6 @@ import { formatMonth } from '../utils/formatting'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { transactionSchema } from '../validations/schema'
 import { useApp, useNotification, useTransaction } from '../hooks/useContexts'
-import { useLocation } from 'react-router-dom'
 
 const Home = () => {
   const { isUnderLG, currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
@@ -40,8 +39,8 @@ const Home = () => {
   // 現在の収益タイプを監視
   const currentType: TransactionType = watch('type')
 
-  const monthlyTransactions = transactions.filter(t => t.date.startsWith(formatMonth(currentMonth)))
-  const dailyTransactions = monthlyTransactions.filter(transaction => transaction.date === selectedDay)
+  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(currentMonth)))
+  const dailyTransactions = monthlyTransactions.filter((transaction) => transaction.date === selectedDay)
 
   // TransactionDrawer のロジック部分
   const handleDetailDrawerOpen = () => {
@@ -66,12 +65,12 @@ const Home = () => {
     if (isUnderLG) {
       setIsFormModalOpen(true)
       if (selectedTransaction === null) {
-        setIsFormModalOpen(prev => !prev)
+        setIsFormModalOpen((prev) => !prev)
         return
       }
     } else {
       if (selectedTransaction === null) {
-        setIsEntryDrawerOpen(prev => !prev)
+        setIsEntryDrawerOpen((prev) => !prev)
         return
       }
       setIsEntryDrawerOpen(true)
@@ -118,14 +117,14 @@ const Home = () => {
   }
 
   // 提出時の処理
-  const submitHandler: SubmitHandler<TransactionFormValues> = data => {
+  const submitHandler: SubmitHandler<TransactionFormValues> = (data) => {
     // console.log(data)
     if (selectedTransaction) {
       handleUpdateTransaction(data, selectedTransaction.id)
         .then(() => {
           reset(data) // resetを呼ぶことでisDirtyによる差分監視の開始ポイントも変更
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     } else {
@@ -133,7 +132,7 @@ const Home = () => {
         .then(() => {
           clearForm()
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     }
@@ -176,28 +175,13 @@ const Home = () => {
     reset(initialFormValues)
   }
 
-  // フラッシュメッセージの受け取り
-  // const location = useLocation()
-  // state に flashMessage が存在していれば表示する
-  // const [flashMessage, setFlashMessage] = useState<string | null>(location.state?.message ?? null)
-  // console.log('location', location) // {pathname: '/app/home', search: '', hash: '', state: null, key: 'zr64rle1'}
-  // console.log('flashMessage:', flashMessage) // null
-
-  const { message, setMessage } = useNotification()
-  const handleNotificationClose = () => {
-    setMessage('')
-  }
+  // フラッシュメッセージの表示
+  const { Notification } = useNotification()
 
   return (
     <FormProvider {...methods}>
-
-      {message && (
-        <Snackbar sx={{}} open autoHideDuration={3000} onClose={handleNotificationClose}>
-          <Alert severity="success" onClose={handleNotificationClose}>
-            {message}
-          </Alert>
-        </Snackbar>
-      )}
+      {/* ログイン成功後のフラッシュメッセージ表示部分 */}
+      <Notification severity="success" />
 
       <Box sx={{ display: 'flex' }}>
         {/* 左側 */}

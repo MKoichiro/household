@@ -72,7 +72,7 @@ function TransactionTableToolbar({ numSelected, onDeleteClick }: TransactionTabl
           pr: { xs: 1, sm: 1 },
         },
         numSelected > 0 && {
-          bgcolor: theme => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         },
       ]}
     >
@@ -110,7 +110,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
 
   const handleSelectAllClick = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      const newSelected = transactions.map(n => n.id)
+      const newSelected = transactions.map((n) => n.id)
       setSelected(newSelected)
       return
     }
@@ -134,7 +134,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
     setSelected(newSelected)
   }
 
-  const handleChangePage = (_e: ChangeEvent<unknown>, newPage: number) => {
+  const handleChangePage = (_e: MouseEvent<HTMLButtonElement, unknown> | null, newPage: number) => {
     setPage(newPage)
   }
 
@@ -181,7 +181,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
               color: 'balanceColor.dark',
               amount: formatCurrency(balance),
             },
-          ].map(item => (
+          ].map((item) => (
             <Grid key={item.title} size={{ xs: 4 }}>
               <Typography variant="subtitle1" component="h3">
                 {item.title}
@@ -231,7 +231,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
                   // 一行の定義部分
                   <TableRow
                     hover
-                    onClick={event => handleClick(event, t.id)}
+                    onClick={(event) => handleClick(event, t.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

@@ -7,6 +7,7 @@ import { headerHeight } from '../constants/ui'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FormEvent } from 'react'
 
 // zodスキーマでバリデーションルールを定義
 const loginSchema = z.object({
@@ -19,26 +20,33 @@ type LoginFormValues = z.infer<typeof loginSchema>
 
 const Login = () => {
   const { handleLogin } = useAuth()
-  const { setMessage } = useNotification()
+  const { setMessage, Notification } = useNotification()
   const navigate = useNavigate()
   const {
     formState: { errors },
-    handleSubmit,
+    handleSubmit: submitHandler,
     control,
     reset,
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   })
 
-  const onSubmit: SubmitHandler<LoginFormValues> = async data => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       // handleLoginで認証処理を実行
       await handleLogin(data.email, data.password)
-      setMessage('ログインしました')
+      setMessage('ログインしました！')
     } catch (error) {
-      console.error('ログインに失敗しました:', error)
+      console.error('ログイン失敗:', error)
+      setMessage('ログインに失敗しました。再度お試しください。')
       reset()
     }
+  }
+
+  // void 演算子でsubmitHandler(onSubmit)()関数の返り値のハンドリングはしないことを示す
+  // （onSubmit関数内のエラーハンドリングは活きている）
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    void submitHandler(onSubmit)(e)
   }
 
   return (
@@ -46,8 +54,11 @@ const Login = () => {
       maxWidth="md"
       sx={{ height: `calc(100% - ${headerHeight}px)`, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
+      {/* ログイン失敗時のフラッシュメッセージ */}
+      <Notification severity="error" />
+
       <Paper elevation={3} sx={{ width: { xs: '90%', sm: 400, md: 600 }, p: 4 }}>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
             <Typography variant="h5" component="h1">
               ログイン
@@ -92,8 +103,13 @@ const Login = () => {
             </Button>
           </Stack>
         </Box>
-        <Button color="secondary" fullWidth onClick={() => navigate('/auth/signup')} sx={{ mt: 2 }}>
-          アカウント作成はこちら
+        <Button
+          onClick={() => void navigate('/auth/signup')}
+          color="secondary"
+          // fullWidth
+          sx={{ display: 'block', mt: 3, ml: 'auto' }}
+        >
+          アカウントの新規作成はこちらから
         </Button>
       </Paper>
     </Container>

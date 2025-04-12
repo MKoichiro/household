@@ -96,7 +96,7 @@ const TransactionForm = ({
         {/* 閉じるボタン */}
         <IconButton
           sx={{
-            color: theme => theme.palette.grey[500],
+            color: (theme) => theme.palette.grey[500],
           }}
           onClick={handleCloseClick}
         >
@@ -170,7 +170,7 @@ const TransactionForm = ({
                 <FormControl error={!!errors.category}>
                   <InputLabel id="category-label">カテゴリ</InputLabel>
                   <Select labelId="category-label" id="category-select" {...field} label="カテゴリ">
-                    {categories.map(category => (
+                    {categories.map((category) => (
                       <MenuItem value={category.label} key={category.label}>
                         <ListItemIcon>{category.icon}</ListItemIcon>
                         {category.label}
@@ -253,8 +253,8 @@ const TransactionForm = ({
             width: formWidth,
             height: '100%',
             bgcolor: 'background.paper',
-            zIndex: theme => theme.zIndex.drawer - 1,
-            transition: theme =>
+            zIndex: (theme) => theme.zIndex.drawer - 1,
+            transition: (theme) =>
               theme.transitions.create('right', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.enteringScreen,

@@ -33,9 +33,9 @@ const BarChart = ({ monthlyTransactions: transactions, isLoading }: BarChartProp
   const dailySummaries = calculateDailyBalances(transactions)
 
   const dateLabels = Object.keys(dailySummaries).sort()
-  const incomeData = dateLabels.map(day => dailySummaries[day].income)
-  const expenseData = dateLabels.map(day => dailySummaries[day].expense)
-  const balanceData = dateLabels.map(day => dailySummaries[day].balance)
+  const incomeData = dateLabels.map((day) => dailySummaries[day].income)
+  const expenseData = dateLabels.map((day) => dailySummaries[day].expense)
+  const balanceData = dateLabels.map((day) => dailySummaries[day].balance)
 
   const data: ChartData<'bar'> = {
     labels: dateLabels,

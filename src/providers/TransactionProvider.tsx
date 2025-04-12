@@ -27,8 +27,8 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
     // onSnapshot: firestoreに付与するベントリスナのように動く。
     // qで取得したドキュメントのみへの変更を検知するたびに発火。
     // unsubscribeで受けている返り値には、クリーンアップ関数が入る
-    const unsubscribe = onSnapshot(q, snapshot => {
-      const data = snapshot.docs.map(doc => ({
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       })) as Transaction[]

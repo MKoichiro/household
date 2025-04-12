@@ -7,10 +7,10 @@ export const transactionSchema = z.object({
   amount: z
     .string()
     .nonempty({ message: '金額は必須です' })
-    .refine(val => val !== '0', {
+    .refine((val) => val !== '0', {
       message: '金額は1円以上で入力してください',
     })
-    .refine(val => !isNaN(parseIntFromCommaSeparated(val)), {
+    .refine((val) => !isNaN(parseIntFromCommaSeparated(val)), {
       message: '無効な値です',
     }),
   content: z.string().nonempty({ message: '内容は必須です' }).max(50, '内容は50文字以内にしてください'),
@@ -20,7 +20,7 @@ export const transactionSchema = z.object({
       z.enum(['給与', '副収入', 'お小遣い']),
       z.literal(''),
     ])
-    .refine(val => val !== '', { message: 'カテゴリを選択してください' }),
+    .refine((val) => val !== '', { message: 'カテゴリを選択してください' }),
 })
 
 export type Schema = z.infer<typeof transactionSchema>
