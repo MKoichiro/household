@@ -12,11 +12,28 @@ import './configs/chartConfig'
 import LoadingOverlay from './components/common/LoadingOverlay'
 import { useAuth } from './hooks/useContexts'
 import Providers from './providers/Providers'
+import TestAccordionSingle from './components/dev/TestAccordionSingle'
+import TestAccordionMultiple from './components/dev/TestAccordionMultiple'
+import Security from './pages/Security'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
 const Home = lazy(() => import('./pages/Home'))
 const Report = lazy(() => import('./pages/Report'))
 
+// 認証ガード
+const RequireAuth = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth()
+
+  // 未ログインの場合はログインページへリダイレクト
+  if (!user) {
+    return <Navigate to="/auth/login" replace />
+  }
+
+  // ログイン済なら子コンポーネント（保護されたページ）を表示
+  return children
+}
+
+// 認証済みはHomeページへリダイレクトするガード
 const CheckAuth = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth()
 
@@ -29,16 +46,15 @@ const CheckAuth = ({ children }: { children: ReactNode }) => {
   return children
 }
 
-// 認証ガード
-const RequireAuth = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth()
+const CheckDev = ({ children }: { children: ReactNode }) => {
+  // 環境変数で開発環境かどうかを判定
+  const isDev = import.meta.env.MODE === 'development'
 
-  // 未ログインの場合はログインページへリダイレクト
-  if (!user) {
-    return <Navigate to="/auth/login" replace />
+  // 本番環境ならNotFoundへリダイレクト
+  if (!isDev) {
+    return <Navigate to="/404" replace />
   }
-
-  // ログイン済なら子コンポーネント（保護されたページ）を表示
+  // 開発環境なら子コンポーネントを表示
   return children
 }
 
@@ -66,6 +82,7 @@ const App = () => {
           <Route
             path="/app"
             element={
+              // layoutに認証ガードを付けることで、home, report, settingsの3ページを保護
               <RequireAuth>
                 <AuthedLayout />
               </RequireAuth>
@@ -88,7 +105,11 @@ const App = () => {
               }
             />
 
-            <Route path="settings" element={<Settings />} />
+            <Route path="settings">
+              <Route path="basic" element={<Settings />} />
+              <Route path="security" element={<Security />} />
+            </Route>
+
             <Route path="*" element={<NoMatch />} />
           </Route>
 
@@ -104,6 +125,27 @@ const App = () => {
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="*" element={<NoMatch />} />
+          </Route>
+
+          {/* コンポーネントテスト用キャンバスページ */}
+          <Route
+            path="/test"
+            element={
+              <CheckDev>
+                <AuthedLayout />
+              </CheckDev>
+            }
+          >
+            <Route
+              path="canvas1"
+              element={
+                <Suspense fallback={<LoadingOverlay isLoading />}>
+                  {/* ここで確認したいコンポーネントを読み込む */}
+                  <TestAccordionSingle />
+                  <TestAccordionMultiple />
+                </Suspense>
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>

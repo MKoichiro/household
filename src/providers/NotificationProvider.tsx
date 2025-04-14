@@ -1,3 +1,7 @@
+// リダイレクト処理を行うコンポーネントで、リダイレクト処理時にsetMessageでメッセージをセット。
+// リダイレクト先コンポーネントにNotificationコンポーネントを配置することで、
+// 通知を表示することができる。
+
 import { ReactNode, useEffect, useState } from 'react'
 import { NotificationContext, NotificationProps } from '../hooks/useContexts'
 import { Alert, CircularProgress, Snackbar, Stack, Typography } from '@mui/material'
@@ -10,6 +14,7 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     setMessage('')
   }
 
+  // 通知表示用コンポーネント
   const Notification = ({ severity, autoHideDuration = undefined }: NotificationProps) => {
     const delay = 200
     // autoHideDurationがundefinedまたは0以下の場合は無制限表示

@@ -14,7 +14,6 @@ import { useApp, useNotification, useTransaction } from '../hooks/useContexts'
 
 const Home = () => {
   const { isUnderLG, currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
-
   const { transactions, handleSaveTransaction, handleUpdateTransaction, handleDeleteTransaction } = useTransaction()
 
   const initialFormValues: TransactionFormValues = {
@@ -31,7 +30,6 @@ const Home = () => {
   })
 
   const { formState, handleSubmit, control, setValue, watch, reset } = methods
-
   const [isEntryDrawerOpen, setIsEntryDrawerOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
   const [isDetailDrawerOpen, setIsDetailDrawerOpen] = useState(isUnderLG ? false : true)

@@ -9,6 +9,7 @@ interface AuthContextValue {
   handleSignup: (email: string, password: string) => Promise<void>
   handleLogin: (email: string, password: string) => Promise<void>
   handleLogout: () => Promise<void>
+  handleUpdateDisplayName: (displayName: string) => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextValue>({
@@ -16,6 +17,7 @@ export const AuthContext = createContext<AuthContextValue>({
   handleSignup: async () => {},
   handleLogin: async () => {},
   handleLogout: async () => {},
+  handleUpdateDisplayName: async () => {},
 })
 
 export const useAuth = () => {

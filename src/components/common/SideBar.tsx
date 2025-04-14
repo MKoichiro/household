@@ -1,40 +1,32 @@
-import {
-  Box,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from '@mui/material'
-import { Home, Equalizer, Settings } from '@mui/icons-material'
-import React, { CSSProperties } from 'react'
+import { Box, Drawer, Theme, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { sideBarWidth } from '../../constants/ui'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import styled from 'styled-components'
+import { theme } from '../../theme/theme'
+import { BareAccordionContent, BareAccordionHead } from './Accordion'
+import { useAccordions } from '../../hooks/useAccordion'
+import HomeIcon from '@mui/icons-material/Home'
+import EqualizerIcon from '@mui/icons-material/Equalizer'
+import SettingsIcon from '@mui/icons-material/Settings'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
-interface menuItem {
-  text: string
-  path: string
-  icon: React.ComponentType
-}
+const AccordionHead = styled(BareAccordionHead)<{ theme: Theme }>`
+  cursor: pointer;
+  margin: 0;
 
-const MenuItems: menuItem[] = [
-  { text: 'ホーム', path: '/app/home', icon: Home },
-  { text: '月間レポート', path: '/app/report', icon: Equalizer },
-  { text: '設定', path: '/app/settings', icon: Settings },
-]
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing(2, 2)};
+`
 
-const baseLinkStyle: CSSProperties = {
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-}
-
-const activeLinkStyle: CSSProperties = {
-  backgroundColor: 'rgba(0 0 0 / 0.08)',
-}
+const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $height: number }>`
+  overflow: hidden;
+  transition: height 0.3s ease-in-out;
+  height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
+`
 
 interface SidebarProps {
   mobileSideBarOpen: boolean
@@ -42,38 +34,84 @@ interface SidebarProps {
   handleDrawerTransitionEnd: () => void
 }
 
-const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionEnd }: SidebarProps) => {
-  const drawer = (
-    <div>
-      {/* 上部の余白 */}
-      <Toolbar />
+const DrawerItems = () => {
+  const { isOpens, contentHeights, contentRefs, toggle } = useAccordions(1, false)
 
-      <Divider />
+  return (
+    <StyledUl>
+      <StyledLi>
+        <StyledNavLink
+          to="/app/home"
+          theme={theme}
+          style={({ isActive }) => ({
+            backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
+          })}
+        >
+          <HomeIcon />
+          <Typography variant="body1">ホーム</Typography>
+        </StyledNavLink>
+      </StyledLi>
 
-      <List>
-        {MenuItems.map((item) => (
-          <NavLink
-            key={item.text}
-            to={item.path}
-            style={({ isActive }) => ({
-              ...baseLinkStyle,
-              ...(isActive ? activeLinkStyle : {}),
-            })}
-          >
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <item.icon />
-                </ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          </NavLink>
-        ))}
-      </List>
-    </div>
+      <StyledLi>
+        <StyledNavLink
+          to="/app/report"
+          theme={theme}
+          style={({ isActive }) => ({
+            backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
+          })}
+        >
+          <EqualizerIcon />
+          <Typography variant="body1">月間レポート</Typography>
+        </StyledNavLink>
+      </StyledLi>
+
+      {/* 設定アコーディオン */}
+      <StyledLi>
+        <AccordionHead component="h3" onClick={toggle(0)} theme={theme}>
+          <SettingsIcon />
+          <Typography variant="body1">設定</Typography>
+          <ExpandMoreIcon
+            style={{
+              marginLeft: 'auto',
+              transform: isOpens[0] ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.3s',
+            }}
+          />
+        </AccordionHead>
+        <AccordionContent $isOpen={isOpens[0]} $height={contentHeights[0]} ref={contentRefs[0]}>
+          <StyledUl>
+            <StyledLi>
+              <StyledNavLink
+                to="/app/settings/basic"
+                theme={theme}
+                style={({ isActive }) => ({
+                  backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
+                })}
+              >
+                <AccountCircleIcon />
+                <Typography variant="body1">基本情報</Typography>
+              </StyledNavLink>
+            </StyledLi>
+            <StyledLi>
+              <StyledNavLink
+                to="/app/settings/security"
+                theme={theme}
+                style={({ isActive }) => ({
+                  backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
+                })}
+              >
+                <VpnKeyIcon />
+                <Typography variant="body1">セキュリティ</Typography>
+              </StyledNavLink>
+            </StyledLi>
+          </StyledUl>
+        </AccordionContent>
+      </StyledLi>
+    </StyledUl>
   )
+}
 
+const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionEnd }: SidebarProps) => {
   return (
     <Box component="nav" sx={{ width: { md: sideBarWidth }, flexShrink: { md: 0 } }} aria-label="mailbox folders">
       {/* モバイル用 */}
@@ -95,7 +133,7 @@ const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionE
           },
         }}
       >
-        {drawer}
+        <DrawerItems />
       </Drawer>
 
       {/* PC用 */}
@@ -110,10 +148,39 @@ const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionE
         }}
         open
       >
-        {drawer}
+        <DrawerItems />
       </Drawer>
     </Box>
   )
 }
 
 export default SideBar
+
+const StyledUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+`
+
+const StyledLi = styled.li`
+  list-style: none;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`
+
+const StyledNavLink = styled(NavLink)<{ theme: Theme }>`
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing(2, 2)};
+`

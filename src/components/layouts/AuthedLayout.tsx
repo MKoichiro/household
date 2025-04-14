@@ -11,20 +11,13 @@ import { sideBarWidth } from '../../constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
 import { Button } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import { useAuth, useApp } from '../../hooks/useContexts'
+import { useAuth, useApp, useNotification } from '../../hooks/useContexts'
 
 const AuthedLayout = () => {
   const [mobileSideBarOpen, setMobileSideBarOpen] = useState(false)
   const { isSideBarOpen, setIsSideBarOpen } = useApp()
-
   const { handleLogout } = useAuth()
-  // const navigate = useNavigate()
-
-  // アクセス時認証ガード: App.tsx
-  // ログアウト発火時:     サーバーとの非同期通信がレンダリング以上に時間がかかる場合に重要、userの変化をトリガーにリダイレクト
-  // useEffect(() => {
-  //   if (!user) navigate('/auth/login', { replace: true })
-  // }, [user, navigate])
+  const { setMessage, Notification } = useNotification()
 
   const handleDrawerClose = () => {
     setIsSideBarOpen(false)
@@ -42,12 +35,12 @@ const AuthedLayout = () => {
   const handleLogoutClick = () => {
     handleLogout()
       .then(() => {
-        // リダイレクト処理はCheckAuthガードコンポーネントが行う
-        // フラッシュメッセージ
+        // リダイレクト処理はRequireAuthガードコンポーネントが行う
+        setMessage('ログアウトしました。See you next time!')
       })
       .catch((error) => {
         console.error('Logout failed:', error)
-        // フラッシュメッセージ
+        setMessage('内部エラーによりログアウトに失敗しました。時間をおいて再度お試しください。')
       })
   }
 
@@ -59,6 +52,7 @@ const AuthedLayout = () => {
         minHeight: '100vh',
       }}
     >
+      <Notification severity="error" />
       {/* ヘッダー */}
       <AppBar
         position="fixed"

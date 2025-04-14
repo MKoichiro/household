@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   User,
+  updateProfile,
 } from 'firebase/auth'
 import { auth } from '../firebase'
 import { outputDBErrors } from '../utils/errorHandlings'
@@ -51,11 +52,22 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const handleUpdateDisplayName = async (displayName: string) => {
+    if (user) {
+      try {
+        await updateProfile(user, { displayName })
+      } catch (error) {
+        outputDBErrors(error)
+      }
+    }
+  }
+
   const value = {
     user,
     handleSignup,
     handleLogin,
     handleLogout,
+    handleUpdateDisplayName,
   }
 
   // ユーザー状態の確認が完了するまでローディング表示
