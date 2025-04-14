@@ -15,6 +15,7 @@ import Providers from './providers/Providers'
 import TestAccordionSingle from './components/dev/TestAccordionSingle'
 import TestAccordionMultiple from './components/dev/TestAccordionMultiple'
 import Security from './pages/Security'
+import SettingsLayout from './components/layouts/SettingsLayout'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
 const Home = lazy(() => import('./pages/Home'))
@@ -105,7 +106,7 @@ const App = () => {
               }
             />
 
-            <Route path="settings">
+            <Route path="settings" element={<SettingsLayout />}>
               <Route path="basic" element={<Settings />} />
               <Route path="security" element={<Security />} />
             </Route>

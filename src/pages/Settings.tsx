@@ -30,7 +30,7 @@ type DisplayNameFormValues = z.infer<typeof displayNameSchema>
 
 const Settings = () => {
   const { user, handleUpdateDisplayName } = useAuth()
-  const { Notification, setMessage } = useNotification()
+  const { setMessage } = useNotification()
 
   // ユーザー基本情報の表示用データ
   const userDetails = useMemo(
@@ -101,110 +101,85 @@ const Settings = () => {
 
   // ユーザー情報が取得できなかった場合
   if (!user) {
-    return (
-      <Box sx={{ p: 2 }}>
-        <Typography variant="h6">ユーザー情報が取得できませんでした。</Typography>
-      </Box>
-    )
+    return <Typography variant="h6">ユーザー情報が取得できませんでした。</Typography>
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
-      <Notification severity="info" autoHideDuration={3000} />
-      <Card sx={{ maxWidth: 700, width: '90%' }}>
-        <CardContent>
-          {/* ヘッダー：アバターとタイトル */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 2 }}>
-            <Avatar
-              alt={user.displayName || user.email || 'User'}
-              src={user.photoURL || undefined}
-              sx={{ width: 80, height: 80 }}
-            >
-              {!user.photoURL && (user.displayName?.charAt(0) || user.email?.charAt(0) || '?')}
-            </Avatar>
-            <Typography variant="h5" component="h2" color="text.primary">
-              基本情報
+    <>
+      {/* ユーザー名 */}
+      <Stack spacing={2} mt={2}>
+        {!isEditing && user.displayName ? (
+          // 表示モード
+          <Stack>
+            <Typography variant="h6" component="span">
+              ユーザー名:
             </Typography>
-          </Box>
-
-          <Divider />
-
-          {/* ユーザー名 */}
-          <Stack spacing={2} mt={2}>
-            {!isEditing && user.displayName ? (
-              // 表示モード
-              <Stack>
-                <Typography variant="h6" component="span">
-                  ユーザー名:
-                </Typography>
-                <Grid container spacing={1} alignItems="center">
-                  <Grid size={10}>
-                    <Typography variant="body1" color="text.secondary">
-                      {user.displayName || '未設定'}
-                    </Typography>
-                  </Grid>
-                  <Divider orientation="vertical" flexItem sx={{ mx: 'auto' }} />
-                  <Grid size={1}>
-                    <IconButton aria-label="edit" type="button" onClick={onEditClick}>
-                      <EditIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Stack>
-            ) : (
-              // 編集モード
-              <Box component="form" onSubmit={handleFormSubmit}>
-                <Controller
-                  name="displayName"
-                  control={control}
-                  render={({ field }) => (
-                    <FormControl fullWidth>
-                      <FormLabel htmlFor="displayName">
-                        <Typography variant="h6" component="span" color="text.primary">
-                          ユーザー名:
-                        </Typography>
-                      </FormLabel>
-                      <Grid container spacing={1} alignItems="center">
-                        <Grid size={10}>
-                          <TextField
-                            {...field}
-                            autoComplete="off"
-                            id="displayName"
-                            error={!!errors.displayName}
-                            onBlur={handleDisplayNameBlur}
-                            margin="normal"
-                            fullWidth
-                          />
-                        </Grid>
-                        <Divider orientation="vertical" flexItem sx={{ mx: 'auto' }} />
-                        <Grid size={1}>
-                          <IconButton id="displayName-submit-btn" aria-label="submit" type="submit" disabled={!isDirty}>
-                            <SendIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                      {errors.displayName && <FormHelperText error>{errors.displayName.message}</FormHelperText>}
-                    </FormControl>
-                  )}
-                />
-              </Box>
-            )}
-
-            {/* その他のユーザー情報の表示 */}
-            {userDetails.map((detail) => (
-              <Fragment key={detail.label}>
-                <Typography variant="h6" component="span">
-                  {detail.label}
-                </Typography>
+            <Grid container spacing={1} alignItems="center">
+              <Grid size={10}>
                 <Typography variant="body1" color="text.secondary">
-                  {detail.value}
+                  {user.displayName || '未設定'}
                 </Typography>
-              </Fragment>
-            ))}
+              </Grid>
+              <Divider orientation="vertical" flexItem sx={{ mx: 'auto' }} />
+              <Grid size={1}>
+                <IconButton aria-label="edit" type="button" onClick={onEditClick}>
+                  <EditIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
           </Stack>
-        </CardContent>
-      </Card>
-    </Box>
+        ) : (
+          // 編集モード
+          <Box component="form" onSubmit={handleFormSubmit}>
+            <Controller
+              name="displayName"
+              control={control}
+              render={({ field }) => (
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="displayName">
+                    <Typography variant="h6" component="span" color="text.primary">
+                      ユーザー名:
+                    </Typography>
+                  </FormLabel>
+                  <Grid container spacing={1} alignItems="center">
+                    <Grid size={10}>
+                      <TextField
+                        {...field}
+                        autoComplete="off"
+                        id="displayName"
+                        error={!!errors.displayName}
+                        onBlur={handleDisplayNameBlur}
+                        margin="normal"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Divider orientation="vertical" flexItem sx={{ mx: 'auto' }} />
+                    <Grid size={1}>
+                      <IconButton id="displayName-submit-btn" aria-label="submit" type="submit" disabled={!isDirty}>
+                        <SendIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                  {errors.displayName && <FormHelperText error>{errors.displayName.message}</FormHelperText>}
+                </FormControl>
+              )}
+            />
+          </Box>
+        )}
+
+        {/* その他のユーザー情報の表示 */}
+        {userDetails.map((detail) => (
+          <Fragment key={detail.label}>
+            <Typography variant="h6" component="span">
+              {detail.label}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {detail.value}
+            </Typography>
+          </Fragment>
+        ))}
+      </Stack>
+    </>
   )
 }
 
