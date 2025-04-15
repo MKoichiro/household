@@ -20,7 +20,7 @@ type LoginFormValues = z.infer<typeof loginSchema>
 
 const Login = () => {
   const { handleLogin } = useAuth()
-  const { setMessage, Notification } = useNotification()
+  const { setNotification } = useNotification()
   const navigate = useNavigate()
   const {
     formState: { errors },
@@ -34,11 +34,18 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       await handleLogin(data.email, data.password)
-      setMessage('ログインしました！')
+      setNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+        timer: 3000,
+      })
       // リダイレクトはCheckAuthガードコンポーネントで行う
     } catch (error) {
       console.error('ログイン失敗:', error)
-      setMessage('ログインに失敗しました。再度お試しください。')
+      setNotification({
+        severity: 'error',
+        message: 'ログインに失敗しました。再度お試しください。',
+      })
       reset()
     }
   }
@@ -54,9 +61,6 @@ const Login = () => {
       maxWidth="md"
       sx={{ height: `calc(100% - ${headerHeight}px)`, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      {/* ログイン失敗時のフラッシュメッセージ */}
-      <Notification severity="error" />
-
       <Paper elevation={3} sx={{ width: { xs: '90%', sm: 400, md: 600 }, p: 4 }}>
         <Box component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
@@ -73,9 +77,10 @@ const Login = () => {
                   {...field}
                   label="メールアドレス"
                   type="email"
-                  margin="normal"
+                  autoComplete="email" // usernameとしてもエラーではない。セマンティックな意味にとどまる
                   error={Boolean(errors.email)}
                   helperText={errors.email ? errors.email.message : ''}
+                  margin="normal"
                   fullWidth
                 />
               )}
@@ -90,9 +95,10 @@ const Login = () => {
                   {...field}
                   label="パスワード"
                   type="password"
-                  margin="normal"
+                  autoComplete="current-password" // 既存のパスワードを入力するためのファームであることを明示、パスワードマネージャーが使う
                   error={Boolean(errors.password)}
                   helperText={errors.password ? errors.password.message : ''}
+                  margin="normal"
                   fullWidth
                 />
               )}

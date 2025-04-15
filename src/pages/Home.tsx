@@ -10,7 +10,7 @@ import { ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'rea
 import { formatMonth } from '../utils/formatting'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { transactionSchema } from '../validations/schema'
-import { useApp, useNotification, useTransaction } from '../hooks/useContexts'
+import { useApp, useTransaction } from '../hooks/useContexts'
 
 const Home = () => {
   const { isUnderLG, currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
@@ -182,14 +182,8 @@ const Home = () => {
     reset(initialFormValues)
   }
 
-  // フラッシュメッセージの表示
-  const { Notification } = useNotification()
-
   return (
     <FormProvider {...methods}>
-      {/* ログイン成功後のフラッシュメッセージ表示部分 */}
-      <Notification severity="success" autoHideDuration={4000} />
-
       <Box sx={{ display: 'flex' }}>
         {/* 左側 */}
         <Box sx={{ flexGrow: 1 }}>

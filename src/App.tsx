@@ -16,10 +16,24 @@ import TestAccordionSingle from './components/dev/TestAccordionSingle'
 import TestAccordionMultiple from './components/dev/TestAccordionMultiple'
 import Security from './pages/Security'
 import SettingsLayout from './components/layouts/SettingsLayout'
+import VerifyEmail from './pages/VerifyEmail'
+import Notification from './components/common/Notification'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
 const Home = lazy(() => import('./pages/Home'))
 const Report = lazy(() => import('./pages/Report'))
+
+const RequireEmailVerification = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth()
+
+  // メール未確認の場合はメール確認ページへリダイレクト
+  if (user && !user.emailVerified) {
+    return <Navigate to="/verify-email" replace />
+  }
+
+  // メール確認済み、ログイン済みユーザーのみ子コンポーネント（保護されたページ）を表示
+  return children
+}
 
 // 認証ガード
 const RequireAuth = ({ children }: { children: ReactNode }) => {
@@ -30,7 +44,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
     return <Navigate to="/auth/login" replace />
   }
 
-  // ログイン済なら子コンポーネント（保護されたページ）を表示
+  // メール確認済み、ログイン済みユーザーのみ子コンポーネント（保護されたページ）を表示
   return children
 }
 
@@ -39,7 +53,7 @@ const CheckAuth = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth()
 
   // ログイン済みの場合はHomeページへリダイレクト
-  if (user) {
+  if (user && user.emailVerified) {
     return <Navigate to="/app/home" replace />
   }
 
@@ -62,6 +76,9 @@ const CheckDev = ({ children }: { children: ReactNode }) => {
 const App = () => {
   return (
     <Providers>
+      {/* 通知表示用コンポーネント */}
+      {/* Routerの外に配置することで、ページ遷移に影響されず、通知を表示できる */}
+      <Notification />
       <BrowserRouter>
         <Routes>
           {/* 公開ページ：ランディング */}
@@ -85,7 +102,9 @@ const App = () => {
             element={
               // layoutに認証ガードを付けることで、home, report, settingsの3ページを保護
               <RequireAuth>
-                <AuthedLayout />
+                <RequireEmailVerification>
+                  <AuthedLayout />
+                </RequireEmailVerification>
               </RequireAuth>
             }
           >
@@ -128,7 +147,21 @@ const App = () => {
             <Route path="*" element={<NoMatch />} />
           </Route>
 
-          {/* コンポーネントテスト用キャンバスページ */}
+          {/* メール確認ページ */}
+          <Route
+            path="/verify-email"
+            element={
+              <CheckAuth>
+                <RequireAuth>
+                  <NonAuthedLayout />
+                </RequireAuth>
+              </CheckAuth>
+            }
+          >
+            <Route index element={<VerifyEmail />} />
+          </Route>
+
+          {/* 開発環境: コンポーネントテスト用キャンバスページ */}
           <Route
             path="/test"
             element={

@@ -17,7 +17,7 @@ const AuthedLayout = () => {
   const [mobileSideBarOpen, setMobileSideBarOpen] = useState(false)
   const { isSideBarOpen, setIsSideBarOpen } = useApp()
   const { handleLogout } = useAuth()
-  const { setMessage, Notification } = useNotification()
+  const { setNotification } = useNotification()
 
   const handleDrawerClose = () => {
     setIsSideBarOpen(false)
@@ -36,11 +36,18 @@ const AuthedLayout = () => {
     handleLogout()
       .then(() => {
         // リダイレクト処理はRequireAuthガードコンポーネントが行う
-        setMessage('ログアウトしました。See you next time!')
+        setNotification({
+          severity: 'success',
+          message: 'ログアウトしました。',
+          timer: 3000,
+        })
       })
       .catch((error) => {
         console.error('Logout failed:', error)
-        setMessage('内部エラーによりログアウトに失敗しました。時間をおいて再度お試しください。')
+        setNotification({
+          severity: 'error',
+          message: '内部エラーによりログアウトに失敗しました。時間をおいて再度お試しください。',
+        })
       })
   }
 
@@ -52,7 +59,6 @@ const AuthedLayout = () => {
         minHeight: '100vh',
       }}
     >
-      <Notification severity="error" />
       {/* ヘッダー */}
       <AppBar
         position="fixed"

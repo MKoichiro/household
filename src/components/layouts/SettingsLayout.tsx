@@ -1,10 +1,9 @@
 import { Avatar, Box, Card, CardContent, Divider, Typography } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
-import { useAuth, useNotification } from '../../hooks/useContexts'
+import { useAuth } from '../../hooks/useContexts'
 
 const SettingsLayout = () => {
   const { user } = useAuth()
-  const { Notification } = useNotification()
   const location = useLocation()
 
   let title = ''
@@ -22,7 +21,6 @@ const SettingsLayout = () => {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
-      <Notification severity="info" autoHideDuration={3000} />
       <Card sx={{ maxWidth: 700, width: '100%' }}>
         <CardContent>
           {/* ヘッダー：アバターとタイトル */}

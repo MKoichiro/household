@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 
-type TimerType = 'increment' | 'decrement'
-
-type TimerOptions = {
+type TimerType = {
   init?: number
-  type?: TimerType
+  type?: 'increment' | 'decrement'
   step?: number
   delay?: number
   startNow?: boolean
 }
 
-const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startNow = false }: TimerOptions = {}) => {
+const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startNow = false }: TimerType) => {
   // 0ステップと短すぎるdelayの場合にはエラーを投げる
   const isInValid = step === 0 && delay < 30
   if (isInValid) {
@@ -24,7 +22,7 @@ const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startN
   const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
-    // "startNow: false" またはkill()後
+    // "startNow: false" または kill() 後
     if (!isAlive) return
 
     intervalId.current = setInterval(() => {

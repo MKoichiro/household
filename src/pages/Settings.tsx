@@ -1,9 +1,6 @@
 import {
   Box,
-  Card,
-  CardContent,
   Typography,
-  Avatar,
   FormControl,
   TextField,
   FormLabel,
@@ -30,7 +27,7 @@ type DisplayNameFormValues = z.infer<typeof displayNameSchema>
 
 const Settings = () => {
   const { user, handleUpdateDisplayName } = useAuth()
-  const { setMessage } = useNotification()
+  const { setNotification } = useNotification()
 
   // ユーザー基本情報の表示用データ
   const userDetails = useMemo(
@@ -74,10 +71,17 @@ const Settings = () => {
       reset({
         displayName: data.displayName,
       })
-      setMessage('ユーザー名が更新されました')
+      setNotification({
+        severity: 'success',
+        message: 'ユーザー名が更新されました',
+        timer: 3000,
+      })
     } catch (error) {
       console.error('Error updating display name:', error)
-      setMessage('ユーザー名の更新に失敗しました')
+      setNotification({
+        severity: 'error',
+        message: 'ユーザー名の更新に失敗しました',
+      })
     }
   }
 

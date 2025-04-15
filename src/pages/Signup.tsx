@@ -47,7 +47,7 @@ type SignupFormValues = z.infer<typeof signupSchema>
 
 const SignUp = () => {
   const { handleSignup } = useAuth()
-  const { setMessage, Notification } = useNotification()
+  const { setNotification } = useNotification()
   const navigate = useNavigate()
 
   const {
@@ -57,16 +57,24 @@ const SignUp = () => {
     reset,
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
+    defaultValues: { email: '', password: '', passwordConfirmation: '' },
   })
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
     try {
       await handleSignup(data.email, data.password)
-      setMessage('アカウントを作成しました。ようこそ家計簿アプリへ！')
-      // リダイレクトはCheckAuthガードコンポーネントで行う
+      setNotification({
+        severity: 'success',
+        message: '入力されたメールアドレスに確認メールを送信しました。ご確認ください。',
+        timer: 3000,
+      })
+      void navigate('/verify-email', { replace: true }) // メール確認ページへリダイレクト
     } catch (error) {
       console.error('アカウント作成失敗:', error)
-      setMessage('アカウント作成に失敗しました。再度お試しください。')
+      setNotification({
+        severity: 'error',
+        message: 'アカウント作成に失敗しました。再度お試しください。',
+      })
       reset()
     }
   }
@@ -81,9 +89,6 @@ const SignUp = () => {
       maxWidth="md"
       sx={{ height: `calc(100% - ${headerHeight}px)`, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      {/* アカウント作成失敗時のフラッシュメッセージ */}
-      <Notification severity="error" />
-
       <Paper elevation={3} sx={{ width: { xs: '90%', sm: 400, md: 600 }, p: 4 }}>
         <Box component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
@@ -100,9 +105,10 @@ const SignUp = () => {
                   {...field}
                   label="メールアドレス"
                   type="email"
-                  margin="normal"
+                  autoComplete="email" // usernameとしてもエラーではない。セマンティックな意味にとどまる
                   error={Boolean(errors.email)}
                   helperText={errors.email ? errors.email.message : ''}
+                  margin="normal"
                   fullWidth
                 />
               )}
@@ -117,9 +123,10 @@ const SignUp = () => {
                   {...field}
                   label="パスワード"
                   type="password"
-                  margin="normal"
+                  autoComplete="new-password" // 新規パスワードを入力するためのファームであることを明示、パスワードジェネレータが使う
                   error={Boolean(errors.password)}
                   helperText={errors.password ? errors.password.message : ''}
+                  margin="normal"
                   fullWidth
                 />
               )}
@@ -133,9 +140,10 @@ const SignUp = () => {
                   {...field}
                   label="パスワード確認"
                   type="password"
-                  margin="normal"
+                  autoComplete="new-password"
                   error={Boolean(errors.passwordConfirmation)}
                   helperText={errors.passwordConfirmation ? errors.passwordConfirmation.message : ''}
+                  margin="normal"
                   fullWidth
                 />
               )}
@@ -147,7 +155,7 @@ const SignUp = () => {
           </Stack>
         </Box>
         <Button
-          onClick={() => void navigate('/auth/login')}
+          onClick={() => void navigate('/auth/login', { replace: true })}
           color="secondary"
           sx={{ display: 'block', mt: 3, ml: 'auto' }}
         >

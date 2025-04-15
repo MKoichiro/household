@@ -1,7 +1,6 @@
 import { createContext, Dispatch, SetStateAction, useContext } from 'react'
 import { Transaction, TransactionFormValues } from '../types'
 import { User } from 'firebase/auth'
-import { JSX } from 'react'
 import { AlertColor } from '@mui/material'
 
 interface AuthContextValue {
@@ -48,17 +47,16 @@ export const useTransaction = () => {
   return context
 }
 
-// autoHideDurationを指定しない場合は、Notificationは無制限表示になる。
-export interface NotificationProps {
+export interface NotificationType {
   severity: AlertColor
-  autoHideDuration?: number
+  message: string
+  timer?: number // [ms]単位。undefined（or 0 以下）の場合は無制限表示。
 }
 
 interface NotificationContextType {
-  message: string
-  setMessage: Dispatch<SetStateAction<string>>
+  notification: NotificationType
+  setNotification: Dispatch<SetStateAction<NotificationType>>
   handleNotificationClose: () => void
-  Notification: (props: NotificationProps) => JSX.Element
 }
 
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined)

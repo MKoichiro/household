@@ -8,6 +8,7 @@ import {
   signOut,
   User,
   updateProfile,
+  sendEmailVerification,
 } from 'firebase/auth'
 import { auth } from '../firebase'
 import { outputDBErrors } from '../utils/errorHandlings'
@@ -28,9 +29,19 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
+  // const handleSignup = async (email: string, password: string) => {
+  //   try {
+  //     await createUserWithEmailAndPassword(auth, email, password)
+  //   } catch (error) {
+  //     outputDBErrors(error)
+  //   }
+  // }
   const handleSignup = async (email: string, password: string) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
+      // アカウント作成
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      // 作成したユーザーに対して確認メールを送信
+      await sendEmailVerification(userCredential.user)
     } catch (error) {
       outputDBErrors(error)
     }
