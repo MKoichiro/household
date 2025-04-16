@@ -48,23 +48,24 @@ export const useTransaction = () => {
 }
 
 export interface NotificationType {
+  id: string
   severity: AlertColor
   message: string
   timer?: number // [ms]単位。undefined（or 0 以下）の場合は無制限表示。
 }
 
-interface NotificationContextType {
-  notification: NotificationType
-  setNotification: Dispatch<SetStateAction<NotificationType>>
-  handleNotificationClose: () => void
+interface NotificationsContextType {
+  notifications: NotificationType[]
+  addNotification: (notification: Omit<NotificationType, 'id'>) => void
+  removeNotification: (id: string) => void
 }
 
-export const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
+export const NotificationContext = createContext<NotificationsContextType | undefined>(undefined)
 
-export const useNotification = () => {
+export const useNotifications = () => {
   const context = useContext(NotificationContext)
   if (!context) {
-    throw new Error('useNotification: グローバルなデータはプロバイダーの中で取得してください')
+    throw new Error('useNotifications: グローバルなデータはプロバイダーの中で取得してください')
   }
   return context
 }

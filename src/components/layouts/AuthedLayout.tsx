@@ -11,13 +11,13 @@ import { sideBarWidth } from '../../constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
 import { Button } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import { useAuth, useApp, useNotification } from '../../hooks/useContexts'
+import { useAuth, useApp, useNotifications } from '../../hooks/useContexts'
 
 const AuthedLayout = () => {
   const [mobileSideBarOpen, setMobileSideBarOpen] = useState(false)
   const { isSideBarOpen, setIsSideBarOpen } = useApp()
   const { handleLogout } = useAuth()
-  const { setNotification } = useNotification()
+  const { addNotification } = useNotifications()
 
   const handleDrawerClose = () => {
     setIsSideBarOpen(false)
@@ -36,7 +36,7 @@ const AuthedLayout = () => {
     handleLogout()
       .then(() => {
         // リダイレクト処理はRequireAuthガードコンポーネントが行う
-        setNotification({
+        addNotification({
           severity: 'success',
           message: 'ログアウトしました。',
           timer: 3000,
@@ -44,7 +44,7 @@ const AuthedLayout = () => {
       })
       .catch((error) => {
         console.error('Logout failed:', error)
-        setNotification({
+        addNotification({
           severity: 'error',
           message: '内部エラーによりログアウトに失敗しました。時間をおいて再度お試しください。',
         })

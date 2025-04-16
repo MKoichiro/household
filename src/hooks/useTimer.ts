@@ -27,6 +27,7 @@ const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startN
 
     intervalId.current = setInterval(() => {
       if (!isRunning) return
+      console.log('timer: running')
       switch (type) {
         case 'increment':
           setCount((prev) => prev + step)
@@ -47,7 +48,7 @@ const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startN
     }
   }, [isAlive, isRunning, type, step, delay])
 
-  // 外部から明示的にタイマーを操作する場合
+  // 外部から明示的にタイマーを操作する場合のメソッド
   const start = () => {
     setIsAlive(true)
     setIsRunning(true)
@@ -61,9 +62,7 @@ const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startN
   }
   const reset = () => setCount(init)
   const stop = () => setIsRunning(false)
-  const restart = () => {
-    setIsRunning(true)
-  }
+  const restart = () => setIsRunning(true)
 
   return { count, isRunning, setIsRunning, start, kill, reset, restart, stop }
 }

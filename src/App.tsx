@@ -17,7 +17,7 @@ import TestAccordionMultiple from './components/dev/TestAccordionMultiple'
 import Security from './pages/Security'
 import SettingsLayout from './components/layouts/SettingsLayout'
 import VerifyEmail from './pages/VerifyEmail'
-import Notification from './components/common/Notification'
+import Notifications from './components/common/Notifications'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
 const Home = lazy(() => import('./pages/Home'))
@@ -78,7 +78,7 @@ const App = () => {
     <Providers>
       {/* 通知表示用コンポーネント */}
       {/* Routerの外に配置することで、ページ遷移に影響されず、通知を表示できる */}
-      <Notification />
+      <Notifications />
       <BrowserRouter>
         <Routes>
           {/* 公開ページ：ランディング */}

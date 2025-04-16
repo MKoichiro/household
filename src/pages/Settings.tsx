@@ -10,7 +10,7 @@ import {
   IconButton,
   FormHelperText,
 } from '@mui/material'
-import { useAuth, useNotification } from '../hooks/useContexts'
+import { useAuth, useNotifications } from '../hooks/useContexts'
 import EditIcon from '@mui/icons-material/Edit'
 import SendIcon from '@mui/icons-material/Send'
 import { FormEvent, Fragment, useMemo, useState } from 'react'
@@ -27,7 +27,7 @@ type DisplayNameFormValues = z.infer<typeof displayNameSchema>
 
 const Settings = () => {
   const { user, handleUpdateDisplayName } = useAuth()
-  const { setNotification } = useNotification()
+  const { addNotification } = useNotifications()
 
   // ユーザー基本情報の表示用データ
   const userDetails = useMemo(
@@ -71,14 +71,14 @@ const Settings = () => {
       reset({
         displayName: data.displayName,
       })
-      setNotification({
+      addNotification({
         severity: 'success',
         message: 'ユーザー名が更新されました',
         timer: 3000,
       })
     } catch (error) {
       console.error('Error updating display name:', error)
-      setNotification({
+      addNotification({
         severity: 'error',
         message: 'ユーザー名の更新に失敗しました',
       })

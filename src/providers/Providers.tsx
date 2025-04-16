@@ -6,6 +6,7 @@ import AppProvider from './AppProvider'
 import NotificationProvider from './NotificationProvider'
 import { ThemeProvider, CssBaseline } from '@mui/material'
 import { theme } from '../theme/theme'
+import GlobalStyles from '../styles/GlobalStyles'
 
 interface ProvidersProps {
   children: ReactNode
@@ -17,6 +18,7 @@ const Providers = ({ children }: ProvidersProps) => (
       <AppProvider>
         <NotificationProvider>
           <ThemeProvider theme={theme}>
+            <GlobalStyles />
             <CssBaseline />
             {children}
           </ThemeProvider>

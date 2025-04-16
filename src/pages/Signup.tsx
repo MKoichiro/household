@@ -2,7 +2,7 @@
 // サインアップ後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
 import { Container, TextField, Button, Typography, Paper, Box, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { useAuth, useNotification } from '../hooks/useContexts'
+import { useAuth, useNotifications } from '../hooks/useContexts'
 import { z } from 'zod'
 import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 import { headerHeight } from '../constants/ui'
@@ -47,7 +47,7 @@ type SignupFormValues = z.infer<typeof signupSchema>
 
 const SignUp = () => {
   const { handleSignup } = useAuth()
-  const { setNotification } = useNotification()
+  const { addNotification } = useNotifications()
   const navigate = useNavigate()
 
   const {
@@ -63,7 +63,7 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
     try {
       await handleSignup(data.email, data.password)
-      setNotification({
+      addNotification({
         severity: 'success',
         message: '入力されたメールアドレスに確認メールを送信しました。ご確認ください。',
         timer: 3000,
@@ -71,7 +71,7 @@ const SignUp = () => {
       void navigate('/verify-email', { replace: true }) // メール確認ページへリダイレクト
     } catch (error) {
       console.error('アカウント作成失敗:', error)
-      setNotification({
+      addNotification({
         severity: 'error',
         message: 'アカウント作成に失敗しました。再度お試しください。',
       })

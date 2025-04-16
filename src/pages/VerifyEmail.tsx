@@ -1,25 +1,25 @@
 // src/pages/VerifyEmail.tsx
 import { Button, Typography, Box } from '@mui/material'
 import { sendEmailVerification } from 'firebase/auth'
-import { useAuth, useNotification } from '../hooks/useContexts'
+import { useAuth, useNotifications } from '../hooks/useContexts'
 
 const VerifyEmail = () => {
   const { user } = useAuth()
-  const { setNotification } = useNotification()
+  const { addNotification } = useNotifications()
 
   const handleResendVerification = async () => {
     console.log('再送信ボタンがクリックされました。')
     if (user) {
       try {
         await sendEmailVerification(user)
-        setNotification({
+        addNotification({
           severity: 'success',
           message: '確認メールを再送信しました。メールをご確認ください。',
           timer: 3000,
         })
       } catch (error) {
         console.error('再送信に失敗しました:', error)
-        setNotification({
+        addNotification({
           severity: 'error',
           message: '確認メールの再送信に失敗しました。',
         })
