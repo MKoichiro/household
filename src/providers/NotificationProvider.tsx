@@ -20,10 +20,15 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     setNotifications((prev) => prev.filter((notification) => notification.id !== id))
   }
 
+  const removeAllNotifications = () => {
+    setNotifications([])
+  }
+
   const value = {
     notifications,
     addNotification,
     removeNotification,
+    removeAllNotifications,
   }
 
   return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>

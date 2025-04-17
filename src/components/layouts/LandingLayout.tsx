@@ -1,5 +1,4 @@
 import { AppBar, Box, Button, Toolbar } from '@mui/material'
-import { theme } from '../../theme/theme'
 import { NavLink, Outlet } from 'react-router-dom'
 import LoginIcon from '@mui/icons-material/Login'
 import AddBoxIcon from '@mui/icons-material/AddBox'
@@ -10,7 +9,7 @@ const LandingLayout = () => {
     <Box
       sx={{
         display: { md: 'flex' },
-        bgcolor: theme.palette.grey[100],
+        bgcolor: (theme) => theme.palette.grey[100],
         minHeight: '100vh',
       }}
     >

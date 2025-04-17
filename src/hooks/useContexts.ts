@@ -58,6 +58,7 @@ interface NotificationsContextType {
   notifications: NotificationType[]
   addNotification: (notification: Omit<NotificationType, 'id'>) => void
   removeNotification: (id: string) => void
+  removeAllNotifications: () => void
 }
 
 export const NotificationContext = createContext<NotificationsContextType | undefined>(undefined)

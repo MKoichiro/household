@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { useAccordion } from '../../hooks/useAccordion'
 import { BareAccordionHead, BareAccordionContent } from '../common/Accordion'
 

@@ -39,9 +39,66 @@ const Login = () => {
         message: 'ログインしました！',
         timer: 3000,
       })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
+      addNotification({
+        severity: 'success',
+        message: 'ログインしました！',
+      })
       // リダイレクトはCheckAuthガードコンポーネントで行う
     } catch (error) {
       console.error('ログイン失敗:', error)
+      addNotification({
+        severity: 'error',
+        message:
+          '1. ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。',
+      })
+      addNotification({
+        severity: 'error',
+        message: '2. ログインに失敗しました。再度お試しください。',
+      })
+      addNotification({
+        severity: 'error',
+        message: '3. ログインに失敗しました。再度お試しください。',
+      })
+      addNotification({
+        severity: 'error',
+        message: '4. ログインに失敗しました。再度お試しください。',
+      })
+      addNotification({
+        severity: 'error',
+        message: '5. ログインに失敗しました。再度お試しください。',
+      })
+      addNotification({
+        severity: 'error',
+        message: '6. ログインに失敗しました。再度お試しください。',
+      })
       addNotification({
         severity: 'error',
         message: '1. ログインに失敗しました。再度お試しください。',

@@ -2,7 +2,6 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import { Outlet } from 'react-router-dom'
-import { theme } from '../../theme/theme'
 import HeaderTitle from '../common/HeaderTitle'
 
 const NonAuthedLayout = () => {
@@ -10,7 +9,7 @@ const NonAuthedLayout = () => {
     <Box
       sx={{
         display: { md: 'flex' },
-        bgcolor: theme.palette.grey[100],
+        bgcolor: (theme) => theme.palette.grey[100],
         minHeight: '100vh',
       }}
     >

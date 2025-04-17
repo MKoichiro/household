@@ -1,9 +1,8 @@
-import { Box, Drawer, Theme, Typography } from '@mui/material'
+import { Box, Drawer, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { sideBarWidth } from '../../constants/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import styled from 'styled-components'
-import { theme } from '../../theme/theme'
+import styled from '@emotion/styled'
 import { BareAccordionContent, BareAccordionHead } from './Accordion'
 import { useAccordions } from '../../hooks/useAccordion'
 import HomeIcon from '@mui/icons-material/Home'
@@ -12,10 +11,9 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
-const AccordionHead = styled(BareAccordionHead)<{ theme: Theme }>`
+const AccordionHead = styled(BareAccordionHead)`
   cursor: pointer;
   margin: 0;
-
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   align-items: center;
@@ -42,7 +40,6 @@ const DrawerItems = () => {
       <StyledLi>
         <StyledNavLink
           to="/app/home"
-          theme={theme}
           style={({ isActive }) => ({
             backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
           })}
@@ -55,7 +52,6 @@ const DrawerItems = () => {
       <StyledLi>
         <StyledNavLink
           to="/app/report"
-          theme={theme}
           style={({ isActive }) => ({
             backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
           })}
@@ -67,7 +63,7 @@ const DrawerItems = () => {
 
       {/* 設定アコーディオン */}
       <StyledLi>
-        <AccordionHead component="h3" onClick={toggle(0)} theme={theme}>
+        <AccordionHead component="h3" onClick={toggle(0)}>
           <SettingsIcon />
           <Typography variant="body1">設定</Typography>
           <ExpandMoreIcon
@@ -83,7 +79,6 @@ const DrawerItems = () => {
             <StyledLi>
               <StyledNavLink
                 to="/app/settings/basic"
-                theme={theme}
                 style={({ isActive }) => ({
                   backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
                 })}
@@ -95,7 +90,6 @@ const DrawerItems = () => {
             <StyledLi>
               <StyledNavLink
                 to="/app/settings/security"
-                theme={theme}
                 style={({ isActive }) => ({
                   backgroundColor: isActive ? 'rgba(0 0 0 / 0.08)' : 'transparent',
                 })}
@@ -174,11 +168,10 @@ const StyledLi = styled.li`
   }
 `
 
-const StyledNavLink = styled(NavLink)<{ theme: Theme }>`
+const StyledNavLink = styled(NavLink)`
   width: 100%;
   color: inherit;
   text-decoration: none;
-
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   align-items: center;

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 const LoadingOverlay = ({ isLoading = true }: { isLoading?: boolean }) => {
   if (!isLoading) return null
