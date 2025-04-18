@@ -1,13 +1,12 @@
 // Login.tsx - ログインページコンポーネント
 // ログイン後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
-import { Container, TextField, Button, Typography, Paper, Box, Stack } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { TextField } from '@mui/material'
 import { useAuth, useNotifications } from '../hooks/useContexts'
-import { headerHeight } from '../constants/ui'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormEvent } from 'react'
+import * as AuthPagesCommon from '../components/common/AuthPagesCommons'
 
 // zodスキーマでバリデーションルールを定義
 const loginSchema = z.object({
@@ -21,7 +20,6 @@ type LoginFormValues = z.infer<typeof loginSchema>
 const Login = () => {
   const { handleLogin } = useAuth()
   const { addNotification } = useNotifications()
-  const navigate = useNavigate()
   const {
     formState: { errors },
     handleSubmit: submitHandler,
@@ -134,67 +132,46 @@ const Login = () => {
   }
 
   return (
-    <Container
-      maxWidth="md"
-      sx={{ height: `calc(100% - ${headerHeight}px)`, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <Paper elevation={3} sx={{ width: { xs: '90%', sm: 400, md: 600 }, p: 4 }}>
-        <Box component="form" onSubmit={handleSubmit}>
-          <Stack spacing={2}>
-            <Typography variant="h5" component="h1">
-              ログイン
-            </Typography>
-
-            <Controller
-              name="email"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="メールアドレス"
-                  type="email"
-                  autoComplete="email" // usernameとしてもエラーではない。セマンティックな意味にとどまる
-                  error={Boolean(errors.email)}
-                  helperText={errors.email ? errors.email.message : ''}
-                  margin="normal"
-                  fullWidth
-                />
-              )}
+    <AuthPagesCommon.Root>
+      <AuthPagesCommon.Form title="ログイン" onSubmit={handleSubmit}>
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="メールアドレス"
+              type="email"
+              autoComplete="email" // usernameとしてもエラーではない。セマンティックな意味にとどまる
+              error={Boolean(errors.email)}
+              helperText={errors.email ? errors.email.message : ''}
+              margin="normal"
+              fullWidth
             />
+          )}
+        />
 
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="パスワード"
-                  type="password"
-                  autoComplete="current-password" // 既存のパスワードを入力するためのファームであることを明示、パスワードマネージャーが使う
-                  error={Boolean(errors.password)}
-                  helperText={errors.password ? errors.password.message : ''}
-                  margin="normal"
-                  fullWidth
-                />
-              )}
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="パスワード"
+              type="password"
+              autoComplete="current-password" // 既存のパスワードを入力するためのファームであることを明示、パスワードマネージャーが使う
+              error={Boolean(errors.password)}
+              helperText={errors.password ? errors.password.message : ''}
+              margin="normal"
+              fullWidth
             />
-
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              ログイン
-            </Button>
-          </Stack>
-        </Box>
-        <Button
-          onClick={() => void navigate('/auth/signup')}
-          color="secondary"
-          sx={{ display: 'block', mt: 3, ml: 'auto' }}
-        >
-          アカウントの新規作成はこちらから
-        </Button>
-      </Paper>
-    </Container>
+          )}
+        />
+      </AuthPagesCommon.Form>
+      <AuthPagesCommon.NavigateButton path="/auth/signup" innerText="アカウントの新規作成はこちらから" sx={{ mt: 3 }} />
+    </AuthPagesCommon.Root>
   )
 }
 

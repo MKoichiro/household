@@ -1,7 +1,7 @@
-import { Box } from '@mui/material'
+import { Box, useMediaQuery } from '@mui/material'
 import MonthlySummary from '../components/MonthlySummary'
 import Calendar from '../components/Calendar'
-import TransactionMenu from '../components/TransactionMenu'
+import TransactionDetail from '../components/TransactionDetail'
 import TransactionForm from '../components/TransactionForm'
 import { Transaction, TransactionFormValues, TransactionType } from '../types'
 import { FormEvent, useState } from 'react'
@@ -11,10 +11,13 @@ import { formatMonth } from '../utils/formatting'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { transactionSchema } from '../validations/schema'
 import { useApp, useTransaction } from '../hooks/useContexts'
+import styled from '@emotion/styled'
+import { transactionMenuWidth } from '../constants/ui'
 
 const Home = () => {
-  const { isUnderLG, currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
+  const { currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
   const { transactions, handleSaveTransaction, handleUpdateTransaction, handleDeleteTransaction } = useTransaction()
+  const isDownLaptop = useMediaQuery((theme) => theme.breakpoints.down('lg'))
 
   const initialFormValues: TransactionFormValues = {
     type: 'expense',
@@ -30,49 +33,34 @@ const Home = () => {
   })
 
   const { formState, handleSubmit, control, setValue, watch, reset } = methods
-  const [isEntryDrawerOpen, setIsEntryDrawerOpen] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
-  const [isDetailDrawerOpen, setIsDetailDrawerOpen] = useState(isUnderLG ? false : true)
-  const [isFormModalOpen, setIsFormModalOpen] = useState(false)
+  const [isDetailOpen, setIsDetailOpen] = useState(isDownLaptop ? false : true)
+  // const [isFormModalOpen, setIsFormModalOpen] = useState(false)
   // 現在の収益タイプを監視
   const currentType: TransactionType = watch('type')
 
   const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(currentMonth)))
   const dailyTransactions = monthlyTransactions.filter((transaction) => transaction.date === selectedDay)
 
-  // TransactionDrawer のロジック部分
-  const handleDetailDrawerOpen = () => {
-    if (!isUnderLG) return
-    setIsDetailDrawerOpen(true)
-  }
+  // Transaction のロジック部分
+  const handleDetailOpen = () => setIsDetailOpen(true)
 
-  const handleDetailDrawerClose = () => {
-    if (!isUnderLG) return
-    setIsDetailDrawerOpen(false)
-  }
+  const handleDetailClose = () => setIsDetailOpen(false)
 
   const handleDateClick = (dateInfo: DateClickArg) => {
-    // console.log(dateInfo);
     setSelectedDay(dateInfo.dateStr)
     setValue('date', dateInfo.dateStr)
-    handleDetailDrawerOpen()
+    handleDetailOpen()
   }
 
   // 内訳追加ボタンのクリック
   const handleTransactionAddClick = () => {
-    if (isUnderLG) {
-      setIsFormModalOpen(true)
-      if (selectedTransaction === null) {
-        setIsFormModalOpen((prev) => !prev)
-        return
-      }
-    } else {
-      if (selectedTransaction === null) {
-        setIsEntryDrawerOpen((prev) => !prev)
-        return
-      }
-      setIsEntryDrawerOpen(true)
+    if (selectedTransaction === null) {
+      setIsFormOpen((prev) => !prev)
+      return
     }
+    setIsFormOpen(true)
     setSelectedTransaction(null)
     clearForm()
   }
@@ -80,11 +68,7 @@ const Home = () => {
   // 内訳カードのクリック
   const handleTransactionCardClick = (transaction: Transaction) => {
     return () => {
-      if (isUnderLG) {
-        setIsFormModalOpen(true)
-      } else {
-        setIsEntryDrawerOpen(true)
-      }
+      setIsFormOpen(true)
 
       // 選択transactionでフォームを初期化
       setSelectedTransaction(transaction)
@@ -99,18 +83,9 @@ const Home = () => {
   }
 
   // TransactionForm のロジック部分
-  // 入力ダイアログを閉じる処理（DialogのonCloseに登録）
-  const handleDialogClose = () => {
-    setIsFormModalOpen(false)
-  }
-
   // 入力ドロワー/ダイアログの閉じるボタン
   const handleEntryCloseClick = () => {
-    if (isUnderLG) {
-      setIsFormModalOpen(false)
-    } else {
-      setIsEntryDrawerOpen(false)
-    }
+    setIsFormOpen(false)
     setSelectedTransaction(null)
   }
 
@@ -135,9 +110,7 @@ const Home = () => {
     }
   }
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    void handleSubmit(onSubmit)(e)
-  }
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => void handleSubmit(onSubmit)(e)
 
   // 収支タイプを切り替える関数
   // type="submit"ではないButtonはreact-hook-formにフォームパーツとして認識されない。
@@ -154,12 +127,10 @@ const Home = () => {
 
   const handleAmountBlur = (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => {
     return () => {
-      if (field.value === '0') {
-        field.onChange('')
-      }
+      if (field.value === '0') field.onChange('')
+
       // カンマ区切り文字列は受け付けられないので今後の課題とする。
       // オーバーレイコンポーネントを用意してそこで表示したりしなくてはいけなくなる。
-      // else { field.onChange(formatCurrency(field.value)) }
       field.onBlur()
     }
   }
@@ -184,52 +155,58 @@ const Home = () => {
 
   return (
     <FormProvider {...methods}>
-      <Box sx={{ display: 'flex' }}>
-        {/* 左側 */}
-        <Box sx={{ flexGrow: 1 }}>
-          <MonthlySummary monthlyTransactions={monthlyTransactions} />
-          <Calendar
-            monthlyTransactions={monthlyTransactions}
-            setCurrentMonth={setCurrentMonth}
-            selectedDay={selectedDay}
-            setSelectedDay={setSelectedDay}
-            onDateClick={handleDateClick}
-          />
-        </Box>
-
-        {/* 右側 */}
-        <Box>
-          <TransactionMenu
-            selectedDay={selectedDay}
-            dailyTransactions={dailyTransactions}
-            isUnderLG={isUnderLG}
-            isDrawerOpen={isDetailDrawerOpen}
-            onDrawerClose={handleDetailDrawerClose}
-            onAddClick={handleTransactionAddClick}
-            onCardClick={handleTransactionCardClick}
-          />
-          <TransactionForm
-            // states
-            selectedTransaction={selectedTransaction}
-            isUnderLG={isUnderLG}
-            isEntryDrawerOpen={isEntryDrawerOpen}
-            isModalOpen={isFormModalOpen}
-            // handlers
-            onSubmit={handleFormSubmit}
-            onAmountBlur={handleAmountBlur}
-            onTypeClick={handleTypeClick}
-            onDeleteClick={handleDeleteClick}
-            onCloseClick={handleEntryCloseClick}
-            onDialogClose={handleDialogClose}
-            // react-hook-form
-            formState={formState}
-            control={control}
-            currentType={currentType}
-          />
-        </Box>
+      {/* 左側 */}
+      <Box sx={{ flexGrow: 1, padding: isDownLaptop ? '0.5rem' : '1rem' }}>
+        <MonthlySummary monthlyTransactions={monthlyTransactions} />
+        <Calendar
+          monthlyTransactions={monthlyTransactions}
+          setCurrentMonth={setCurrentMonth}
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+          onDateClick={handleDateClick}
+        />
       </Box>
+
+      {/* 右側 */}
+      <TransactionMenu $isDownLaptop={isDownLaptop}>
+        <TransactionDetail
+          selectedDay={selectedDay}
+          dailyTransactions={dailyTransactions}
+          isDownLaptop={isDownLaptop}
+          isOpen={isDetailOpen}
+          onClose={handleDetailClose}
+          onAddClick={handleTransactionAddClick}
+          onCardClick={handleTransactionCardClick}
+        />
+
+        <TransactionForm
+          // states
+          selectedTransaction={selectedTransaction}
+          isDownLaptop={isDownLaptop}
+          isFormOpen={isFormOpen}
+          // handlers
+          onSubmit={handleFormSubmit}
+          onAmountBlur={handleAmountBlur}
+          onTypeClick={handleTypeClick}
+          onDeleteClick={handleDeleteClick}
+          onCloseClick={handleEntryCloseClick}
+          // react-hook-form
+          formState={formState}
+          control={control}
+          currentType={currentType}
+        />
+      </TransactionMenu>
     </FormProvider>
   )
 }
 
 export default Home
+
+const TransactionMenu = styled.div<{ $isDownLaptop: boolean }>`
+  /* background-color: white; */
+  position: relative; // sticky itemの基準
+  width: ${({ $isDownLaptop }) => ($isDownLaptop ? 0 : `${transactionMenuWidth}px`)};
+  display: flex;
+
+  box-sizing: border-box;
+`

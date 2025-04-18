@@ -1,13 +1,13 @@
 // SignUp.tsx - 新規登録ページコンポーネント
 // サインアップ後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
-import { Container, TextField, Button, Typography, Paper, Box, Stack } from '@mui/material'
+import { TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, useNotifications } from '../hooks/useContexts'
 import { z } from 'zod'
 import { Controller, useForm, SubmitHandler } from 'react-hook-form'
-import { headerHeight } from '../constants/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormEvent } from 'react'
+import * as AuthPagesCommon from '../components/common/AuthPagesCommons'
 
 // 前半部分の条件:
 // 英字が少なくとも1文字含まれることをチェック (?=.*[A-Za-z])
@@ -85,84 +85,66 @@ const SignUp = () => {
   }
 
   return (
-    <Container
-      maxWidth="md"
-      sx={{ height: `calc(100% - ${headerHeight}px)`, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <Paper elevation={3} sx={{ width: { xs: '90%', sm: 400, md: 600 }, p: 4 }}>
-        <Box component="form" onSubmit={handleSubmit}>
-          <Stack spacing={2}>
-            <Typography variant="h5" component="h1">
-              新規登録
-            </Typography>
-
-            <Controller
-              name="email"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="メールアドレス"
-                  type="email"
-                  autoComplete="email" // usernameとしてもエラーではない。セマンティックな意味にとどまる
-                  error={Boolean(errors.email)}
-                  helperText={errors.email ? errors.email.message : ''}
-                  margin="normal"
-                  fullWidth
-                />
-              )}
+    <AuthPagesCommon.Root>
+      <AuthPagesCommon.Form title="アカウント作成" onSubmit={handleSubmit}>
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="メールアドレス"
+              type="email"
+              autoComplete="email" // usernameとしてもエラーではない。セマンティックな意味にとどまる
+              error={Boolean(errors.email)}
+              helperText={errors.email ? errors.email.message : ''}
+              margin="normal"
+              fullWidth
             />
+          )}
+        />
 
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="パスワード"
-                  type="password"
-                  autoComplete="new-password" // 新規パスワードを入力するためのファームであることを明示、パスワードジェネレータが使う
-                  error={Boolean(errors.password)}
-                  helperText={errors.password ? errors.password.message : ''}
-                  margin="normal"
-                  fullWidth
-                />
-              )}
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="パスワード"
+              type="password"
+              autoComplete="new-password" // 新規パスワードを入力するためのファームであることを明示、パスワードジェネレータが使う
+              error={Boolean(errors.password)}
+              helperText={errors.password ? errors.password.message : ''}
+              margin="normal"
+              fullWidth
             />
+          )}
+        />
 
-            <Controller
-              name="passwordConfirmation"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="パスワード確認"
-                  type="password"
-                  autoComplete="new-password"
-                  error={Boolean(errors.passwordConfirmation)}
-                  helperText={errors.passwordConfirmation ? errors.passwordConfirmation.message : ''}
-                  margin="normal"
-                  fullWidth
-                />
-              )}
+        <Controller
+          name="passwordConfirmation"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="パスワード確認"
+              type="password"
+              autoComplete="new-password"
+              error={Boolean(errors.passwordConfirmation)}
+              helperText={errors.passwordConfirmation ? errors.passwordConfirmation.message : ''}
+              margin="normal"
+              fullWidth
             />
-
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              アカウント作成
-            </Button>
-          </Stack>
-        </Box>
-        <Button
-          onClick={() => void navigate('/auth/login', { replace: true })}
-          color="secondary"
-          sx={{ display: 'block', mt: 3, ml: 'auto' }}
-        >
-          既に登録済みですか？ログインはこちらから
-        </Button>
-      </Paper>
-    </Container>
+          )}
+        />
+      </AuthPagesCommon.Form>
+      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
+        ...すでに登録がお済みですか？
+      </Typography>
+      <AuthPagesCommon.NavigateButton path="/auth/login" innerText="ログインはこちらから" />
+    </AuthPagesCommon.Root>
   )
 }
 

@@ -28,16 +28,27 @@ const StyledAlert = styled.div<{ severity: AlertColor }>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  max-height: 4rem;
+
+  span {
+    /* ２行に収まらなければ...で省略 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
 
   button {
     cursor: pointer;
     display: flex;
+    margin-left: auto;
     align-items: center;
     background: none;
     border: none;
     padding: 0;
     height: auto;
     width: auto;
+    color: inherit;
     svg {
       display: block;
       color: inherit;

@@ -7,6 +7,7 @@ import NotificationProvider from './NotificationProvider'
 import { ThemeProvider, CssBaseline } from '@mui/material'
 import { theme } from '../theme/theme'
 import GlobalStyles from '../styles/GlobalStyles'
+import PortalProvider from './PortalProvider'
 
 interface ProvidersProps {
   children: ReactNode
@@ -15,15 +16,15 @@ interface ProvidersProps {
 const Providers = ({ children }: ProvidersProps) => (
   <AuthProvider>
     <TransactionProvider>
-      <AppProvider>
-        <NotificationProvider>
-          <ThemeProvider theme={theme}>
-            <GlobalStyles />
-            <CssBaseline />
-            {children}
-          </ThemeProvider>
-        </NotificationProvider>
-      </AppProvider>
+      <NotificationProvider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <CssBaseline />
+          <AppProvider>
+            <PortalProvider>{children}</PortalProvider>
+          </AppProvider>
+        </ThemeProvider>
+      </NotificationProvider>
     </TransactionProvider>
   </AuthProvider>
 )

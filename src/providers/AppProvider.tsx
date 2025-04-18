@@ -1,23 +1,22 @@
 import { ReactNode, useState } from 'react'
-import { useMediaQuery } from '@mui/material'
-import { theme } from '../theme/theme'
 import { getFormattedToday } from '../utils/formatting'
 import { AppContext } from '../hooks/useContexts'
+import { useMediaQuery } from '@mui/material'
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDay, setSelectedDay] = useState(getFormattedToday())
-  const [isSideBarOpen, setIsSideBarOpen] = useState(true)
-  const isUnderLG = useMediaQuery(theme.breakpoints.down('lg')) // 副作用: windowオブジェクトを操作
+  const isDownLaptop = useMediaQuery((theme) => theme.breakpoints.down('lg'))
+  const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useState(isDownLaptop ? false : true)
 
   const value = {
     currentMonth,
     setCurrentMonth,
     selectedDay,
     setSelectedDay,
-    isSideBarOpen,
-    setIsSideBarOpen,
-    isUnderLG,
+    isNavigationMenuOpen,
+    setIsNavigationMenuOpen,
+    isDownLaptop,
   }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

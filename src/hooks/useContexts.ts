@@ -1,7 +1,8 @@
-import { createContext, Dispatch, SetStateAction, useContext } from 'react'
+import { createContext, Dispatch, ReactNode, ReactPortal, SetStateAction, useContext } from 'react'
 import { Transaction, TransactionFormValues } from '../types'
 import { User } from 'firebase/auth'
 import { AlertColor } from '@mui/material'
+import { createPortal } from 'react-dom'
 
 interface AuthContextValue {
   user: User | null
@@ -71,14 +72,39 @@ export const useNotifications = () => {
   return context
 }
 
+export type PortalMap = Record<string, HTMLElement>
+
+export const PortalContext = createContext<PortalMap | undefined>(undefined)
+
+type PortalRendererType = (content: ReactNode) => ReactPortal
+
+export const usePortal = (name: string): PortalRendererType => {
+  // フック使用側の呼び出しミスを通知
+  if (!PortalContext) {
+    console.error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
+    throw new Error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
+  }
+  const map = useContext(PortalContext)
+  const mountTarget = map && map[name] // nameに対応する <div> を取得
+  if (!mountTarget) {
+    console.error(`usePortal: ${name} は登録されていません。`)
+    throw new Error(`usePortal: ${name} は登録されていません。`)
+  }
+
+  // 任意のReactNodeを受け取って、Portalを返す関数を返す
+  return function PortalRenderer(content: ReactNode) {
+    return createPortal(content, mountTarget)
+  }
+}
+
 interface AppContextType {
   currentMonth: Date
   setCurrentMonth: Dispatch<SetStateAction<Date>>
   selectedDay: string
   setSelectedDay: Dispatch<SetStateAction<string>>
-  isSideBarOpen: boolean
-  setIsSideBarOpen: Dispatch<SetStateAction<boolean>>
-  isUnderLG: boolean
+  isNavigationMenuOpen: boolean
+  setIsNavigationMenuOpen: Dispatch<SetStateAction<boolean>>
+  isDownLaptop: boolean
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined)

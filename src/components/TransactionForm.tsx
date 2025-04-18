@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Dialog,
-  DialogContent,
   FormControl,
   FormHelperText,
   IconButton,
@@ -14,6 +12,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material'
 import {
   Work,
@@ -30,8 +29,50 @@ import {
 import { Control, Controller, ControllerRenderProps, FormState } from 'react-hook-form'
 import { ExpenseCategory, IncomeCategory, Transaction, TransactionFormValues, TransactionType } from '../types'
 import { FormEvent, JSX } from 'react'
+import { headerHeight, transactionMenuWidth } from '../constants/ui'
+import styled from '@emotion/styled'
+import { usePortal } from '../hooks/useContexts'
+import Mask from './common/Mask'
 
-const formWidth = 320
+const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
+  /* background-color: rgba(255, 0, 0, 0.3); */
+  background-color: ${({ theme }) => theme.palette.background.paper};
+  position: sticky;
+  top: ${headerHeight}px;
+  z-index: ${({ theme }) => theme.zIndex.transactionForm.lg};
+
+  padding: 1rem;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+
+  min-width: ${transactionMenuWidth}px;
+  height: fit-content;
+  overflow-y: auto;
+
+  pointer-events: ${({ $isFormOpen }) => ($isFormOpen ? 'auto' : 'none')};
+  transform: translateX(
+    ${({ $isFormOpen }) => (!$isFormOpen ? `-${transactionMenuWidth}px` : `-${2 * transactionMenuWidth}px`)}
+  );
+  transition: transform 0.3s ease;
+`
+
+const FormTablet = styled.div<{ $isFormOpen: boolean }>`
+  /* background-color: rgba(0, 255, 0, 0.4); */
+  background-color: ${({ theme }) => theme.palette.background.paper};
+  position: fixed;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+
+  /* 画面上下中央配置 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(${({ $isFormOpen }) => ($isFormOpen ? 1 : 0)});
+  transition: transform 0.3s ease;
+
+  width: 90vw;
+  max-height: 90vh;
+  z-index: ${({ theme }) => theme.zIndex.transactionForm.md};
+`
 
 const expenseCategories: { label: ExpenseCategory; icon: JSX.Element }[] = [
   { label: '食費', icon: <Fastfood /> },
@@ -51,16 +92,14 @@ const incomeCategories: { label: IncomeCategory; icon: JSX.Element }[] = [
 interface TransactionFormProps {
   // states
   selectedTransaction: Transaction | null
-  isUnderLG: boolean
-  isEntryDrawerOpen: boolean
-  isModalOpen: boolean
+  isDownLaptop: boolean
+  isFormOpen: boolean
   // handlers
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
   onAmountBlur: (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => () => void
   onTypeClick: (type: TransactionType) => () => void
   onDeleteClick: () => void
   onCloseClick: () => void
-  onDialogClose: () => void
   // react-hook-form
   formState: FormState<TransactionFormValues>
   control: Control<TransactionFormValues, object, TransactionFormValues>
@@ -70,26 +109,27 @@ interface TransactionFormProps {
 const TransactionForm = ({
   // states
   selectedTransaction,
-  isUnderLG,
-  isEntryDrawerOpen,
-  isModalOpen,
+  isDownLaptop,
+  isFormOpen,
   // handlers
   onSubmit: handleSubmit,
   onAmountBlur: handleAmountBlur,
   onTypeClick: handleTypeClick,
   onDeleteClick: handleDeleteClick,
   onCloseClick: handleCloseClick,
-  onDialogClose: handleDialogClose,
   // react-hook-form
   formState: { errors, isDirty },
   control,
   currentType,
 }: TransactionFormProps) => {
+  const portalRenderer = usePortal('modal')
+  const theme = useTheme()
+
   // タブレット以下と、PC版での共通部分
   const formContent = (
     <>
       {/* 入力エリアヘッダー */}
-      <Box display={'flex'} justifyContent={'space-between'} mb={2}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h6">入力</Typography>
 
         {/* 閉じるボタン */}
@@ -111,15 +151,11 @@ const TransactionForm = ({
             name="type"
             control={control}
             render={({ field }) => {
-              // console.log(field)
               return (
                 <ButtonGroup fullWidth>
                   <Button
                     variant={field.value === 'expense' ? 'contained' : 'outlined'}
                     color="error"
-                    // sx={{
-                    //   bgcolor: theme.palette.expenseColor.dark
-                    // }}
                     onClick={handleTypeClick('expense')}
                   >
                     支出
@@ -127,10 +163,6 @@ const TransactionForm = ({
                   <Button
                     variant={field.value === 'income' ? 'contained' : 'outlined'}
                     onClick={handleTypeClick('income')}
-                    // color={"primary"} // デフォルト
-                    // sx={{
-                    //   bgcolor: theme.palette.incomeColor.dark
-                    // }}
                   >
                     収入
                   </Button>
@@ -151,10 +183,6 @@ const TransactionForm = ({
                 slotProps={{ inputLabel: { shrink: true } }}
                 error={!!errors.date}
                 helperText={errors.date?.message}
-                // onChangeの指定はreact-hook-formの上書きになるので注意。
-                // 独自にonChangeを追加する場合はfield.onChange(e)で元の更新処理も実行する。
-                // onChange={() => console.log(field)} // NG
-                // onChange={(e) => { console.log(field); field.onChange(e)}} // OK
               />
             )}
           />
@@ -237,34 +265,17 @@ const TransactionForm = ({
 
   return (
     <>
-      {isUnderLG ? (
-        // tablet以下はダイアログ
-        <Dialog open={isModalOpen} fullWidth sx={{ maxWidth: 'sm', mx: 'auto' }} onClose={handleDialogClose}>
-          <DialogContent>{formContent}</DialogContent>
-        </Dialog>
+      {isDownLaptop ? (
+        // タブレット以下
+        portalRenderer(
+          <>
+            <Mask $isOpen={isFormOpen} $zIndex={theme.zIndex.transactionForm.md - 1} onClick={handleCloseClick} />
+            <FormTablet $isFormOpen={isFormOpen}>{formContent}</FormTablet>
+          </>
+        )
       ) : (
-        // PC版はドロワー
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 64,
-            right: isEntryDrawerOpen ? formWidth : '-5%', // shadow部分も隠れるように。
-            width: formWidth,
-            height: '100%',
-            bgcolor: 'background.paper',
-            zIndex: (theme) => theme.zIndex.drawer - 1,
-            transition: (theme) =>
-              theme.transitions.create('right', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-              }),
-            p: 2, // 内部の余白
-            boxSizing: 'border-box', // ボーダーとパディングをwidthに含める
-            boxShadow: '0px 0px 15px -5px #777777',
-          }}
-        >
-          {formContent}
-        </Box>
+        // ラップトップ以上
+        <FormLaptop $isFormOpen={isFormOpen}>{formContent}</FormLaptop>
       )}
     </>
   )

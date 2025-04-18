@@ -1,6 +1,6 @@
-import { Box, Drawer, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { sideBarWidth } from '../../constants/ui'
+import { footerHeight, headerHeight, navigationMenuWidth } from '../../constants/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import styled from '@emotion/styled'
 import { BareAccordionContent, BareAccordionHead } from './Accordion'
@@ -10,6 +10,35 @@ import EqualizerIcon from '@mui/icons-material/Equalizer'
 import SettingsIcon from '@mui/icons-material/Settings'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
+import { useApp } from '../../hooks/useContexts'
+
+const StyledUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+`
+
+const StyledLi = styled.li`
+  list-style: none;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`
+
+const StyledNavLink = styled(NavLink)`
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing(2, 2)};
+`
 
 const AccordionHead = styled(BareAccordionHead)`
   cursor: pointer;
@@ -25,12 +54,6 @@ const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $heigh
   transition: height 0.3s ease-in-out;
   height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
 `
-
-interface SidebarProps {
-  mobileSideBarOpen: boolean
-  handleDrawerClose: () => void
-  handleDrawerTransitionEnd: () => void
-}
 
 const DrawerItems = () => {
   const { isOpens, contentHeights, contentRefs, toggle } = useAccordions(1, false)
@@ -105,75 +128,64 @@ const DrawerItems = () => {
   )
 }
 
-const SideBar = ({ mobileSideBarOpen, handleDrawerClose, handleDrawerTransitionEnd }: SidebarProps) => {
-  return (
-    <Box component="nav" sx={{ width: { md: sideBarWidth }, flexShrink: { md: 0 } }} aria-label="mailbox folders">
-      {/* モバイル用 */}
-      <Drawer
-        variant="temporary"
-        open={mobileSideBarOpen}
-        onTransitionEnd={handleDrawerTransitionEnd}
-        onClose={handleDrawerClose}
-        sx={{
-          display: { xs: 'block', sm: 'none' }, // 表示制御
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: sideBarWidth,
-          },
-        }}
-        slotProps={{
-          root: {
-            keepMounted: true, // Better open performance on mobile.
-          },
-        }}
-      >
-        <DrawerItems />
-      </Drawer>
+interface NavigationMenuProps {
+  isOpen: boolean
+  onClose: () => void
+}
 
-      {/* PC用 */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          display: { xs: 'none', md: 'block' }, // 表示制御
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: sideBarWidth,
-          },
-        }}
-        open
-      >
+const NavigationMenu = ({ isOpen, onClose: handleClose }: NavigationMenuProps) => {
+  const { isDownLaptop } = useApp()
+  return (
+    <>
+      <Mask $isDownLaptop={isDownLaptop} $isOpen={isOpen} onClick={handleClose} />
+
+      <NavigationMenuRoot $isOpen={isOpen}>
         <DrawerItems />
-      </Drawer>
-    </Box>
+      </NavigationMenuRoot>
+    </>
   )
 }
 
-export default SideBar
+export default NavigationMenu
 
-const StyledUl = styled.ul`
+const NavigationMenuRoot = styled.nav<{ $isOpen: boolean }>`
+  position: absolute;
+  left: 0;
+  top: -${headerHeight}px;
+  bottom: ${footerHeight}px;
+  z-index: ${({ theme }) => theme.zIndex.navigationMenu.lg};
   display: flex;
   flex-direction: column;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+  min-width: ${navigationMenuWidth}px;
+  transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : `translateX(-${navigationMenuWidth}px)`)};
+  background-color: pink;
+  transition: transform 0.3s ease;
+  overflow: hidden;
 `
 
-const StyledLi = styled.li`
-  list-style: none;
-  margin: 0;
-  cursor: pointer;
+const Mask = styled.div<{ $isDownLaptop: boolean; $isOpen: boolean }>`
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: ${({ $isDownLaptop, $isOpen }) => {
+    if (!$isDownLaptop) return 0
+    return $isOpen ? 1 : 0
+  }};
+  pointer-events: ${({ $isDownLaptop, $isOpen }) => {
+    if (!$isDownLaptop) return 'none'
+    return $isOpen ? 'auto' : 'none'
+  }};
 
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`
+  transition: opacity 1000ms;
 
-const StyledNavLink = styled(NavLink)`
-  width: 100%;
-  color: inherit;
-  text-decoration: none;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing(2, 2)};
+  /* 画面を覆う */
+  position: fixed;
+  // position: -webkit-fixed; /* fixed 未対応ブラウザ用 */
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: ${({ theme }) => theme.zIndex.navigationMenu.md - 1};
+  height: 100lvh;
+
+  /* 背景をボカす */
+  /* backdrop-filter: blur(5px); */
+  /* -webkit-backdrop-filter: blur(5px); fixed 未対応ブラウザ用 */
 `

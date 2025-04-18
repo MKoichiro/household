@@ -6,7 +6,6 @@ import { formatCurrency } from '../utils/formatting'
 
 interface DailySummaryProps {
   dailyTransactions: Transaction[]
-  isUnderLG: boolean
 }
 
 const DailySummary = ({ dailyTransactions }: DailySummaryProps) => {

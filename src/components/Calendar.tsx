@@ -10,6 +10,7 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
 import { useTheme } from '@mui/material'
 import { isSameMonth } from 'date-fns'
 import { Dispatch, SetStateAction } from 'react'
+import styled from '@emotion/styled'
 
 // const events = [
 //   { title: 'Meeting', start: "2025-03-31",  },
@@ -48,10 +49,7 @@ const Calendar = ({
   onDateClick: handleDateClick,
 }: CalendarProps) => {
   const dailyBalances = calculateDailyBalances(transactions)
-  // console.log(dailyBalances["2025-03-10"])
   const theme = useTheme()
-
-  // const { setValue } = useFormContext<TransactionFormValues>()
 
   const eventsCreator = (dailyBalances: DailyBalances): CalendarContent[] => {
     const dates: string[] = Object.keys(dailyBalances)
@@ -65,13 +63,10 @@ const Calendar = ({
       }
     })
   }
-  // console.log(eventsCreator(dailyBalances))
 
   const calendarEvents = eventsCreator(dailyBalances)
 
   const handleDatesSet = (datesSetInfo: DatesSetArg) => {
-    // console.dir(datesSetInfo.view.currentStart);
-    // console.dir(datesSetInfo);
     const currentMonth = datesSetInfo.view.currentStart
     setCurrentMonth(currentMonth)
 
@@ -87,36 +82,40 @@ const Calendar = ({
     backgroundColor: theme.palette.incomeColor.light,
   }
 
-  // const handleDateClick = (dateInfo: DateClickArg) => {
-  //   // console.log(dateInfo);
-  //   setSelectedDay(dateInfo.dateStr)
-  //   setValue("date", dateInfo.dateStr)
-  // }
-
   return (
-    <FullCalendar
-      locale={jaLocal}
-      plugins={[dayGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      events={[...calendarEvents, selectedEvent]}
-      eventContent={renderEventContent}
-      datesSet={handleDatesSet}
-      dateClick={handleDateClick}
-      headerToolbar={{
-        start: 'title',
-        center: 'myCustomButton', // ここにcustomButtonsで作ったボタンを指定。
-        end: 'today prev,next',
-      }}
-      customButtons={{
-        myCustomButton: {
-          text: 'test',
-          click: function () {
-            alert('clicked the custom button!')
+    <CalendarWrapper>
+      <FullCalendar
+        locale={jaLocal}
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={[...calendarEvents, selectedEvent]}
+        eventContent={renderEventContent}
+        datesSet={handleDatesSet}
+        dateClick={handleDateClick}
+        headerToolbar={{
+          start: 'title',
+          center: 'myCustomButton', // ここにcustomButtonsで作ったボタンを指定。
+          end: 'today prev,next',
+        }}
+        customButtons={{
+          myCustomButton: {
+            text: 'test',
+            click: function () {
+              alert('clicked the custom button!')
+            },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </CalendarWrapper>
   )
 }
 
 export default Calendar
+
+// MUI Drawerの前面にFullCalendarが表示されるのを防ぐために、
+// 独立したスタッキングを生成するためのラッパー
+const CalendarWrapper = styled.div`
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+`
