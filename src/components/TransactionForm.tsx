@@ -42,8 +42,10 @@ const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
   z-index: ${({ theme }) => theme.zIndex.transactionForm.lg};
 
   padding: 1rem;
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
+  /* border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem; */
+  border-radius: 0.5rem;
+  margin-top: 1rem;
 
   min-width: ${transactionMenuWidth}px;
   height: fit-content;
@@ -51,9 +53,10 @@ const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
 
   pointer-events: ${({ $isFormOpen }) => ($isFormOpen ? 'auto' : 'none')};
   transform: translateX(
-    ${({ $isFormOpen }) => (!$isFormOpen ? `-${transactionMenuWidth}px` : `-${2 * transactionMenuWidth}px`)}
+    ${({ $isFormOpen }) => (!$isFormOpen ? `-${transactionMenuWidth - 16}px` : `-${2 * transactionMenuWidth + 16}px`)}
   );
   transition: transform 0.3s ease;
+  box-shadow: ${({ theme }) => theme.shadows[5]};
 `
 
 const FormTablet = styled.div<{ $isFormOpen: boolean }>`

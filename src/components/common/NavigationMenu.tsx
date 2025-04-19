@@ -158,7 +158,7 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean }>`
   flex-direction: column;
   min-width: ${navigationMenuWidth}px;
   transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : `translateX(-${navigationMenuWidth}px)`)};
-  background-color: pink;
+  background-color: ${({ theme }) => theme.palette.background.paper};
   transition: transform 0.3s ease;
   overflow: hidden;
 `

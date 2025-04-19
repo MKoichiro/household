@@ -4,6 +4,8 @@ import { ExpenseCategory, IncomeCategory } from '../types'
 
 declare module '@mui/material/styles' {
   interface Palette {
+    header: PaletteColor
+
     incomeColor: PaletteColor
     expenseColor: PaletteColor
     balanceColor: PaletteColor
@@ -13,6 +15,8 @@ declare module '@mui/material/styles' {
   }
 
   interface PaletteOptions {
+    header: PaletteColorOptions
+
     incomeColor: PaletteColorOptions
     expenseColor: PaletteColorOptions
     balanceColor: PaletteColorOptions
@@ -60,6 +64,12 @@ export const theme = createTheme({
   },
 
   palette: {
+    header: {
+      main: purple[900],
+      light: purple[900],
+      dark: purple[900],
+    },
+
     incomeColor: {
       main: blue[500],
       light: blue[100],
@@ -106,8 +116,8 @@ export const theme = createTheme({
       xs: 1000,
       sm: 1000,
       md: 1000,
-      lg: 1100,
-      xl: 1100,
+      lg: 1200,
+      xl: 1200,
     },
     transactionDetail: {
       xs: 1000,

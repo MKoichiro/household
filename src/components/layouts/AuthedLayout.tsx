@@ -7,12 +7,13 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { footerHeight, headerHeight, navigationMenuWidth } from '../../constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
 import { Button } from '@mui/material'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { useApp, useAuth, useNotifications } from '../../hooks/useContexts'
 import styled from '@emotion/styled'
 
 const Header = styled.header<{ $isNavigationMenuOpen: boolean; $isDownLaptop: boolean }>`
-  background-color: ${({ theme }) => theme.palette.primary.main};
+  background-color: ${({ theme }) => theme.palette.header.main};
+  color: white;
   display: flex;
   align-items: center;
   padding: 0 1rem;
@@ -72,6 +73,8 @@ const AuthedLayout = () => {
       })
   }
 
+  const navigate = useNavigate()
+
   return (
     <Box sx={{ bgcolor: (theme) => theme.palette.grey[100], position: 'relative', minHeight: '100lvh' }}>
       {/* ヘッダー */}
@@ -90,7 +93,9 @@ const AuthedLayout = () => {
           <MenuIcon />
         </IconButton>
 
-        <HeaderTitle />
+        <Box sx={{ cursor: 'pointer' }} onClick={() => void navigate('/app/home', { replace: true })}>
+          <HeaderTitle />
+        </Box>
 
         <Button
           variant="outlined"

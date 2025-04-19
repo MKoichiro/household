@@ -14,7 +14,7 @@ const LandingLayout = () => {
       }}
     >
       {/* ヘッダー */}
-      <AppBar position="fixed" sx={{ width: '100%', ml: 2 }}>
+      <AppBar position="fixed" sx={{ width: '100%', ml: 2, backgroundColor: (theme) => theme.palette.header.main }}>
         <Toolbar>
           <HeaderTitle />
 
@@ -45,8 +45,8 @@ const LandingLayout = () => {
       </AppBar>
 
       {/* メインコンテンツ */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, width: '100vw' }}>
-        <Toolbar />
+      <Box component="main" sx={{ flexGrow: 1, p: 3, width: '100vw', mt: 8 }}>
+        {/* <Toolbar /> */}
         <Outlet />
       </Box>
     </Box>

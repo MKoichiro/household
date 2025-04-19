@@ -94,17 +94,17 @@ const Calendar = ({
         dateClick={handleDateClick}
         headerToolbar={{
           start: 'title',
-          center: 'myCustomButton', // ここにcustomButtonsで作ったボタンを指定。
+          // center: 'myCustomButton', // ここにcustomButtonsで作ったボタンを指定。
           end: 'today prev,next',
         }}
-        customButtons={{
-          myCustomButton: {
-            text: 'test',
-            click: function () {
-              alert('clicked the custom button!')
-            },
-          },
-        }}
+        // customButtons={{
+        //   myCustomButton: {
+        //     text: 'test',
+        //     click: function () {
+        //       alert('clicked the custom button!')
+        //     },
+        //   },
+        // }}
       />
     </CalendarWrapper>
   )
@@ -118,4 +118,13 @@ const CalendarWrapper = styled.div`
   position: relative;
   isolation: isolate;
   z-index: 0;
+  .fc .fc-col-header-cell {
+    background-color: ${({ theme }) => theme.palette.header.main};
+  }
+  .fc .fc-col-header-cell-cushion {
+    color: white;
+  }
+  .fc .fc-button {
+    background-color: ${({ theme }) => theme.palette.header.main};
+  }
 `
