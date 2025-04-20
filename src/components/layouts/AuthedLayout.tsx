@@ -7,11 +7,11 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { footerHeight, headerHeight, navigationMenuWidth } from '../../constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
 import { Button } from '@mui/material'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { useApp, useAuth, useNotifications } from '../../hooks/useContexts'
 import styled from '@emotion/styled'
 
-const Header = styled.header<{ $isNavigationMenuOpen: boolean; $isDownLaptop: boolean }>`
+const Header = styled.header<{ $isNavigationMenuOpen: boolean }>`
   background-color: ${({ theme }) => theme.palette.header.main};
   color: white;
   display: flex;
@@ -19,35 +19,34 @@ const Header = styled.header<{ $isNavigationMenuOpen: boolean; $isDownLaptop: bo
   padding: 0 1rem;
   position: fixed;
   top: 0;
-  left: ${({ $isNavigationMenuOpen, $isDownLaptop }) => {
-    if ($isDownLaptop) return '0'
-    return $isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0'
-  }};
-  z-index: ${({ theme, $isDownLaptop }) => ($isDownLaptop ? theme.zIndex.header.md : theme.zIndex.header.lg)};
-  width: ${({ $isNavigationMenuOpen, $isDownLaptop }) => {
-    if ($isDownLaptop) return '100%'
-    return `calc(100% - ${$isNavigationMenuOpen ? navigationMenuWidth : 0}px)`
-  }};
+  left: ${({ $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0')};
+  z-index: ${({ theme }) => theme.zIndex.header.lg};
+  width: ${({ $isNavigationMenuOpen }) => `calc(100% - ${$isNavigationMenuOpen ? navigationMenuWidth : 0}px)`};
   height: ${headerHeight}px;
   transition:
     left 0.3s ease,
     width 0.3s ease;
+
+  ${({ theme }) => theme.breakpoints.down('lg')} {
+    left: 0;
+    width: 100%;
+    z-index: ${({ theme }) => theme.zIndex.header.md};
+  }
 `
 
-const Main = styled.main<{ $isDownLaptop: boolean; $isNavigationMenuOpen: boolean }>`
-  display: flex;
+const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
   margin-top: ${headerHeight}px;
-  margin-left: ${({ $isNavigationMenuOpen, $isDownLaptop }) => {
-    if ($isDownLaptop) {
-      return '0'
-    }
-    return $isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0'
-  }};
+  margin-left: ${({ $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0')};
   transition: margin-left 0.3s ease;
+  min-height: calc(100lvh - ${headerHeight}px);
+
+  ${({ theme }) => theme.breakpoints.down('lg')} {
+    margin-left: 0;
+  }
 `
 
 const AuthedLayout = () => {
-  const { isNavigationMenuOpen, setIsNavigationMenuOpen, isDownLaptop } = useApp()
+  const { isNavigationMenuOpen, setIsNavigationMenuOpen } = useApp()
   const { handleLogout } = useAuth()
   const { addNotification } = useNotifications()
 
@@ -73,15 +72,13 @@ const AuthedLayout = () => {
       })
   }
 
-  const navigate = useNavigate()
-
   return (
     <Box sx={{ bgcolor: (theme) => theme.palette.grey[100], position: 'relative', minHeight: '100lvh' }}>
       {/* ヘッダー */}
-      <Header $isNavigationMenuOpen={isNavigationMenuOpen} $isDownLaptop={isDownLaptop}>
+      <Header $isNavigationMenuOpen={isNavigationMenuOpen}>
         <IconButton
           color="inherit"
-          aria-label="open drawer"
+          aria-label="toggle drawer"
           edge="start"
           onClick={handleNavigationMenuToggle}
           sx={{
@@ -93,9 +90,7 @@ const AuthedLayout = () => {
           <MenuIcon />
         </IconButton>
 
-        <Box sx={{ cursor: 'pointer' }} onClick={() => void navigate('/app/home', { replace: true })}>
-          <HeaderTitle />
-        </Box>
+        <HeaderTitle redirectTo="home" />
 
         <Button
           variant="outlined"
@@ -117,7 +112,7 @@ const AuthedLayout = () => {
       <NavigationMenu isOpen={isNavigationMenuOpen} onClose={handleNavigationMenuClose} />
 
       {/* メインコンテンツ */}
-      <Main $isDownLaptop={isDownLaptop} $isNavigationMenuOpen={isNavigationMenuOpen}>
+      <Main $isNavigationMenuOpen={isNavigationMenuOpen}>
         <Outlet />
       </Main>
 

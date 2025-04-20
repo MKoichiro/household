@@ -24,24 +24,25 @@ declare module '@mui/material/styles' {
     incomeCategoryColor: Record<IncomeCategory, PaletteColorOptions>
     expenseCategoryColor: Record<ExpenseCategory, PaletteColorOptions>
   }
-}
 
-declare module '@mui/material/styles' {
+  interface BreakpointOverrides {
+    xs: true
+    sm: true
+    md: true
+    lg: true
+    xl: true
+    mobile: true
+    tablet: true
+    laptop: true
+    desktop: true
+  }
+
   interface ZIndex {
     header: Record<Breakpoint, number>
     transactionDetail: Record<Breakpoint, number>
     transactionForm: Record<Breakpoint, number>
-    // transactionHalfModalMask: number
-    // sidePanelForm: number
-    // transactionHalfModal: number
     navigationMenu: Record<Breakpoint, number>
-
-    // sideMenu: number
-    // transactionFormModal: number
     notificationPad: Record<Breakpoint, number>
-    // notificationPad: number
-    // sideBarMask: number
-    // sideBar: number
   }
 }
 
@@ -60,6 +61,10 @@ export const theme = createTheme({
       md: 900,
       lg: 1200,
       xl: 1536,
+      mobile: 0,
+      tablet: 600,
+      laptop: 900,
+      desktop: 1200,
     },
   },
 
@@ -118,6 +123,10 @@ export const theme = createTheme({
       md: 1000,
       lg: 1200,
       xl: 1200,
+      mobile: 1000,
+      tablet: 1000,
+      laptop: 1200,
+      desktop: 1200,
     },
     transactionDetail: {
       xs: 1000,
@@ -125,6 +134,10 @@ export const theme = createTheme({
       md: 1000,
       lg: 1100,
       xl: 1100,
+      mobile: 1000,
+      tablet: 1000,
+      laptop: 1100,
+      desktop: 1100,
     },
     transactionForm: {
       xs: 1100,
@@ -132,6 +145,10 @@ export const theme = createTheme({
       md: 1100,
       lg: 1000,
       xl: 1000,
+      mobile: 1100,
+      tablet: 1100,
+      laptop: 1100,
+      desktop: 1000,
     },
     navigationMenu: {
       xs: 1400,
@@ -139,6 +156,10 @@ export const theme = createTheme({
       md: 1400,
       lg: 1400,
       xl: 1400,
+      mobile: 1400,
+      tablet: 1400,
+      laptop: 1400,
+      desktop: 1400,
     },
     notificationPad: {
       xs: 2000,
@@ -146,16 +167,10 @@ export const theme = createTheme({
       md: 2000,
       lg: 2000,
       xl: 2000,
+      mobile: 2000,
+      tablet: 2000,
+      laptop: 2000,
+      desktop: 2000,
     },
-    // headerTablet: 800,
-    // transactionHalfModalMask: 900,
-    // sidePanelForm: 1000,
-    // transactionHalfModal: 1000,
-    // sideMenu: 1050,
-    // transactionFormModal: 1050,
-    // header: 1100,
-    // notificationPad: 1200,
-    // sideBarMask: 1300,
-    // sideBar: 1400,
   },
 })

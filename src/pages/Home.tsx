@@ -155,58 +155,56 @@ const Home = () => {
 
   return (
     <FormProvider {...methods}>
-      {/* 左側 */}
-      <Box sx={{ flexGrow: 1, padding: isDownLaptop ? '0.5rem' : '1rem' }}>
-        <MonthlySummary monthlyTransactions={monthlyTransactions} />
-        <Calendar
-          monthlyTransactions={monthlyTransactions}
-          setCurrentMonth={setCurrentMonth}
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-          onDateClick={handleDateClick}
-        />
-      </Box>
+      <HomeRoot>
+        {/* 左側 */}
+        <Box sx={{ flexGrow: 1, padding: { xs: '0.5rem', lg: '1rem' } }}>
+          <MonthlySummary monthlyTransactions={monthlyTransactions} />
+          <Calendar
+            monthlyTransactions={monthlyTransactions}
+            setCurrentMonth={setCurrentMonth}
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+            onDateClick={handleDateClick}
+          />
+        </Box>
 
-      {/* 右側 */}
-      <TransactionMenu $isDownLaptop={isDownLaptop}>
-        <TransactionDetail
-          selectedDay={selectedDay}
-          dailyTransactions={dailyTransactions}
-          isDownLaptop={isDownLaptop}
-          isOpen={isDetailOpen}
-          onClose={handleDetailClose}
-          onAddClick={handleTransactionAddClick}
-          onCardClick={handleTransactionCardClick}
-        />
+        {/* 右側 */}
+        <Box sx={{ display: 'flex', width: { xs: 0, lg: `${transactionMenuWidth}px` } }}>
+          <TransactionDetail
+            selectedDay={selectedDay}
+            dailyTransactions={dailyTransactions}
+            isDownLaptop={isDownLaptop}
+            isOpen={isDetailOpen}
+            onClose={handleDetailClose}
+            onAddClick={handleTransactionAddClick}
+            onCardClick={handleTransactionCardClick}
+          />
 
-        <TransactionForm
-          // states
-          selectedTransaction={selectedTransaction}
-          isDownLaptop={isDownLaptop}
-          isFormOpen={isFormOpen}
-          // handlers
-          onSubmit={handleFormSubmit}
-          onAmountBlur={handleAmountBlur}
-          onTypeClick={handleTypeClick}
-          onDeleteClick={handleDeleteClick}
-          onCloseClick={handleEntryCloseClick}
-          // react-hook-form
-          formState={formState}
-          control={control}
-          currentType={currentType}
-        />
-      </TransactionMenu>
+          <TransactionForm
+            // states
+            selectedTransaction={selectedTransaction}
+            isDownLaptop={isDownLaptop}
+            isFormOpen={isFormOpen}
+            // handlers
+            onSubmit={handleFormSubmit}
+            onAmountBlur={handleAmountBlur}
+            onTypeClick={handleTypeClick}
+            onDeleteClick={handleDeleteClick}
+            onCloseClick={handleEntryCloseClick}
+            // react-hook-form
+            formState={formState}
+            control={control}
+            currentType={currentType}
+          />
+        </Box>
+      </HomeRoot>
     </FormProvider>
   )
 }
 
 export default Home
 
-const TransactionMenu = styled.div<{ $isDownLaptop: boolean }>`
-  /* background-color: white; */
-  position: relative; // sticky itemの基準
-  width: ${({ $isDownLaptop }) => ($isDownLaptop ? 0 : `${transactionMenuWidth}px`)};
+const HomeRoot = styled.div`
   display: flex;
-
-  box-sizing: border-box;
+  overflow: clip;
 `

@@ -11,20 +11,24 @@ import { usePortal } from '../hooks/useContexts'
 import { useApp } from '../hooks/useContexts'
 import Mask from './common/Mask'
 
-const DetailLaptop = styled.div`
-  /* background-color: rgba(255, 255, 255, 0.5); */
+const StickyContext = styled.div`
+  position: relative;
+  min-height: calc(100vh - ${headerHeight}px);
   background-color: ${({ theme }) => theme.palette.background.paper};
+  z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+`
+
+const DetailLaptop = styled.div`
+  /* background-color: rgba(255, 0, 255, 0.5); */
   position: sticky;
   min-width: ${transactionMenuWidth}px;
-  height: fit-content;
-  min-height: calc(100vh - ${headerHeight}px - 2rem);
-  /* TODO: Height調整 */
+  max-height: calc(100vh - ${headerHeight}px);
   top: ${headerHeight}px;
   overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
   padding: 1rem;
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
 `
 
 const DetailTablet = styled.div<{ $isNavigationMenuOpen: boolean; $isOpen: boolean }>`
@@ -68,7 +72,7 @@ const TransactionDetail = ({
 
   const menuContent = (
     <Stack sx={{ height: '100%' }} spacing={2}>
-      <Typography fontWeight={'fontWeightBold'}>日時： {selectedDay}</Typography>
+      <Typography fontWeight={'fontWeightBold'}>{selectedDay}</Typography>
       {/* 収入・支出・残高 表示エリア */}
       <DailySummary dailyTransactions={dailyTransactions} />
       {/* 内訳タイトル&内訳追加ボタン */}
@@ -92,11 +96,7 @@ const TransactionDetail = ({
       </Box>
 
       {/* 内訳内容部分 */}
-      <Box
-        sx={{
-          flexGrow: 1,
-        }}
-      >
+      <Box sx={{ flexGrow: 1 }}>
         <List aria-label="取引履歴">
           <Stack spacing={2}>
             {/* 内訳マップ部分 */}
@@ -168,7 +168,9 @@ const TransactionDetail = ({
         )
       ) : (
         // ラップトップ以上
-        <DetailLaptop>{menuContent}</DetailLaptop>
+        <StickyContext>
+          <DetailLaptop>{menuContent}</DetailLaptop>
+        </StickyContext>
       )}
     </>
   )

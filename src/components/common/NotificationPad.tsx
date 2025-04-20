@@ -17,8 +17,8 @@ const RightSideBadge = muiStyled(Badge)({
 const NotificationPadRoot = styled.div<{ $length: number }>`
   border-radius: 0.5rem;
   position: fixed;
-  bottom: 0.5rem; /* 1rem */
-  left: 0.5rem; /* 1rem */
+  bottom: 0.5rem;
+  left: 0.5rem;
   z-index: ${({ theme }) => theme.zIndex.notificationPad};
   max-width: 50vw;
   max-height: 30vh;

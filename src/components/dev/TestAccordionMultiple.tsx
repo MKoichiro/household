@@ -22,35 +22,50 @@ const SecondContent = styled.p``
 
 // 使用例
 const TestAccordionMultiple = () => {
-  // 今回は複数のhead-contentペアがある例
+  // 現状問題ないが、無限ループが生じる場合には
+  // デフォルトの状態はなるべくコンポーネント外で定義する
+  const OUTER_DEFAULTS = {
+    'outer-0': false,
+    'outer-1': true,
+    'outer-2': false,
+    'outer-3': false,
+    'outer-4': false,
+  }
+
+  const INNER_DEFAULTS = {
+    'inner-0': false,
+    'inner-1': true,
+    'inner-2': false,
+  }
   const {
-    contentRefs,
-    isOpens,
-    contentHeights,
+    contentRefs: outerContentRefs,
+    accordions: outerAccordions,
+    controlledToggle: outerControlledToggle,
 
-    // どちらかを使う
-    // toggle,        // 指定したindexのコンテンツを開閉
-    controlledToggle, // 他のセクションを閉じて、指定したセクションだけを開く
-
-    // 必要に応じてopen(index)やclose(index)で開く・閉じる
+    // 必要に応じてopen(id)やclose(id)で開く・閉じる
     // open,
     // close,
-  } = useAccordions(5, false) // セクション数と初期値を指定、初期値はboolean[]もサポート
+  } = useAccordions(OUTER_DEFAULTS)
 
   const {
     contentRefs: innerContentRefs,
-    isOpens: innerIsOpens,
-    contentHeights: innerContentHeights,
+    accordions: innerAccordions,
+
     toggle: innerToggle,
-  } = useAccordions(3, [false, true, true]) // セクション数と初期値を指定、初期値はboolean[]もサポート
+  } = useAccordions(INNER_DEFAULTS)
 
   return (
     <div>
-      <AccordionHead role="button" tabIndex={0} onClick={controlledToggle(0)}>
+      <AccordionHead role="button" tabIndex={0} onClick={outerControlledToggle('outer-0')}>
         <FirstHead>First Head</FirstHead>
       </AccordionHead>
 
-      <AccordionContent ref={contentRefs[0]} $isOpen={isOpens[0]} $height={contentHeights[0]}>
+      <AccordionContent
+        ref={outerContentRefs['outer-0']}
+        $isOpen={outerAccordions['outer-0'].open}
+        $height={outerAccordions['outer-0'].height}
+      >
+        {/* アコーディオンのコンテンツ */}
         <FirstContent>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, cumque? Lorem ipsum dolor sit amet consectetur
           adipisicing elit. Quas, cumque? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, cumque? Lorem
@@ -64,12 +79,16 @@ const TestAccordionMultiple = () => {
       {/* buttonを自前で用意する例 */}
       <AccordionHead style={{ backgroundColor: 'lightgreen' }}>
         <h2>Second Head</h2>
-        <button type="button" onClick={controlledToggle(1)}>
+        <button type="button" onClick={outerControlledToggle('outer-1')}>
           Toggle
         </button>
       </AccordionHead>
 
-      <AccordionContent ref={contentRefs[1]} $isOpen={isOpens[1]} $height={contentHeights[1]}>
+      <AccordionContent
+        ref={outerContentRefs['outer-1']}
+        $isOpen={outerAccordions['outer-1'].open}
+        $height={outerAccordions['outer-1'].height}
+      >
         <SecondContent>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, cumque? Lorem ipsum dolor sit amet consectetur
           adipisicing elit. Quas, cumque? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, cumque? Lorem
@@ -85,36 +104,68 @@ const TestAccordionMultiple = () => {
       </AccordionContent>
 
       {/* レンダー要素の変更 */}
-      <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={controlledToggle(2)}>
+      <AccordionHead
+        style={{ margin: 0 }}
+        component="h2"
+        role="button"
+        tabIndex={0}
+        onClick={outerControlledToggle('outer-2')}
+      >
         Third Head
       </AccordionHead>
-      <AccordionContent ref={contentRefs[2]} $isOpen={isOpens[2]} $height={contentHeights[2]}>
+      <AccordionContent
+        ref={outerContentRefs['outer-2']}
+        $isOpen={outerAccordions['outer-2'].open}
+        $height={outerAccordions['outer-2'].height}
+      >
         <textarea style={{ width: '100%', height: '100%' }} />
       </AccordionContent>
 
       {/* アコーディオンの入れ子 */}
-      <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={controlledToggle(3)}>
+      <AccordionHead
+        style={{ margin: 0 }}
+        component="h2"
+        role="button"
+        tabIndex={0}
+        onClick={outerControlledToggle('outer-3')}
+      >
         forth Head
       </AccordionHead>
-      <AccordionContent ref={contentRefs[3]} $isOpen={isOpens[3]} $height={contentHeights[3]}>
+      <AccordionContent
+        ref={outerContentRefs['outer-3']}
+        $isOpen={outerAccordions['outer-3'].open}
+        $height={outerAccordions['outer-3'].height}
+      >
         {/* 内側のアコーディオン */}
         <h3>Inner Accordions</h3>
-        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle(0)}>
+        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle('inner-0')}>
           inner Head 1
         </AccordionHead>
-        <AccordionContent ref={innerContentRefs[0]} $isOpen={innerIsOpens[0]} $height={innerContentHeights[0]}>
+        <AccordionContent
+          ref={innerContentRefs['inner-0']}
+          $isOpen={innerAccordions['inner-0'].open}
+          $height={innerAccordions['inner-0'].height}
+        >
           <p>インナーコンテンツ1</p>
         </AccordionContent>
-        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle(1)}>
+        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle('inner-1')}>
           inner Head 2
         </AccordionHead>
-        <AccordionContent ref={innerContentRefs[1]} $isOpen={innerIsOpens[1]} $height={innerContentHeights[1]}>
+        <AccordionContent
+          ref={innerContentRefs['inner-1']}
+          $isOpen={innerAccordions['inner-1'].open}
+          $height={innerAccordions['inner-1'].height}
+        >
           <p>インナーコンテンツ2</p>
         </AccordionContent>
-        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle(2)}>
+        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle('inner-2')}>
           inner Head 3
         </AccordionHead>
-        <AccordionContent ref={innerContentRefs[2]} $isOpen={innerIsOpens[2]} $height={innerContentHeights[2]}>
+        <AccordionContent
+          ref={innerContentRefs['inner-2']}
+          $isOpen={innerAccordions['inner-2'].open}
+          $height={innerAccordions['inner-2'].height}
+        >
           <p>インナーコンテンツ3</p>
         </AccordionContent>
       </AccordionContent>

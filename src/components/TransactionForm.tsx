@@ -34,6 +34,11 @@ import styled from '@emotion/styled'
 import { usePortal } from '../hooks/useContexts'
 import Mask from './common/Mask'
 
+const StickyContext = styled.div<{ $isDownLaptop: boolean }>`
+  position: relative;
+  width: ${({ $isDownLaptop }) => ($isDownLaptop ? 0 : `${transactionMenuWidth}px`)};
+`
+
 const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
   /* background-color: rgba(255, 0, 0, 0.3); */
   background-color: ${({ theme }) => theme.palette.background.paper};
@@ -42,21 +47,16 @@ const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
   z-index: ${({ theme }) => theme.zIndex.transactionForm.lg};
 
   padding: 1rem;
-  /* border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem; */
   border-radius: 0.5rem;
   margin-top: 1rem;
 
   min-width: ${transactionMenuWidth}px;
-  height: fit-content;
   overflow-y: auto;
 
   pointer-events: ${({ $isFormOpen }) => ($isFormOpen ? 'auto' : 'none')};
-  transform: translateX(
-    ${({ $isFormOpen }) => (!$isFormOpen ? `-${transactionMenuWidth - 16}px` : `-${2 * transactionMenuWidth + 16}px`)}
-  );
-  transition: transform 0.3s ease;
-  box-shadow: ${({ theme }) => theme.shadows[5]};
+  transform: translateX(${({ $isFormOpen }) => (!$isFormOpen ? 0 : `calc(-${2 * transactionMenuWidth}px - 0.5rem)`)});
+  transition: transform 0.3s ease-in-out;
+  box-shadow: ${({ theme }) => theme.shadows[4]};
 `
 
 const FormTablet = styled.div<{ $isFormOpen: boolean }>`
@@ -199,7 +199,16 @@ const TransactionForm = ({
               return (
                 <FormControl error={!!errors.category}>
                   <InputLabel id="category-label">カテゴリ</InputLabel>
-                  <Select labelId="category-label" id="category-select" {...field} label="カテゴリ">
+                  <Select
+                    labelId="category-label"
+                    id="category-select"
+                    {...field}
+                    label="カテゴリ"
+                    MenuProps={{
+                      // ドロップダウンメニューがモーダル背後に隠れないようにzIndexを調整
+                      sx: { zIndex: theme.zIndex.transactionForm.md + 10 },
+                    }}
+                  >
                     {categories.map((category) => (
                       <MenuItem value={category.label} key={category.label}>
                         <ListItemIcon>{category.icon}</ListItemIcon>
@@ -278,7 +287,9 @@ const TransactionForm = ({
         )
       ) : (
         // ラップトップ以上
-        <FormLaptop $isFormOpen={isFormOpen}>{formContent}</FormLaptop>
+        <StickyContext $isDownLaptop={isDownLaptop}>
+          <FormLaptop $isFormOpen={isFormOpen}>{formContent}</FormLaptop>
+        </StickyContext>
       )}
     </>
   )

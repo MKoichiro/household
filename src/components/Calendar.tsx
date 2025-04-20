@@ -7,10 +7,11 @@ import { CalendarContent, DailyBalances, Transaction } from '../types'
 import { calculateDailyBalances } from '../utils/financeCalculations'
 import { formatCurrency, getFormattedToday } from '../utils/formatting'
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
-import { useTheme } from '@mui/material'
+import { Backdrop, useTheme } from '@mui/material'
 import { isSameMonth } from 'date-fns'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
+import { useApp, useWindowSize } from '../hooks/useContexts'
 
 // const events = [
 //   { title: 'Meeting', start: "2025-03-31",  },
@@ -82,9 +83,39 @@ const Calendar = ({
     backgroundColor: theme.palette.incomeColor.light,
   }
 
+  // アスペクト比をレスポンシブ対応、aspectRatio属性の設定値を返す
+  // 縦1の時の横の指定, see: https://fullcalendar.io/docs/aspectRatio
+  const { down } = useWindowSize()
+
+  const setAspectRatio = () => {
+    if (down('md')) return 2 // スマホ
+    if (down('lg')) return 1.35 // タブレット
+    if (down('xl')) return 2 // デスクトップ以下
+    return 2 // 大きいデスクトップ
+  }
+
+  // navigationMenuの開閉に応じてカレンダーをリサイズを更新するため処理
+  const animationDuration = 300
+  const { isNavigationMenuOpen } = useApp()
+  const calendarRef = useRef<FullCalendar>(null)
+  const [isResizing, setIsResizing] = useState(false)
+
+  useEffect(() => {
+    setIsResizing(true)
+    const api = calendarRef.current?.getApi() // see: https://fullcalendar.io/docs/updateSize
+    // 開閉アニメーションの後にサイズを更新
+    const timeoutId = setTimeout(() => {
+      api?.updateSize()
+      setTimeout(() => setIsResizing(false), 100) // 余韻を持たせる
+    }, animationDuration)
+
+    return () => clearTimeout(timeoutId)
+  }, [isNavigationMenuOpen])
+
   return (
     <CalendarWrapper>
       <FullCalendar
+        ref={calendarRef}
         locale={jaLocal}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -105,6 +136,19 @@ const Calendar = ({
         //     },
         //   },
         // }}
+
+        aspectRatio={setAspectRatio()}
+        height="auto"
+      />
+      <Backdrop
+        open={isResizing}
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 500,
+          backdropFilter: 'blur(1rem)',
+          backgroundColor: 'transparent',
+        }}
       />
     </CalendarWrapper>
   )
@@ -118,6 +162,7 @@ const CalendarWrapper = styled.div`
   position: relative;
   isolation: isolate;
   z-index: 0;
+
   .fc .fc-col-header-cell {
     background-color: ${({ theme }) => theme.palette.header.main};
   }
@@ -126,5 +171,10 @@ const CalendarWrapper = styled.div`
   }
   .fc .fc-button {
     background-color: ${({ theme }) => theme.palette.header.main};
+  }
+
+  /* カレンダー部分 */
+  .fc .fc-view-harness {
+    /* min-height: 40rem; */
   }
 `

@@ -6,10 +6,15 @@ import MonthSelector from '../components/MonthSelector'
 import { useState } from 'react'
 import { formatMonth } from '../utils/formatting'
 import { useTransaction } from '../hooks/useContexts'
+import styled from '@emotion/styled'
 
 const NoData = () => {
   return <Typography sx={{ display: 'inline-block', m: 'auto' }}>データがありません。</Typography>
 }
+
+const ReportRoot = styled.div`
+  padding: 1rem;
+`
 
 const commonPaperStyle = {
   height: '400px',
@@ -26,7 +31,7 @@ const Report = () => {
   const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(selectedMonth)))
 
   return (
-    <>
+    <ReportRoot>
       <Grid container spacing={2}>
         {/* 月選択部分 */}
         <Grid size={{ xs: 12 }}>
@@ -75,7 +80,7 @@ const Report = () => {
           Boxのフォントウェイトは700です。
         </Box>
       */}
-    </>
+    </ReportRoot>
   )
 }
 

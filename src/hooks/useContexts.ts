@@ -1,7 +1,7 @@
 import { createContext, Dispatch, ReactNode, ReactPortal, SetStateAction, useContext } from 'react'
 import { Transaction, TransactionFormValues } from '../types'
 import { User } from 'firebase/auth'
-import { AlertColor } from '@mui/material'
+import { AlertColor, Breakpoint } from '@mui/material'
 import { createPortal } from 'react-dom'
 
 interface AuthContextValue {
@@ -114,5 +114,19 @@ export const useApp = () => {
   if (!context) {
     throw new Error('useApp: グローバルなデータはプロバイダーの中で取得してください')
   }
+  return context
+}
+
+type WindowSizeContextType = {
+  down: (key: Breakpoint) => boolean
+  up: (key: Breakpoint) => boolean
+  between: (min: Breakpoint, max: Breakpoint) => boolean
+}
+
+export const WindowSizeContext = createContext<WindowSizeContextType | null>(null)
+
+export function useWindowSize() {
+  const context = useContext(WindowSizeContext)
+  if (!context) throw new Error('useWindowSize: グローバルなデータはプロバイダーの中で取得してください')
   return context
 }

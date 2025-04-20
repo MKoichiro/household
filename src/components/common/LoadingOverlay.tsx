@@ -61,23 +61,23 @@ const StyledDiv = styled.div`
     }
   }
 
-  div:nth-child(2) span,
-  div:nth-child(4) span {
+  div:nth-of-type(2) span,
+  div:nth-of-type(4) span {
     animation-delay: 0.15s;
   }
 
-  div:nth-child(3) span,
-  div:nth-child(5) span,
-  div:nth-child(7) span {
+  div:nth-of-type(3) span,
+  div:nth-of-type(5) span,
+  div:nth-of-type(7) span {
     animation-delay: 0.3s;
   }
 
-  div:nth-child(6) span,
-  div:nth-child(8) span {
+  div:nth-of-type(6) span,
+  div:nth-of-type(8) span {
     animation-delay: 0.45s;
   }
 
-  div:nth-child(9) span {
+  div:nth-of-type(9) span {
     animation-delay: 0.6s;
   }
 `

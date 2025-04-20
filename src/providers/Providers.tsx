@@ -8,6 +8,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material'
 import { theme } from '../theme/theme'
 import GlobalStyles from '../styles/GlobalStyles'
 import PortalProvider from './PortalProvider'
+import WindowSizeProvider from './WindowSizeProvider'
 
 interface ProvidersProps {
   children: ReactNode
@@ -21,7 +22,9 @@ const Providers = ({ children }: ProvidersProps) => (
           <GlobalStyles />
           <CssBaseline />
           <AppProvider>
-            <PortalProvider>{children}</PortalProvider>
+            <PortalProvider>
+              <WindowSizeProvider>{children}</WindowSizeProvider>
+            </PortalProvider>
           </AppProvider>
         </ThemeProvider>
       </NotificationProvider>
