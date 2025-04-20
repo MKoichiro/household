@@ -18,14 +18,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import styled from '@emotion/styled'
-
-const SettingsRoot = styled.div`
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-`
 
 const displayNameSchema = z.object({
   displayName: z.string().max(20, { message: 'ユーザー名は20文字以内である必要があります' }),

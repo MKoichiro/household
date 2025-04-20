@@ -18,6 +18,7 @@ import Security from './pages/Security'
 import SettingsLayout from './components/layouts/SettingsLayout'
 import VerifyEmail from './pages/VerifyEmail'
 import NotificationPad from './components/common/NotificationPad'
+import PrivateNews from './pages/PrivateNews'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
 const Home = lazy(() => import('./pages/Home'))
@@ -129,6 +130,15 @@ const App = () => {
               <Route path="basic" element={<Settings />} />
               <Route path="security" element={<Security />} />
             </Route>
+
+            <Route
+              path="news"
+              element={
+                <Suspense fallback={<LoadingOverlay isLoading />}>
+                  <PrivateNews />
+                </Suspense>
+              }
+            />
 
             <Route path="*" element={<NoMatch />} />
           </Route>

@@ -1,4 +1,4 @@
-import { IconButton, Typography } from '@mui/material'
+import { css, IconButton, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { footerHeight, headerHeight, navigationMenuWidth } from '../../constants/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -10,11 +10,14 @@ import EqualizerIcon from '@mui/icons-material/Equalizer'
 import SettingsIcon from '@mui/icons-material/Settings'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
-import { blue, purple } from '@mui/material/colors'
+import { purple } from '@mui/material/colors'
+import CampaignIcon from '@mui/icons-material/Campaign'
 import { ReactNode } from 'react'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { useAuth, useNotifications } from '../../hooks/useContexts'
 
 const StyledUl = styled.ul`
-  color: ${blue[900]};
+  color: ${purple[900]};
   display: flex;
   flex-direction: column;
   list-style-type: none;
@@ -34,7 +37,7 @@ const StyledLi = styled.li`
   cursor: pointer;
 `
 
-const StyledNavLink = styled(NavLink)`
+const LinkButtonCommonStyle = css`
   color: inherit;
   text-decoration: none;
   display: inline-flex;
@@ -63,8 +66,17 @@ const StyledNavLink = styled(NavLink)`
     transform 200ms ease;
 `
 
+const StyledNavLink = styled(NavLink)`
+  ${LinkButtonCommonStyle}
+`
+
 const StyledInnerNavLink = styled(StyledNavLink)`
   padding-left: 2rem;
+`
+
+const StyledIconButton = styled(IconButton)`
+  border-radius: 0;
+  ${LinkButtonCommonStyle}
 `
 
 const AccordionHead = styled(BareAccordionHead)`
@@ -75,10 +87,10 @@ const AccordionHead = styled(BareAccordionHead)`
   align-items: center;
   padding: 0.5rem 0 0.5rem 0.5rem;
   &:hover {
-    border-bottom: 6px double ${blue[900]};
+    border-bottom: 6px double ${purple[900]};
   }
   &[aria-expanded='true'] {
-    border-bottom: 6px double ${blue[900]};
+    border-bottom: 6px double ${purple[900]};
   }
   transition: border-bottom 200ms ease;
 `
@@ -87,6 +99,7 @@ const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $heigh
   overflow: hidden;
   transition: height 0.3s ease-in-out;
   height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
+  /* transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0)' : 'translateY(-100%)')}; */
 `
 
 const NavigationMenuRoot = styled.nav<{ $isOpen: boolean }>`
@@ -139,17 +152,14 @@ const StickyContext = styled.div`
   height: 100%;
 `
 
-type SubMenu = {
-  accordionIndex: number
-  items: MenuItem[]
-}
-
 type MenuItem = {
   id: string
   label: string
   to: string
   icon: ReactNode
-  sub?: SubMenu
+  sub?: MenuItem[]
+  accordionDefault?: boolean
+  action?: () => void
 }
 
 const MENU: MenuItem[] = [
@@ -160,25 +170,54 @@ const MENU: MenuItem[] = [
     label: '設定',
     to: '',
     icon: <SettingsIcon />,
-    sub: {
-      accordionIndex: 0,
-      items: [
-        { id: 'basic-info', label: '基本情報', to: '/app/settings/basic', icon: <AccountCircleIcon /> },
-        { id: 'security', label: 'セキュリティ', to: '/app/settings/security', icon: <VpnKeyIcon /> },
-      ],
-    },
+    accordionDefault: false,
+    sub: [
+      { id: 'basic-info', label: '基本情報', to: '/app/settings/basic', icon: <AccountCircleIcon /> },
+      { id: 'security', label: 'セキュリティ', to: '/app/settings/security', icon: <VpnKeyIcon /> },
+    ],
   },
+  { id: 'news', label: 'お知らせ', to: '/app/news', icon: <CampaignIcon /> },
+  // { id: 'logout', label: 'ログアウト', to: '', icon: <VpnKeyIcon />, action: () => {} },
 ]
 
 // 型ガード
-const hasSubMenu = (item: MenuItem): item is MenuItem & { sub: SubMenu } =>
-  Array.isArray(item.sub?.items) && item.sub.items.length > 0
+const hasSubMenu = (item: MenuItem): item is MenuItem & { sub: MenuItem[] } => {
+  return item.sub !== undefined
+}
 
 const DrawerItems = () => {
-  const ACCORDION_DEFAULT_STATES = {
-    settings: false,
-  }
+  const ACCORDION_DEFAULT_STATES = MENU.reduce(
+    (acc, item) => {
+      if (hasSubMenu(item)) {
+        acc[item.id] = item.accordionDefault ?? false
+      }
+      return acc
+    },
+    {} as Record<string, boolean>
+  )
   const { contentRefs, accordions, toggle } = useAccordions(ACCORDION_DEFAULT_STATES)
+
+  const { handleLogout } = useAuth()
+  const { addNotification } = useNotifications()
+
+  const handleLogoutClick = () => {
+    handleLogout()
+      .then(() => {
+        // リダイレクト処理はRequireAuthガードコンポーネントが行う
+        addNotification({
+          severity: 'success',
+          message: 'ログアウトしました。',
+          timer: 3000,
+        })
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error)
+        addNotification({
+          severity: 'error',
+          message: '内部エラーによりログアウトに失敗しました。時間をおいて再度お試しください。',
+        })
+      })
+  }
 
   return (
     <StyledOuterUl>
@@ -199,6 +238,7 @@ const DrawerItems = () => {
               <IconButton
                 aria-label="サブメニューを開閉"
                 sx={{
+                  color: 'inherit',
                   ml: 'auto',
                   px: 1,
                   transform: accordions[item.id].open ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -214,7 +254,7 @@ const DrawerItems = () => {
               ref={contentRefs[item.id]}
             >
               <StyledUl>
-                {item.sub?.items.map((subItem) => (
+                {item.sub.map((subItem) => (
                   <StyledLi key={subItem.id}>
                     <StyledInnerNavLink className={({ isActive }) => (isActive ? 'active' : undefined)} to={subItem.to}>
                       {subItem.icon}
@@ -227,6 +267,15 @@ const DrawerItems = () => {
           </StyledLi>
         )
       )}
+
+      <li className="navigation-menu-spacer" style={{ height: '64px' }} />
+      {/* ログアウト */}
+      <StyledLi>
+        <StyledIconButton onClick={handleLogoutClick} aria-label="ログアウト">
+          <LogoutIcon />
+          <Typography variant="body1">ログアウト</Typography>
+        </StyledIconButton>
+      </StyledLi>
     </StyledOuterUl>
   )
 }
