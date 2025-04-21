@@ -10,7 +10,7 @@ import {
   IconButton,
   FormHelperText,
 } from '@mui/material'
-import { useAuth, useNotifications } from '../shared/hooks/useContexts'
+import { useAuth } from '../shared/hooks/useContexts'
 import EditIcon from '@mui/icons-material/Edit'
 import SendIcon from '@mui/icons-material/Send'
 import { FormEvent, Fragment, useMemo, useState } from 'react'
@@ -27,7 +27,6 @@ type DisplayNameFormValues = z.infer<typeof displayNameSchema>
 
 const Settings = () => {
   const { user, handleUpdateDisplayName } = useAuth()
-  const { addNotification } = useNotifications()
 
   // ユーザー基本情報の表示用データ
   const userDetails = useMemo(
@@ -64,27 +63,12 @@ const Settings = () => {
 
   const onEditClick = () => setIsEditing(true)
 
-  const onSubmit = async (data: DisplayNameFormValues) => {
-    try {
-      await handleUpdateDisplayName(data.displayName)
-      setIsEditing(false)
-      reset({
-        displayName: data.displayName,
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ユーザー名が更新されました',
-        timer: 3000,
-      })
-    } catch (error) {
-      console.error('Error updating display name:', error)
-      addNotification({
-        severity: 'error',
-        message: 'ユーザー名の更新に失敗しました',
-      })
-    }
+  // エラーハンドリングはhandleUpdateDisplayName内で行う
+  const onSubmit = (data: DisplayNameFormValues) => {
+    void handleUpdateDisplayName(data.displayName)
+    setIsEditing(false)
+    reset({ displayName: data.displayName })
   }
-
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     void handleSubmit(onSubmit)(e)

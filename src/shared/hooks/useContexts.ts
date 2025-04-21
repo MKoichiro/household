@@ -6,10 +6,11 @@ import { createPortal } from 'react-dom'
 
 interface AuthContextValue {
   user: User | null
-  handleSignup: (email: string, password: string) => Promise<void>
-  handleLogin: (email: string, password: string) => Promise<void>
-  handleLogout: () => Promise<void>
-  handleUpdateDisplayName: (displayName: string) => Promise<void>
+  handleSignup: (email: string, password: string) => Promise<unknown>
+  handleLogin: (email: string, password: string) => Promise<unknown>
+  handleLogout: () => Promise<unknown>
+  handleUpdateDisplayName: (displayName: string) => Promise<unknown>
+  handleResendVerificationEmail: () => Promise<unknown>
 }
 
 export const AuthContext = createContext<AuthContextValue>({
@@ -18,6 +19,7 @@ export const AuthContext = createContext<AuthContextValue>({
   handleLogin: async () => {},
   handleLogout: async () => {},
   handleUpdateDisplayName: async () => {},
+  handleResendVerificationEmail: async () => {},
 })
 
 export const useAuth = () => {
@@ -55,7 +57,10 @@ export interface NotificationType {
   timer?: number // [ms]単位。undefined（or 0 以下）の場合は無制限表示。
 }
 
+export type Notifiers = Record<string, () => void>
+
 interface NotificationsContextType {
+  notify: Record<string, Notifiers>
   notifications: NotificationType[]
   addNotification: (notification: Omit<NotificationType, 'id'>) => void
   removeNotification: (id: string) => void
@@ -76,7 +81,7 @@ export type PortalMap = Record<string, HTMLElement>
 
 export const PortalContext = createContext<PortalMap | undefined>(undefined)
 
-type PortalRendererType = (content: ReactNode) => ReactPortal
+type PortalRendererType = ((content: ReactNode) => ReactPortal) | (() => null)
 
 export const usePortal = (name: string): PortalRendererType => {
   // フック使用側の呼び出しミスを通知
@@ -88,7 +93,8 @@ export const usePortal = (name: string): PortalRendererType => {
   const mountTarget = map && map[name] // nameに対応する <div> を取得
   if (!mountTarget) {
     console.error(`usePortal: ${name} は登録されていません。`)
-    throw new Error(`usePortal: ${name} は登録されていません。`)
+    // throw new Error(`usePortal: ${name} は登録されていません。`)
+    return () => null
   }
 
   // 任意のReactNodeを受け取って、Portalを返す関数を返す

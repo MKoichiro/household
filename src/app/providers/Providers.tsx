@@ -15,9 +15,9 @@ interface ProvidersProps {
 }
 
 const Providers = ({ children }: ProvidersProps) => (
-  <AuthProvider>
-    <TransactionProvider>
-      <NotificationProvider>
+  <NotificationProvider>
+    <AuthProvider>
+      <TransactionProvider>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <CssBaseline />
@@ -27,9 +27,9 @@ const Providers = ({ children }: ProvidersProps) => (
             </PortalProvider>
           </AppProvider>
         </ThemeProvider>
-      </NotificationProvider>
-    </TransactionProvider>
-  </AuthProvider>
+      </TransactionProvider>
+    </AuthProvider>
+  </NotificationProvider>
 )
 
 export default Providers

@@ -2,7 +2,7 @@
 // サインアップ後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
 import { TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { useAuth, useNotifications } from '../shared/hooks/useContexts'
+import { useAuth } from '../shared/hooks/useContexts'
 import { z } from 'zod'
 import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -47,7 +47,6 @@ type SignupFormValues = z.infer<typeof signupSchema>
 
 const SignUp = () => {
   const { handleSignup } = useAuth()
-  const { addNotification } = useNotifications()
   const navigate = useNavigate()
 
   const {
@@ -60,25 +59,12 @@ const SignUp = () => {
     defaultValues: { email: '', password: '', passwordConfirmation: '' },
   })
 
-  const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
-    try {
-      await handleSignup(data.email, data.password)
-      addNotification({
-        severity: 'success',
-        message: '入力されたメールアドレスに確認メールを送信しました。ご確認ください。',
-        timer: 3000,
-      })
-      void navigate('/verify-email', { replace: true }) // メール確認ページへリダイレクト
-    } catch (error) {
-      console.error('アカウント作成失敗:', error)
-      addNotification({
-        severity: 'error',
-        message: 'アカウント作成に失敗しました。再度お試しください。',
-      })
-      reset()
-    }
+  // 基本的なエラーハンドリングはhandleSignupで行う
+  const onSubmit: SubmitHandler<SignupFormValues> = (data) => {
+    handleSignup(data.email, data.password)
+      .then(() => void navigate('/verify-email', { replace: true }))
+      .catch(() => reset())
   }
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     void submitHandler(onSubmit)(e)

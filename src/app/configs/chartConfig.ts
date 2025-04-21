@@ -17,5 +17,3 @@ ChartJS.register(
   ArcElement,
   ChartDataLabels //グラフ内ラベル書き込みのための拡張機能
 )
-
-ChartJS.register()

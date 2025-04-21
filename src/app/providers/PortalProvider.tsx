@@ -14,6 +14,10 @@ const PortalProvider = ({ children }: { children: ReactNode }) => {
       name: 'modal',
       dataPortal: 'portal-root',
     },
+    {
+      name: 'notification',
+      dataPortal: 'notification-pad',
+    },
 
     // 追加する場合はこの下に...
     // { name: '???', dataPortal: '???' },
@@ -21,7 +25,7 @@ const PortalProvider = ({ children }: { children: ReactNode }) => {
 
   // useRefを使用すると、レンダリングに関係のないタイミングでセットされるので、動作が安定しない。
   // RefCallback(register())はマウント時に呼ばれるので、useRefよりも確実に値を定義できる。
-  const [map, setMap] = useState<PortalMap>({})
+  const [map, setMap] = useState<PortalMap>({}) // { [key: string]: HTMLElement }
 
   const register = useCallback(
     (name: string) => (el: HTMLElement | null) => {

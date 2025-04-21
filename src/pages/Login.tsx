@@ -1,7 +1,7 @@
 // Login.tsx - ログインページコンポーネント
 // ログイン後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
 import { TextField } from '@mui/material'
-import { useAuth, useNotifications } from '../shared/hooks/useContexts'
+import { useAuth } from '../shared/hooks/useContexts'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,7 +19,6 @@ type LoginFormValues = z.infer<typeof loginSchema>
 
 const Login = () => {
   const { handleLogin } = useAuth()
-  const { addNotification } = useNotifications()
   const {
     formState: { errors },
     handleSubmit: submitHandler,
@@ -29,106 +28,12 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   })
 
-  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    try {
-      await handleLogin(data.email, data.password)
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-        timer: 3000,
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      addNotification({
-        severity: 'success',
-        message: 'ログインしました！',
-      })
-      // リダイレクトはCheckAuthガードコンポーネントで行う
-    } catch (error) {
-      console.error('ログイン失敗:', error)
-      addNotification({
-        severity: 'error',
-        message:
-          '1. ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '2. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '3. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '4. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '5. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '6. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '1. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '2. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '3. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '4. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '5. ログインに失敗しました。再度お試しください。',
-      })
-      addNotification({
-        severity: 'error',
-        message: '6. ログインに失敗しました。再度お試しください。',
-      })
-      reset()
-    }
-  }
-
-  // void 演算子でsubmitHandler(onSubmit)()関数の返り値のハンドリングはしないことを示す
-  // （onSubmit関数内のエラーハンドリングは活きている）
+  // エラーハンドリングはhandleLogin内で行う
+  const onSubmit: SubmitHandler<LoginFormValues> = (data) => void handleLogin(data.email, data.password)
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     void submitHandler(onSubmit)(e)
+    reset()
   }
 
   return (

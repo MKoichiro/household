@@ -1,31 +1,10 @@
 // src/pages/VerifyEmail.tsx
 import { Button, Typography, Box } from '@mui/material'
-import { sendEmailVerification } from 'firebase/auth'
-import { useAuth, useNotifications } from '../shared/hooks/useContexts'
+import { useAuth } from '../shared/hooks/useContexts'
 
 const VerifyEmail = () => {
-  const { user } = useAuth()
-  const { addNotification } = useNotifications()
-
-  const handleResendVerification = async () => {
-    console.log('再送信ボタンがクリックされました。')
-    if (user) {
-      try {
-        await sendEmailVerification(user)
-        addNotification({
-          severity: 'success',
-          message: '確認メールを再送信しました。メールをご確認ください。',
-          timer: 3000,
-        })
-      } catch (error) {
-        console.error('再送信に失敗しました:', error)
-        addNotification({
-          severity: 'error',
-          message: '確認メールの再送信に失敗しました。',
-        })
-      }
-    }
-  }
+  const { handleResendVerificationEmail } = useAuth()
+  const handleResendVerification = () => void handleResendVerificationEmail()
 
   return (
     <Box sx={{ textAlign: 'center', mt: 8 }}>
@@ -39,7 +18,7 @@ const VerifyEmail = () => {
         有効化が済みましたら、こちらのページをリロードするか、https://household-1dc1b.web.app/app/home
         にアクセスしてください。
       </Typography>
-      <Button variant="contained" color="primary" onClick={() => void handleResendVerification()}>
+      <Button variant="contained" color="primary" onClick={handleResendVerification}>
         確認メールを再送信する
       </Button>
     </Box>

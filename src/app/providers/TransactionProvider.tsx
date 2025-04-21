@@ -51,6 +51,7 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
       await addDoc(collection(db, COLLECTION_NAME), formattedData)
     } catch (error) {
       outputDBErrors(error)
+      throw error
     }
   }
 
@@ -64,6 +65,7 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       outputDBErrors(error)
+      throw error
     }
   }
 
@@ -78,6 +80,7 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
       await updateDoc(transactionRef, formattedData)
     } catch (error) {
       outputDBErrors(error)
+      throw error
     }
   }
 

@@ -24,7 +24,40 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     setNotifications([])
   }
 
+  const notify = {
+    login: {
+      ok: () => addNotification({ severity: 'success', message: 'ログインしました！', timer: 6000 }),
+      ng: () => addNotification({ severity: 'error', message: 'ログインに失敗しました。再度お試しください。' }),
+    },
+    signup: {
+      ok: () =>
+        addNotification({
+          severity: 'warning',
+          message:
+            'まだ完了していません。ご入力いただいたメールアドレス宛てに確認メールを送信しました。ご確認ください。',
+        }),
+      ng: () => addNotification({ severity: 'error', message: 'アカウント作成に失敗しました。再度お試しください。' }),
+    },
+    verifyEmail: {
+      ok: () => addNotification({ severity: 'info', message: '確認メールを再送信しました。メールをご確認ください。' }),
+      ng: () =>
+        addNotification({
+          severity: 'error',
+          message: '確認メールの再送信に失敗しました。時間をおいて再度お試しください。',
+        }),
+    },
+    logout: {
+      ok: () => addNotification({ severity: 'info', message: 'ログアウトしました！', timer: 6000 }),
+      ng: () => addNotification({ severity: 'error', message: 'ログアウトに失敗しました。再度お試しください。' }),
+    },
+    updateDisplayName: {
+      ok: () => addNotification({ severity: 'success', message: 'ユーザー名を変更しました！', timer: 6000 }),
+      ng: () => addNotification({ severity: 'error', message: 'ユーザー名の変更に失敗しました。再度お試しください。' }),
+    },
+  }
+
   const value = {
+    notify,
     notifications,
     addNotification,
     removeNotification,

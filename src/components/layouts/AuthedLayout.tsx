@@ -8,7 +8,7 @@ import { footerHeight, headerHeight, navigationMenuWidth } from '../../shared/co
 import HeaderTitle from '../common/HeaderTitle'
 import { Button, Typography } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import { useApp, useAuth, useNotifications } from '../../shared/hooks/useContexts'
+import { useApp, useAuth } from '../../shared/hooks/useContexts'
 import styled from '@emotion/styled'
 import { purple } from '@mui/material/colors'
 
@@ -58,29 +58,12 @@ const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
 const AuthedLayout = () => {
   const { isNavigationMenuOpen, setIsNavigationMenuOpen } = useApp()
   const { handleLogout } = useAuth()
-  const { addNotification } = useNotifications()
 
   const handleNavigationMenuClose = () => setIsNavigationMenuOpen(false)
   const handleNavigationMenuToggle = () => setIsNavigationMenuOpen((prev) => !prev)
 
-  const handleLogoutClick = () => {
-    handleLogout()
-      .then(() => {
-        // リダイレクト処理はRequireAuthガードコンポーネントが行う
-        addNotification({
-          severity: 'success',
-          message: 'ログアウトしました。',
-          timer: 3000,
-        })
-      })
-      .catch((error) => {
-        console.error('Logout failed:', error)
-        addNotification({
-          severity: 'error',
-          message: '内部エラーによりログアウトに失敗しました。時間をおいて再度お試しください。',
-        })
-      })
-  }
+  // エラーハンドリングはhandleLogout内で行う
+  const logout = () => void handleLogout()
 
   return (
     <Box sx={{ bgcolor: (theme) => theme.palette.grey[100], position: 'relative', minHeight: '100lvh' }}>
@@ -118,7 +101,7 @@ const AuthedLayout = () => {
               borderColor: 'white',
             }}
             endIcon={<LogoutIcon />}
-            onClick={handleLogoutClick}
+            onClick={logout}
           >
             Log out
           </Button>

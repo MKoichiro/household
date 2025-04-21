@@ -14,7 +14,7 @@ import { indigo, purple } from '@mui/material/colors'
 import CampaignIcon from '@mui/icons-material/Campaign'
 import { ReactNode } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { useAuth, useNotifications } from '../../shared/hooks/useContexts'
+import { useAuth } from '../../shared/hooks/useContexts'
 
 const StyledUl = styled.ul`
   color: ${purple[900]};
@@ -198,26 +198,8 @@ const DrawerItems = () => {
   const { contentRefs, accordions, toggle } = useAccordions(ACCORDION_DEFAULT_STATES)
 
   const { handleLogout } = useAuth()
-  const { addNotification } = useNotifications()
 
-  const handleLogoutClick = () => {
-    handleLogout()
-      .then(() => {
-        // リダイレクト処理はRequireAuthガードコンポーネントが行う
-        addNotification({
-          severity: 'success',
-          message: 'ログアウトしました。',
-          timer: 3000,
-        })
-      })
-      .catch((error) => {
-        console.error('Logout failed:', error)
-        addNotification({
-          severity: 'error',
-          message: '内部エラーによりログアウトに失敗しました。時間をおいて再度お試しください。',
-        })
-      })
-  }
+  const logout = () => void handleLogout()
 
   return (
     <StyledOuterUl>
@@ -271,7 +253,7 @@ const DrawerItems = () => {
       <li className="navigation-menu-spacer" style={{ height: '64px' }} />
       {/* ログアウト */}
       <StyledLi>
-        <StyledIconButton onClick={handleLogoutClick} aria-label="ログアウト">
+        <StyledIconButton onClick={logout} aria-label="ログアウト">
           <LogoutIcon />
           <Typography variant="body1">ログアウト</Typography>
         </StyledIconButton>

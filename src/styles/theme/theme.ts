@@ -164,8 +164,8 @@ export const theme = createTheme({
     notificationPad: {
       xs: 2000,
       sm: 2000,
-      md: 2000,
-      lg: 2000,
+      md: 10000,
+      lg: 10000,
       xl: 2000,
       // mobile: 2000,
       // tablet: 2000,

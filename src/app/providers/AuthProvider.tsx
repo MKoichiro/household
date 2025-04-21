@@ -1,5 +1,9 @@
 // AuthContext.tsx - 認証状態を提供するContext
 
+// Authでのuser関係の操作は操作後にリダイレクトする前提なので、
+// 個別の「非同期処理中...」を示すステートは個別は不要。
+// そのためreduxは使用せず、context APIにとどめる。
+
 import { ReactNode, useEffect, useState } from 'react'
 import {
   createUserWithEmailAndPassword,
@@ -11,14 +15,14 @@ import {
   sendEmailVerification,
 } from 'firebase/auth'
 import { auth } from '../configs/firebase'
-import { outputDBErrors } from '../../shared/utils/errorHandlings'
+import { withErrorHandling } from '../../shared/utils/errorHandlings'
 import LoadingOverlay from '../../components/common/LoadingOverlay'
-import { AuthContext } from '../../shared/hooks/useContexts'
+import { AuthContext, useNotifications } from '../../shared/hooks/useContexts'
 
-// プロバイダコンポーネント
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const { notify } = useNotifications()
 
   // Firebase Authのユーザー状態を監視し、状態が変わるたびにuserを更新
   useEffect(() => {
@@ -29,56 +33,42 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
-  // const handleSignup = async (email: string, password: string) => {
-  //   try {
-  //     await createUserWithEmailAndPassword(auth, email, password)
-  //   } catch (error) {
-  //     outputDBErrors(error)
-  //   }
-  // }
-  const handleSignup = async (email: string, password: string) => {
-    try {
-      // アカウント作成
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      // 作成したユーザーに対して確認メールを送信
-      await sendEmailVerification(userCredential.user)
-    } catch (error) {
-      outputDBErrors(error)
-    }
-  }
-
-  const handleLogin = async (email: string, password: string) => {
-    try {
+  // try文に組み込まれる部分。本質的に非同期処理となる部分を含む。
+  const asyncCriticals = {
+    signup: async (email: string, password: string) => {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password) // アカウント作成
+      await sendEmailVerification(userCredential.user) // 作成したユーザーに対して確認メールを送信
+    },
+    login: async (email: string, password: string) => {
       await signInWithEmailAndPassword(auth, email, password)
-    } catch (error) {
-      outputDBErrors(error)
-    }
-  }
-
-  const handleLogout = async () => {
-    try {
+    },
+    logout: async () => {
       await signOut(auth)
-    } catch (error) {
-      outputDBErrors(error)
-    }
+    },
+    updateDisplayName: async (displayName: string) => {
+      if (user) {
+        await updateProfile(user, { displayName })
+      }
+    },
+    resendVerificationEmail: async () => {
+      if (user) {
+        await sendEmailVerification(user)
+      }
+    },
   }
 
-  const handleUpdateDisplayName = async (displayName: string) => {
-    if (user) {
-      try {
-        await updateProfile(user, { displayName })
-      } catch (error) {
-        outputDBErrors(error)
-      }
-    }
+  // 様子をみてメモ化
+  const handlers = {
+    handleSignup: withErrorHandling(notify.signup, asyncCriticals.signup),
+    handleLogin: withErrorHandling(notify.login, asyncCriticals.login),
+    handleLogout: withErrorHandling(notify.logout, asyncCriticals.logout),
+    handleUpdateDisplayName: withErrorHandling(notify.updateDisplayName, asyncCriticals.updateDisplayName),
+    handleResendVerificationEmail: withErrorHandling(notify.verifyEmail, asyncCriticals.resendVerificationEmail),
   }
 
   const value = {
     user,
-    handleSignup,
-    handleLogin,
-    handleLogout,
-    handleUpdateDisplayName,
+    ...handlers,
   }
 
   // ユーザー状態の確認が完了するまでローディング表示

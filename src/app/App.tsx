@@ -11,7 +11,6 @@ import Landing from '../pages/Landing'
 import './configs/chartConfig'
 import LoadingOverlay from '../components/common/LoadingOverlay'
 import { useAuth } from '../shared/hooks/useContexts'
-import Providers from './providers/Providers'
 import Security from '../pages/Security'
 import SettingsLayout from '../components/layouts/SettingsLayout'
 import VerifyEmail from '../pages/VerifyEmail'
@@ -77,9 +76,8 @@ const CheckDev = ({ children }: { children: ReactNode }) => {
 
 const App = () => {
   return (
-    <Providers>
-      {/* 通知表示用コンポーネント */}
-      {/* Routerの外に配置することで、ページ遷移に影響されず、通知を表示できる */}
+    <>
+      {/* 通知表示用ポータル */}
       <NotificationPad />
       <BrowserRouter>
         <Routes>
@@ -194,7 +192,7 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter>
-    </Providers>
+    </>
   )
 }
 

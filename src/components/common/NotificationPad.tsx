@@ -1,6 +1,6 @@
 // Notification.tsx
 import NotificationItem from './Notification'
-import { useNotifications } from '../../shared/hooks/useContexts'
+import { useNotifications, usePortal } from '../../shared/hooks/useContexts'
 import { Badge, Divider, styled as muiStyled } from '@mui/material'
 import styled from '@emotion/styled'
 import { AnimatePresence } from 'framer-motion'
@@ -19,7 +19,7 @@ const NotificationPadRoot = styled.div<{ $length: number }>`
   position: fixed;
   bottom: 0.5rem;
   left: 0.5rem;
-  z-index: ${({ theme }) => theme.zIndex.notificationPad};
+  z-index: ${({ theme }) => theme.zIndex.notificationPad.xs};
   max-width: 50vw;
   max-height: 30vh;
   overflow-y: auto;
@@ -74,35 +74,42 @@ const NotificationPad = () => {
   // 通知を逆順にする。これにより、最新の通知が上に表示される
   const descNotifications = [...notifications].reverse()
 
+  const portalRenderer = usePortal('notification')
+
   return (
     <>
-      <NotificationPadRoot $length={descNotifications.length}>
-        {descNotifications.length > 1 && (
-          <>
-            <NotificationHeader>
-              <RightSideBadge badgeContent={descNotifications.length} color="secondary">
-                <NotificationsIcon color="action" />
-              </RightSideBadge>
-              <button onClick={handleRemoveAllClick} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                すべて消去
-              </button>
-            </NotificationHeader>
-            <Divider />
-          </>
-        )}
-        <NotificationContent $length={descNotifications.length}>
-          <AnimatePresence>
-            {descNotifications.map((n) => (
-              <NotificationItem
-                key={n.id}
-                notification={n}
-                onClose={handleClose(n.id)}
-                isOne={descNotifications.length === 1}
-              />
-            ))}
-          </AnimatePresence>
-        </NotificationContent>
-      </NotificationPadRoot>
+      {portalRenderer(
+        <NotificationPadRoot $length={descNotifications.length}>
+          {descNotifications.length > 1 && (
+            <>
+              <NotificationHeader>
+                <RightSideBadge badgeContent={descNotifications.length} color="secondary">
+                  <NotificationsIcon color="action" />
+                </RightSideBadge>
+                <button
+                  onClick={handleRemoveAllClick}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  すべて消去
+                </button>
+              </NotificationHeader>
+              <Divider />
+            </>
+          )}
+          <NotificationContent $length={descNotifications.length}>
+            <AnimatePresence>
+              {descNotifications.map((n) => (
+                <NotificationItem
+                  key={n.id}
+                  notification={n}
+                  onClose={handleClose(n.id)}
+                  isOne={descNotifications.length === 1}
+                />
+              ))}
+            </AnimatePresence>
+          </NotificationContent>
+        </NotificationPadRoot>
+      )}
     </>
   )
 }
