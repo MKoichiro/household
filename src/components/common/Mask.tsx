@@ -11,6 +11,9 @@ const Mask = styled.div<{ $isOpen: boolean; $zIndex: number }>`
   bottom: 0;
   z-index: ${({ $zIndex }) => $zIndex};
   transition: opacity 1000ms;
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    display: none;
+  }
 `
 
 export default Mask

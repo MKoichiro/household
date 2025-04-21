@@ -2,7 +2,7 @@
 // サインアップ後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
 import { TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { useAuth, useNotifications } from '../hooks/useContexts'
+import { useAuth, useNotifications } from '../shared/hooks/useContexts'
 import { z } from 'zod'
 import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'

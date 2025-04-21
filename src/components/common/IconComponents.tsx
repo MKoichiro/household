@@ -9,7 +9,7 @@ import {
   SportsTennis,
   Train,
 } from '@mui/icons-material'
-import { ExpenseCategory, IncomeCategory } from '../../types'
+import { ExpenseCategory, IncomeCategory } from '../../shared/types'
 import { JSX } from 'react'
 
 const IconComponents: Record<IncomeCategory | ExpenseCategory, JSX.Element> = {

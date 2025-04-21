@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import useTimer from '../hooks/useTimer'
+import useTimer from '../shared/hooks/useTimer'
 import { Box, Button, Divider, Typography } from '@mui/material'
-import { theme } from '../theme/theme'
-import { headerHeight } from '../constants/ui'
-import { useAuth } from '../hooks/useContexts'
+import { theme } from '../styles/theme/theme'
+import { headerHeight } from '../shared/constants/ui'
+import { useAuth } from '../shared/hooks/useContexts'
 
 const NoMatch = () => {
   const home = { path: '/app/home', display: 'ホーム' }

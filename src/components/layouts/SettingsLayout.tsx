@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardContent, Divider, Typography } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../../hooks/useContexts'
+import { useAuth } from '../../shared/hooks/useContexts'
 
 const SettingsLayout = () => {
   const { user } = useAuth()

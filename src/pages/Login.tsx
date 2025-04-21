@@ -1,7 +1,7 @@
 // Login.tsx - ログインページコンポーネント
 // ログイン後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
 import { TextField } from '@mui/material'
-import { useAuth, useNotifications } from '../hooks/useContexts'
+import { useAuth, useNotifications } from '../shared/hooks/useContexts'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'

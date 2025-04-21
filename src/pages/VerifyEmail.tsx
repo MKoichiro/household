@@ -1,7 +1,7 @@
 // src/pages/VerifyEmail.tsx
 import { Button, Typography, Box } from '@mui/material'
 import { sendEmailVerification } from 'firebase/auth'
-import { useAuth, useNotifications } from '../hooks/useContexts'
+import { useAuth, useNotifications } from '../shared/hooks/useContexts'
 
 const VerifyEmail = () => {
   const { user } = useAuth()

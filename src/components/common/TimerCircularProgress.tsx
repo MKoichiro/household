@@ -1,5 +1,5 @@
 import { CircularProgress, CircularProgressProps } from '@mui/material'
-import useTimer from '../../hooks/useTimer'
+import useTimer from '../../shared/hooks/useTimer'
 
 type TimerCircularProgressProps = Omit<CircularProgressProps, 'value'> & {
   duration: number

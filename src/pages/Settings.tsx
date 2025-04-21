@@ -10,7 +10,7 @@ import {
   IconButton,
   FormHelperText,
 } from '@mui/material'
-import { useAuth, useNotifications } from '../hooks/useContexts'
+import { useAuth, useNotifications } from '../shared/hooks/useContexts'
 import EditIcon from '@mui/icons-material/Edit'
 import SendIcon from '@mui/icons-material/Send'
 import { FormEvent, Fragment, useMemo, useState } from 'react'

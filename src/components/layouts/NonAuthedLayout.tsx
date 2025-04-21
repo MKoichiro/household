@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import { Outlet } from 'react-router-dom'
 import HeaderTitle from '../common/HeaderTitle'
-import { headerHeight } from '../../constants/ui'
+import { headerHeight } from '../../shared/constants/ui'
 
 const NonAuthedLayout = () => {
   return (

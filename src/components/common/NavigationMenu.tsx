@@ -1,20 +1,20 @@
 import { css, IconButton, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { footerHeight, headerHeight, navigationMenuWidth } from '../../constants/ui'
+import { footerHeight, headerHeight, navigationMenuWidth } from '../../shared/constants/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import styled from '@emotion/styled'
 import { BareAccordionContent, BareAccordionHead } from './Accordion'
-import { useAccordions } from '../../hooks/useAccordion'
+import { useAccordions } from '../../shared/hooks/useAccordion'
 import HomeIcon from '@mui/icons-material/Home'
 import EqualizerIcon from '@mui/icons-material/Equalizer'
 import SettingsIcon from '@mui/icons-material/Settings'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
-import { purple } from '@mui/material/colors'
+import { indigo, purple } from '@mui/material/colors'
 import CampaignIcon from '@mui/icons-material/Campaign'
 import { ReactNode } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { useAuth, useNotifications } from '../../hooks/useContexts'
+import { useAuth, useNotifications } from '../../shared/hooks/useContexts'
 
 const StyledUl = styled.ul`
   color: ${purple[900]};
@@ -150,6 +150,7 @@ const Mask = styled.div<{ $isOpen: boolean }>`
 const StickyContext = styled.div`
   position: relative;
   height: 100%;
+  background-color: ${indigo[100]};
 `
 
 type MenuItem = {
@@ -177,7 +178,6 @@ const MENU: MenuItem[] = [
     ],
   },
   { id: 'news', label: 'お知らせ', to: '/app/news', icon: <CampaignIcon /> },
-  // { id: 'logout', label: 'ログアウト', to: '', icon: <VpnKeyIcon />, action: () => {} },
 ]
 
 // 型ガード

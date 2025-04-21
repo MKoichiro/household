@@ -1,4 +1,4 @@
-import { NotificationType } from '../../hooks/useContexts'
+import { NotificationType } from '../../shared/hooks/useContexts'
 import { Stack, Typography } from '@mui/material'
 import TimerCircularProgress from './TimerCircularProgress'
 import Snackbar from './Snackbar'

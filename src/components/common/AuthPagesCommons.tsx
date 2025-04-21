@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { headerHeight } from '../../constants/ui'
+import { headerHeight } from '../../shared/constants/ui'
 import { FormEvent, ReactNode } from 'react'
 import { Box, Button, ButtonProps, Paper, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'

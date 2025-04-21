@@ -1,6 +1,6 @@
 // Notification.tsx
 import NotificationItem from './Notification'
-import { useNotifications } from '../../hooks/useContexts'
+import { useNotifications } from '../../shared/hooks/useContexts'
 import { Badge, Divider, styled as muiStyled } from '@mui/material'
 import styled from '@emotion/styled'
 import { AnimatePresence } from 'framer-motion'

@@ -4,19 +4,17 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import NavigationMenu from '../common/NavigationMenu'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { footerHeight, headerHeight, navigationMenuWidth } from '../../constants/ui'
+import { footerHeight, headerHeight, navigationMenuWidth } from '../../shared/constants/ui'
 import HeaderTitle from '../common/HeaderTitle'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import { useApp, useAuth, useNotifications } from '../../hooks/useContexts'
+import { useApp, useAuth, useNotifications } from '../../shared/hooks/useContexts'
 import styled from '@emotion/styled'
+import { purple } from '@mui/material/colors'
 
 const Header = styled.header<{ $isNavigationMenuOpen: boolean }>`
   background-color: ${({ theme }) => theme.palette.header.main};
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
+
   position: fixed;
   top: 0;
   left: ${({ $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0')};
@@ -32,6 +30,18 @@ const Header = styled.header<{ $isNavigationMenuOpen: boolean }>`
     width: 100%;
     z-index: ${({ theme }) => theme.zIndex.header.md};
   }
+`
+const HeaderMain = styled.div`
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  height: ${headerHeight - 32}px;
+`
+const HeaderNews = styled.div`
+  background-color: ${purple[100]};
+  color: ${purple[900]};
+  height: 32px;
 `
 
 const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
@@ -76,36 +86,43 @@ const AuthedLayout = () => {
     <Box sx={{ bgcolor: (theme) => theme.palette.grey[100], position: 'relative', minHeight: '100lvh' }}>
       {/* ヘッダー */}
       <Header $isNavigationMenuOpen={isNavigationMenuOpen}>
-        <IconButton
-          color="inherit"
-          aria-label="toggle drawer"
-          edge="start"
-          onClick={handleNavigationMenuToggle}
-          sx={{
-            mr: 2,
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+        <HeaderNews>
+          <Typography variant="body2" sx={{ padding: '0.25rem 1rem' }}>
+            お知らせ: 2023/10/01 サーバーのメンテナンスを行います。
+          </Typography>
+        </HeaderNews>
+        <HeaderMain>
+          <IconButton
+            color="inherit"
+            aria-label="toggle drawer"
+            edge="start"
+            onClick={handleNavigationMenuToggle}
+            sx={{
+              mr: 2,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
 
-        <HeaderTitle redirectTo="home" />
+          <HeaderTitle redirectTo="home" />
 
-        <Button
-          variant="outlined"
-          aria-label="log out"
-          sx={{
-            display: 'flex',
-            ml: 'auto',
-            color: 'white',
-            borderColor: 'white',
-          }}
-          endIcon={<LogoutIcon />}
-          onClick={handleLogoutClick}
-        >
-          Log out
-        </Button>
+          <Button
+            variant="outlined"
+            aria-label="log out"
+            sx={{
+              display: 'flex',
+              ml: 'auto',
+              color: 'white',
+              borderColor: 'white',
+            }}
+            endIcon={<LogoutIcon />}
+            onClick={handleLogoutClick}
+          >
+            Log out
+          </Button>
+        </HeaderMain>
       </Header>
 
       {/* サイドバー */}

@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import LoginIcon from '@mui/icons-material/Login'
 import AddBoxIcon from '@mui/icons-material/AddBox'
 import HeaderTitle from '../common/HeaderTitle'
-import { headerHeight } from '../../constants/ui'
+import { headerHeight } from '../../shared/constants/ui'
 
 const LandingLayout = () => {
   return (

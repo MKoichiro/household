@@ -23,5 +23,5 @@
     "noUncheckedSideEffectImports": true
   },
   // "include": ["src", "eslint.config.ts"],
-  "include": ["src", "trash/AccordionContext.tsx"]
+  "include": ["src"]
 }
