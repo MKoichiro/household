@@ -1,17 +1,31 @@
 // 汎用性の高いアコーディオンコンポーネント
 import { forwardRef, ReactNode, ElementType, ComponentPropsWithoutRef } from 'react'
+import { clickableWithKey } from '../../shared/utils/a11y'
 
 // コンポーネント固有のpropsを引き継ぐための型
 type BareAccordionHeadProps<C extends ElementType = 'div'> = {
   component?: C
+  open: boolean
 } & ComponentPropsWithoutRef<C>
 
-export const BareAccordionHead = <C extends ElementType = 'div'>({ component, ...rest }: BareAccordionHeadProps<C>) => {
-  const { children, className, ...restProps } = rest
+export const BareAccordionHead = <C extends ElementType = 'div'>({
+  component,
+  open,
+  ...rest
+}: BareAccordionHeadProps<C>) => {
+  const { children, className, tabIndex, onClick, onKeyDown, role, ...restProps } = rest
   const Component = component || 'div'
 
   return (
-    <Component className={className} {...restProps}>
+    <Component
+      role={role ? role : 'button'}
+      aria-expanded={open}
+      tabIndex={tabIndex ? tabIndex : 0}
+      onClick={onClick}
+      onKeyDown={onClick ? (!onKeyDown ? clickableWithKey(onClick) : onKeyDown) : undefined}
+      className={className}
+      {...restProps}
+    >
       {children}
     </Component>
   )

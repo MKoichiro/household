@@ -2,12 +2,12 @@ import { useMediaQuery } from '@mui/material'
 import { Transaction, TransactionFormValues, TransactionType } from '../shared/types'
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 import { DateClickArg } from '@fullcalendar/interaction/index.js'
-import { Control, ControllerRenderProps, FormProvider, FormState, SubmitHandler, useForm } from 'react-hook-form'
+import { ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { formatMonth } from '../shared/utils/formatting'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { transactionSchema } from '../shared/validations/schema'
 import { useApp, useTransaction } from '../shared/hooks/useContexts'
-import HomePresenter from '../../trash/HomePresenter'
+import HomePresenter from '../features/Home/HomePresenter'
 
 export interface HomeStates {
   selectedDay: string
@@ -16,9 +16,6 @@ export interface HomeStates {
   isFormOpen: boolean
   isDetailOpen: boolean
   selectedTransaction: Transaction | null
-  currentType: TransactionType
-  formState: FormState<TransactionFormValues>
-  control: Control<TransactionFormValues, object, TransactionFormValues>
 }
 
 export interface HomeActions {
@@ -54,8 +51,7 @@ const HomeContainer = () => {
     defaultValues: initialFormValues,
     resolver: zodResolver(transactionSchema),
   })
-  const { formState, handleSubmit, control, setValue, watch, reset } = methods
-  const currentType: TransactionType = watch('type') // 現在の収益タイプを監視
+  const { handleSubmit, setValue, reset } = methods
 
   const isDownLaptop = useMediaQuery((theme) => theme.breakpoints.down('lg'))
   const [isDetailOpen, setIsDetailOpen] = useState(isDownLaptop ? false : true)
@@ -159,9 +155,6 @@ const HomeContainer = () => {
     isFormOpen,
     isDetailOpen,
     selectedTransaction,
-    currentType,
-    formState,
-    control,
   }
 
   const actions: HomeActions = {

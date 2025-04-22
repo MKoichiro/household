@@ -19,17 +19,7 @@ interface HomePresenterProps {
 }
 
 const HomePresenter = ({ states, actions }: HomePresenterProps) => {
-  const {
-    selectedDay,
-    monthlyTransactions,
-    dailyTransactions,
-    isFormOpen,
-    isDetailOpen,
-    selectedTransaction,
-    currentType,
-    formState,
-    control,
-  } = states
+  const { selectedDay, monthlyTransactions, dailyTransactions, isFormOpen, isDetailOpen, selectedTransaction } = states
 
   const {
     setCurrentMonth,
@@ -73,9 +63,6 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
     onTypeClick: handleTypeClick,
     onDeleteClick: handleDeleteClick,
     onCloseClick: handleEntryCloseClick,
-    formState,
-    control,
-    currentType,
   }
 
   return (
