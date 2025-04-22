@@ -32,7 +32,7 @@ interface ReportPresenterProps {
 
 const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
   const { monthlyTransactions, selectedMonth, isLoading } = states
-  const { handleDeleteTransaction, setSelectedMonth } = actions
+  const { setSelectedMonth } = actions
 
   const monthSelectorProps: MonthSelectorProps = {
     selectedMonth,
@@ -50,7 +50,6 @@ const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
 
   const transactionTableProps: TransactionTableProps = {
     monthlyTransactions,
-    onDeleteTransaction: handleDeleteTransaction,
   }
 
   return (

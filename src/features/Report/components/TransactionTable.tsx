@@ -24,6 +24,7 @@ import { financeCalculations } from '../../../shared/utils/financeCalculations'
 import { formatCurrency } from '../../../shared/utils/formatting'
 import IconComponents from '../../../components/common/IconComponents'
 import { compareAsc, parseISO } from 'date-fns'
+import { useTransaction } from '../../../shared/hooks/useContexts'
 
 // テーブルヘッド部分
 interface TransactionTableHeadProps {
@@ -100,13 +101,13 @@ function TransactionTableToolbar({ numSelected, onDeleteClick }: TransactionTabl
 
 export interface TransactionTableProps {
   monthlyTransactions: Transaction[]
-  onDeleteTransaction: (transactionIds: string | readonly string[]) => Promise<void>
 }
 
-const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransaction }: TransactionTableProps) => {
+const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTableProps) => {
   const [selected, setSelected] = useState<readonly string[]>([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
+  const { handleDeleteTransaction } = useTransaction()
 
   const handleSelectAllClick = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -144,7 +145,7 @@ const TransactionTable = ({ monthlyTransactions: transactions, onDeleteTransacti
   }
 
   const handleDeleteClick = (_e: MouseEvent<unknown>) => {
-    void onDeleteTransaction(selected)
+    void handleDeleteTransaction(selected)
     setSelected([])
   }
 

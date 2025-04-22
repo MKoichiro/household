@@ -49,7 +49,7 @@ const DetailTablet = styled.div<{ $isNavigationMenuOpen: boolean; $isOpen: boole
   transition:
     top 0.3s ease,
     left 0.3s ease;
-
+  overflow-y: auto;
   ${({ theme }) => theme.breakpoints.up('lg')} {
     display: none;
   }

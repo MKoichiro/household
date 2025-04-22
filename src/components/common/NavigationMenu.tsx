@@ -197,7 +197,7 @@ const DrawerItems = () => {
   )
   const { contentRefs, accordions, toggle } = useAccordions(ACCORDION_DEFAULT_STATES)
 
-  const { handleLogout } = useAuth()
+  const { isLogoutProcessing, handleLogout } = useAuth()
 
   const logout = () => void handleLogout()
 
@@ -253,7 +253,7 @@ const DrawerItems = () => {
       <li className="navigation-menu-spacer" style={{ height: '64px' }} />
       {/* ログアウト */}
       <StyledLi>
-        <StyledIconButton onClick={logout} aria-label="ログアウト">
+        <StyledIconButton onClick={logout} aria-label="ログアウトボタン" disabled={isLogoutProcessing}>
           <LogoutIcon />
           <Typography variant="body1">ログアウト</Typography>
         </StyledIconButton>

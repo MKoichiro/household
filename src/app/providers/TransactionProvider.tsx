@@ -5,8 +5,8 @@ import { Transaction, TransactionFormValues } from '../../shared/types'
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '../configs/firebase'
 import { parseIntFromCommaSeparated } from '../../shared/utils/formatting'
-import { outputDBErrors } from '../../shared/utils/errorHandlings'
-import { TransactionContext, useAuth } from '../../shared/hooks/useContexts'
+import { withErrorHandling } from '../../shared/utils/errorHandlings'
+import { TransactionContext, useAuth, useNotifications } from '../../shared/hooks/useContexts'
 
 const COLLECTION_NAME = 'Transactions'
 
@@ -14,6 +14,33 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const { notify } = useNotifications()
+
+  // 本質的に非同期処理となる部分。
+  const asyncCriticals = {
+    addTransaction: async (transaction: TransactionFormValues) => {
+      const formattedData = {
+        ...transaction,
+        amount: parseIntFromCommaSeparated(transaction.amount),
+        uid: user?.uid,
+      }
+      await addDoc(collection(db, COLLECTION_NAME), formattedData)
+    },
+    deleteTransaction: async (transactionIds: string | readonly string[]) => {
+      const ids = (Array.isArray(transactionIds) ? transactionIds : [transactionIds]) as string[] | readonly string[]
+      for (const id of ids) {
+        await deleteDoc(doc(db, COLLECTION_NAME, id))
+      }
+    },
+    updateTransaction: async (transaction: TransactionFormValues, transactionId: string) => {
+      const transactionRef = doc(db, COLLECTION_NAME, transactionId)
+      const formattedData = {
+        ...transaction,
+        amount: parseIntFromCommaSeparated(transaction.amount),
+      }
+      await updateDoc(transactionRef, formattedData)
+    },
+  }
 
   // 依存配列に非プリミティブ型を指定する場合、ネストされたプロパティの変化は検知しないので、
   // useEffectの実行条件は初回、ログイン、ログアウトのみ
@@ -40,48 +67,10 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
     return unsubscribe
   }, [user]) // userオブジェクトの参照の変化がトリガー
 
-  // 取引をFirestoreに "保存" する処理
-  const handleSaveTransaction = async (transaction: TransactionFormValues) => {
-    try {
-      const formattedData = {
-        ...transaction,
-        amount: parseIntFromCommaSeparated(transaction.amount),
-        uid: user?.uid,
-      }
-      await addDoc(collection(db, COLLECTION_NAME), formattedData)
-    } catch (error) {
-      outputDBErrors(error)
-      throw error
-    }
-  }
-
-  // 削除
-  // CHECK: 常に配列で指定する仕様とすることで簡略化可能？
-  const handleDeleteTransaction = async (transactionIds: string | readonly string[]) => {
-    try {
-      const ids = (Array.isArray(transactionIds) ? transactionIds : [transactionIds]) as string[] | readonly string[]
-      for (const id of ids) {
-        await deleteDoc(doc(db, COLLECTION_NAME, id))
-      }
-    } catch (error) {
-      outputDBErrors(error)
-      throw error
-    }
-  }
-
-  // 更新
-  const handleUpdateTransaction = async (transaction: TransactionFormValues, transactionId: string) => {
-    try {
-      const transactionRef = doc(db, COLLECTION_NAME, transactionId)
-      const formattedData = {
-        ...transaction,
-        amount: parseIntFromCommaSeparated(transaction.amount),
-      }
-      await updateDoc(transactionRef, formattedData)
-    } catch (error) {
-      outputDBErrors(error)
-      throw error
-    }
+  const handlers = {
+    handleAddTransaction: withErrorHandling(notify.addTransaction, asyncCriticals.addTransaction),
+    handleDeleteTransaction: withErrorHandling(notify.deleteTransaction, asyncCriticals.deleteTransaction),
+    handleUpdateTransaction: withErrorHandling(notify.updateTransaction, asyncCriticals.updateTransaction),
   }
 
   const value = {
@@ -89,9 +78,7 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
     setTransactions,
     isLoading,
     setIsLoading,
-    handleSaveTransaction,
-    handleDeleteTransaction,
-    handleUpdateTransaction,
+    ...handlers,
   }
 
   return <TransactionContext.Provider value={value}>{children}</TransactionContext.Provider>

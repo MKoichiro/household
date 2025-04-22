@@ -6,7 +6,7 @@ import { useAuth } from '../shared/hooks/useContexts'
 import { z } from 'zod'
 import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 import * as AuthPagesCommon from '../components/common/AuthPagesCommons'
 
 // 前半部分の条件:
@@ -46,6 +46,7 @@ const signupSchema = z
 type SignupFormValues = z.infer<typeof signupSchema>
 
 const SignUp = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { handleSignup } = useAuth()
   const navigate = useNavigate()
 
@@ -67,12 +68,18 @@ const SignUp = () => {
   }
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsSubmitting(true)
     void submitHandler(onSubmit)(e)
   }
 
   return (
     <AuthPagesCommon.Root>
-      <AuthPagesCommon.Form title="アカウント作成" onSubmit={handleSubmit}>
+      <AuthPagesCommon.Form
+        title="アカウント作成"
+        buttonText="新規登録"
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmit}
+      >
         <Controller
           name="email"
           control={control}

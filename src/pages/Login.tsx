@@ -5,7 +5,7 @@ import { useAuth } from '../shared/hooks/useContexts'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 import * as AuthPagesCommon from '../components/common/AuthPagesCommons'
 
 // zodスキーマでバリデーションルールを定義
@@ -18,6 +18,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>
 
 const Login = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { handleLogin } = useAuth()
   const {
     formState: { errors },
@@ -32,13 +33,14 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => void handleLogin(data.email, data.password)
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsSubmitting(true)
     void submitHandler(onSubmit)(e)
     reset()
   }
 
   return (
     <AuthPagesCommon.Root>
-      <AuthPagesCommon.Form title="ログイン" onSubmit={handleSubmit}>
+      <AuthPagesCommon.Form title="ログイン" buttonText="ログイン" isSubmitting={isSubmitting} onSubmit={handleSubmit}>
         <Controller
           name="email"
           control={control}

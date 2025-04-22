@@ -57,7 +57,7 @@ const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
 
 const AuthedLayout = () => {
   const { isNavigationMenuOpen, setIsNavigationMenuOpen } = useApp()
-  const { handleLogout } = useAuth()
+  const { isLogoutProcessing, handleLogout } = useAuth()
 
   const handleNavigationMenuClose = () => setIsNavigationMenuOpen(false)
   const handleNavigationMenuToggle = () => setIsNavigationMenuOpen((prev) => !prev)
@@ -70,7 +70,15 @@ const AuthedLayout = () => {
       {/* ヘッダー */}
       <Header $isNavigationMenuOpen={isNavigationMenuOpen}>
         <HeaderNews>
-          <Typography variant="body2" sx={{ padding: '0.25rem 1rem' }}>
+          <Typography
+            variant="body2"
+            sx={{
+              padding: '0.25rem 1rem',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
+          >
             お知らせ: 2023/10/01 サーバーのメンテナンスを行います。
           </Typography>
         </HeaderNews>
@@ -93,7 +101,7 @@ const AuthedLayout = () => {
 
           <Button
             variant="outlined"
-            aria-label="log out"
+            aria-label="ログアウトボタン"
             sx={{
               display: 'flex',
               ml: 'auto',
@@ -102,8 +110,9 @@ const AuthedLayout = () => {
             }}
             endIcon={<LogoutIcon />}
             onClick={logout}
+            disabled={isLogoutProcessing}
           >
-            Log out
+            ログアウト
           </Button>
         </HeaderMain>
       </Header>

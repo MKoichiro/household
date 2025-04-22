@@ -27,11 +27,13 @@ const Root = ({ children }: RootProps) => {
 
 interface FormProps {
   title: string
+  buttonText: string
   children: ReactNode
+  isSubmitting: boolean
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-const Form = ({ children, title, onSubmit: handleSubmit }: FormProps) => {
+const Form = ({ children, title, buttonText, isSubmitting, onSubmit: handleSubmit }: FormProps) => {
   return (
     <Box component="form" onSubmit={handleSubmit}>
       <Stack spacing={2}>
@@ -41,8 +43,8 @@ const Form = ({ children, title, onSubmit: handleSubmit }: FormProps) => {
 
         {children}
 
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          {title}
+        <Button type="submit" variant="contained" color="primary" disabled={isSubmitting} fullWidth>
+          {isSubmitting ? '通信中...' : buttonText}
         </Button>
       </Stack>
     </Box>

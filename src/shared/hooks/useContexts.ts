@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 
 interface AuthContextValue {
   user: User | null
+  isLogoutProcessing: boolean
   handleSignup: (email: string, password: string) => Promise<unknown>
   handleLogin: (email: string, password: string) => Promise<unknown>
   handleLogout: () => Promise<unknown>
@@ -15,6 +16,7 @@ interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue>({
   user: null,
+  isLogoutProcessing: false,
   handleSignup: async () => {},
   handleLogin: async () => {},
   handleLogout: async () => {},
@@ -35,9 +37,9 @@ interface TransactionContextType {
   setTransactions: Dispatch<SetStateAction<Transaction[]>>
   isLoading: boolean
   setIsLoading: Dispatch<SetStateAction<boolean>>
-  handleSaveTransaction: (transaction: TransactionFormValues) => Promise<void>
-  handleDeleteTransaction: (transactionIds: string | readonly string[]) => Promise<void>
-  handleUpdateTransaction: (transaction: TransactionFormValues, transactionId: string) => Promise<void>
+  handleAddTransaction: (transaction: TransactionFormValues) => Promise<unknown>
+  handleDeleteTransaction: (transactionIds: string | readonly string[]) => Promise<unknown>
+  handleUpdateTransaction: (transaction: TransactionFormValues, transactionId: string) => Promise<unknown>
 }
 
 export const TransactionContext = createContext<TransactionContextType | undefined>(undefined)

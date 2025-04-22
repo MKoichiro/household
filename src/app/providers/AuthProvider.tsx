@@ -22,6 +22,10 @@ import { AuthContext, useNotifications } from '../../shared/hooks/useContexts'
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  // ログアウトボタンはヘッダーとナビゲーションメニューの２か所にあるため
+  // ログアウトだけはプロバイダー側で通信中フラグを持つ
+  // 離れたログアウトボタンをほぼ同時に押されるというエッジケースを考慮
+  const [isLogoutProcessing, setIsLogoutProcessing] = useState(false)
   const { notify } = useNotifications()
 
   // Firebase Authのユーザー状態を監視し、状態が変わるたびにuserを更新
@@ -33,7 +37,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
-  // try文に組み込まれる部分。本質的に非同期処理となる部分を含む。
+  // 本質的に非同期処理となる部分。
   const asyncCriticals = {
     signup: async (email: string, password: string) => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password) // アカウント作成
@@ -43,7 +47,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       await signInWithEmailAndPassword(auth, email, password)
     },
     logout: async () => {
-      await signOut(auth)
+      if (isLogoutProcessing) return
+      try {
+        setIsLogoutProcessing(true)
+        await signOut(auth)
+      } finally {
+        setIsLogoutProcessing(false)
+      }
     },
     updateDisplayName: async (displayName: string) => {
       if (user) {
@@ -68,6 +78,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     user,
+    isLogoutProcessing,
     ...handlers,
   }
 

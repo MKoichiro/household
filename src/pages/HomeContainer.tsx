@@ -37,7 +37,7 @@ export interface HomeActions {
 
 const HomeContainer = () => {
   const { currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
-  const { transactions, handleSaveTransaction, handleUpdateTransaction, handleDeleteTransaction } = useTransaction()
+  const { transactions, handleAddTransaction, handleUpdateTransaction, handleDeleteTransaction } = useTransaction()
   const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(currentMonth)))
   const dailyTransactions = monthlyTransactions.filter((transaction) => transaction.date === selectedDay)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
@@ -112,21 +112,11 @@ const HomeContainer = () => {
   // 提出時の処理
   const onSubmit: SubmitHandler<TransactionFormValues> = (data) => {
     if (selectedTransaction) {
-      handleUpdateTransaction(data, selectedTransaction.id)
-        .then(() => {
-          reset(data) // resetを呼ぶことでisDirtyによる差分監視の開始ポイントも変更
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+      void handleUpdateTransaction(data, selectedTransaction.id)
+      reset(data) // resetを呼ぶことでisDirtyによる差分監視の開始ポイントも変更
     } else {
-      handleSaveTransaction(data)
-        .then(() => {
-          clearForm()
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+      void handleAddTransaction(data)
+      clearForm()
     }
   }
 
@@ -157,16 +147,9 @@ const HomeContainer = () => {
 
   const handleDeleteClick = () => {
     if (!selectedTransaction) return
-    handleDeleteTransaction(selectedTransaction.id)
-      .then(() => {
-        setSelectedTransaction(null)
-        clearForm()
-        // フラッシュメッセージの表示など
-      })
-      .catch((error) => {
-        console.error('削除に失敗しました:', error)
-        // フラッシュメッセージの表示など
-      })
+    void handleDeleteTransaction(selectedTransaction.id)
+    setSelectedTransaction(null)
+    clearForm()
   }
 
   const states: HomeStates = {
