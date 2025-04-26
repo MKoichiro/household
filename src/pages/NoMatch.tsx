@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import useTimer from '../shared/hooks/useTimer'
 import { Box, Button, Divider, Typography } from '@mui/material'
 import { theme } from '../styles/theme/theme'
-import { headerHeight } from '../shared/constants/ui'
+import { headerMainHeight } from '../shared/constants/ui'
 import { useAuth } from '../shared/hooks/useContexts'
 
 const NoMatch = () => {
@@ -30,7 +30,7 @@ const NoMatch = () => {
   return (
     <Box
       sx={{
-        height: `calc(100% - ${headerHeight}px)`,
+        height: `calc(100% - ${headerMainHeight}px)`,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',

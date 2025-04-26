@@ -14,18 +14,20 @@ type NotifyActionType =
   | 'addTransaction'
   | 'deleteTransaction'
   | 'updateTransaction'
+  | 'getNews'
 
 type NotifyMapType = {
   [K in NotifyActionType]: {
-    ok: Omit<NotificationType, 'id'>
-    ng: Omit<NotificationType, 'id'>
+    ok?: Omit<NotificationType, 'id'>
+    ng?: Omit<NotificationType, 'id'>
   }
 }
 
+// NOTE: インデックスシグネチャで定義しているため、現状"notify."後のエディタによるメソッド補完が効かない
 type NotifyType = {
   [K in NotifyActionType]: {
-    ok: () => void
-    ng: () => void
+    ok?: () => void
+    ng?: () => void
   }
 }
 
@@ -119,12 +121,22 @@ const notifyMap: NotifyMapType = {
       message: '取引の更新に失敗しました。再度お試しください。',
     },
   },
+
+  // news
+  getNews: {
+    ng: {
+      severity: 'warning',
+      message: 'お知らせの取得に失敗しています。',
+      timer: 10000,
+    },
+  },
 }
 
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<NotificationType[]>([])
 
-  const addNotification = (notification: Omit<NotificationType, 'id'>) => {
+  const addNotification = (notification: Omit<NotificationType, 'id'> | undefined) => {
+    if (!notification) return
     const newNotification: NotificationType = {
       ...notification,
       id: (uuidv4 as () => string)(),

@@ -94,8 +94,7 @@ export const usePortal = (name: string): PortalRendererType => {
   const map = useContext(PortalContext)
   const mountTarget = map && map[name] // nameに対応する <div> を取得
   if (!mountTarget) {
-    console.error(`usePortal: ${name} は登録されていません。`)
-    // throw new Error(`usePortal: ${name} は登録されていません。`)
+    console.warn(`usePortal: ${name} は未登録です。`)
     return () => null
   }
 
@@ -110,9 +109,6 @@ interface AppContextType {
   setCurrentMonth: Dispatch<SetStateAction<Date>>
   selectedDay: string
   setSelectedDay: Dispatch<SetStateAction<string>>
-  isNavigationMenuOpen: boolean
-  setIsNavigationMenuOpen: Dispatch<SetStateAction<boolean>>
-  isDownLaptop: boolean
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -136,5 +132,24 @@ export const WindowSizeContext = createContext<WindowSizeContextType | null>(nul
 export function useWindowSize() {
   const context = useContext(WindowSizeContext)
   if (!context) throw new Error('useWindowSize: グローバルなデータはプロバイダーの中で取得してください')
+  return context
+}
+
+export interface LayoutContextType {
+  dynamicHeaderHeight: () => number
+  isNavigationMenuOpen: boolean
+  isNewsOpen: boolean
+  setIsNavigationMenuOpen: Dispatch<SetStateAction<boolean>>
+  handleNewsOpen: () => void
+  handleNewsClose: () => void
+}
+
+export const LayoutContext = createContext<LayoutContextType | undefined>(undefined)
+
+export const useLayout = () => {
+  const context = useContext(LayoutContext)
+  if (!context) {
+    throw new Error('useLayout: グローバルなデータはプロバイダーの中で取得してください')
+  }
   return context
 }

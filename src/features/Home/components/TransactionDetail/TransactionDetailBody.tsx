@@ -1,86 +1,33 @@
 import { Box, Button, Card, CardActionArea, CardContent, Grid, List, ListItem, Stack, Typography } from '@mui/material'
 import { Notes, AddCircle } from '@mui/icons-material'
-import { theme } from '../../../styles/theme/theme'
+import { theme } from '../../../../styles/theme/theme'
 import DailySummary from './DailySummary'
-import { Transaction } from '../../../shared/types'
-import { formatCurrency } from '../../../shared/utils/formatting'
-import IconComponents from '../../../components/common/IconComponents'
-import { headerHeight, navigationMenuWidth, transactionMenuWidth } from '../../../shared/constants/ui'
-import styled from '@emotion/styled'
-import { usePortal } from '../../../shared/hooks/useContexts'
-import { useApp } from '../../../shared/hooks/useContexts'
-import Mask from '../../../components/common/Mask'
+import { Transaction } from '../../../../shared/types'
+import { formatCurrency } from '../../../../shared/utils/formatting'
+import IconComponents from '../../../../components/common/IconComponents'
+import { format } from 'date-fns'
 
-const StickyContext = styled.div`
-  position: relative;
-  min-height: calc(100vh - ${headerHeight}px);
-  background-color: ${({ theme }) => theme.palette.background.paper};
-  z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-`
-
-const DetailLaptop = styled.div`
-  /* background-color: rgba(255, 0, 255, 0.5); */
-  position: sticky;
-  min-width: ${transactionMenuWidth}px;
-  max-height: calc(100vh - ${headerHeight}px);
-  top: ${headerHeight}px;
-  overflow-y: auto;
-  z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
-  padding: 1rem;
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    display: none;
-  }
-`
-
-const DetailTablet = styled.div<{ $isNavigationMenuOpen: boolean; $isOpen: boolean }>`
-  /* background-color: rgba(0, 0, 255, 0.4); */
-  background-color: ${({ theme }) => theme.palette.background.paper};
-  position: fixed;
-  top: ${({ $isOpen }) => ($isOpen ? '30vh' : '100vh')};
-  left: ${({ $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0')};
-  right: 0;
-  height: 70lvh;
-  z-index: ${({ theme }) => theme.zIndex.transactionDetail.md};
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  transition:
-    top 0.3s ease,
-    left 0.3s ease;
-  overflow-y: auto;
-  ${({ theme }) => theme.breakpoints.up('lg')} {
-    display: none;
-  }
-`
-
-export interface TransactionDetailProps {
+interface TransactionDetailProps {
   selectedDay: string
   dailyTransactions: Transaction[]
-  isOpen: boolean
-  onClose: () => void
   onAddClick: () => void
   onCardClick: (transaction: Transaction) => () => void
 }
 
-const TransactionDetail = ({
+const TransactionDetailBody = ({
   selectedDay,
   dailyTransactions,
-  isOpen,
-  onClose: handleClose,
   onAddClick: handleAddClick,
   onCardClick: handleCardClick,
 }: TransactionDetailProps) => {
-  const portalRenderer = usePortal('half-modal')
-  const { isNavigationMenuOpen } = useApp()
-
-  const menuContent = (
+  return (
     <Stack sx={{ height: '100%' }} spacing={2}>
-      <Typography fontWeight={'fontWeightBold'}>{selectedDay}</Typography>
+      <Typography fontWeight={'fontWeightBold'}>{format(selectedDay, 'M月dd日')}</Typography>
+
       {/* 収入・支出・残高 表示エリア */}
       <DailySummary dailyTransactions={dailyTransactions} />
-      {/* 内訳タイトル&内訳追加ボタン */}
+
+      {/* 内訳タイトル & 内訳追加ボタン */}
       <Box
         sx={{
           display: 'flex',
@@ -89,7 +36,7 @@ const TransactionDetail = ({
           p: 1,
         }}
       >
-        {/* 左側のメモアイコンとテキスト */}
+        {/* 左側のアイコンとテキスト */}
         <Box display="flex" alignItems="center">
           <Notes sx={{ mr: 1 }} />
           <Typography variant="body1">内訳</Typography>
@@ -153,24 +100,6 @@ const TransactionDetail = ({
       </Box>
     </Stack>
   )
-
-  return (
-    <>
-      {/* タブレット以下 */}
-      {portalRenderer(
-        <>
-          <Mask id="test-mask" $isOpen={isOpen} $zIndex={theme.zIndex.transactionDetail.md - 1} onClick={handleClose} />
-          <DetailTablet id="test-real" $isNavigationMenuOpen={isNavigationMenuOpen} $isOpen={isOpen}>
-            {menuContent}
-          </DetailTablet>
-        </>
-      )}
-      {/* ラップトップ以上 */}
-      <StickyContext>
-        <DetailLaptop>{menuContent}</DetailLaptop>
-      </StickyContext>
-    </>
-  )
 }
 
-export default TransactionDetail
+export default TransactionDetailBody

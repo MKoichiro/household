@@ -45,39 +45,39 @@ const StyledDiv = styled.div`
 
   @keyframes anim {
     0% {
-      width: 0px;
-      height: 0px;
+      width: 0;
+      height: 0;
       background: #18ffff;
     }
     40% {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       background: #d500f9;
     }
     80% {
-      width: 0px;
-      height: 0px;
+      width: 0;
+      height: 0;
       background: #18ffff;
     }
   }
 
   div:nth-of-type(2) span,
   div:nth-of-type(4) span {
-    animation-delay: 0.15s;
+    animation-delay: 150ms;
   }
 
   div:nth-of-type(3) span,
   div:nth-of-type(5) span,
   div:nth-of-type(7) span {
-    animation-delay: 0.3s;
+    animation-delay: 300ms;
   }
 
   div:nth-of-type(6) span,
   div:nth-of-type(8) span {
-    animation-delay: 0.45s;
+    animation-delay: 450s;
   }
 
   div:nth-of-type(9) span {
-    animation-delay: 0.6s;
+    animation-delay: 600ms;
   }
 `

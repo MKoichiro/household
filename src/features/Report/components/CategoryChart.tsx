@@ -1,3 +1,4 @@
+// MUI のチャートコンポーネントに切り替えても良いかも。
 // ../../config/chartConfig.txをApp.tsxで読み込み済み
 import { Box, Divider, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
 import { ChartData, ChartOptions } from 'chart.js'
@@ -15,8 +16,6 @@ import {
 } from '../../../shared/types'
 import { theme } from '../../../styles/theme/theme'
 import { Context } from 'chartjs-plugin-datalabels'
-
-// MUI のチャートコンポーネントに切り替えても良いかも。
 
 // カテゴリーとカラーのマッピングを定義
 interface ExpenseColorMap {
@@ -123,7 +122,6 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
 
   // 収入データの準備ここから
   const incomeTransactions: IncomeTransaction[] = transactions.filter((t) => t.type === 'income')
-
   const incomeCategorySums: IncomeCategorySum[] = incomeLiterals.map((label) => {
     const sum = incomeTransactions.reduce((acc, t) => {
       return t.category === label ? acc + t.amount : acc
@@ -131,16 +129,10 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
 
     return { [label]: sum }
   })
-  // console.log(incomeCategorySums)
-
   const incomeSortedSums = incomeCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
-  // console.log(incomeSortedSums)
-
   const incomeLabels = incomeSortedSums.map((item) => Object.keys(item)[0]) as IncomeCategory[]
-
   const incomeBackgroundColors = incomeLabels.map((label) => incomeCategoryColorMap.backgroundColor[label])
   const incomeBorderColors = incomeLabels.map((label) => incomeCategoryColorMap.borderColor[label])
-
   const incomeData: ChartData<'pie'> = {
     labels: incomeLabels,
     datasets: [

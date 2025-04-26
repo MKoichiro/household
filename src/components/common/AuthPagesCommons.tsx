@@ -1,29 +1,30 @@
 import styled from '@emotion/styled'
-import { headerHeight } from '../../shared/constants/ui'
 import { FormEvent, ReactNode } from 'react'
 import { Box, Button, ButtonProps, Paper, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-
-const AuthPagesRoot = styled.div`
-  height: calc(100% - ${headerHeight}px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
+import { useLayout } from '../../shared/hooks/useContexts'
 
 interface RootProps {
   children: ReactNode
 }
 
 const Root = ({ children }: RootProps) => {
+  const { dynamicHeaderHeight } = useLayout()
   return (
-    <AuthPagesRoot>
+    <AuthPagesRoot $dynamicHeaderHeight={dynamicHeaderHeight()}>
       <Paper elevation={3} sx={{ width: { xs: '100%', sm: 400, md: 600 }, p: 4 }}>
         {children}
       </Paper>
     </AuthPagesRoot>
   )
 }
+
+const AuthPagesRoot = styled.div<{ $dynamicHeaderHeight: number }>`
+  height: calc(100% - ${({ $dynamicHeaderHeight }) => $dynamicHeaderHeight}px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 interface FormProps {
   title: string

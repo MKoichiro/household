@@ -66,7 +66,6 @@ const NotificationContent = styled.div<{ $length: number }>`
 
 const NotificationPad = () => {
   const { notifications, removeNotification, removeAllNotifications } = useNotifications()
-  // const them = useTheme()
 
   const handleClose = (id: string) => () => removeNotification(id)
   const handleRemoveAllClick = () => removeAllNotifications()

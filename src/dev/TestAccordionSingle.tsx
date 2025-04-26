@@ -9,7 +9,7 @@ const AccordionHead = styled(BareAccordionHead)`
 const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $height: number }>`
   cursor: pointer;
   overflow: hidden;
-  transition: height 0.3s ease-in-out;
+  transition: height 300ms ease-in-out;
   background-color: lightblue;
   height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
 `
@@ -29,7 +29,7 @@ const TestAccordionSingle = () => {
 
   return (
     <>
-      <AccordionHead component="h3" role="button" tabIndex={0} onClick={toggle}>
+      <AccordionHead open={isOpen} component="h3" role="button" tabIndex={0} onClick={toggle}>
         Accordion Head
       </AccordionHead>
 

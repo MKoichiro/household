@@ -9,6 +9,7 @@ import { getAuth } from 'firebase/auth'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// NOTE: firebaseのapiKeyは公開前提とはいえ、気持ち悪ければ後からでも.envに退避しても良いかもしれない。
 const firebaseConfig = {
   apiKey: 'AIzaSyDbsCqSGbydg4UbT2rQfKoTMVqdCXE_XQU',
   authDomain: 'household-1dc1b.firebaseapp.com',

@@ -1,8 +1,8 @@
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
-import { theme } from '../../../styles/theme/theme'
-import { Transaction } from '../../../shared/types'
-import { financeCalculations } from '../../../shared/utils/financeCalculations'
-import { formatCurrency } from '../../../shared/utils/formatting'
+import { theme } from '../../../../styles/theme/theme'
+import { Transaction } from '../../../../shared/types'
+import { financeCalculations } from '../../../../shared/utils/financeCalculations'
+import { formatCurrency } from '../../../../shared/utils/formatting'
 
 interface DailySummaryProps {
   dailyTransactions: Transaction[]

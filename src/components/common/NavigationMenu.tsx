@@ -1,6 +1,6 @@
 import { css, IconButton, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { footerHeight, headerHeight, navigationMenuWidth } from '../../shared/constants/ui'
+import { footerHeight, navigationMenuWidth } from '../../shared/constants/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import styled from '@emotion/styled'
 import { BareAccordionHead, BareAccordionContent } from './Accordion'
@@ -14,7 +14,7 @@ import CampaignIcon from '@mui/icons-material/Campaign'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { indigo, purple } from '@mui/material/colors'
 import { ReactNode } from 'react'
-import { useAuth } from '../../shared/hooks/useContexts'
+import { useAuth, useLayout } from '../../shared/hooks/useContexts'
 
 interface MenuItemBase {
   id: string
@@ -86,7 +86,7 @@ const NavigationMenuItemComponent = ({ item }: { item: NavigationMenuItem }) => 
             ml: 'auto',
             px: 1,
             transform: accordions[item.id].open ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 0.3s',
+            transition: 'transform 300ms',
           }}
         >
           <ExpandMoreIcon />
@@ -146,16 +146,24 @@ interface NavigationMenuProps {
   onClose: () => void
 }
 
-const NavigationMenu = ({ isOpen, onClose }: NavigationMenuProps) => (
-  <>
-    <Mask $isOpen={isOpen} onClick={onClose} />
-    <NavigationMenuRoot role="navigation" aria-label="ナビゲーションメニュー" $isOpen={isOpen}>
-      <StickyContext>
-        <NavigationMenuItemsList />
-      </StickyContext>
-    </NavigationMenuRoot>
-  </>
-)
+const NavigationMenu = ({ isOpen, onClose }: NavigationMenuProps) => {
+  const { dynamicHeaderHeight } = useLayout()
+  return (
+    <>
+      <Mask $isOpen={isOpen} onClick={onClose} />
+      <NavigationMenuRoot
+        role="navigation"
+        aria-label="ナビゲーションメニュー"
+        $isOpen={isOpen}
+        $dynamicHeaderHeight={dynamicHeaderHeight()}
+      >
+        <StickyContext>
+          <NavigationMenuItemsList />
+        </StickyContext>
+      </NavigationMenuRoot>
+    </>
+  )
+}
 
 export default NavigationMenu
 
@@ -225,22 +233,24 @@ const AccordionHead = styled(BareAccordionHead)`
   align-items: center;
   padding: 0.5rem 0 0.5rem 0.5rem;
   &:hover {
-    border-bottom: 6px double ${purple[900]};
+    color: ${purple[500]};
+    border-bottom: 6px double ${purple[500]};
   }
   &[aria-expanded='true'] {
-    border-bottom: 6px double ${purple[900]};
+    color: ${purple[500]};
+    border-bottom: 6px double ${purple[500]};
   }
   transition: border-bottom 200ms ease;
 `
 const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $height: number }>`
   overflow: hidden;
-  transition: height 0.3s ease-in-out;
+  transition: height 300ms ease-in-out;
   height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
 `
-const NavigationMenuRoot = styled.nav<{ $isOpen: boolean }>`
+const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: number }>`
   position: absolute;
   left: 0;
-  top: -${headerHeight}px;
+  top: ${({ $dynamicHeaderHeight }) => `-${$dynamicHeaderHeight}px`};
   bottom: ${footerHeight}px;
   z-index: ${({ theme }) => theme.zIndex.navigationMenu.lg};
   display: flex;
@@ -248,7 +258,9 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean }>`
   width: ${navigationMenuWidth}px;
   transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : `translateX(-100%)`)};
   background-color: ${({ theme }) => theme.palette.background.paper};
-  transition: transform 0.3s ease;
+  transition:
+    transform 300ms ease,
+    top 300ms ease;
   overflow: clip;
 
   ${({ theme }) => theme.breakpoints.down('lg')} {
@@ -260,7 +272,7 @@ const Mask = styled.div<{ $isOpen: boolean }>`
   background-color: rgba(0, 0, 0, 0.5);
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
-  transition: opacity 1000ms;
+  transition: opacity 1s;
 
   position: fixed;
   top: 0;

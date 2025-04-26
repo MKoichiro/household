@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import LoginIcon from '@mui/icons-material/Login'
 import AddBoxIcon from '@mui/icons-material/AddBox'
 import HeaderTitle from '../common/HeaderTitle'
-import { headerHeight } from '../../shared/constants/ui'
+import { headerMainHeight } from '../../shared/constants/ui'
 
 const LandingLayout = () => {
   return (
@@ -46,7 +46,7 @@ const LandingLayout = () => {
       </AppBar>
 
       {/* メインコンテンツ */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, width: '100vw', mt: `${headerHeight}px` }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, width: '100vw', mt: `${headerMainHeight}px` }}>
         <Outlet />
       </Box>
     </Box>

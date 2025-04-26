@@ -9,7 +9,7 @@ const AccordionHead = styled(BareAccordionHead)`
 
 const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $height: number }>`
   overflow: hidden;
-  transition: height 0.3s ease-in-out;
+  transition: height 300ms ease-in-out;
   outline: 1px solid red;
   height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
 `
@@ -56,7 +56,22 @@ const TestAccordionMultiple = () => {
 
   return (
     <div>
-      <AccordionHead role="button" tabIndex={0} onClick={outerControlledToggle('outer-0')}>
+      <AccordionHead
+        open={outerAccordions['outer-0'].open}
+        // 省略可
+        // role="button"
+        // tabIndex={0}
+        // onKeyDown={
+        //   outerAccordions['outer-0'].open
+        //     ? undefined
+        //     : (e: React.KeyboardEvent<HTMLDivElement>) => {
+        //         if (e.key === 'Enter' || e.key === ' ') {
+        //           outerControlledToggle('outer-0')()
+        //         }
+        //       }
+        // }
+        onClick={outerControlledToggle('outer-0')}
+      >
         <FirstHead>First Head</FirstHead>
       </AccordionHead>
 
@@ -77,7 +92,7 @@ const TestAccordionMultiple = () => {
       </AccordionContent>
 
       {/* buttonを自前で用意する例 */}
-      <AccordionHead style={{ backgroundColor: 'lightgreen' }}>
+      <AccordionHead open={outerAccordions['outer-1'].open} style={{ backgroundColor: 'lightgreen' }}>
         <h2>Second Head</h2>
         <button type="button" onClick={outerControlledToggle('outer-1')}>
           Toggle
@@ -105,6 +120,7 @@ const TestAccordionMultiple = () => {
 
       {/* レンダー要素の変更 */}
       <AccordionHead
+        open={outerAccordions['outer-2'].open}
         style={{ margin: 0 }}
         component="h2"
         role="button"
@@ -123,6 +139,7 @@ const TestAccordionMultiple = () => {
 
       {/* アコーディオンの入れ子 */}
       <AccordionHead
+        open={outerAccordions['outer-3'].open}
         style={{ margin: 0 }}
         component="h2"
         role="button"
@@ -138,7 +155,14 @@ const TestAccordionMultiple = () => {
       >
         {/* 内側のアコーディオン */}
         <h3>Inner Accordions</h3>
-        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle('inner-0')}>
+        <AccordionHead
+          open={innerAccordions['inner-0'].open}
+          style={{ margin: 0 }}
+          component="h2"
+          role="button"
+          tabIndex={0}
+          onClick={innerToggle('inner-0')}
+        >
           inner Head 1
         </AccordionHead>
         <AccordionContent
@@ -148,7 +172,14 @@ const TestAccordionMultiple = () => {
         >
           <p>インナーコンテンツ1</p>
         </AccordionContent>
-        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle('inner-1')}>
+        <AccordionHead
+          open={innerAccordions['inner-1'].open}
+          style={{ margin: 0 }}
+          component="h2"
+          role="button"
+          tabIndex={0}
+          onClick={innerToggle('inner-1')}
+        >
           inner Head 2
         </AccordionHead>
         <AccordionContent
@@ -158,7 +189,14 @@ const TestAccordionMultiple = () => {
         >
           <p>インナーコンテンツ2</p>
         </AccordionContent>
-        <AccordionHead style={{ margin: 0 }} component="h2" role="button" tabIndex={0} onClick={innerToggle('inner-2')}>
+        <AccordionHead
+          open={innerAccordions['inner-2'].open}
+          style={{ margin: 0 }}
+          component="h2"
+          role="button"
+          tabIndex={0}
+          onClick={innerToggle('inner-2')}
+        >
           inner Head 3
         </AccordionHead>
         <AccordionContent

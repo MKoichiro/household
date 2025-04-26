@@ -9,6 +9,7 @@ import { theme } from '../../styles/theme/theme'
 import GlobalStyles from '../../styles/GlobalStyles'
 import PortalProvider from './PortalProvider'
 import WindowSizeProvider from './WindowSizeProvider'
+import LayoutProvider from './LayoutProvider'
 
 interface ProvidersProps {
   children: ReactNode
@@ -21,11 +22,13 @@ const Providers = ({ children }: ProvidersProps) => (
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <CssBaseline />
-          <AppProvider>
-            <PortalProvider>
-              <WindowSizeProvider>{children}</WindowSizeProvider>
-            </PortalProvider>
-          </AppProvider>
+          <LayoutProvider>
+            <AppProvider>
+              <PortalProvider>
+                <WindowSizeProvider>{children}</WindowSizeProvider>
+              </PortalProvider>
+            </AppProvider>
+          </LayoutProvider>
         </ThemeProvider>
       </TransactionProvider>
     </AuthProvider>
