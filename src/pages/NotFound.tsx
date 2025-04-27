@@ -6,7 +6,7 @@ import { theme } from '../styles/theme/theme'
 import { headerMainHeight } from '../shared/constants/ui'
 import { useAuth } from '../shared/hooks/useContexts'
 
-const NoMatch = () => {
+const NotFound = () => {
   const home = { path: '/app/home', display: 'ホーム' }
   const login = { path: '/auth/login', display: 'ログインページ' }
 
@@ -94,4 +94,4 @@ const NoMatch = () => {
   )
 }
 
-export default NoMatch
+export default NotFound
