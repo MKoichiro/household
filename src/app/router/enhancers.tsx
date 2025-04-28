@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from 'react'
+import { ComponentType, ReactNode, Suspense } from 'react'
 import LoadingOverlay from '../../components/common/LoadingOverlay'
 import Guard, { GuardType } from './guard'
 import { APP_NAME } from '../../shared/constants/app'
@@ -30,16 +30,28 @@ const withGuard = (node: ReactNode, guards?: GuardType[]): ReactNode => {
   return guards.reduce((acc, guard) => <Guard name={guard}>{acc}</Guard>, node)
 }
 
+// ← 追加: 任意のプロバイダーで包装
+type ProviderComponent = ComponentType<{ children: React.ReactNode }>
+const withProvider = (node: ReactNode, providers?: ProviderComponent[]): ReactNode => {
+  if (!providers || providers.length === 0) return node
+  return providers.reduce((acc, Provider) => <Provider>{acc}</Provider>, node)
+}
+
 // コンポーザー
 // Layout用
-const createLayout = (node: ReactNode, guards?: GuardType[]): ReactNode => {
-  let el = withGuard(node, guards)
+const createLayout = (
+  node: ReactNode,
+  options?: { guards?: GuardType[]; providers?: ProviderComponent[] }
+): ReactNode => {
+  let el = withProvider(node, options?.providers)
+  el = withGuard(el, options?.guards)
   el = withSuspense(el)
   return el
 }
 // Page用
-const createPage = (node: ReactNode, meta?: MetaType): ReactNode => {
-  let el = withMeta(node, meta)
+const createPage = (node: ReactNode, options?: { meta?: MetaType; providers?: ProviderComponent[] }): ReactNode => {
+  let el = withProvider(node, options?.providers)
+  el = withMeta(el, options?.meta)
   el = withSuspense(el)
   return el
 }

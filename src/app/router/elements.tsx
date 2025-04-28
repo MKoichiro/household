@@ -1,3 +1,5 @@
+// NOTE: 冗長に感じる場合はroutes.tsxのelementディレクティブに直接指定することも可能。好み。
+
 import { lazy } from 'react'
 import { createLayout, createPage } from './enhancers'
 import LandingLayout from '../../components/layouts/LandingLayout'
@@ -20,54 +22,54 @@ const Report = lazy(() => import('../../pages/ReportContainer'))
 
 const layouts = {
   public: {
-    root: createLayout(<LandingLayout />, ['CheckAuth']),
+    root: createLayout(<LandingLayout />, { guards: ['CheckAuth'] }),
   },
   app: {
-    root: createLayout(<AuthedLayout />, ['RequireAuth', 'RequireEmailVerification']),
+    root: createLayout(<AuthedLayout />, { guards: ['RequireAuth', 'RequireEmailVerification'] }),
     settings: {
       root: createLayout(<SettingsLayout />),
     },
   },
   auth: {
-    root: createLayout(<NonAuthedLayout />, ['CheckAuth']),
+    root: createLayout(<NonAuthedLayout />, { guards: ['CheckAuth'] }),
   },
   emailVerification: {
-    root: createLayout(<NonAuthedLayout />, ['CheckAuth', 'RequireAuth']),
+    root: createLayout(<NonAuthedLayout />, { guards: ['CheckAuth', 'RequireAuth'] }),
   },
   dev: {
-    root: createLayout(<NonAuthedLayout />, ['CheckDev']),
+    root: createLayout(<NonAuthedLayout />, { guards: ['CheckDev'] }),
   },
 }
 
 const pages = {
   public: {
-    index: createPage(<Landing />, { title: { noBody: true } }),
+    index: createPage(<Landing />, { meta: { title: { noBody: true } } }),
   },
   app: {
     index: undefined,
-    home: createPage(<Home />, { title: { body: 'ホーム' } }),
-    report: createPage(<Report />, { title: { body: '月間レポート' } }),
+    home: createPage(<Home />, { meta: { title: { body: 'ホーム' } } }),
+    report: createPage(<Report />, { meta: { title: { body: '月間レポート' } } }),
     settings: {
       index: undefined,
-      basic: createPage(<Settings />, { title: { body: '基本情報' } }),
-      security: createPage(<Security />, { title: { body: 'セキュリティ' } }),
+      basic: createPage(<Settings />, { meta: { title: { body: '基本情報' } } }),
+      security: createPage(<Security />, { meta: { title: { body: 'セキュリティ' } } }),
     },
-    news: createPage(<PrivateNews />, { title: { body: 'お知らせ' } }),
+    news: createPage(<PrivateNews />, { meta: { title: { body: 'お知らせ' } } }),
   },
   auth: {
     index: undefined,
-    login: createPage(<Login />, { title: { body: 'ログイン' } }),
-    signup: createPage(<SignUp />, { title: { body: 'サインアップ' } }),
+    login: createPage(<Login />, { meta: { title: { body: 'ログイン' } } }),
+    signup: createPage(<SignUp />, { meta: { title: { body: 'サインアップ' } } }),
   },
   emailVerification: {
-    index: createPage(<VerifyEmail />, { title: { body: 'メール確認' } }),
+    index: createPage(<VerifyEmail />, { meta: { title: { body: 'メール確認' } } }),
   },
   dev: {
     index: undefined,
-    canvas1: createPage(<TestAccordionSingle />, { title: { body: '開発者専用ページ' } }),
+    canvas1: createPage(<TestAccordionSingle />, { meta: { title: { body: '開発者専用ページ' } } }),
   },
   others: {
-    notFound: createPage(<NotFound />, { title: { body: '404 Not Found' } }),
+    notFound: createPage(<NotFound />, { meta: { title: { body: '404 Not Found' } } }),
   },
 }
 

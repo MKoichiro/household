@@ -1,3 +1,8 @@
+// NOTE: loaderでもGuardと同等の機能を実現可能。
+// loaderでfirebaseからuserオブジェクトを取得し、認証リダイレクトを実装することも可能だが、
+// AuthProviderと重複してuserオブジェクトを取得する通信が発生する。
+// Guardは自前で実装し、そこでAuthProviderからuser情報を取得するのが良い。
+
 import { ReactNode } from 'react'
 import { useAuth } from '../../shared/hooks/useContexts'
 import { Navigate } from 'react-router-dom'
