@@ -1,67 +1,91 @@
-// NOTE: ガード込みで同一レイアウトを異なるルートパスを持つページに適用するようになったら、
-// ルーティングをパスのツリー構造ではなく、レイアウトのツリー構造として解釈する「パスレスルート」に移行する。
-// （'/app'をundefinedにして、children側で'/app/home'と指定するようにするだけ。）
+// NOTE: element -> Component, errorElement -> ErrorBoundaryとする方がより新しい書き方らしいが、機能的には変わらない。
+// ComponentTypeでの指定になるため、特にelementをComponentにするにはエンハンサーも編集が必要。保留。
+// see: https://reactrouter.com/start/changelog#componenterrorboundary-route-properties
 
-import { RouteObject, Navigate } from 'react-router-dom'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { layouts, pages } from './elements'
-// import RouteErrorFallback from '../../components/common/RoutesErrorFallback'
+import LayoutFallback from '../../components/common/fallback/LayoutFallback'
+import PageFallback from '../../components/common/fallback/PageFallback'
 
-const routes: RouteObject[] = [
+const router = createBrowserRouter([
   {
-    path: undefined, // 共通レイアウトを使用したいのでパスレスルート
+    path: undefined, // パスレスルートで共通レイアウトを指定
     element: layouts.public.root,
-    // NOTE: loader, actionを使う場合、発生しうるエラーを捕捉するerrorElementを設定
-    // loader: async () => {},
-    // errorElement: <RouteErrorFallback />,
+    errorElement: <LayoutFallback />,
     children: [
-      { path: '/', element: pages.public.index },
-      { path: '*', element: pages.others.notFound },
+      {
+        path: undefined, // パスレスルートで共通フォールバックを設定
+        errorElement: <PageFallback />,
+        children: [
+          { path: '/', element: pages.public.index },
+          { path: '*', element: pages.others.notFound },
+        ],
+      },
     ],
   },
 
   {
     path: '/app',
     element: layouts.app.root,
+    errorElement: <LayoutFallback />,
     children: [
-      { index: true, element: <Navigate to="home" replace /> },
-      { path: 'home', element: pages.app.home },
-      { path: 'report', element: pages.app.report },
       {
-        path: 'settings',
-        element: layouts.app.settings.root,
+        errorElement: <PageFallback />,
         children: [
-          { index: true, element: <Navigate to="basic" replace /> },
-          { path: 'basic', element: pages.app.settings.basic },
-          { path: 'security', element: pages.app.settings.security },
+          { index: true, element: <Navigate to="home" replace /> },
+          { path: 'home', element: pages.app.home },
+          { path: 'report', element: pages.app.report },
+          {
+            path: 'settings',
+            element: layouts.app.settings.root,
+            children: [
+              { index: true, element: <Navigate to="basic" replace /> },
+              { path: 'basic', element: pages.app.settings.basic },
+              { path: 'security', element: pages.app.settings.security },
+            ],
+          },
+          { path: 'news', element: pages.app.news },
         ],
       },
-      { path: 'news', element: pages.app.news },
     ],
   },
   {
     path: '/auth',
     element: layouts.auth.root,
+    errorElement: <LayoutFallback />,
     children: [
-      { index: true, element: <Navigate to="login" replace /> },
-      { path: 'login', element: pages.auth.login },
-      { path: 'signup', element: pages.auth.signup },
+      {
+        errorElement: <PageFallback />,
+        children: [
+          { index: true, element: <Navigate to="login" replace /> },
+          { path: 'login', element: pages.auth.login },
+          { path: 'signup', element: pages.auth.signup },
+        ],
+      },
     ],
   },
 
   {
     path: '/verify-email',
+    errorElement: <LayoutFallback />,
     element: layouts.emailVerification.root,
-    children: [{ index: true, element: pages.emailVerification.index }],
+    children: [{ index: true, element: pages.emailVerification.index, errorElement: <PageFallback /> }],
   },
 
   {
     path: '/dev',
     element: layouts.dev.root,
+    errorElement: <LayoutFallback />,
     children: [
-      { index: true, element: <Navigate to="component-test" replace /> },
-      { path: 'component-test', element: pages.dev.canvas1 },
+      {
+        errorElement: <PageFallback />,
+        children: [
+          { index: true, element: <Navigate to="component-test" replace /> },
+          { path: 'component-test', element: pages.dev.canvas1 },
+        ],
+      },
     ],
   },
-]
+])
 
-export default routes
+export default router

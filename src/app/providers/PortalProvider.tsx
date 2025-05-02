@@ -18,6 +18,10 @@ const PortalProvider = ({ children }: { children: ReactNode }) => {
       name: 'notification',
       dataPortal: 'notification-pad',
     },
+    {
+      name: 'context-menu',
+      dataPortal: 'context-menu',
+    },
 
     // 追加する場合はこの下に...
     // { name: '???', dataPortal: '???' },
@@ -42,7 +46,7 @@ const PortalProvider = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {ENTRIES.map(({ name, dataPortal }) => (
-        <div key={name} ref={register(name)} data-portal={dataPortal} />
+        <div key={name} ref={register(name)} data-portal={dataPortal} style={{ width: '100vw', maxWidth: '100vw' }} />
       ))}
       <PortalContext.Provider value={map}>{children}</PortalContext.Provider>
     </>

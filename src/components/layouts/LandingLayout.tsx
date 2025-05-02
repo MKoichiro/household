@@ -2,23 +2,19 @@ import { AppBar, Box, Button, Toolbar } from '@mui/material'
 import { NavLink, Outlet } from 'react-router-dom'
 import LoginIcon from '@mui/icons-material/Login'
 import AddBoxIcon from '@mui/icons-material/AddBox'
-import HeaderTitle from '../common/HeaderTitle'
+import HeaderTitle from './common/HeaderTitle'
 import { headerMainHeight } from '../../shared/constants/ui'
+import LayoutRoot from './common/LayoutRoot'
 
 const LandingLayout = () => {
   return (
-    <Box
-      sx={{
-        display: { md: 'flex' },
-        bgcolor: (theme) => theme.palette.grey[100],
-        minHeight: '100vh',
-      }}
-    >
+    <LayoutRoot>
       {/* ヘッダー */}
       <AppBar position="fixed" sx={{ width: '100%', ml: 2, backgroundColor: (theme) => theme.palette.header.main }}>
         <Toolbar>
           <HeaderTitle />
 
+          {/* TODO: モーダルオープンボタンに変更 */}
           <Box sx={{ display: 'flex', gap: 2, ml: 'auto', mr: 2 }}>
             <NavLink to="/auth/signup">
               <Button
@@ -27,7 +23,7 @@ const LandingLayout = () => {
                 sx={{ color: 'white', borderColor: 'white' }}
                 endIcon={<AddBoxIcon />}
               >
-                Sign Up
+                サインアップ
               </Button>
             </NavLink>
 
@@ -38,7 +34,7 @@ const LandingLayout = () => {
                 sx={{ color: 'white', borderColor: 'white' }}
                 endIcon={<LoginIcon />}
               >
-                Log in
+                ログイン
               </Button>
             </NavLink>
           </Box>
@@ -49,7 +45,7 @@ const LandingLayout = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 3, width: '100vw', mt: `${headerMainHeight}px` }}>
         <Outlet />
       </Box>
-    </Box>
+    </LayoutRoot>
   )
 }
 

@@ -1,10 +1,10 @@
 import { css, IconButton, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { footerHeight, navigationMenuWidth } from '../../shared/constants/ui'
+import { navigationMenuWidth } from '../../../shared/constants/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import styled from '@emotion/styled'
-import { BareAccordionHead, BareAccordionContent } from './Accordion'
-import { useAccordions } from '../../shared/hooks/useAccordion'
+import { BareAccordionHead, BareAccordionContent } from '../../common/Accordion'
+import { useAccordions } from '../../../shared/hooks/useAccordion'
 import HomeIcon from '@mui/icons-material/Home'
 import EqualizerIcon from '@mui/icons-material/Equalizer'
 import SettingsIcon from '@mui/icons-material/Settings'
@@ -14,7 +14,7 @@ import CampaignIcon from '@mui/icons-material/Campaign'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { indigo, purple } from '@mui/material/colors'
 import { ReactNode } from 'react'
-import { useAuth, useLayout } from '../../shared/hooks/useContexts'
+import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
 
 interface MenuItemBase {
   id: string
@@ -251,7 +251,7 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: 
   position: absolute;
   left: 0;
   top: ${({ $dynamicHeaderHeight }) => `-${$dynamicHeaderHeight}px`};
-  bottom: ${footerHeight}px;
+  bottom: 0;
   z-index: ${({ theme }) => theme.zIndex.navigationMenu.lg};
   display: flex;
   flex-direction: column;

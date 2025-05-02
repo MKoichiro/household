@@ -1,11 +1,7 @@
-// NOTE: コンポーネント単位の再読み込み機能が react-router-dom 標準では、提供されていないので
-// jsランタイムのフォールバックは react-error-boundary によるグローバルエラーハンドリングをあえて上書きしない。
-// NOTE: 将来の利用を見据えて用意しているが、DATA API(loader/action)は現状未使用のため無くても良い。
-
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
 import { Box, Typography, Button } from '@mui/material'
 
-const RouteErrorFallback = () => {
+const LayoutFallback = () => {
   const error = useRouteError()
   let message = '不明なエラーが発生しました'
 
@@ -14,14 +10,14 @@ const RouteErrorFallback = () => {
     message = `Error ${error.status}: ${error.statusText}`
   }
   // JS ランタイムエラーを拾う場合
-  // else if (error instanceof Error) {
-  //   message = error.message
-  // }
+  else if (error instanceof Error) {
+    message = error.message
+  }
 
   return (
     <Box role="alert" sx={{ p: 4, textAlign: 'center' }}>
       <Typography variant="h4" color="error">
-        ページの表示中にエラーが発生しました
+        レイアウトの表示中にエラーが発生しました
       </Typography>
       <Typography variant="body1" sx={{ mt: 2 }}>
         {message}
@@ -35,4 +31,4 @@ const RouteErrorFallback = () => {
   )
 }
 
-export default RouteErrorFallback
+export default LayoutFallback

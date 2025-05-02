@@ -3,18 +3,20 @@
 import { lazy } from 'react'
 import { createLayout, createPage } from './enhancers'
 import LandingLayout from '../../components/layouts/LandingLayout'
-import AuthedLayout from '../../components/layouts/AuthedLayout'
-import SettingsLayout from '../../components/layouts/SettingsLayout'
+import AuthedLayout from '../../components/layouts/AuthedLayout/AuthedLayout'
+import SettingsLayout from '../../components/layouts/AuthedLayout/SettingsLayout'
 import NonAuthedLayout from '../../components/layouts/NonAuthedLayout'
 import Landing from '../../pages/Landing'
 import PrivateNews from '../../pages/PrivateNews'
 import SignUp from '../../pages/Signup'
 import VerifyEmail from '../../pages/VerifyEmail'
-import TestAccordionSingle from '../../dev/TestAccordionSingle'
 import NotFound from '../../pages/NotFound'
 import Login from '../../pages/Login'
 import Settings from '../../pages/Settings'
 import Security from '../../pages/Security'
+import TransactionProvider from '../providers/TransactionProvider'
+import AppProvider from '../providers/AppProvider'
+import * as Dev from '../../dev'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
 const Home = lazy(() => import('../../pages/HomeContainer'))
@@ -25,7 +27,10 @@ const layouts = {
     root: createLayout(<LandingLayout />, { guards: ['CheckAuth'] }),
   },
   app: {
-    root: createLayout(<AuthedLayout />, { guards: ['RequireAuth', 'RequireEmailVerification'] }),
+    root: createLayout(<AuthedLayout />, {
+      guards: ['RequireAuth', 'RequireEmailVerification'],
+      providers: [AppProvider, TransactionProvider],
+    }),
     settings: {
       root: createLayout(<SettingsLayout />),
     },
@@ -66,7 +71,7 @@ const pages = {
   },
   dev: {
     index: undefined,
-    canvas1: createPage(<TestAccordionSingle />, { meta: { title: { body: '開発者専用ページ' } } }),
+    canvas1: createPage(<Dev.HeaderModalMenu />, { meta: { title: { body: '開発者専用ページ' } } }),
   },
   others: {
     notFound: createPage(<NotFound />, { meta: { title: { body: '404 Not Found' } } }),

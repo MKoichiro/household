@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormEvent, useState } from 'react'
-import * as AuthPagesCommon from '../components/common/AuthPagesCommons'
+import * as AuthPagesCommon from '../features/AuthPagesCommons'
 
 // 前半部分の条件:
 // 英字が少なくとも1文字含まれることをチェック (?=.*[A-Za-z])
@@ -65,6 +65,7 @@ const SignUp = () => {
     handleSignup(data.email, data.password)
       .then(() => void navigate('/verify-email', { replace: true }))
       .catch(() => reset())
+      .finally(() => setIsSubmitting(false))
   }
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

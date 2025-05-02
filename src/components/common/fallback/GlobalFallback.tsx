@@ -1,11 +1,11 @@
 import { Box, Typography, Button } from '@mui/material'
 
-interface GlobalErrorFallbackProps {
+interface GlobalFallbackProps {
   error: Error
   resetErrorBoundary: () => void
 }
 
-const GlobalErrorFallback = ({ error, resetErrorBoundary }: GlobalErrorFallbackProps) => (
+const GlobalFallback = ({ error, resetErrorBoundary }: GlobalFallbackProps) => (
   <Box role="alert" sx={{ p: 4, textAlign: 'center' }}>
     <Typography variant="h4" color="error">
       予期せぬエラーが発生しました
@@ -19,4 +19,4 @@ const GlobalErrorFallback = ({ error, resetErrorBoundary }: GlobalErrorFallbackP
   </Box>
 )
 
-export default GlobalErrorFallback
+export default GlobalFallback

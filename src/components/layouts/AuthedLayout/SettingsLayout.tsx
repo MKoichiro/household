@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardContent, Divider, Typography } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../../shared/hooks/useContexts'
+import { useAuth } from '../../../shared/hooks/useContexts'
 
 const SettingsLayout = () => {
   const { user } = useAuth()
@@ -28,7 +28,7 @@ const SettingsLayout = () => {
             <Avatar
               alt={user?.displayName || user?.email || 'User'}
               src={user?.photoURL || undefined}
-              sx={{ width: 80, height: 80 }}
+              sx={{ width: '3rem', height: '3rem' }}
             >
               {!user?.photoURL && (user?.displayName?.charAt(0) || user?.email?.charAt(0) || '?')}
             </Avatar>

@@ -1,10 +1,11 @@
-import { useRoutes } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
 import './configs/chartConfig'
-import routes from './router/routes'
+import router from './router/routes'
 
 const App = () => {
-  const element = useRoutes(routes)
-  return element
+  // const element = useRoutes(routes)
+  // return element
+  return <RouterProvider router={router} />
 }
 
 export default App
