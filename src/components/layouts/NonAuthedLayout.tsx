@@ -17,7 +17,7 @@ const NonAuthedLayout = () => {
       </AppBar>
 
       {/* メインコンテンツ */}
-      <Box component="main" sx={{ p: 3, width: '100vw', mt: `${headerMainHeight}px` }}>
+      <Box component="main" sx={{ p: 3, width: '100%', mt: `${headerMainHeight}px` }}>
         <Outlet />
       </Box>
     </LayoutRoot>

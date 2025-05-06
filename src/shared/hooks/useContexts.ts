@@ -1,8 +1,9 @@
-import { createContext, Dispatch, ReactNode, ReactPortal, SetStateAction, useContext } from 'react'
+import { createContext, Dispatch, ReactNode, ReactPortal, SetStateAction, useContext, useEffect } from 'react'
 import { Transaction, TransactionFormValues } from '../types'
 import { User } from 'firebase/auth'
 import { AlertColor } from '@mui/material'
 import { createPortal } from 'react-dom'
+import { DEFAULT_ENTRIES } from '../../app/providers/PortalProvider/constant'
 
 interface AuthContextValue {
   user: User | null
@@ -79,31 +80,6 @@ export const useNotifications = () => {
   return context
 }
 
-export type PortalMap = Record<string, HTMLElement>
-
-export const PortalContext = createContext<PortalMap | undefined>(undefined)
-
-type PortalRendererType = ((content: ReactNode) => ReactPortal) | (() => null)
-
-export const usePortal = (name: string): PortalRendererType => {
-  // フック使用側の呼び出しミスを通知
-  if (!PortalContext) {
-    console.error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
-    throw new Error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
-  }
-  const map = useContext(PortalContext)
-  const mountTarget = map && map[name] // nameに対応する <div> を取得
-  if (!mountTarget) {
-    console.warn(`usePortal: ${name} は未登録です。`)
-    return () => null
-  }
-
-  // 任意のReactNodeを受け取って、Portalを返す関数を返す
-  return function PortalRenderer(content: ReactNode) {
-    return createPortal(content, mountTarget)
-  }
-}
-
 interface AppContextType {
   currentMonth: Date
   setCurrentMonth: Dispatch<SetStateAction<Date>>
@@ -138,4 +114,66 @@ export const useLayout = () => {
     throw new Error('useLayout: グローバルなデータはプロバイダーの中で取得してください')
   }
   return context
+}
+
+export interface PortalEntry {
+  name: string
+  dataPortal: string
+}
+
+export interface PortalEntriesContextType {
+  entries: PortalEntry[]
+  addEntries: (newEntries: PortalEntry[]) => void
+  removeEntry: (entryName: string) => void
+}
+
+export const PortalEntriesContext = createContext<PortalEntriesContextType>({
+  entries: DEFAULT_ENTRIES,
+  addEntries: () => {},
+  removeEntry: () => {},
+})
+
+export const usePortalEntries = () => {
+  const context = useContext(PortalEntriesContext)
+  if (!context) {
+    throw new Error('usePortalEntries: グローバルなデータはプロバイダーの中で取得してください')
+  }
+  return context
+}
+
+export const usePortalRegistration = (entries: PortalEntry[]) => {
+  const { addEntries, removeEntry } = usePortalEntries()
+  useEffect(() => {
+    addEntries(entries)
+    return () => {
+      entries.forEach((entry) => {
+        removeEntry(entry.name)
+      })
+    }
+  }, [addEntries, entries, removeEntry])
+}
+
+export type PortalElementMap = Record<string, HTMLElement>
+
+export const PortalElementContext = createContext<PortalElementMap | undefined>(undefined)
+
+type PortalRendererType = ((content: ReactNode) => ReactPortal) | (() => null)
+
+export const usePortal = (name: string): PortalRendererType => {
+  // フック使用側の呼び出しミスを通知
+  if (!PortalElementContext) {
+    console.error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
+    throw new Error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
+  }
+  const map = useContext(PortalElementContext)
+  const mountTarget = map && map[name] // nameに対応する <div> を取得
+  if (!mountTarget) {
+    console.warn(`usePortal: ${name} は未登録です。`)
+    return () => null
+  }
+
+  // 任意のReactNodeを受け取って、Portalを返す関数を返す
+  return function PortalRenderer(content: ReactNode) {
+    return createPortal(content, mountTarget)
+  }
 }

@@ -7,15 +7,19 @@ import { v4 as uuidv4 } from 'uuid'
 
 // Objectオブジェクトのメソッドの返り値は、型が不明になるため適宜アサーションしている
 
+// ステート管理せずに、副作用のみをコールバックで扱うことも可能だが、その場合不要なステート管理を行うことになるため、
+// このカスタムフックを使用するのはもはやミニマムな実装ではなくなる。
+
 type OptionsType<Id extends string, R> = {
   delay?: number
-  initialValues: Record<Id, R>
+  // initialValues: Record<Id, R>
+  initialValues?: Partial<Record<Id, R>>
 }
 
 export function useResizeObservers<Id extends string, R>(
   refs: Record<Id, RefObject<HTMLElement | null>>,
   callback: (el: HTMLElement) => R = (el) => el.getBoundingClientRect() as R, // 何らかの矩形情報を返す関数。あくまで例。基本的には用途を絞り上書きして使用すること。
-  options: OptionsType<Id, R>
+  options: OptionsType<Id, R> = {}
 ): Record<Id, R> {
   const { delay = 50, initialValues } = options
 
@@ -32,48 +36,62 @@ export function useResizeObservers<Id extends string, R>(
   }, [callback])
 
   // 矩形情報を格納するためのstate
-  const [rects, setRects] = useState<Record<Id, R>>(
-    ids.reduce(
-      (acc, id) => {
-        acc[id] = initialValues[id]
-        return acc
-      },
-      {} as Record<Id, R>
-    )
-  )
+  // const [rects, setRects] = useState<Record<Id, R>>(
+  //   ids.reduce(
+  //     (acc, id) => {
+  //       acc[id] = initialValues[id]
+  //       return acc
+  //     },
+  //     {} as Record<Id, R>
+  //   )
+  // )
+  const [rects, setRects] = useState<Record<Id, R>>(() => {
+    const initial: Partial<Record<Id, R>> = {}
+    ids.forEach((id) => {
+      if (initialValues?.[id] !== undefined) {
+        // 初期値が渡されていればそれを使う
+        initial[id] = initialValues[id]!
+      } else {
+        // なければコールバックの結果で補完
+        const el = refs[id]?.current
+        if (el) {
+          initial[id] = callback(el)
+        }
+      }
+    })
+    return initial as Record<Id, R>
+  })
 
   useLayoutEffect(() => {
     if (typeof window === 'undefined' || typeof ResizeObserver === 'undefined') return
 
-    // ── 初回だけは即時に反映 ──
-    const initialState: Record<Id, R> = ids.reduce(
-      (acc, id) => {
-        const el = refs[id]?.current
-        if (el) acc[id] = callbackRef.current(el)
-        return acc
-      },
-      {} as Record<Id, R>
-    )
-    setRects(initialState)
-
-    // ── 以降の変化はデバウンス付きで dispatch ──
+    // ── デバウンス付きで dispatch ──
     const observers = {} as Record<Id, ResizeObserver>
     const debounceCancelers: Partial<Record<Id, () => void>> = {}
     ids.forEach((id) => {
       const el = refs[id]?.current
       if (!el) return
 
-      const onResize = debounce((value: R) => {
+      // 更新処理
+      const dispatch = (value: R) => {
         // 「非プリミティブ型でもディープに比較し、変更が無ければ早期リターン」
         // という処置は考慮すべきだが、比較コストとsetRectsのコスト比較も必要なので、現状あえて比較は行わない。
         setRects((prev) => ({ ...prev, [id]: value }))
-      }, delay)
-      debounceCancelers[id] = onResize.cancel
+      }
 
+      // 初回とマウント時は手動で更新
+      const initial = callbackRef.current(el)
+      dispatch(initial)
+
+      // 初回またはマウント以降は、リサイズ時に更新
+      const onResize = debounce(dispatch, delay)
       const observer = new ResizeObserver(([entry]) => {
         if (entry.target instanceof HTMLElement) onResize(callbackRef.current(entry.target))
       })
       observer.observe(el)
+
+      // クリーンアップ用オブジェクトにプッシュ
+      debounceCancelers[id] = onResize.cancel
       observers[id] = observer
     })
 
@@ -84,8 +102,9 @@ export function useResizeObservers<Id extends string, R>(
 
     // ids, refsの変化は、keyStringの変化に集約される
     // callbackは無限ループとなるため、最新のコールバックは依存配列ではなくrefで管理済み。
+    // また、refsをフラット化して依存させることで、初回実行時に未マウントであってもマウント後に、確実に再実行できる
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyString, delay])
+  }, [keyString, delay, ...ids.map((id) => refs[id]?.current)])
 
   return rects
 }
@@ -94,7 +113,7 @@ export function useResizeObservers<Id extends string, R>(
 export const useResizeObserver = <R>(
   ref: RefObject<HTMLElement | null>,
   callback: (el: HTMLElement) => R = (el) => el.getBoundingClientRect() as R,
-  options: { delay?: number; initialValue: R }
+  options: { delay?: number; initialValue?: R } = {}
 ): R => {
   // 一意なIDを生成
   const id = useRef(`resize-${uuidv4()}`).current

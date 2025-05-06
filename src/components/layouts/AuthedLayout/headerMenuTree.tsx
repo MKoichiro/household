@@ -1,7 +1,7 @@
-import { MenuTree } from '../../../dev/ContextMenu'
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { ReactNode } from 'react'
+import { MenuTree } from '../../common/ContextMenu/types'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -13,6 +13,7 @@ export const headerMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
   {
     id: 'logout',
     display: logoutComponent,
+    dividerAfter: true,
   },
   {
     id: 'pages',

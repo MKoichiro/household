@@ -22,7 +22,7 @@ const TransactionDetailBody = ({
 }: TransactionDetailProps) => {
   return (
     <Stack sx={{ height: '100%' }} spacing={2}>
-      <Typography fontWeight={'fontWeightBold'}>{format(selectedDay, 'M月dd日')}</Typography>
+      <Typography fontWeight={'fontWeightBold'}>{format(selectedDay, 'M月 d日')}</Typography>
 
       {/* 収入・支出・残高 表示エリア */}
       <DailySummary dailyTransactions={dailyTransactions} />

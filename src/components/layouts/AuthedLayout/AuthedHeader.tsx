@@ -6,10 +6,10 @@ import HeaderTitle from '../common/HeaderTitle'
 import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
 import { headerMainHeight, headerNewsHeight, navigationMenuWidth } from '../../../shared/constants/ui'
 import NewsBar from './HeaderNews'
-import ContextMenuOrigin from '../../../dev/ContextMenu'
 import { useRef, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { headerMenuTree } from './headerMenuTree'
+import ContextMenuOrigin from '../../common/ContextMenu/ContextMenuOrigin'
 
 interface AuthedHeaderProps {
   onMenuToggleClick: () => void
@@ -68,24 +68,6 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
 
         <HeaderTitle redirectTo="home" />
 
-        {/* TODO: モーダルオープンボタンに変更 */}
-        {/* <Button
-          variant="outlined"
-          aria-label="ログアウトボタン"
-          sx={{
-            display: 'flex',
-            ml: 'auto',
-            color: 'white',
-            borderColor: 'white',
-          }}
-          endIcon={<LogoutIcon />}
-          // onClick={logout}
-          // disabled={isLogoutProcessing}
-          onClick={handleMenuToggle}
-          ref={toggleBtnRef}
-        >
-          ログアウト
-        </Button> */}
         <IconButton
           aria-label="ヘッダーメニュー開閉ボタン"
           onClick={handleMenuToggle}
@@ -103,11 +85,17 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
       <ContextMenuOrigin
         open={open}
         menuTree={menuTree}
+        autoIcon={true}
         onClose={handleClose}
         closeBtnRef={toggleBtnRef}
         direction="left"
-        anchorRef={anchorRef}
-        relativePositionStrategy="outerBottomRight"
+        position={{
+          type: 'anchor',
+          anchorRef: anchorRef,
+          anchorRelativity: 'outerBottomRight',
+          // clicked: 'document',
+          offset: { x: -8, y: 8 },
+        }}
       />
     </HeaderRoot>
   )

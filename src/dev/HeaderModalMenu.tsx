@@ -1,18 +1,20 @@
 // 使用側の例
 
 import styled from '@emotion/styled'
-import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import ContextMenuOrigin, { MenuTree } from './ContextMenu'
 import { List, ListItem, ListItemText, ListItemButton, Paper } from '@mui/material'
+import ContextMenuOrigin from '../components/common/ContextMenu/ContextMenuOrigin'
+import { MenuTree } from '../components/common/ContextMenu/types'
+import useContextMenu from '../components/common/ContextMenu/hooks/useContextMenu'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
   display: block;
 `
+
 // コンポーネント外で定義、またはコンポーネント内でメモ化して定義すること。
-export const menuTree: MenuTree[] = [
+const menuTree: MenuTree[] = [
   {
     id: '1-nest-1',
     display: '1st ネストメニューを表示',
@@ -54,51 +56,83 @@ export const menuTree: MenuTree[] = [
 ]
 
 const HeaderMenuRoot = () => {
-  const [firstOpen, setFirstOpen] = useState(false)
+  // clicked - anchor
+  const clickedAnchor = useContextMenu<HTMLDivElement>({
+    id: 'test-clicked-anchor',
+    menuTree,
+    autoIcon: true,
+    position: { type: 'clicked', clicked: 'anchor', cursorRelativity: 'center', offset: { x: 0, y: 0 } },
+  })
 
-  const handleToggle = () => setFirstOpen((prev) => !prev)
-  const handleClose = () => setFirstOpen(false)
+  // clicked - window
+  const clickedWindow = useContextMenu<HTMLDivElement>({
+    id: 'test-clicked-window',
+    menuTree,
+    autoIcon: true,
+    position: { type: 'clicked', clicked: 'window', cursorRelativity: 'center', offset: { x: 0, y: 0 } },
+  })
 
-  const [open, setOpen] = useState(false)
+  // clicked - document
+  const clickedDocument = useContextMenu<HTMLDivElement>({
+    id: 'test-clicked-document',
+    menuTree,
+    autoIcon: true,
+    position: { type: 'clicked', clicked: 'document', cursorRelativity: 'center', offset: { x: 0, y: 0 } },
+  })
 
-  const handleToggle2 = () => setOpen((prev) => !prev)
-  const handleClose2 = () => setOpen(false)
-  const anchorRef = useRef<HTMLDivElement>(null)
-  const toggleBtnRef = useRef<HTMLElement>(null)
+  // anchor モード
+  const anchorMode = useContextMenu<HTMLDivElement>({
+    id: 'test-anchor-mode',
+    menuTree,
+    autoIcon: true,
+    position: { type: 'anchor', anchorRelativity: 'innerBottomLeftCorner', offset: { x: 0, y: 0 } },
+  })
+
+  // custom モード
+  const customMode = useContextMenu<HTMLDivElement>({
+    id: 'test-custom-mode',
+    menuTree,
+    autoIcon: true,
+    position: { type: 'custom', custom: { top: 100, left: 100, transform: 'none' } },
+  })
 
   return (
-    <>
-      <button onClick={handleToggle}>Toggle</button>
-      {/* <ContextMenuOrigin open={firstOpen} menuTree={menuTree} onClose={handleClose} /> */}
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center' }}>
-        <Paper sx={{ width: 600, mx: 'auto' }}>
-          <List>
-            {Array.from({ length: 3 }, (_, i) => `ダミー項目 ${i + 1}`).map((text, index) => (
-              <ListItem key={text} sx={{ height: 100 }}>
-                {index === 0 ? (
-                  <ListItemButton id="dfghjk" ref={anchorRef} sx={{ height: '100px' }}>
-                    <ListItemText primary={text} onClick={handleToggle2} ref={toggleBtnRef} />
-                    {/* <ContextMenuOrigin
-                      open={open}
-                      menuTree={menuTree}
-                      onClose={handleClose2}
-                      closeBtnRef={toggleBtnRef}
-                      direction="right"
-                      anchorRef={anchorRef}
-                      relativePositionStrategy="outerBottomRight"
-                    /> */}
-                  </ListItemButton>
-                ) : (
-                  <ListItemButton>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                )}
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      </div>
-    </>
+    <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Paper sx={{ width: { sm: '90%', md: '70%', lg: '50%' }, p: 2 }}>
+        <List>
+          <ListItem>
+            <ListItemButton ref={clickedAnchor.anchorRef} onClick={clickedAnchor.handleToggle}>
+              <ListItemText primary="Clicked Anchor" ref={clickedAnchor.closeBtnRef} />
+              <ContextMenuOrigin {...clickedAnchor.register} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton ref={clickedWindow.anchorRef} onClick={clickedWindow.handleToggle}>
+              <ListItemText primary="Clicked Window" ref={clickedWindow.closeBtnRef} />
+              <ContextMenuOrigin {...clickedWindow.register} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton ref={clickedDocument.anchorRef} onClick={clickedDocument.handleToggle}>
+              <ListItemText primary="Clicked Document" ref={clickedDocument.closeBtnRef} />
+              <ContextMenuOrigin {...clickedDocument.register} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton ref={anchorMode.anchorRef} onClick={anchorMode.handleToggle}>
+              <ListItemText primary="Anchor Mode" ref={anchorMode.closeBtnRef} />
+              <ContextMenuOrigin {...anchorMode.register} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton ref={customMode.anchorRef} onClick={customMode.handleToggle}>
+              <ListItemText primary="Custom Mode (100×100px)" ref={customMode.closeBtnRef} />
+              <ContextMenuOrigin {...customMode.register} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Paper>
+    </div>
   )
 }
 
