@@ -7,6 +7,7 @@
 
 // TODO: 1. button要素がdisplayで渡されたときに、nested buttonのエラーが出ている問題を解決する。
 // TODO: 2. スタイルを使用者が決められるようにする。classNameを付与しているので十分（？）
+// TODO: 3. animeConfigsを充実させる。
 
 import { CSSProperties, RefObject } from 'react'
 import { usePortal } from '../../../shared/hooks/useContexts'
@@ -15,7 +16,7 @@ import MotionContext from './MotionContext'
 import Nested from './Nested'
 import { AnimeConfigs } from './animationConfigs'
 import { ContextMenuRoot } from './styled'
-import { MenuTree, PosStyle } from './types'
+import { MenuTree, PositionStyle } from './types'
 
 export interface ContextMenuOriginProps {
   id: string
@@ -28,7 +29,7 @@ export interface ContextMenuOriginProps {
   /* サブメニューの展開方向。 */
   toLeft: boolean
   /* ポジション制御のための CSSProperties。 */
-  posStyle: PosStyle
+  positionStyle: PositionStyle
   /* position: fixed か position: absolute か。clicked かつ 'window' の場合に true */
   shouldFix: boolean
   /* ルート要素のスタイル。必要があれば。基本は className ベースでの適用を推奨。 */
@@ -43,7 +44,7 @@ const ContextMenuOrigin = ({
   autoIcon: autoIconBulk,
   rootRef,
   toLeft,
-  posStyle,
+  positionStyle,
   shouldFix,
   style,
 }: ContextMenuOriginProps) => {
@@ -57,7 +58,7 @@ const ContextMenuOrigin = ({
             <ContextMenuRoot
               className="context-menu-root"
               ref={rootRef}
-              $pos={posStyle}
+              $pos={positionStyle}
               $fixed={shouldFix}
               style={{ ...style }}
             >

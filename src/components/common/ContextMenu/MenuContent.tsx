@@ -1,6 +1,39 @@
-import { forwardRef, ReactNode } from 'react'
+import { Children, forwardRef, isValidElement, ReactNode } from 'react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { CoordinateRect, EventRect, Separator } from './styled'
+
+/**
+ * ReactNode のツリー中に <button> もしくは MUI Button があれば true を返す
+ */
+// function containsButtonElement(node: ReactNode): boolean {
+//   let found = false
+
+//   Children.forEach(node, (child) => {
+//     if (found) return
+
+//     // ReactElement かどうか
+//     if (!isValidElement(child)) return
+
+//     const type = child.type as any
+
+//     // ネイティブの <button>
+//     if (type === 'button') {
+//       found = true
+//       return
+//     }
+
+//     // MUI の Button コンポーネント判定 (muiName を利用)
+//     if (type && type.muiName === 'Button') {
+//       found = true
+//       return
+//     }
+
+//     // 再帰的に子要素をチェック
+//     found = containsButtonElement(child.props?.children)
+//   })
+
+//   return found
+// }
 
 interface MenuContentProps {
   id: string
@@ -13,6 +46,11 @@ interface MenuContentProps {
 }
 
 const MenuContent = forwardRef<HTMLLIElement | null, MenuContentProps>(
+  // ボタン要素がcontentとして渡されたときに、nested buttonのエラーが出ている問題を解決する。
+  // children を持たない場合は、EventRectを置き換えて、ボタン要素を直接描画しても設計としては問題ないはず。
+  // children を持つ場合には、onClickを上書きされてしまうと、childrenを表示するためのonClickが発火しないので、console.warnを出す。
+  // または、onClickを統合することができるか、どうか。
+  // まずはcontentがボタンかどうかの判定が必要。
   (
     { id, content, hasChildren, autoIcon = false, dividerAfter, onClick: handleClick, onMouseEnter: handleToggle },
     ref?

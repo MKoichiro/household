@@ -58,7 +58,7 @@ export type CursorRelativity =
   | 'leftCenter'
   | 'center'
 
-export type PosStyle = Partial<Pick<CSSProperties, 'top' | 'left' | 'right' | 'bottom' | 'transform'>>
+export type PositionStyle = Partial<Pick<CSSProperties, 'top' | 'left' | 'right' | 'bottom' | 'transform'>>
 
 export interface Coordinate {
   x: number
