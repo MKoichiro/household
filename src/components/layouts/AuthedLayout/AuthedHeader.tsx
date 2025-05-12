@@ -6,10 +6,10 @@ import HeaderTitle from '../common/HeaderTitle'
 import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
 import { headerMainHeight, headerNewsHeight, navigationMenuWidth } from '../../../shared/constants/ui'
 import NewsBar from './HeaderNews'
-import { useRef, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { headerMenuTree } from './headerMenuTree'
-import ContextMenuOrigin from '../../common/ContextMenu/ContextMenuOrigin'
+import { headerMenuConfigs, headerMenuTree } from './contextMenuConfigs'
+import ContextMenu from '../../common/ContextMenu/ContextMenu'
+import { useContextMenu } from '../../common/ContextMenu/hooks/useContextMenus'
 
 interface AuthedHeaderProps {
   onMenuToggleClick: () => void
@@ -23,15 +23,9 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
   // エラーハンドリングはhandleLogout内で行う
   const logout = () => void handleLogout()
 
-  const [open, setOpen] = useState(false)
-  const anchorRef = useRef<HTMLButtonElement>(null)
-  const toggleBtnRef = useRef<HTMLButtonElement>(null)
-  const handleClose = () => setOpen(false)
-  const handleMenuToggle = () => setOpen((prev) => !prev)
-
+  // コンテキストメニューの設定
   const menuTree = headerMenuTree(
     <Button
-      variant="text"
       aria-label="ログアウトボタン"
       sx={{
         display: 'flex',
@@ -42,11 +36,13 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
       disabled={isLogoutProcessing}
       startIcon={<LogoutIcon />}
       onClick={logout}
-      ref={toggleBtnRef}
     >
       ログアウト
     </Button>
   )
+  const menuConfigs = headerMenuConfigs(menuTree)
+  // const { registers, anchorRefs, togglers, clickAwayRefs } = useContextMenus(menuConfigs)
+  const { open, positionStyle, register, handleToggle, anchorRef, clickAwayRef } = useContextMenu(menuConfigs)
 
   return (
     <HeaderRoot $isNavigationMenuOpen={isNavigationMenuOpen} $isNewsOpen={isNewsOpen} ref={anchorRef}>
@@ -70,8 +66,8 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
 
         <IconButton
           aria-label="ヘッダーメニュー開閉ボタン"
-          onClick={handleMenuToggle}
-          ref={toggleBtnRef}
+          onClick={handleToggle}
+          ref={clickAwayRef}
           sx={{
             display: 'flex',
             ml: 'auto',
@@ -82,26 +78,10 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
           <MoreVertIcon />
         </IconButton>
       </HeaderMain>
-      <ContextMenuOrigin
-        open={open}
-        menuTree={menuTree}
-        autoIcon={true}
-        onClose={handleClose}
-        closeBtnRef={toggleBtnRef}
-        direction="left"
-        position={{
-          type: 'anchor',
-          anchorRef: anchorRef,
-          anchorRelativity: 'outerBottomRight',
-          // clicked: 'document',
-          offset: { x: -8, y: 8 },
-        }}
-      />
+      <ContextMenu {...register} open={open} positionStyle={positionStyle} />
     </HeaderRoot>
   )
 }
-
-export default AuthedHeader
 
 const HeaderRoot = styled.header<{ $isNavigationMenuOpen: boolean; $isNewsOpen: boolean }>`
   background-color: ${({ theme }) => theme.palette.header.main};
@@ -133,3 +113,5 @@ const HeaderMain = styled.div<{ $isNewsOpen: boolean }>`
   transform: translateY(${({ $isNewsOpen }) => ($isNewsOpen ? '0' : '-32px')});
   transition: transform 300ms ease;
 `
+
+export default AuthedHeader

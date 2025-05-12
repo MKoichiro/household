@@ -1,28 +1,19 @@
-import styled from '@emotion/styled'
-import { CSSProperties, ReactNode } from 'react'
-import { motion } from 'framer-motion'
-import { AnimeConfigs } from './animationConfigs'
+import { MotionContextProps } from './types'
+import { MotionContextBase } from './styled'
 
-interface MotionContextProps {
-  id: string
-  animeConfigs: AnimeConfigs
-  toLeft: boolean
-  style?: CSSProperties
-  children: ReactNode
-}
-
-const MotionContext = ({ id, animeConfigs, toLeft = true, style, children }: MotionContextProps) => {
+const MotionContext = ({ id, animeConfig, toLeft = true, style, children }: MotionContextProps) => {
+  const { transformOrigin, ...rest } = animeConfig
   return (
-    <MotionContextBase key={id} {...animeConfigs} $toLeft={toLeft} style={style}>
+    <MotionContextBase
+      key={id}
+      {...rest}
+      $toLeft={toLeft}
+      $transformOrigin={transformOrigin ? transformOrigin : toLeft ? 'top right' : 'top left'}
+      style={style}
+    >
       {children}
     </MotionContextBase>
   )
 }
-
-const MotionContextBase = styled(motion.div)<{ $toLeft: boolean }>`
-  display: flex;
-  transform-origin: ${({ $toLeft }) => ($toLeft ? 'top right' : 'top left')};
-  flex-direction: ${({ $toLeft }) => ($toLeft ? 'row-reverse' : 'row')};
-`
 
 export default MotionContext

@@ -1,19 +1,32 @@
 import styled from '@emotion/styled'
 import { indigo } from '@mui/material/colors'
 import { css } from '@mui/material'
-import { PosStyle } from './types'
+import { PositionStyle } from './types'
+import { CSSProperties } from 'react'
+import { motion } from 'framer-motion'
 
-// ContextMenuOrigin
-const ContextMenuRoot = styled.div<{ $pos: PosStyle; $fixed: boolean }>`
+// ContextMenu
+const ContextMenuRoot = styled.div<{
+  $pos: PositionStyle
+  $fixed: boolean
+  $zIndex?: CSSProperties['zIndex']
+}>`
   font-size: 0.75rem;
   pointer-events: auto;
   position: ${({ $fixed }) => ($fixed ? 'fixed' : 'absolute')};
-  z-index: 3000;
+  z-index: ${({ $zIndex }) => $zIndex ?? 1000};
   top: ${({ $pos }) => ($pos.top != null ? `${$pos.top}px` : 'auto')};
   left: ${({ $pos }) => ($pos.left != null ? `${$pos.left}px` : 'auto')};
   bottom: ${({ $pos }) => ($pos.bottom != null ? `${$pos.bottom}px` : 'auto')};
   right: ${({ $pos }) => ($pos.right != null ? `${$pos.right}px` : 'auto')};
   transform: ${({ $pos }) => $pos.transform ?? 'none'};
+`
+
+// MotionContext
+const MotionContextBase = styled(motion.div)<{ $transformOrigin: string; $toLeft: boolean }>`
+  display: flex;
+  transform-origin: ${({ $transformOrigin }) => $transformOrigin};
+  flex-direction: ${({ $toLeft }) => ($toLeft ? 'row-reverse' : 'row')};
 `
 
 // Nested
@@ -91,4 +104,4 @@ const EventRect = styled.button`
   }
 `
 
-export { ContextMenuRoot, MenuUl, CoordinateOrigin, CoordinateRect, Separator, EventRect }
+export { ContextMenuRoot, MotionContextBase, MenuUl, CoordinateOrigin, CoordinateRect, Separator, EventRect }

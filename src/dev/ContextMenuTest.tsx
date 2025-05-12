@@ -1,10 +1,9 @@
-// src/components/HeaderMenuRoot.tsx
 import styled from '@emotion/styled'
 import { Link } from 'react-router-dom'
 import { List, ListItem, ListItemText, Paper, Button, Box, Typography } from '@mui/material'
-import ContextMenuOrigin from '../components/common/ContextMenu/ContextMenuOrigin'
-import type { MenuTree } from '../components/common/ContextMenu/types'
-import useContextMenu, { ContextMenuConfigs } from '../components/common/ContextMenu/hooks/useContextMenu'
+import ContextMenu from '../components/common/ContextMenu/ContextMenu'
+import type { ContextMenusCommonConfig, ContextMenusConfigs, MenuTree } from '../components/common/ContextMenu/types'
+import { useContextMenus } from '../components/common/ContextMenu/hooks/useContextMenus'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -15,61 +14,60 @@ const StyledLink = styled(Link)`
 // あらかじめメニュー構造を定義
 const menuTree: MenuTree[] = [
   {
-    id: '1-nest-1',
+    // id: '1st-1', // id は任意、無ければ内部生成して管理される。
     display: '1st ネストメニューを表示',
     children: [
       {
-        id: '1-1-nest-1',
         display: '2nd-1 ネストメニューを表示',
-        children: [
-          { id: '1-1-1-norm-1', display: '3rd-1 メニュー' },
-          { id: '1-1-3-norm-2', display: '3rd-1 メニュー' },
-        ],
+        children: [{ display: '3rd-1 メニュー' }, { display: '3rd-1 メニュー' }],
       },
       {
-        id: '1-2-nest-2',
         display: '2nd-2 ネストメニューを表示',
-        children: [
-          { id: '1-2-1-norm-1', display: '3rd-2 メニュー' },
-          { id: '1-2-2-norm-2', display: '3rd-2 メニュー' },
-        ],
+        children: [{ display: '3rd-2 メニュー' }, { display: '3rd-2 メニュー' }],
       },
     ],
   },
-  { id: '2-norm-1', display: <StyledLink to="/">公開ページ</StyledLink> },
+  { display: <StyledLink to="/">公開ページ</StyledLink> },
   {
-    id: '3-nest-2',
     display: '1st-2 ネストメニューを表示',
     children: [
-      { id: '3-1-norm-1', display: '2nd-2 メニュー' },
+      { display: '2nd-2 メニュー' },
       {
-        id: '3-2-nest-1',
         display: '2nd-2 ネストメニューを表示',
-        children: [
-          { id: '3-2-1-norm-1', display: '3rd-3 メニュー' },
-          { id: '3-2-2-norm-2', display: '3rd-3 メニュー' },
-        ],
+        children: [{ display: '3rd-3 メニュー' }, { display: '3rd-3 メニュー' }],
       },
     ],
   },
 ]
 
-const configs: ContextMenuConfigs[] = [
+// 個別設定で上書き可能な共通設定
+const commonConfig: ContextMenusCommonConfig = {
+  menuTree,
+  autoIcon: true,
+  zIndex: 3000,
+  direction: 'right',
+  subMenuPosition: {
+    strategy: 'absoluteTop',
+    offsetY: 0,
+  },
+  position: {
+    type: 'clicked',
+    clicked: 'anchor',
+    cursorRelativity: 'center',
+    offset: { x: 0, y: 0 },
+  },
+  // animeConfigs: {...},
+  closeOnClickAway: true, // closeOnClickAwayのみ、共通設定でのみ指定可能なオプション
+}
+
+const configs: ContextMenusConfigs = [
   {
-    id: 'test-clicked-anchor',
-    menuTree,
-    autoIcon: true,
-    position: {
-      type: 'clicked',
-      clicked: 'anchor',
-      cursorRelativity: 'center',
-      offset: { x: 0, y: 0 },
-    },
+    // id: 'test-clicked-anchor', // id は任意、無ければ内部生成して管理される。
+    name: 'test-clicked-anchor', // name は内部的には無視される。
+    // 他は共通設定を継承
   },
   {
-    id: 'test-clicked-window',
-    menuTree,
-    autoIcon: true,
+    name: 'test-clicked-window',
     position: {
       type: 'clicked',
       clicked: 'window',
@@ -78,9 +76,7 @@ const configs: ContextMenuConfigs[] = [
     },
   },
   {
-    id: 'test-clicked-document',
-    menuTree,
-    autoIcon: true,
+    name: 'test-clicked-document',
     position: {
       type: 'clicked',
       clicked: 'document',
@@ -89,9 +85,7 @@ const configs: ContextMenuConfigs[] = [
     },
   },
   {
-    id: 'test-anchor-mode',
-    menuTree,
-    autoIcon: true,
+    name: 'test-anchor-mode',
     position: {
       type: 'anchor',
       anchorRelativity: 'innerBottomLeftCorner',
@@ -99,53 +93,29 @@ const configs: ContextMenuConfigs[] = [
     },
   },
   {
-    id: 'test-custom-mode',
-    menuTree,
-    autoIcon: true,
+    name: 'test-custom-mode',
     position: {
       type: 'custom',
       custom: { top: 100, left: 100, transform: 'none' },
     },
   },
-  // {
-  //   id: 'test-clicked-anchor-right-click',
-  //   menuTree,
-  //   autoIcon: true,
-  //   position: {
-  //     type: 'clicked',
-  //     clicked: 'anchor',
-  //     cursorRelativity: 'center',
-  //     offset: { x: 0, y: 0 },
-  //   },
-  // },
 ]
 
 const HeaderMenuRoot = () => {
   const {
-    register,
+    integratedConfigs: configsWithIds, // commonConfig を統合し、（未設定なら） id を付与した configs。idで各register, handler, refにアクセスできる。
+    registers,
     anchorRefs,
-    // closeBtnRefs,
     handleToggle,
     handleOpen,
-    handleOpenOnly,
+    controlledOpen,
     handleClose,
-    handleToggleOnly,
+    controlledToggle,
     handleCloseAll,
-    clickAwayRefs,
-  } = useContextMenu(configs)
-
-  // 各 config の説明文を作るヘルパー
-  const describe = (cfg: ContextMenuConfigs) => {
-    const { position, autoIcon } = cfg
-    switch (position.type) {
-      case 'clicked':
-        return `mode: clicked(${position.clicked}), cursor: ${position.cursorRelativity}, offset: [${position.offset!.x}, ${position.offset!.y}], autoIcon: ${autoIcon}`
-      case 'anchor':
-        return `mode: anchor, relativity: ${position.anchorRelativity}, offset: [${position.offset!.x}, ${position.offset!.y}], autoIcon: ${autoIcon}`
-      case 'custom':
-        return `mode: custom, top: ${position.custom.top}, left: ${position.custom.left}, transform: ${position.custom.transform}, autoIcon: ${autoIcon}`
-    }
-  }
+    clickAwayRef,
+    opens,
+    positionStyles,
+  } = useContextMenus(configs, commonConfig)
 
   return (
     <Box
@@ -162,7 +132,7 @@ const HeaderMenuRoot = () => {
           ContextMenu テスト
         </Typography>
         <List>
-          {configs.map((cfg) => (
+          {configsWithIds.map((cfg) => (
             <ListItem
               key={cfg.id}
               sx={{
@@ -173,38 +143,38 @@ const HeaderMenuRoot = () => {
                 borderRadius: 1,
                 p: 2,
               }}
-              ref={clickAwayRefs}
+              ref={clickAwayRef}
             >
               <ListItemText
-                primary={cfg.id}
-                secondary={describe(cfg)}
+                primary={cfg.name}
+                secondary={''}
                 // 右クリックでのメニュー展開の例
                 onContextMenu={(e) => {
                   e.preventDefault()
-                  handleOpen[cfg.id](e)
+                  handleOpen(cfg.id)(e)
                 }}
               />
 
               <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
-                <Button variant="contained" size="small" ref={anchorRefs[cfg.id]} onClick={handleToggle[cfg.id]}>
+                <Button variant="contained" size="small" ref={anchorRefs[cfg.id]} onClick={handleToggle(cfg.id)}>
                   toggle
                 </Button>
-                <Button variant="outlined" size="small" onClick={handleOpen[cfg.id]}>
+                <Button variant="outlined" size="small" onClick={handleOpen(cfg.id)}>
                   open
                 </Button>
-                <Button variant="outlined" size="small" onClick={handleOpenOnly[cfg.id]}>
+                <Button variant="outlined" size="small" onClick={controlledOpen(cfg.id)}>
                   openOnly
                 </Button>
-                <Button variant="outlined" size="small" onClick={handleClose[cfg.id]}>
+                <Button variant="outlined" size="small" onClick={handleClose(cfg.id)}>
                   close
                 </Button>
-                <Button variant="outlined" size="small" onClick={handleToggleOnly[cfg.id]}>
+                <Button variant="outlined" size="small" onClick={controlledToggle(cfg.id)}>
                   toggleOnly
                 </Button>
               </Box>
 
               {/* この位置でレンダラーを置いておく */}
-              <ContextMenuOrigin {...register[cfg.id]} />
+              <ContextMenu {...registers[cfg.id]} open={opens[cfg.id]} positionStyle={positionStyles[cfg.id]} />
             </ListItem>
           ))}
 

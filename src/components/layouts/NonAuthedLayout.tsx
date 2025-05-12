@@ -10,7 +10,15 @@ const NonAuthedLayout = () => {
   return (
     <LayoutRoot>
       {/* ヘッダー */}
-      <AppBar position="fixed" sx={{ width: '100%', ml: 2, backgroundColor: (theme) => theme.palette.header.main }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: '100%',
+          ml: 2,
+          backgroundColor: (theme) => theme.palette.header.main,
+          zIndex: (theme) => theme.zIndex.header,
+        }}
+      >
         <Toolbar>
           <HeaderTitle redirectTo="/" />
         </Toolbar>

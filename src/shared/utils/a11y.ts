@@ -2,12 +2,24 @@
 
 import { KeyboardEvent, MouseEvent } from 'react'
 
-// onClickハンドラをonKeyDownに追加することで、キー操作で発火するハンドラを作るユーティリティ
-export const clickableWithKey =
-  <E extends HTMLElement>(handler: (e: MouseEvent<E> | KeyboardEvent<E>) => void) =>
-  (e: React.KeyboardEvent<E>) => {
+type Handler<E> = (e: MouseEvent<E> | KeyboardEvent<E>) => void
+
+/**
+ * onKeyDown イベント生成用ユーティリティ。
+ * onClickイベントハンドラを使いまわすと便利。
+ */
+export const keyEventCreator =
+  <E extends HTMLElement>({ enter, escape }: { enter?: Handler<E>; escape?: Handler<E> }) =>
+  (e: KeyboardEvent<E>): void => {
     if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      handler(e)
+      if (enter) {
+        e.preventDefault()
+        enter(e)
+      }
+    } else if (e.key === 'Escape') {
+      if (escape) {
+        e.preventDefault()
+        escape(e)
+      }
     }
   }

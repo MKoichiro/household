@@ -1,0 +1,14 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  // "entryPoints": ["src/app/main.tsx"],          // ドキュメント起点ファイルを指定
+  "entryPoints": ["src"], // ← ここを src フォルダに
+  "entryPointStrategy": "expand", // 深い階層まで展開する
+  "out": "docs", // 出力先ディレクトリ
+  "name": "household-app API", // サイトタイトル
+  "exclude": [
+    "src/dev/**", // dev ディレクトリを除外
+    "**/__tests__/**",
+    "**/*.test.ts"
+  ],
+  "excludeExternals": true // 外部依存を除外
+}

@@ -1,20 +1,25 @@
-import type { Variants } from 'framer-motion'
+import { type Variants } from 'framer-motion'
+import { AnimeConfigs } from './types'
 
-const variants: Variants = {
-  hidden: { scale: 0, transition: { duration: 0.2, ease: 'easeInOut' } },
-  animate: { scale: 1, transition: { duration: 0.2, ease: 'easeInOut' } },
-}
-
-export interface AnimeConfigs {
-  variants: Variants
-  initial: string
-  animate: string
-  exit: string
+const variantsMap: Record<string, Variants> = {
+  scale: {
+    hidden: { scale: 0, transition: { duration: 0.2, ease: 'easeInOut' } },
+    animate: { scale: 1, transition: { duration: 0.2, ease: 'easeInOut' } },
+  },
 }
 
 export const defaultAnimeConfigs: AnimeConfigs = {
-  variants,
-  initial: 'hidden',
-  animate: 'animate',
-  exit: 'hidden',
+  root: {
+    variants: variantsMap.scale,
+    initial: 'hidden',
+    animate: 'animate',
+    exit: 'hidden',
+    transformOrigin: 'center',
+  },
+  sub: {
+    variants: variantsMap.scale,
+    initial: 'hidden',
+    animate: 'animate',
+    exit: 'hidden',
+  },
 }

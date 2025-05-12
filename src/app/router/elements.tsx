@@ -42,7 +42,7 @@ const layouts = {
     root: createLayout(<NonAuthedLayout />, { guards: ['CheckAuth', 'RequireAuth'] }),
   },
   dev: {
-    root: createLayout(<NonAuthedLayout />, { guards: ['CheckDev'] }),
+    root: createLayout(<NonAuthedLayout />, { guards: [] }),
   },
 }
 
