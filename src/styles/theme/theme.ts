@@ -110,7 +110,7 @@ export const theme = createTheme({
     h6: { fontSize: '2.0rem', fontWeight: 500 },
     subtitle1: { fontSize: '1.8rem', fontWeight: 500 },
     subtitle2: { fontSize: '1.6rem', fontWeight: 500 },
-    body1: { fontSize: '1.4rem' },
+    body1: { fontSize: '1.6rem' },
     body2: { fontSize: '1.2rem' },
     button: { fontSize: '1.4rem' },
     caption: { fontSize: '1.2rem' },
@@ -132,6 +132,17 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '2rem',
+        },
+      },
+    },
+    // デフォルトで、'&:last-child' セレクタで paddingBottom だけ大きめに設定されているので、揃える。
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: '1rem',
+          '&:last-child': {
+            paddingBottom: '1rem',
+          },
         },
       },
     },

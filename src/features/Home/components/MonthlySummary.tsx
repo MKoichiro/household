@@ -1,23 +1,19 @@
-import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
-import { ArrowUpward, ArrowDownward, AccountBalance } from '@mui/icons-material'
+import { Card, CardContent, Grid, Stack, Theme, Typography } from '@mui/material'
+import { ArrowDownward, AccountBalance } from '@mui/icons-material'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import { Transaction } from '../../../shared/types'
 import { financeCalculations } from '../../../shared/utils/financeCalculations'
 import { formatCurrency } from '../../../shared/utils/formatting'
+import { ElementType, useState } from 'react'
+import { colorPicker as cp } from '../../../styles/theme/paletteHelpers'
 
-// map用型
-// interface GridMapType {
-//   bgcolor: string
-//   text: '収入' | '支出' | '残高'
-//   icon: ComponentType
-//   amount: number
-// }
-
-// map用配列
-// const GridMap: GridMapTypeMapType[] = [
-//   { bgcolor: theme.palette.incomeColor.main, text: "収入", icon: ArrowUpward, amount: income },
-//   { bgcolor: theme.palette.expenseColor.main, text: "支出", icon: ArrowDownward, amount: expense },
-//   { bgcolor: theme.palette.balanceColor.main, text: "残高", icon: AccountBalance, amount: balance },
-// ]
+interface GridMapType {
+  name: 'income' | 'expense' | 'balance'
+  display: string
+  colorPath: keyof Theme['palette']
+  icon: ElementType
+  value: number
+}
 
 export interface MonthlySummaryProps {
   monthlyTransactions: Transaction[]
@@ -26,109 +22,131 @@ export interface MonthlySummaryProps {
 const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
   const { income, expense, balance } = financeCalculations(monthlyTransactions)
 
+  const [selected, setSelected] = useState<'income' | 'expense' | 'balance' | null>(null)
+  const handleClick = (name: 'income' | 'expense' | 'balance') => () => {
+    setSelected((prev) => (prev === name ? null : name))
+  }
+
+  const occupancy = (name: 'income' | 'expense' | 'balance') =>
+    selected === null ? { xs: 8 } : selected === name ? { xs: 16, md: 20 } : { xs: 4, md: 2 }
+
+  const wordBreak = (name: 'income' | 'expense' | 'balance') => {
+    if (selected === null) return 'break-all'
+    if (selected === name) return 'break-all'
+    return 'normal'
+  }
+
+  const isShrunk = (name: 'income' | 'expense' | 'balance') => selected !== null && selected !== name
+
+  const isNeutral = selected === null
+
+  const gridMap: GridMapType[] = [
+    {
+      name: 'income',
+      display: '収入',
+      colorPath: 'incomeColor',
+      icon: ArrowUpwardIcon,
+      value: income,
+    },
+    {
+      name: 'expense',
+      display: '支出',
+      colorPath: 'expenseColor',
+      icon: ArrowDownward,
+      value: expense,
+    },
+    {
+      name: 'balance',
+      display: '残高',
+      colorPath: 'balanceColor',
+      icon: AccountBalance,
+      value: balance,
+    },
+  ]
+
   return (
-    <Grid container spacing={{ xs: 1, sm: 2 }} mb={2}>
-      {/* 収入 */}
-      <Grid size={{ xs: 4 }} display="flex" flexDirection="column">
-        <Card
+    <Grid container spacing={{ xs: 1, sm: 2 }} mb={2} sx={{ maxWidth: '100%' }} columns={24}>
+      {gridMap.map((item) => (
+        <Grid
+          key={item.name}
+          size={occupancy(item.name)}
+          display="flex"
+          flexDirection="column"
           sx={{
-            bgcolor: (theme) => theme.palette.incomeColor.main,
-            color: 'white',
-            borderRadius: '10px',
-            flexGrow: 1,
+            transition: (theme) => theme.transitions.create(['width', 'height'], { easing: 'ease', duration: '300ms' }),
           }}
         >
-          <CardContent sx={{ padding: { xs: 1, sm: 2 } }}>
-            <Stack direction="row">
-              <ArrowUpward sx={{ fontSize: '2rem' }} />
-              <Typography>収入</Typography>
-            </Stack>
-            <Typography
-              textAlign="right"
-              variant="h5"
-              fontWeight={'fontWeightBold'}
+          <Card
+            sx={{
+              bgcolor: isShrunk(item.name) ? cp(item.colorPath, 'light') : '',
+              cursor: 'pointer',
+              borderRadius: '0.5rem',
+              flexGrow: 1,
+              padding: { xs: 1, sm: 2 },
+              transition: 'background-color 300ms ease',
+            }}
+            onClick={handleClick(item.name)}
+          >
+            <CardContent
               sx={{
-                wordBreak: 'break-word',
-                fontSize: {
-                  xs: '.8rem',
-                  sm: '1rem',
-                  md: '1.2rem',
-                },
+                height: '3em',
+                padding: 0,
+                '&:last-child': { padding: 0 },
+                color: cp(item.colorPath, 'dark'),
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
               }}
             >
-              ￥{formatCurrency(income)}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      {/* 支出 */}
-      <Grid size={{ xs: 4 }} display="flex" flexDirection="column">
-        <Card
-          sx={{
-            bgcolor: (theme) => theme.palette.expenseColor.main,
-            color: 'white',
-            borderRadius: '10px',
-            flexGrow: 1,
-          }}
-        >
-          <CardContent sx={{ padding: { xs: 1, sm: 2 } }}>
-            <Stack direction="row">
-              <ArrowDownward sx={{ fontSize: '2rem' }} />
-              <Typography>支出</Typography>
-            </Stack>
-            <Typography
-              textAlign="right"
-              variant="h5"
-              fontWeight={'fontWeightBold'}
-              sx={{
-                wordBreak: 'break-word',
-                fontSize: {
-                  xs: '.8rem',
-                  sm: '1rem',
-                  md: '1.2rem',
-                },
-              }}
-            >
-              ￥{formatCurrency(expense)}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      {/* 残高 */}
-      <Grid size={{ xs: 4 }} display="flex" flexDirection="column">
-        <Card
-          sx={{
-            bgcolor: (theme) => theme.palette.balanceColor.main,
-            color: 'white',
-            borderRadius: '10px',
-            flexGrow: 1,
-          }}
-        >
-          <CardContent sx={{ padding: { xs: 1, sm: 2 } }}>
-            <Stack direction="row">
-              <AccountBalance sx={{ fontSize: '2rem' }} />
-              <Typography>残高</Typography>
-            </Stack>
-            <Typography
-              textAlign="right"
-              variant="h5"
-              fontWeight={'fontWeightBold'}
-              sx={{
-                wordBreak: 'break-word',
-                fontSize: {
-                  xs: '.8rem',
-                  sm: '1rem',
-                  md: '1.2rem',
-                },
-              }}
-            >
-              ￥{formatCurrency(balance)}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <item.icon
+                  sx={{
+                    display: 'block',
+                    flex: isShrunk(item.name) ? 1 : 'unset',
+                    position: 'absolute',
+                    top: isShrunk(item.name) ? '50%' : 0,
+                    left: isShrunk(item.name) ? '50%' : 0,
+                    transform: `${isShrunk(item.name) ? 'translate(-50%, -50%)' : 'translate(0)'} ${isNeutral ? 'scale(3)' : 'scale(1)'}`,
+                    opacity: isNeutral ? 0.5 : 1,
+                    color: isShrunk(item.name) ? 'white' : cp(item.colorPath, 'dark'),
+                    transition:
+                      'transform 300ms ease, top 300ms ease, left 300ms ease, opacity 300ms ease, color 300ms ease',
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontWeight: 'fontWeightBold',
+                    flex: isShrunk(item.name) ? 0 : 'unset',
+                    opacity: isShrunk(item.name) ? 0 : 1,
+                    transition: 'opacity 300ms ease',
+                    position: 'absolute',
+                    inset: '0 auto auto 1.5em',
+                    // top: 0,
+                    // left: '1.5em',
+                  }}
+                >
+                  {item.display}
+                </Typography>
+              </Stack>
+              <Typography
+                textAlign="right"
+                marginTop="auto"
+                fontWeight="fontWeightBold"
+                noWrap={selected !== null && selected !== item.name}
+                sx={{
+                  // marginTop: 'auto',
+                  wordBreak: wordBreak(item.name),
+                  opacity: isShrunk(item.name) ? 0 : 1,
+                  // display: isShrunk(item.name) ? 'none' : 'block',
+                  transition: 'opacity 300ms ease',
+                }}
+              >
+                ￥{formatCurrency(item.value)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
     </Grid>
   )
 }

@@ -61,7 +61,13 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
 
   return (
     <HomeRoot>
-      <Box sx={{ flexGrow: 1, padding: { xs: '0.5rem', lg: '1rem' } }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          padding: { xs: '0.8rem', lg: '1rem' },
+          width: { xs: '100%', lg: `calc(100% - ${transactionMenuWidth}px)` },
+        }}
+      >
         <MonthlySummary {...monthlySummaryProps} />
         <Calendar {...calendarProps} />
       </Box>
