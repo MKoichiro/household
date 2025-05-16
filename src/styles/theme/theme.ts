@@ -1,10 +1,44 @@
 import { Breakpoint, createTheme, PaletteColor, PaletteColorOptions } from '@mui/material'
-import { amber, blue, cyan, deepOrange, green, lightBlue, lightGreen, pink, purple, red } from '@mui/material/colors'
+import {
+  amber,
+  blue,
+  cyan,
+  deepOrange,
+  green,
+  grey,
+  lightBlue,
+  lightGreen,
+  pink,
+  purple,
+  red,
+} from '@mui/material/colors'
 import { ExpenseCategory, IncomeCategory } from '../../shared/types'
+
+const appThemeColors: PaletteColorOptions = {
+  main: purple[900],
+  light: purple[900],
+  dark: purple[900],
+}
 
 declare module '@mui/material/styles' {
   interface Palette {
-    header: PaletteColor
+    app: PaletteColor
+
+    ui: {
+      header: {
+        bg: PaletteColor
+      }
+      bodyBg: PaletteColor
+      navMenu: {
+        bg: PaletteColor
+      }
+      calendar: {
+        head: {
+          bg: PaletteColor
+          font: PaletteColor
+        }
+      }
+    }
 
     incomeColor: PaletteColor
     expenseColor: PaletteColor
@@ -15,7 +49,23 @@ declare module '@mui/material/styles' {
   }
 
   interface PaletteOptions {
-    header: PaletteColorOptions
+    app: PaletteColorOptions
+
+    ui: {
+      header: {
+        bg: PaletteColorOptions
+      }
+      bodyBg: PaletteColorOptions
+      navMenu: {
+        bg: PaletteColorOptions
+      }
+      calendar: {
+        head: {
+          bg: PaletteColorOptions
+          font: PaletteColorOptions
+        }
+      }
+    }
 
     incomeColor: PaletteColorOptions
     expenseColor: PaletteColorOptions
@@ -52,14 +102,14 @@ export const theme = createTheme({
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
-    h1: { fontSize: '3.2rem' },
-    h2: { fontSize: '3.0rem' },
-    h3: { fontSize: '2.8rem' },
-    h4: { fontSize: '2.4rem' },
-    h5: { fontSize: '2.2rem' },
-    h6: { fontSize: '2.0rem' },
-    subtitle1: { fontSize: '1.8rem' },
-    subtitle2: { fontSize: '1.6rem' },
+    h1: { fontSize: '3.2rem', fontWeight: 700 },
+    h2: { fontSize: '3.0rem', fontWeight: 700 },
+    h3: { fontSize: '2.8rem', fontWeight: 700 },
+    h4: { fontSize: '2.4rem', fontWeight: 500 },
+    h5: { fontSize: '2.2rem', fontWeight: 500 },
+    h6: { fontSize: '2.0rem', fontWeight: 500 },
+    subtitle1: { fontSize: '1.8rem', fontWeight: 500 },
+    subtitle2: { fontSize: '1.6rem', fontWeight: 500 },
     body1: { fontSize: '1.4rem' },
     body2: { fontSize: '1.2rem' },
     button: { fontSize: '1.4rem' },
@@ -102,10 +152,41 @@ export const theme = createTheme({
   },
 
   palette: {
-    header: {
-      main: purple[900],
-      light: purple[900],
-      dark: purple[900],
+    app: appThemeColors,
+    ui: {
+      header: {
+        bg: {
+          main: purple[900],
+          light: purple[900],
+          dark: purple[900],
+        },
+      },
+      bodyBg: {
+        // main: ,
+        // light: ,
+        // dark: ,
+      },
+      navMenu: {
+        bg: {
+          // main: ,
+          // light: ,
+          // dark: ,
+        },
+      },
+      calendar: {
+        head: {
+          bg: {
+            main: grey[50],
+            light: purple[900],
+            dark: purple[900],
+          },
+          font: {
+            main: purple[900],
+            light: purple[900],
+            dark: purple[900],
+          },
+        },
+      },
     },
 
     incomeColor: {

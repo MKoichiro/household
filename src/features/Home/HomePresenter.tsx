@@ -19,11 +19,9 @@ interface HomePresenterProps {
 }
 
 const HomePresenter = ({ states, actions }: HomePresenterProps) => {
-  const { selectedDay, monthlyTransactions, dailyTransactions, isFormOpen, isDetailOpen, selectedTransaction } = states
+  const { monthlyTransactions, dailyTransactions, isFormOpen, isDetailOpen, selectedTransaction } = states
 
   const {
-    setCurrentMonth,
-    setSelectedDay,
     handleDetailClose,
     handleTransactionAddClick,
     handleTransactionCardClick,
@@ -41,14 +39,10 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
 
   const calendarProps: CalendarProps = {
     monthlyTransactions,
-    selectedDay,
-    setCurrentMonth,
-    setSelectedDay,
     onDateClick: handleDateClick,
   }
 
   const transactionDetailProps: TransactionDetailProps = {
-    selectedDay,
     dailyTransactions,
     isOpen: isDetailOpen,
     onClose: handleDetailClose,

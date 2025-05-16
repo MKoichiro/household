@@ -51,7 +51,7 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
         <IconButton
           color="inherit"
           aria-label="toggle drawer"
-          edge="start"
+          // edge="start"
           onClick={handleMenuToggleClick}
           sx={{
             mr: 2,
@@ -84,7 +84,7 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
 }
 
 const HeaderRoot = styled.header<{ $isNavigationMenuOpen: boolean; $isNewsOpen: boolean }>`
-  background-color: ${({ theme }) => theme.palette.header.main};
+  background-color: ${({ theme }) => theme.palette.ui.header.bg.main};
 
   position: sticky;
   top: ${({ $isNewsOpen }) => ($isNewsOpen ? `-${headerNewsHeight}px` : '0')};

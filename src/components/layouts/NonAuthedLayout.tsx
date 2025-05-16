@@ -15,7 +15,7 @@ const NonAuthedLayout = () => {
         sx={{
           width: '100%',
           ml: 2,
-          backgroundColor: (theme) => theme.palette.header.main,
+          backgroundColor: (theme) => theme.palette.ui.header.bg.main,
           zIndex: (theme) => theme.zIndex.header,
         }}
       >

@@ -1,13 +1,12 @@
 import { Transaction } from '../../../../shared/types'
 import { navigationMenuWidth, transactionMenuWidth } from '../../../../shared/constants/ui'
 import styled from '@emotion/styled'
-import { useLayout, usePortal } from '../../../../shared/hooks/useContexts'
+import { useApp, useLayout, usePortal } from '../../../../shared/hooks/useContexts'
 import Mask from '../../../../components/common/Mask'
 import TransactionDetailBody from './TransactionDetailBody'
 import { useTheme } from '@mui/material'
 
 export interface TransactionDetailProps {
-  selectedDay: string
   dailyTransactions: Transaction[]
   isOpen: boolean
   onClose: () => void
@@ -19,6 +18,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const { isOpen, onClose: handleClose, ...rest } = props
   const portalRenderer = usePortal('half-modal')
   const { isNavigationMenuOpen, dynamicHeaderHeight } = useLayout()
+  const { selectedDay } = useApp()
   const theme = useTheme()
 
   return (
@@ -28,14 +28,14 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         <>
           <Mask id="test-mask" $isOpen={isOpen} $zIndex={theme.zIndex.transactionDetail.md - 1} onClick={handleClose} />
           <DetailTablet id="test-real" $isNavigationMenuOpen={isNavigationMenuOpen} $isOpen={isOpen}>
-            <TransactionDetailBody {...rest} />
+            <TransactionDetailBody {...rest} selectedDay={selectedDay} />
           </DetailTablet>
         </>
       )}
       {/* ラップトップ以上 */}
       <StickyContext $dynamicHeaderHeight={dynamicHeaderHeight()}>
         <DetailLaptop $dynamicHeaderHeight={dynamicHeaderHeight()}>
-          <TransactionDetailBody {...rest} />
+          <TransactionDetailBody {...rest} selectedDay={selectedDay} />
         </DetailLaptop>
       </StickyContext>
     </>

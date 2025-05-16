@@ -7,6 +7,7 @@ import { Backdrop } from '@mui/material'
 import styled from '@emotion/styled'
 import { CalendarActions, CalendarStates } from './CalendarContainer'
 import { indigo } from '@mui/material/colors'
+import CalendarHeader from './CalendarHeader'
 
 const renderEventContent = (eventInfo: EventContentArg) => {
   const { income, expense, balance } = eventInfo.event.extendedProps
@@ -25,47 +26,37 @@ interface CalendarPresenterProps {
 }
 
 const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
-  const { ref, events, selectedEvent, isResizing } = states
-  const { handleDateClick, handleDatesSet, setAspectRatio } = actions
+  const { ref, events, selectedEvent, isResizing, currentMonth } = states
+  const { handleDateClick, handleDatesSet, setAspectRatio, headerHandlers } = actions
   return (
-    <StyleContext>
-      <FullCalendar
-        ref={ref}
-        locale={jaLocal}
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={[...events, selectedEvent]}
-        eventContent={renderEventContent}
-        datesSet={handleDatesSet}
-        dateClick={handleDateClick}
-        headerToolbar={{
-          start: 'title',
-          // center: 'myCustomButton', // ここにcustomButtonsで作ったボタンを指定。
-          end: 'today prev,next',
-        }}
-        // customButtons={{
-        //   myCustomButton: {
-        //     text: 'test',
-        //     click: function () {
-        //       alert('clicked the custom button!')
-        //     },
-        //   },
-        // }}
-
-        aspectRatio={setAspectRatio()}
-        height="auto"
-      />
-      <Backdrop
-        open={isResizing}
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 500,
-          backgroundColor: indigo[100],
-          display: { xs: 'none', md: 'none', lg: 'block' },
-        }}
-      />
-    </StyleContext>
+    <>
+      <CalendarHeader currentMonth={currentMonth} {...headerHandlers} />
+      <StyleContext>
+        <FullCalendar
+          ref={ref}
+          locale={jaLocal}
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={[...events, selectedEvent]}
+          eventContent={renderEventContent}
+          datesSet={handleDatesSet}
+          dateClick={handleDateClick}
+          headerToolbar={false}
+          aspectRatio={setAspectRatio()}
+          height="auto"
+        />
+        <Backdrop
+          open={isResizing}
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 500,
+            backgroundColor: indigo[100],
+            display: { xs: 'none', md: 'none', lg: 'block' },
+          }}
+        />
+      </StyleContext>
+    </>
   )
 }
 
@@ -80,15 +71,11 @@ const StyleContext = styled.div`
 
   /* カレンダーのスタイルここから */
   /* FullCalendarはclassNameを受け取れないのでこのラッパーから定義 */
-  /* ヘッダー */
-  .fc-button {
-    background-color: ${({ theme }) => theme.palette.header.main};
-  }
 
   /* 曜日ヘッド */
   .fc .fc-col-header-cell {
-    background-color: ${({ theme }) => theme.palette.header.main};
-    color: white;
+    background-color: ${({ theme }) => theme.palette.ui.calendar.head.bg.main};
+    color: ${({ theme }) => theme.palette.ui.calendar.head.font.main};
   }
 
   /* aタグ */

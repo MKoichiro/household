@@ -1,15 +1,14 @@
-// TODO: 初回レンダー時、タブレット以下でメニュー開閉時毎回、のタイミングで不要なBackdropのちらつきがある
 import FullCalendar from '@fullcalendar/react'
 import { DatesSetArg } from '@fullcalendar/core/index.js'
 import { DateClickArg } from '@fullcalendar/interaction'
 import { useMediaQuery, useTheme } from '@mui/material'
 import { isSameMonth } from 'date-fns'
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CalendarContent, DailyBalances, Transaction } from '../../../../shared/types'
 import { calculateDailyBalances } from '../../../../shared/utils/financeCalculations'
 import { formatCurrency, getFormattedToday } from '../../../../shared/utils/formatting'
 import CalendarPresenter from './CalendarPresenter'
-import { useLayout } from '../../../../shared/hooks/useContexts'
+import { useApp, useLayout } from '../../../../shared/hooks/useContexts'
 
 // eventsCreator returns like this:
 // const events = [
@@ -34,40 +33,61 @@ export interface CalendarStates {
   events: CalendarContent[]
   selectedEvent: { start: string; display: string; backgroundColor: string }
   isResizing: boolean
+  currentMonth: Date
 }
 
 export interface CalendarActions {
   handleDateClick: (dateInfo: DateClickArg) => void
   handleDatesSet: (datesSetInfo: DatesSetArg) => void
   setAspectRatio: () => number
+  headerHandlers: {
+    handlePrevMonthClick: () => void
+    handleTodayClick: () => void
+    handleNextMonthClick: () => void
+  }
 }
 
 export interface CalendarProps {
   monthlyTransactions: Transaction[]
-  setCurrentMonth: Dispatch<SetStateAction<Date>>
-  selectedDay: string
-  setSelectedDay: Dispatch<SetStateAction<string>>
   onDateClick: (dateInfo: DateClickArg) => void
 }
 
-const CalendarContainer = ({
-  monthlyTransactions: transactions,
-  setCurrentMonth,
-  selectedDay,
-  setSelectedDay,
-  onDateClick: handleDateClick,
-}: CalendarProps) => {
+const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick: handleDateClick }: CalendarProps) => {
   const theme = useTheme()
+  const { currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
 
   const dailyBalances = calculateDailyBalances(transactions)
   const calendarEvents = eventsCreator(dailyBalances)
 
+  // datesSet 属性のハンドラ何らかの方法で日付範囲が変更されたときにコールされる
+  // see: https://fullcalendar.io/docs/datesSet
   const handleDatesSet = (datesSetInfo: DatesSetArg) => {
     const currentMonth = datesSetInfo.view.currentStart
     setCurrentMonth(currentMonth)
     const todayDate = new Date()
 
     if (isSameMonth(todayDate, currentMonth)) setSelectedDay(getFormattedToday())
+  }
+
+  // CalendarHeaderのボタンを押したときの処理
+  const handlePrevMonthClick = () => {
+    const api = calendarRef.current?.getApi()
+    api?.prev()
+    // NOTE: currentMonth の更新は handleDatesSet で行われる
+    // .prev() が呼ばれて日付範囲が変わると、datesSet 属性に指定した handleDatesSet が発火する仕組み
+    // see: https://fullcalendar.io/docs/datesSet
+  }
+
+  const handleTodayClick = () => {
+    const api = calendarRef.current?.getApi()
+    api?.today()
+    // NOTE: selectedDay の更新は handleDatesSet で行う
+  }
+
+  const handleNextMonthClick = () => {
+    const api = calendarRef.current?.getApi()
+    api?.next()
+    // NOTE: currentMonth の更新は handleDatesSet で行う
   }
 
   const selectedEvent = {
@@ -120,12 +140,18 @@ const CalendarContainer = ({
     events: calendarEvents,
     selectedEvent,
     isResizing,
+    currentMonth,
   }
 
   const actions: CalendarActions = {
     handleDateClick,
     handleDatesSet,
     setAspectRatio,
+    headerHandlers: {
+      handlePrevMonthClick,
+      handleTodayClick,
+      handleNextMonthClick,
+    },
   }
 
   return <CalendarPresenter states={states} actions={actions} />
