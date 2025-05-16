@@ -11,10 +11,10 @@ const VerifyEmail = () => {
       <Typography variant="h5" gutterBottom>
         メールアドレスの確認が必要です
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography gutterBottom>
         登録されたメールアドレスに確認メールを送信しました。メール内のリンクをクリックしてアカウントを有効化してください。
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography gutterBottom>
         有効化が済みましたら、こちらのページをリロードするか、https://household-1dc1b.web.app/app/home
         にアクセスしてください。
       </Typography>

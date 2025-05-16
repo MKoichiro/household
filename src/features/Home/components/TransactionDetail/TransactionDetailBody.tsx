@@ -1,6 +1,5 @@
 import { Box, Button, Card, CardActionArea, CardContent, Grid, List, ListItem, Stack, Typography } from '@mui/material'
 import { Notes, AddCircle } from '@mui/icons-material'
-import { theme } from '../../../../styles/theme/theme'
 import DailySummary from './DailySummary'
 import { Transaction } from '../../../../shared/types'
 import { formatCurrency } from '../../../../shared/utils/formatting'
@@ -39,7 +38,7 @@ const TransactionDetailBody = ({
         {/* 左側のアイコンとテキスト */}
         <Box display="flex" alignItems="center">
           <Notes sx={{ mr: 1 }} />
-          <Typography variant="body1">内訳</Typography>
+          <Typography>内訳</Typography>
         </Box>
         {/* 右側の追加ボタン */}
         <Button startIcon={<AddCircle />} color="primary" onClick={handleAddClick}>
@@ -57,7 +56,7 @@ const TransactionDetailBody = ({
                 <Card
                   sx={{
                     width: '100%',
-                    backgroundColor:
+                    backgroundColor: (theme) =>
                       transaction.type === 'income'
                         ? theme.palette.incomeColor.light
                         : theme.palette.expenseColor.light,

@@ -52,6 +52,39 @@ export const theme = createTheme({
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
+    h1: { fontSize: '3.2rem' },
+    h2: { fontSize: '3.0rem' },
+    h3: { fontSize: '2.8rem' },
+    h4: { fontSize: '2.4rem' },
+    h5: { fontSize: '2.2rem' },
+    h6: { fontSize: '2.0rem' },
+    subtitle1: { fontSize: '1.8rem' },
+    subtitle2: { fontSize: '1.6rem' },
+    body1: { fontSize: '1.4rem' },
+    body2: { fontSize: '1.2rem' },
+    button: { fontSize: '1.4rem' },
+    caption: { fontSize: '1.2rem' },
+    overline: { fontSize: '1.2rem' },
+  },
+
+  components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '2rem',
+          '& .MuiSvgIcon-root': {
+            fontSize: 'inherit',
+          },
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          fontSize: '2rem',
+        },
+      },
+    },
   },
 
   breakpoints: {

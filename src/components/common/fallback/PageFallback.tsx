@@ -19,9 +19,7 @@ const PageFallback = () => {
       <Typography variant="h4" color="error">
         ページの表示中にエラーが発生しました
       </Typography>
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        {message}
-      </Typography>
+      <Typography sx={{ mt: 2 }}>{message}</Typography>
 
       {/* 自作しない限りページ全体のリロードしかできない。 */}
       <Button variant="contained" onClick={() => window.location.reload()} sx={{ mt: 3 }}>

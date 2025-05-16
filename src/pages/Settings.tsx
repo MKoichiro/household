@@ -104,9 +104,7 @@ const Settings = () => {
             </Typography>
             <Grid container spacing={1} alignItems="center">
               <Grid size={10}>
-                <Typography variant="body1" color="text.secondary">
-                  {user.displayName || '未設定'}
-                </Typography>
+                <Typography color="text.secondary">{user.displayName || '未設定'}</Typography>
               </Grid>
               <Divider orientation="vertical" flexItem sx={{ mx: 'auto' }} />
               <Grid size={1}>
@@ -161,9 +159,7 @@ const Settings = () => {
             <Typography variant="h6" component="span">
               {detail.label}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
-              {detail.value}
-            </Typography>
+            <Typography color="text.secondary">{detail.value}</Typography>
           </Fragment>
         ))}
       </Stack>

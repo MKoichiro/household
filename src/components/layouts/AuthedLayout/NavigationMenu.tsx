@@ -67,7 +67,7 @@ const NavigationMenuItemComponent = ({ item }: { item: NavigationMenuItem }) => 
       <StyledLi>
         <StyledNavLink to={item.to} className={({ isActive }) => (isActive ? 'active' : undefined)}>
           {item.icon}
-          <Typography variant="body1">{item.label}</Typography>
+          <Typography>{item.label}</Typography>
         </StyledNavLink>
       </StyledLi>
     )
@@ -78,7 +78,7 @@ const NavigationMenuItemComponent = ({ item }: { item: NavigationMenuItem }) => 
     <StyledLi>
       <AccordionHead open={accordions[item.id].open} component="h3" onClick={toggle(item.id)}>
         {item.icon}
-        <Typography variant="body1">{item.label}</Typography>
+        <Typography>{item.label}</Typography>
         <IconButton
           aria-label={`${item.label}のサブメニューを開閉`}
           sx={{
@@ -106,7 +106,7 @@ const NavigationMenuItemComponent = ({ item }: { item: NavigationMenuItem }) => 
                 className={({ isActive }) => (isActive ? 'active' : undefined)}
               >
                 {subItem.icon}
-                <Typography variant="body1">{subItem.label}</Typography>
+                <Typography>{subItem.label}</Typography>
               </StyledInnerNavLink>
             </StyledLi>
           ))}
@@ -133,7 +133,7 @@ const NavigationMenuItemsList = () => {
       <StyledLi>
         <StyledIconButton onClick={logout} aria-label="ログアウトボタン" disabled={isLogoutProcessing}>
           <LogoutIcon />
-          <Typography variant="body1">ログアウト</Typography>
+          <Typography>ログアウト</Typography>
         </StyledIconButton>
       </StyledLi>
     </StyledOuterUl>
@@ -174,6 +174,7 @@ const StyledUl = styled.ul`
   flex-direction: column;
   list-style-type: none;
   padding: 0;
+  gap: 0.6rem;
 `
 const StyledOuterUl = styled(StyledUl)`
   padding-top: 1rem;
@@ -185,13 +186,15 @@ const StyledLi = styled.li`
   color: inherit;
   list-style: none;
   margin: 0;
-  cursor: pointer;
+  font-size: 1.6rem;
 `
 const LinkButtonCommonStyle = css`
+  cursor: pointer;
+  height: 1.8em;
   color: inherit;
   text-decoration: none;
   display: inline-flex;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: center;
   padding: 0.25rem 2rem 0.25rem 0.5rem;
   margin: 0.25rem 0;
@@ -210,6 +213,7 @@ const LinkButtonCommonStyle = css`
     transform: scale(1.05);
   }
 
+  transform-origin: center;
   transition:
     background-color 200ms ease,
     color 200ms ease,
@@ -222,6 +226,8 @@ const StyledInnerNavLink = styled(StyledNavLink)`
   padding-left: 2rem;
 `
 const StyledIconButton = styled(IconButton)`
+  font-size: 1.6rem;
+  height: 1.8em;
   border-radius: 0;
   ${LinkButtonCommonStyle}
 `
@@ -229,9 +235,11 @@ const AccordionHead = styled(BareAccordionHead)`
   cursor: pointer;
   margin: 0;
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: center;
-  padding: 0.5rem 0 0.5rem 0.5rem;
+  padding: 0.25rem 0 0.25rem 0.5rem;
+  height: 1.8em;
+  border-bottom: 0px solid ${purple[500]};
   &:hover {
     color: ${purple[500]};
     border-bottom: 6px double ${purple[500]};
@@ -246,6 +254,10 @@ const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $heigh
   overflow: hidden;
   transition: height 300ms ease-in-out;
   height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
+
+  li:first-of-type {
+    margin-top: 0.8rem;
+  }
 `
 const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: number }>`
   position: absolute;

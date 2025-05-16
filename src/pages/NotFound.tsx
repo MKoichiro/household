@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useTimer from '../shared/hooks/useTimer'
 import { Box, Button, Divider, Typography } from '@mui/material'
-import { theme } from '../styles/theme/theme'
 import { headerMainHeight } from '../shared/constants/ui'
 import { useAuth } from '../shared/hooks/useContexts'
 
@@ -67,13 +66,12 @@ const NotFound = () => {
           <Typography
             component="time"
             variant="h5"
-            sx={{ verticalAlign: 'bottom' }}
             dateTime={`PT${count}S`}
-            color={isRunning ? 'inherit' : theme.palette.grey[500]}
+            sx={{ verticalAlign: 'bottom', color: (theme) => (isRunning ? 'inherit' : theme.palette.grey[500]) }}
           >
             {count} 秒
           </Typography>
-          <Typography color={isRunning ? 'inherit' : theme.palette.grey[500]}>
+          <Typography sx={{ color: (theme) => (isRunning ? 'inherit' : theme.palette.grey[500]) }}>
             後に自動的に{user ? home.display : login.display}
             へ遷移します。
           </Typography>

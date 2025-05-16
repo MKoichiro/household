@@ -1,6 +1,16 @@
 // MUI のチャートコンポーネントに切り替えても良いかも。
 // ../../config/chartConfig.txをApp.tsxで読み込み済み
-import { Box, Divider, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
+import {
+  Box,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Theme,
+  useTheme,
+} from '@mui/material'
 import { ChartData, ChartOptions } from 'chart.js'
 import { ChangeEvent, useState } from 'react'
 import { Pie } from 'react-chartjs-2'
@@ -14,7 +24,6 @@ import {
   Transaction,
   TransactionType,
 } from '../../../shared/types'
-import { theme } from '../../../styles/theme/theme'
 import { Context } from 'chartjs-plugin-datalabels'
 
 // カテゴリーとカラーのマッピングを定義
@@ -28,7 +37,7 @@ interface IncomeColorMap {
   borderColor: Record<IncomeCategory, string>
 }
 
-const expenseCategoryColorMap: ExpenseColorMap = {
+const expenseCategoryColorMap = (theme: Theme): ExpenseColorMap => ({
   backgroundColor: {
     食費: theme.palette.expenseCategoryColor['食費'].main,
     日用品: theme.palette.expenseCategoryColor['日用品'].main,
@@ -45,9 +54,9 @@ const expenseCategoryColorMap: ExpenseColorMap = {
     娯楽: theme.palette.expenseCategoryColor['娯楽'].dark,
     交通費: theme.palette.expenseCategoryColor['交通費'].dark,
   },
-}
+})
 
-const incomeCategoryColorMap: IncomeColorMap = {
+const incomeCategoryColorMap = (theme: Theme): IncomeColorMap => ({
   backgroundColor: {
     給与: theme.palette.incomeCategoryColor['給与'].main,
     副収入: theme.palette.incomeCategoryColor['副収入'].main,
@@ -58,7 +67,7 @@ const incomeCategoryColorMap: IncomeColorMap = {
     副収入: theme.palette.incomeCategoryColor['副収入'].dark,
     お小遣い: theme.palette.incomeCategoryColor['お小遣い'].dark,
   },
-}
+})
 
 // コンポーネントここから
 export interface CategoryChartProps {
@@ -69,6 +78,8 @@ type ExpenseCategorySum = Partial<Record<ExpenseCategory, number>>
 type IncomeCategorySum = Partial<Record<IncomeCategory, number>>
 
 function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps) {
+  const theme = useTheme()
+
   // グラフ切り替えのためのステートとイベントハンドラー
   const [selectedType, setSelectedType] = useState<TransactionType>('expense')
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -88,11 +99,9 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
 
     return { [label]: sum }
   })
-  // console.log(expenseCategorySums)
 
   // 金額の降順にソート
   const expenseSortedSums = expenseCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
-  // console.log(expenseSortedSums)
 
   // ラベルのみの配列を用意
   // Object.key()の返り値は常にstring[]型になるためアサーションで明示
@@ -100,8 +109,8 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
   const expenseLabels = expenseSortedSums.map((item) => Object.keys(item)[0]) as ExpenseCategory[]
 
   // マッピングを参照して各部分の色を準備
-  const expenseBackgroundColors = expenseLabels.map((label) => expenseCategoryColorMap.backgroundColor[label])
-  const expenseBorderColors = expenseLabels.map((label) => expenseCategoryColorMap.borderColor[label])
+  const expenseBackgroundColors = expenseLabels.map((label) => expenseCategoryColorMap(theme).backgroundColor[label])
+  const expenseBorderColors = expenseLabels.map((label) => expenseCategoryColorMap(theme).borderColor[label])
 
   // Pieコンポーネントに渡すデータを定義
   const expenseData: ChartData<'pie'> = {
@@ -131,8 +140,8 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
   })
   const incomeSortedSums = incomeCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
   const incomeLabels = incomeSortedSums.map((item) => Object.keys(item)[0]) as IncomeCategory[]
-  const incomeBackgroundColors = incomeLabels.map((label) => incomeCategoryColorMap.backgroundColor[label])
-  const incomeBorderColors = incomeLabels.map((label) => incomeCategoryColorMap.borderColor[label])
+  const incomeBackgroundColors = incomeLabels.map((label) => incomeCategoryColorMap(theme).backgroundColor[label])
+  const incomeBorderColors = incomeLabels.map((label) => incomeCategoryColorMap(theme).borderColor[label])
   const incomeData: ChartData<'pie'> = {
     labels: incomeLabels,
     datasets: [

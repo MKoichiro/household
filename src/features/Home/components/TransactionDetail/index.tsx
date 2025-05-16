@@ -1,10 +1,10 @@
-import { theme } from '../../../../styles/theme/theme'
 import { Transaction } from '../../../../shared/types'
 import { navigationMenuWidth, transactionMenuWidth } from '../../../../shared/constants/ui'
 import styled from '@emotion/styled'
 import { useLayout, usePortal } from '../../../../shared/hooks/useContexts'
 import Mask from '../../../../components/common/Mask'
 import TransactionDetailBody from './TransactionDetailBody'
+import { useTheme } from '@mui/material'
 
 export interface TransactionDetailProps {
   selectedDay: string
@@ -19,6 +19,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const { isOpen, onClose: handleClose, ...rest } = props
   const portalRenderer = usePortal('half-modal')
   const { isNavigationMenuOpen, dynamicHeaderHeight } = useLayout()
+  const theme = useTheme()
 
   return (
     <>

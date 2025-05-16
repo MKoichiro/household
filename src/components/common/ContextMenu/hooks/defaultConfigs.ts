@@ -41,7 +41,7 @@ const normalizePosition = (position: PositionStrategy): PositionConfig => {
         mode: { main: 'clicked', sub: position.clicked },
       }
     default:
-      // 論理的に到達し得ない。開発時に型を変えたりしたときとかのために。
+      // 理論上到達し得ない。開発時に型を変えたりしたときとかのために。
       throw new Error('Invalid position type')
   }
 }

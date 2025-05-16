@@ -3,8 +3,7 @@ import { ChartData, ChartOptions } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import { Transaction } from '../../../shared/types'
 import { calculateDailyBalances } from '../../../shared/utils/financeCalculations'
-import { theme } from '../../../styles/theme/theme'
-import { Box, CircularProgress } from '@mui/material'
+import { Box, CircularProgress, useTheme } from '@mui/material'
 
 const options: ChartOptions<'bar'> = {
   devicePixelRatio: 2.5,
@@ -36,6 +35,8 @@ const BarChart = ({ monthlyTransactions: transactions, isLoading }: BarChartProp
   const incomeData = dateLabels.map((day) => dailySummaries[day].income)
   const expenseData = dateLabels.map((day) => dailySummaries[day].expense)
   const balanceData = dateLabels.map((day) => dailySummaries[day].balance)
+
+  const theme = useTheme()
 
   const data: ChartData<'bar'> = {
     labels: dateLabels,
