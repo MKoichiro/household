@@ -21,6 +21,7 @@ const AmountField = ({ control, errors, onBlur: handleBlur }: AmountFieldProps) 
           label="金額"
           type="number"
           onBlur={handleBlur(field)}
+          slotProps={{ htmlInput: { style: { fontSize: '16px' } } }}
         />
       )}
     />

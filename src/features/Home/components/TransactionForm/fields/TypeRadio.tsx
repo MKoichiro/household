@@ -14,7 +14,7 @@ const TypeRadio = ({ control, onClick: handleClick }: TypeRadioProps) => {
       control={control}
       render={({ field }) => {
         return (
-          <ButtonGroup fullWidth>
+          <ButtonGroup fullWidth sx={{ height: '2.2em' }}>
             <Button
               variant={field.value === 'expense' ? 'contained' : 'outlined'}
               color="error"

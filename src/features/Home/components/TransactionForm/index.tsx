@@ -57,7 +57,6 @@ const StickyContext = styled.div`
 `
 
 const FormLaptop = styled.div<{ $isFormOpen: boolean; $dynamicHeaderHeight: number }>`
-  /* background-color: rgba(255, 0, 0, 0.3); */
   background-color: ${({ theme }) => theme.palette.background.paper};
   border-radius: 0.5rem;
 
@@ -66,7 +65,7 @@ const FormLaptop = styled.div<{ $isFormOpen: boolean; $dynamicHeaderHeight: numb
   z-index: ${({ theme }) => theme.zIndex.transactionForm.lg};
   transition: top 300ms ease;
 
-  padding: 1rem;
+  padding: 0.5rem 1rem 1rem;
   margin-top: 1rem;
 
   min-width: ${transactionMenuWidth}px;
@@ -82,18 +81,19 @@ const FormLaptop = styled.div<{ $isFormOpen: boolean; $dynamicHeaderHeight: numb
 `
 
 const FormTablet = styled.div<{ $isFormOpen: boolean }>`
-  /* background-color: rgba(0, 255, 0, 0.4); */
   background-color: ${({ theme }) => theme.palette.background.paper};
-  border-radius: 0.5rem;
-
-  padding: 0.5rem 1rem;
+  opacity: ${({ $isFormOpen }) => ($isFormOpen ? 1 : 0)};
+  border-radius: 1rem;
+  padding: 0.5rem 1rem 1rem;
 
   /* 画面上下中央配置 */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(${({ $isFormOpen }) => ($isFormOpen ? 1 : 0)});
-  transition: transform 300ms ease;
+  transition:
+    transform 300ms ease,
+    opacity 300ms ease;
 
   width: 90vw;
   max-height: 90vh;

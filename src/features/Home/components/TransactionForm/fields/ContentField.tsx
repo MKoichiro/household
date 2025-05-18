@@ -13,7 +13,14 @@ const ContentField = ({ control, errors }: ContentFieldProps) => {
       name="content"
       control={control}
       render={({ field }) => (
-        <TextField error={!!errors.content} helperText={errors.content?.message} {...field} label="内容" type="text" />
+        <TextField
+          error={!!errors.content}
+          helperText={errors.content?.message}
+          {...field}
+          label="内容"
+          type="text"
+          slotProps={{ htmlInput: { style: { fontSize: '16px' } } }}
+        />
       )}
     />
   )

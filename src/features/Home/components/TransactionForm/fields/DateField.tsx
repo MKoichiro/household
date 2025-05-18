@@ -20,6 +20,16 @@ const DateField = ({ control, errors }: DateFieldProps) => {
           slotProps={{ inputLabel: { shrink: true } }}
           error={!!errors.date}
           helperText={errors.date?.message}
+          // iphone実機で高さが縮んでしまうバグへの対処
+          sx={{
+            '& input[type=date]': {
+              WebkitAppearance: 'none',
+              height: '1.6em',
+            },
+            '& input[type="date"]::-webkit-date-and-time-value': {
+              textAlign: 'left',
+            },
+          }}
         />
       )}
     />

@@ -34,7 +34,7 @@ const TransactionFormBody = ({
   return (
     <>
       {/* 入力エリアヘッダー */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
         <Typography variant="h6">{isNewEntry ? '内訳を追加' : '内訳を編集'}</Typography>
         <IconButton sx={{ color: (theme) => theme.palette.grey[500] }} onClick={handleCloseClick}>
           <Close />
