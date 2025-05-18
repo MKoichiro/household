@@ -29,12 +29,13 @@ const TransactionFormBody = ({
     watch,
   } = useFormContext<TransactionFormValues>()
   const currentType: TransactionType = watch('type') // 現在の収益タイプを監視
+  const isNewEntry = selectedTransaction === null // 新規エントリーかどうか
 
   return (
     <>
       {/* 入力エリアヘッダー */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h6">入力</Typography>
+        <Typography variant="h6">{isNewEntry ? '内訳を追加' : '内訳を編集'}</Typography>
         <IconButton sx={{ color: (theme) => theme.palette.grey[500] }} onClick={handleCloseClick}>
           <Close />
         </IconButton>
@@ -58,7 +59,7 @@ const TransactionFormBody = ({
             disabled={!isDirty || !isValid}
             fullWidth
           >
-            {selectedTransaction === null ? '保存' : '更新'}
+            {isNewEntry ? '保存' : '更新'}
           </Button>
           {selectedTransaction && (
             <Button variant="outlined" color="secondary" onClick={handleDeleteClick} fullWidth>

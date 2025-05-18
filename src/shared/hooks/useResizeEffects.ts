@@ -36,7 +36,6 @@ export function useResizeEffects<Id extends string>(
     const cancelers: Partial<Record<Id, () => void>> = {}
 
     ids.forEach((id) => {
-      // const el = refs[id]?.current
       const el = typeof targets[id] === 'function' ? targets[id]() : targets[id].current
       if (!el) return
 

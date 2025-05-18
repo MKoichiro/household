@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
+import { CSSProperties } from '@mui/material'
 
-const Mask = styled.div<{ $isOpen: boolean; $zIndex: number }>`
+const Mask = styled.div<{ $isOpen: boolean; $zIndex: CSSProperties['zIndex'] }>`
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};

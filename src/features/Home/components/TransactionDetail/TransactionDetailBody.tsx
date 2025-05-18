@@ -1,27 +1,34 @@
 import { Box, Button, Card, CardActionArea, CardContent, Grid, List, ListItem, Stack, Typography } from '@mui/material'
-import { Notes, AddCircle } from '@mui/icons-material'
 import DailySummary from './DailySummary'
 import { Transaction } from '../../../../shared/types'
 import { formatCurrency } from '../../../../shared/utils/formatting'
 import IconComponents from '../../../../components/common/IconComponents'
-import { format } from 'date-fns'
+import { ReactNode } from 'react'
+import { NotesIcon, AddCircleIcon } from '../../../../icons'
 
 interface TransactionDetailProps {
-  selectedDay: string
   dailyTransactions: Transaction[]
   onAddClick: () => void
   onCardClick: (transaction: Transaction) => () => void
+  header: ReactNode
+  ref?: (ref: HTMLElement | null) => void
 }
 
 const TransactionDetailBody = ({
-  selectedDay,
   dailyTransactions,
   onAddClick: handleAddClick,
   onCardClick: handleCardClick,
+  header,
+  ref,
 }: TransactionDetailProps) => {
   return (
-    <Stack sx={{ height: '100%' }} spacing={2}>
-      <Typography fontWeight={'fontWeightBold'}>{format(selectedDay, 'M月 d日')}</Typography>
+    <Stack
+      sx={{ height: { xs: '60dvh', lg: 'auto' }, overflowY: 'auto', overscrollBehavior: 'none', p: 2, m: 0 }}
+      spacing={2}
+      ref={ref}
+    >
+      {/* ヘッダー */}
+      {header}
 
       {/* 収入・支出・残高 表示エリア */}
       <DailySummary dailyTransactions={dailyTransactions} />
@@ -37,11 +44,11 @@ const TransactionDetailBody = ({
       >
         {/* 左側のアイコンとテキスト */}
         <Box display="flex" alignItems="center">
-          <Notes sx={{ mr: 1 }} />
+          <NotesIcon sx={{ mr: 1 }} />
           <Typography>内訳</Typography>
         </Box>
         {/* 右側の追加ボタン */}
-        <Button startIcon={<AddCircle />} color="primary" onClick={handleAddClick}>
+        <Button startIcon={<AddCircleIcon />} color="primary" onClick={handleAddClick}>
           内訳を追加
         </Button>
       </Box>

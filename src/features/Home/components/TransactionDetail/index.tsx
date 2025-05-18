@@ -1,10 +1,13 @@
 import { Transaction } from '../../../../shared/types'
 import { navigationMenuWidth, transactionMenuWidth } from '../../../../shared/constants/ui'
 import styled from '@emotion/styled'
-import { useApp, useLayout, usePortal } from '../../../../shared/hooks/useContexts'
-import Mask from '../../../../components/common/Mask'
+import { useLayout } from '../../../../shared/hooks/useContexts'
 import TransactionDetailBody from './TransactionDetailBody'
-import { useTheme } from '@mui/material'
+import { useMediaQuery, useTheme } from '@mui/material'
+import { CSSProperties } from 'react'
+import * as Header from './TransactionDetailHeaders'
+import { HalfModal } from '../../../../components/common/HalfModal/HalfModal'
+import { useHalfModal } from '../../../../components/common/HalfModal/useHalfModal'
 
 export interface TransactionDetailProps {
   dailyTransactions: Transaction[]
@@ -16,28 +19,38 @@ export interface TransactionDetailProps {
 
 const TransactionDetail = (props: TransactionDetailProps) => {
   const { isOpen, onClose: handleClose, ...rest } = props
-  const portalRenderer = usePortal('half-modal')
   const { isNavigationMenuOpen, dynamicHeaderHeight } = useLayout()
-  const { selectedDay } = useApp()
   const theme = useTheme()
+  const isUnderLg = useMediaQuery(theme.breakpoints.down('lg'))
+
+  const {
+    register: { style, ...registerRest },
+    overflowableRef,
+  } = useHalfModal(isOpen, handleClose, theme.zIndex.transactionDetail.md)
+
+  const styleOverride: CSSProperties = {
+    ...style,
+    left: isNavigationMenuOpen ? `${navigationMenuWidth}px` : 0,
+    backgroundColor: theme.palette.background.paper,
+    overflow: 'hidden',
+    overflowY: 'auto',
+  }
 
   return (
     <>
-      {/* タブレット以下 */}
-      {portalRenderer(
-        <>
-          <Mask id="test-mask" $isOpen={isOpen} $zIndex={theme.zIndex.transactionDetail.md - 1} onClick={handleClose} />
-          <DetailTablet id="test-real" $isNavigationMenuOpen={isNavigationMenuOpen} $isOpen={isOpen}>
-            <TransactionDetailBody {...rest} selectedDay={selectedDay} />
-          </DetailTablet>
-        </>
+      {isUnderLg ? (
+        // タブレット以下
+        <HalfModal isOpen={isOpen} register={{ ...registerRest, style: styleOverride }}>
+          <TransactionDetailBody {...rest} header={<Header.Modal onClose={handleClose} />} ref={overflowableRef} />
+        </HalfModal>
+      ) : (
+        // ラップトップ以上
+        <StickyContext $dynamicHeaderHeight={dynamicHeaderHeight()}>
+          <DetailLaptop $dynamicHeaderHeight={dynamicHeaderHeight()}>
+            <TransactionDetailBody {...rest} header={<Header.Base />} />
+          </DetailLaptop>
+        </StickyContext>
       )}
-      {/* ラップトップ以上 */}
-      <StickyContext $dynamicHeaderHeight={dynamicHeaderHeight()}>
-        <DetailLaptop $dynamicHeaderHeight={dynamicHeaderHeight()}>
-          <TransactionDetailBody {...rest} selectedDay={selectedDay} />
-        </DetailLaptop>
-      </StickyContext>
     </>
   )
 }
@@ -54,7 +67,6 @@ const StickyContext = styled.div<{ $dynamicHeaderHeight: number }>`
 `
 
 const DetailLaptop = styled.div<{ $dynamicHeaderHeight: number }>`
-  /* background-color: rgba(255, 0, 255, 0.5); */
   position: sticky;
   min-width: ${transactionMenuWidth}px;
   max-height: ${({ $dynamicHeaderHeight }) => `calc(100vh - ${$dynamicHeaderHeight}px)`};
@@ -64,27 +76,6 @@ const DetailLaptop = styled.div<{ $dynamicHeaderHeight: number }>`
   z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
   padding: 1rem;
   ${({ theme }) => theme.breakpoints.down('lg')} {
-    display: none;
-  }
-`
-
-const DetailTablet = styled.div<{ $isNavigationMenuOpen: boolean; $isOpen: boolean }>`
-  /* background-color: rgba(0, 0, 255, 0.4); */
-  background-color: ${({ theme }) => theme.palette.background.paper};
-  position: fixed;
-  top: ${({ $isOpen }) => ($isOpen ? '30vh' : '100vh')};
-  left: ${({ $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0')};
-  right: 0;
-  height: 70lvh;
-  z-index: ${({ theme }) => theme.zIndex.transactionDetail.md};
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  transition:
-    top 300ms ease,
-    left 300ms ease;
-  overflow-y: auto;
-  ${({ theme }) => theme.breakpoints.up('lg')} {
     display: none;
   }
 `

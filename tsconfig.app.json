@@ -23,5 +23,5 @@
     "noUncheckedSideEffectImports": true
   },
   // "include": ["src", "eslint.config.ts"],
-  "include": ["src", "trash/HeaderModalMenu.tsx"]
+  "include": ["src", "trash/HeaderModalMenu.tsx", "trash/index copy.tsx"]
 }

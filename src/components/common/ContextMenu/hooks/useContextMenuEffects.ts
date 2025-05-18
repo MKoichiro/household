@@ -60,13 +60,11 @@ const useContextMenuEffects = ({
   const rootRefs = ids.map((id) => () => rootsRef.current[id])
   const clickAwaySet = [...clickAwaySetRef.current].map((el) => () => el)
   const anyOpen = Object.values(idOpenMap).some((v: boolean) => v)
-  console.log('rootsRef.current', rootsRef.current)
   // document のクリックで全メニューを閉じるが、第一引数で指定した要素の中でクリックされた場合は無視する
   useClickAway(
     [...rootRefs, ...clickAwaySet],
     () => {
       if (considerDefault.closeOnClickAway()) {
-        console.log('rootsRef.current', rootsRef.current)
         handleCloseAll()
       }
     },
