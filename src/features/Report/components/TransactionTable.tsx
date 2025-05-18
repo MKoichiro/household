@@ -17,7 +17,6 @@ import {
   Grid,
   Divider,
 } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
 import { Transaction } from '../../../shared/types'
 import { useMemo, useState, MouseEvent, ChangeEvent } from 'react'
 import { financeCalculations } from '../../../shared/utils/financeCalculations'
@@ -25,6 +24,7 @@ import { formatCurrency } from '../../../shared/utils/formatting'
 import IconComponents from '../../../components/common/IconComponents'
 import { compareAsc, parseISO } from 'date-fns'
 import { useTransaction } from '../../../shared/hooks/useContexts'
+import { DeleteIcon } from '../../../icons'
 
 // テーブルヘッド部分
 interface TransactionTableHeadProps {

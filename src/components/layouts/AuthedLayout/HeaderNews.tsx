@@ -4,10 +4,10 @@ import { useNews } from '../../../shared/hooks/useNews'
 import { useEffect } from 'react'
 import FlowingText from '../../common/FlowingText'
 import { NavLink } from 'react-router-dom'
-import CloseIcon from '@mui/icons-material/Close'
 import styled from '@emotion/styled'
 import { purple } from '@mui/material/colors'
 import { headerNewsHeight } from '../../../shared/constants/ui'
+import { CloseIcon } from '../../../icons'
 
 const NewsBar = () => {
   const { isNewsOpen, handleNewsOpen, handleNewsClose } = useLayout()

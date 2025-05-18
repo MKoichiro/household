@@ -1,10 +1,9 @@
 import { AppBar, Box, Button, Toolbar } from '@mui/material'
 import { NavLink, Outlet } from 'react-router-dom'
-import LoginIcon from '@mui/icons-material/Login'
-import AddBoxIcon from '@mui/icons-material/AddBox'
 import HeaderTitle from './common/HeaderTitle'
 import { headerMainHeight } from '../../shared/constants/ui'
 import LayoutRoot from './common/LayoutRoot'
+import { AddBoxIcon, LoginIcon } from '../../icons'
 
 const LandingLayout = () => {
   return (
@@ -22,7 +21,6 @@ const LandingLayout = () => {
         <Toolbar>
           <HeaderTitle />
 
-          {/* TODO: モーダルオープンボタンに変更 */}
           <Box sx={{ display: 'flex', gap: 2, ml: 'auto', mr: 2 }}>
             <NavLink to="/auth/signup">
               <Button

@@ -1,9 +1,9 @@
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
-import { Close } from '@mui/icons-material'
 import { ControllerRenderProps, useFormContext } from 'react-hook-form'
 import { Transaction, TransactionFormValues, TransactionType } from '../../../../shared/types'
 import { FormEvent } from 'react'
 import * as F from './fields'
+import { CloseIcon } from '../../../../icons'
 
 interface TransactionFormBodyProps {
   selectedTransaction: Transaction | null
@@ -37,7 +37,7 @@ const TransactionFormBody = ({
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
         <Typography variant="h6">{isNewEntry ? '内訳を追加' : '内訳を編集'}</Typography>
         <IconButton sx={{ color: (theme) => theme.palette.grey[500] }} onClick={handleCloseClick}>
-          <Close />
+          <CloseIcon />
         </IconButton>
       </Box>
 

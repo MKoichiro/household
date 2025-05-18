@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { footerHeight } from '../../../shared/constants/ui'
 import { indigo, purple } from '@mui/material/colors'
-import XIcon from '@mui/icons-material/X'
+import { XIcon } from '../../../icons'
 
 const Footer = () => {
   return (
@@ -16,7 +16,7 @@ const Footer = () => {
         </StyledA>
         <p> | </p>
         <StyledA
-          href="https://x.com/ishihaya0331?s=11&t=9dXL_HkutIzhT2vxZa0gvA"
+          // href="https://x.com/ishihaya0331?s=11&t=9dXL_HkutIzhT2vxZa0gvA"
           target="_blank"
           rel="noopener noreferrer"
         >

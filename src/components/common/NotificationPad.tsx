@@ -1,4 +1,3 @@
-// Notification.tsx
 import NotificationItem from './Notification'
 import { useNotifications, usePortal } from '../../shared/hooks/useContexts'
 import { Badge, Divider, styled as muiStyled } from '@mui/material'

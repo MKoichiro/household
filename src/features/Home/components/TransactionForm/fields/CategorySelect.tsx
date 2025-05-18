@@ -3,30 +3,30 @@ import { Control, Controller, FieldErrors } from 'react-hook-form'
 import { ExpenseCategory, IncomeCategory, TransactionFormValues, TransactionType } from '../../../../../shared/types'
 import { JSX } from 'react'
 import {
-  AddBusiness,
-  AddHome,
-  Alarm,
-  Diversity3,
-  Fastfood,
-  Savings,
-  SportsTennis,
-  Train,
-  Work,
-} from '@mui/icons-material'
+  AlarmIcon,
+  FastfoodIcon,
+  AddHomeIcon,
+  Diversity3Icon,
+  SportsTennisIcon,
+  WorkIcon,
+  AddBusinessIcon,
+  SavingsIcon,
+  TrainIcon,
+} from '../../../../../icons'
 
 const expenseCategories: { label: ExpenseCategory; icon: JSX.Element }[] = [
-  { label: '食費', icon: <Fastfood /> },
-  { label: '日用品', icon: <Alarm fontSize="small" /> },
-  { label: '住居費', icon: <AddHome fontSize="small" /> },
-  { label: '交際費', icon: <Diversity3 fontSize="small" /> },
-  { label: '娯楽', icon: <SportsTennis fontSize="small" /> },
-  { label: '交通費', icon: <Train fontSize="small" /> },
+  { label: '食費', icon: <FastfoodIcon /> },
+  { label: '日用品', icon: <AlarmIcon fontSize="small" /> },
+  { label: '住居費', icon: <AddHomeIcon fontSize="small" /> },
+  { label: '交際費', icon: <Diversity3Icon fontSize="small" /> },
+  { label: '娯楽', icon: <SportsTennisIcon fontSize="small" /> },
+  { label: '交通費', icon: <TrainIcon fontSize="small" /> },
 ]
 
 const incomeCategories: { label: IncomeCategory; icon: JSX.Element }[] = [
-  { label: '給与', icon: <Work fontSize="small" /> },
-  { label: '副収入', icon: <AddBusiness fontSize="small" /> },
-  { label: 'お小遣い', icon: <Savings fontSize="small" /> },
+  { label: '給与', icon: <WorkIcon fontSize="small" /> },
+  { label: '副収入', icon: <AddBusinessIcon fontSize="small" /> },
+  { label: 'お小遣い', icon: <SavingsIcon fontSize="small" /> },
 ]
 
 interface CategorySelectProps {

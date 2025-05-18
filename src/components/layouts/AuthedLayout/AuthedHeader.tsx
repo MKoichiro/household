@@ -1,15 +1,13 @@
 import styled from '@emotion/styled'
 import { Button, IconButton } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import LogoutIcon from '@mui/icons-material/Logout'
 import HeaderTitle from '../common/HeaderTitle'
 import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
 import { headerMainHeight, headerNewsHeight, navigationMenuWidth } from '../../../shared/constants/ui'
 import NewsBar from './HeaderNews'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { headerMenuConfigs, headerMenuTree } from './contextMenuConfigs'
 import ContextMenu from '../../common/ContextMenu/ContextMenu'
 import { useContextMenu } from '../../common/ContextMenu/hooks/useContextMenus'
+import { LogoutIcon, MenuIcon, MoreVertIcon } from '../../../icons'
 
 interface AuthedHeaderProps {
   onMenuToggleClick: () => void
@@ -50,8 +48,7 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
       <HeaderMain $isNewsOpen={isNewsOpen}>
         <IconButton
           color="inherit"
-          aria-label="toggle drawer"
-          // edge="start"
+          aria-label="ナビゲーションメニュー開閉ボタン"
           onClick={handleMenuToggleClick}
           sx={{
             mr: 2,

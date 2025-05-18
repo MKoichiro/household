@@ -1,11 +1,10 @@
 import { Card, CardContent, Grid, Stack, Theme, Typography } from '@mui/material'
-import { ArrowDownward, AccountBalance } from '@mui/icons-material'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import { Transaction } from '../../../shared/types'
 import { financeCalculations } from '../../../shared/utils/financeCalculations'
 import { formatCurrency } from '../../../shared/utils/formatting'
 import { ElementType, useState } from 'react'
 import { colorPicker as cp } from '../../../styles/theme/paletteHelpers'
+import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '../../../icons'
 
 interface GridMapType {
   name: 'income' | 'expense' | 'balance'
@@ -52,14 +51,14 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
       name: 'expense',
       display: '支出',
       colorPath: 'expenseColor',
-      icon: ArrowDownward,
+      icon: ArrowDownwardIcon,
       value: expense,
     },
     {
       name: 'balance',
       display: '残高',
       colorPath: 'balanceColor',
-      icon: AccountBalance,
+      icon: AccountBalanceIcon,
       value: balance,
     },
   ]
