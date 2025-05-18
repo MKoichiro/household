@@ -106,8 +106,8 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                     position: 'absolute',
                     top: isShrunk(item.name) ? '50%' : 0,
                     left: isShrunk(item.name) ? '50%' : 0,
-                    transform: `${isShrunk(item.name) ? 'translate(-50%, -50%)' : 'translate(0)'} ${isNeutral ? 'scale(3)' : 'scale(1)'}`,
-                    opacity: isNeutral ? 0.5 : 1,
+                    transform: `${isShrunk(item.name) ? 'translate(-50%, -50%)' : 'translate(0)'} ${isNeutral ? 'scale(3.5)' : 'scale(1)'}`,
+                    opacity: isNeutral ? 0.25 : 1,
                     color: isShrunk(item.name) ? 'white' : cp(item.colorPath, 'dark'),
                     transition:
                       'transform 300ms ease, top 300ms ease, left 300ms ease, opacity 300ms ease, color 300ms ease',
@@ -120,9 +120,11 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                     opacity: isShrunk(item.name) ? 0 : 1,
                     transition: 'opacity 300ms ease',
                     position: 'absolute',
-                    inset: '0 auto auto 1.5em',
-                    // top: 0,
-                    // left: '1.5em',
+                    top: 0,
+                    left: {
+                      xs: isNeutral ? '0.25em' : '1em',
+                      lg: isNeutral ? '2.25em' : '1.25em',
+                    },
                   }}
                 >
                   {item.display}
@@ -134,10 +136,8 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                 fontWeight="fontWeightBold"
                 noWrap={selected !== null && selected !== item.name}
                 sx={{
-                  // marginTop: 'auto',
                   wordBreak: wordBreak(item.name),
                   opacity: isShrunk(item.name) ? 0 : 1,
-                  // display: isShrunk(item.name) ? 'none' : 'block',
                   transition: 'opacity 300ms ease',
                 }}
               >

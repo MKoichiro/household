@@ -149,7 +149,7 @@ interface NavigationMenuProps {
 const NavigationMenu = ({ isOpen, onClose }: NavigationMenuProps) => {
   const { dynamicHeaderHeight } = useLayout()
   return (
-    <>
+    <aside>
       <Mask $isOpen={isOpen} onClick={onClose} />
       <NavigationMenuRoot
         role="navigation"
@@ -161,7 +161,7 @@ const NavigationMenu = ({ isOpen, onClose }: NavigationMenuProps) => {
           <NavigationMenuItemsList />
         </StickyContext>
       </NavigationMenuRoot>
-    </>
+    </aside>
   )
 }
 
@@ -196,7 +196,7 @@ const LinkButtonCommonStyle = css`
   display: inline-flex;
   gap: 1.25rem;
   align-items: center;
-  padding: 0.25rem 2rem 0.25rem 0.5rem;
+  padding: 0.25rem 2rem 0.25rem 1rem;
   margin: 0.25rem 0;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
@@ -237,7 +237,7 @@ const AccordionHead = styled(BareAccordionHead)`
   display: flex;
   gap: 1.25rem;
   align-items: center;
-  padding: 0.25rem 0 0.25rem 0.5rem;
+  padding: 0.25rem 0 0.25rem 1rem;
   height: 1.8em;
   border-bottom: 0px solid ${purple[500]};
   &:hover {
@@ -276,6 +276,8 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: 
   overflow: clip;
 
   ${({ theme }) => theme.breakpoints.down('lg')} {
+    position: fixed;
+    top: 0;
     bottom: 0;
     width: 70vw;
   }
