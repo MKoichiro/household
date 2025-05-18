@@ -26,14 +26,14 @@ interface CalendarPresenterProps {
 }
 
 const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
-  const { ref, events, selectedEvent, isResizing, currentMonth } = states
+  const { calendarRef, scrollJudgeElementRef, events, selectedEvent, isResizing, currentMonth } = states
   const { handleDateClick, handleDatesSet, setAspectRatio, headerHandlers } = actions
   return (
     <>
       <CalendarHeader currentMonth={currentMonth} {...headerHandlers} />
-      <StyleContext>
+      <StyleContext ref={scrollJudgeElementRef}>
         <FullCalendar
-          ref={ref}
+          ref={calendarRef}
           locale={jaLocal}
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
@@ -44,6 +44,8 @@ const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
           headerToolbar={false}
           aspectRatio={setAspectRatio()}
           height="auto"
+          longPressDelay={10} // デフォルト 1000ms → 10ms
+          selectLongPressDelay={10} // デフォルト 1000ms → 10ms
         />
         <Backdrop
           open={isResizing}

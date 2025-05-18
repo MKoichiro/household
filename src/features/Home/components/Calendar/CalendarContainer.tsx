@@ -3,12 +3,14 @@ import { DatesSetArg } from '@fullcalendar/core/index.js'
 import { DateClickArg } from '@fullcalendar/interaction'
 import { useMediaQuery, useTheme } from '@mui/material'
 import { isSameMonth } from 'date-fns'
-import { useEffect, useRef, useState } from 'react'
+import { RefObject, useEffect, useRef, useState } from 'react'
 import { CalendarContent, DailyBalances, Transaction } from '../../../../shared/types'
 import { calculateDailyBalances } from '../../../../shared/utils/financeCalculations'
 import { formatCurrency, getFormattedToday } from '../../../../shared/utils/formatting'
 import CalendarPresenter from './CalendarPresenter'
 import { useApp, useLayout } from '../../../../shared/hooks/useContexts'
+import { debounce } from '../../../../shared/utils/debounce'
+import useScrollJudge from '../../../../shared/hooks/useScrollJudge'
 
 // eventsCreator returns like this:
 // const events = [
@@ -29,7 +31,8 @@ const eventsCreator = (dailyBalances: DailyBalances): CalendarContent[] => {
 }
 
 export interface CalendarStates {
-  ref: React.RefObject<FullCalendar | null>
+  calendarRef: RefObject<FullCalendar | null>
+  scrollJudgeElementRef: RefObject<HTMLDivElement | null>
   events: CalendarContent[]
   selectedEvent: { start: string; display: string; backgroundColor: string }
   isResizing: boolean
@@ -52,12 +55,21 @@ export interface CalendarProps {
   onDateClick: (dateInfo: DateClickArg) => void
 }
 
-const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick: handleDateClick }: CalendarProps) => {
+const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: CalendarProps) => {
   const theme = useTheme()
   const { currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
+  const calendarRef = useRef<FullCalendar>(null)
+  const scrollJudgeElementRef = useRef<HTMLDivElement>(null)
+  const isScrollingRef = useScrollJudge(scrollJudgeElementRef, { watchX: true })
 
   const dailyBalances = calculateDailyBalances(transactions)
   const calendarEvents = eventsCreator(dailyBalances)
+
+  // fullcalendarの問題でスマホ版で、タップの感度が高く二重発火してしまうので、debounceをかける
+  const handleDateClick = debounce((dateInfo: DateClickArg) => {
+    if (isScrollingRef.current) return
+    onDateClick(dateInfo)
+  }, 100)
 
   // datesSet 属性のハンドラ何らかの方法で日付範囲が変更されたときにコールされる
   // see: https://fullcalendar.io/docs/datesSet
@@ -112,7 +124,6 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick: han
   // navigationMenuの開閉に応じてカレンダーをリサイズを更新するため処理
   const animationDuration = 300
   const { isNavigationMenuOpen } = useLayout()
-  const calendarRef = useRef<FullCalendar>(null)
   const [isResizing, setIsResizing] = useState(false)
   const previouslyOpen = useRef(isNavigationMenuOpen)
 
@@ -136,7 +147,8 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick: han
   }, [downLg, isNavigationMenuOpen])
 
   const states: CalendarStates = {
-    ref: calendarRef,
+    calendarRef,
+    scrollJudgeElementRef,
     events: calendarEvents,
     selectedEvent,
     isResizing,
