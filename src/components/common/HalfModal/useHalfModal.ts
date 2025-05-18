@@ -47,7 +47,7 @@ const useSwipeToClose = (isOpen: boolean, handleClose: () => void) => {
 
 export const useHalfModal = (isOpen: boolean, handleClose: () => void, zIndex: CSSProperties['zIndex']) => {
   const { swipeHandlers, swipeAnimeStyle } = useSwipeToClose(isOpen, handleClose)
-  const { setModalRef: modalRef, setOverflowableRef: overflowableRef } = useModalScrollLock(isOpen)
+  const { setOverflowableRef: overflowableRef } = useModalScrollLock(isOpen)
 
   const defaultStyles: Pick<
     CSSProperties,
@@ -70,7 +70,6 @@ export const useHalfModal = (isOpen: boolean, handleClose: () => void, zIndex: C
       handleClose,
       swipeHandlers,
       style: defaultStyles,
-      modalRef,
       zIndex,
     },
     overflowableRef,
