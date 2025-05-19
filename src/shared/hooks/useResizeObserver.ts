@@ -12,7 +12,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 type OptionsType<Id extends string, R> = {
   delay?: number
-  // initialValues: Record<Id, R>
   initialValues?: Partial<Record<Id, R>>
 }
 
@@ -35,16 +34,6 @@ export function useResizeObservers<Id extends string, R>(
     callbackRef.current = callback
   }, [callback])
 
-  // 矩形情報を格納するためのstate
-  // const [rects, setRects] = useState<Record<Id, R>>(
-  //   ids.reduce(
-  //     (acc, id) => {
-  //       acc[id] = initialValues[id]
-  //       return acc
-  //     },
-  //     {} as Record<Id, R>
-  //   )
-  // )
   const [rects, setRects] = useState<Record<Id, R>>(() => {
     const initial: Partial<Record<Id, R>> = {}
     ids.forEach((id) => {
@@ -54,9 +43,7 @@ export function useResizeObservers<Id extends string, R>(
       } else {
         // なければコールバックの結果で補完
         const el = refs[id]?.current
-        if (el) {
-          initial[id] = callback(el)
-        }
+        if (el) initial[id] = callback(el)
       }
     })
     return initial as Record<Id, R>

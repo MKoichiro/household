@@ -19,6 +19,11 @@ export { default as LoginIcon } from '@mui/icons-material/Login'
 /** ログアウト */
 export { default as LogoutIcon } from '@mui/icons-material/Logout'
 
+/** 新しいお知らせ */
+export { default as FiberNewIcon } from '@mui/icons-material/FiberNew'
+/** FlowingText のリセット */
+export { default as FirstPageIcon } from '@mui/icons-material/FirstPage'
+
 /** ナビゲーションメニュー展開用 '≡' */
 export { default as MenuIcon } from '@mui/icons-material/Menu'
 /** コンテキストメニュー展開用 '⋮' */

@@ -39,7 +39,6 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
     </Button>
   )
   const menuConfigs = headerMenuConfigs(menuTree)
-  // const { registers, anchorRefs, togglers, clickAwayRefs } = useContextMenus(menuConfigs)
   const { open, positionStyle, register, handleToggle, anchorRef, clickAwayRef } = useContextMenu(menuConfigs)
 
   return (
