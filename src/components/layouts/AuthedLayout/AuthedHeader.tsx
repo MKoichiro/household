@@ -28,8 +28,14 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
       sx={{
         display: 'flex',
         m: 0,
+        p: 0,
+        pl: '1rem',
         color: 'white',
         borderColor: 'white',
+        fontSize: '1.4rem',
+        lineHeight: '3em',
+        height: '3em',
+        fontWeight: 400,
       }}
       disabled={isLogoutProcessing}
       startIcon={<LogoutIcon />}
@@ -74,7 +80,12 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
           <MoreVertIcon />
         </IconButton>
       </HeaderMain>
-      <ContextMenu {...register} open={open} positionStyle={positionStyle} />
+      <StyledContextMenu
+        {...register}
+        open={open}
+        positionStyle={positionStyle}
+        subMenuPosition={{ strategy: 'absoluteTop' }}
+      />
     </HeaderRoot>
   )
 }
@@ -108,6 +119,23 @@ const HeaderMain = styled.div<{ $isNewsOpen: boolean }>`
   height: ${headerMainHeight}px;
   transform: translateY(${({ $isNewsOpen }) => ($isNewsOpen ? '0' : '-32px')});
   transition: transform 300ms ease;
+`
+
+const StyledContextMenu = styled(ContextMenu)`
+  ul.menu-list {
+    background-color: ${({ theme }) => theme.palette.ui.header.bg.main};
+    border-radius: 0.8rem;
+    margin-left: 0.5rem;
+    li.menu-item {
+      button {
+        font-size: 1.4rem;
+        line-height: 3em;
+        height: 3em;
+        border-radius: 0.8rem;
+        padding-left: 1rem;
+      }
+    }
+  }
 `
 
 export default AuthedHeader

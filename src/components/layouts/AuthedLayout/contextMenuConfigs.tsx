@@ -11,12 +11,6 @@ const StyledLink = styled(Link)`
 
 export const headerMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
   {
-    id: 'logout',
-    display: logoutComponent,
-    includeButton: true,
-    dividerAfter: true,
-  },
-  {
     id: 'pages',
     display: 'ページ遷移',
     children: [
@@ -32,6 +26,12 @@ export const headerMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
       },
       { id: '3-1-norm-1', display: <StyledLink to="/app/news">お知らせ</StyledLink> },
     ],
+    dividerAfter: true,
+  },
+  {
+    id: 'logout',
+    display: logoutComponent,
+    includeButton: true,
   },
 ]
 

@@ -32,6 +32,9 @@ declare module '@mui/material/styles' {
       navMenu: {
         bg: PaletteColor
       }
+      contextMenu: {
+        bg: PaletteColor
+      }
       calendar: {
         head: {
           bg: PaletteColor
@@ -57,6 +60,9 @@ declare module '@mui/material/styles' {
       }
       bodyBg: PaletteColorOptions
       navMenu: {
+        bg: PaletteColorOptions
+      }
+      contextMenu: {
         bg: PaletteColorOptions
       }
       calendar: {
@@ -92,6 +98,7 @@ declare module '@mui/material/styles' {
     transactionDetail: Record<Breakpoint, number>
     transactionForm: Record<Breakpoint, number>
     navigationMenu: Record<Breakpoint, number>
+    contextMenu: Record<Breakpoint, number>
     notificationPad: Record<Breakpoint, number>
   }
 }
@@ -184,6 +191,13 @@ export const theme = createTheme({
           // dark: ,
         },
       },
+      contextMenu: {
+        bg: {
+          // main: ,
+          // light: ,
+          // dark: ,
+        },
+      },
       calendar: {
         head: {
           bg: {
@@ -241,7 +255,8 @@ export const theme = createTheme({
     modal: 0,
     snackbar: 0,
     tooltip: 0,
-    // set custom z-index
+
+    // custom z-index
     header: {
       xs: 1000,
       sm: 1000,
@@ -285,6 +300,17 @@ export const theme = createTheme({
       // tablet: 1400,
       // laptop: 1400,
       // desktop: 1400,
+    },
+    contextMenu: {
+      xs: 1300,
+      sm: 1300,
+      md: 1300,
+      lg: 1300,
+      xl: 1300,
+      // mobile: 1300,
+      // tablet: 1300,
+      // laptop: 1300,
+      // desktop: 1300,
     },
     notificationPad: {
       xs: 2000,

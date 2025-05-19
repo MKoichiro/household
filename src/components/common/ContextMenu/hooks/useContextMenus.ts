@@ -132,7 +132,6 @@ export const useContextMenus = (
     })
     return map
   }, [configs, considerDefault, menuTree, positionConfigs, rootCallbacks])
-  // }, [idKey])
 
   return {
     /** [ステート] コンテキストメニューの開閉状態の id マッピング */

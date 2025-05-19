@@ -514,6 +514,8 @@ export interface AnimeConfigs {
  * ContextMenu コンポーネントの props 型定義。基本は useContextMenu の返り値 register をスプレッドすることで指定される。
  */
 export interface ContextMenuProps {
+  /** styled-components でスタイルのオーバーライドを可能にする */
+  className?: string
   /** コンテキストメニューの ID。 */
   id: string
   /** framer-motion の設定を含む、アニメーション設定。 */

@@ -12,6 +12,7 @@ import { ContextMenuRoot } from './styled'
 import { ContextMenuProps } from './types'
 
 const ContextMenu = ({
+  className,
   id,
   animeConfigs,
   open,
@@ -33,7 +34,7 @@ const ContextMenu = ({
         <AnimatePresence>
           {open && (
             <ContextMenuRoot
-              className="context-menu-root"
+              className={`context-menu-root ${className ?? ''}`}
               ref={rootRef}
               $pos={positionStyle}
               $fixed={shouldFix}
