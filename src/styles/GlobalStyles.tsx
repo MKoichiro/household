@@ -19,6 +19,15 @@ const GlobalStyles = () => {
         nav: {
           padding: 0,
         },
+        ul: {
+          padding: 0,
+          margin: 0,
+          listStyle: 'none',
+        },
+        dl: {
+          padding: 0,
+          margin: 0,
+        },
       })}
     />
   )

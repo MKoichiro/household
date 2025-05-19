@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Divider, Typography } from '@mui/material'
+import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../shared/hooks/useContexts'
 
@@ -19,25 +19,28 @@ const SettingsLayout = () => {
       break
   }
 
+  // レイアウトの性質上、アバターとタイトルは少し左にずらすとより「真ん中っぽく」見える
+  const adjustCenter = { transform: 'translateX(-0.8rem)' }
+
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+    <Box display="flex" justifyContent="center" p={2}>
       <Card sx={{ maxWidth: 700, width: '100%' }}>
         <CardContent>
           {/* ヘッダー：アバターとタイトル */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 2 }}>
+          <Stack component="header" direction="row" alignItems="center" justifyContent="center" spacing={2}>
             <Avatar
               alt={user?.displayName || user?.email || 'User'}
               src={user?.photoURL || undefined}
-              sx={{ width: '3rem', height: '3rem' }}
+              sx={{ width: '3rem', height: '3rem', ...adjustCenter }}
             >
               {!user?.photoURL && (user?.displayName?.charAt(0) || user?.email?.charAt(0) || '?')}
             </Avatar>
-            <Typography variant="h5" component="h2" color="text.primary">
+            <Typography variant="h5" component="h2" color="text.primary" sx={adjustCenter}>
               {title}
             </Typography>
-          </Box>
+          </Stack>
 
-          <Divider />
+          <Divider sx={{ my: 2, bgcolor: 'lightgrey' }} />
 
           <Outlet />
         </CardContent>
