@@ -104,7 +104,7 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
   const expenseSortedSums = expenseCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
 
   // ラベルのみの配列を用意
-  // Object.key()の返り値は常にstring[]型になるためアサーションで明示
+  // Object.*()の返り値は常にstring[]型になるためアサーションで明示
   // e.g.) ["食費", "交際費"]
   const expenseLabels = expenseSortedSums.map((item) => Object.keys(item)[0]) as ExpenseCategory[]
 
@@ -176,13 +176,14 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
         // borderColor: 'white',
         // borderRadius: 25,
         // borderWidth: 2,
-        display: function (context: Context) {
+
+        // ラベルの表示条件
+        display: (context: Context) => {
           const dataset = context.dataset
-          const count = dataset.data.length
+          const sum = (dataset.data as number[]).reduce((a, b) => a + b, 0)
           const value = dataset.data[context.dataIndex] as number
-          return value > count * 1.5
+          return value / sum > 0.05 // 5% より大きい場合に表示
         },
-        // formatter: Math.round
       },
     },
   }
@@ -233,8 +234,9 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
       <Pie
         data={selectedType === 'expense' ? expenseData : incomeData}
         options={options}
-        style={{ margin: '0 auto' }}
+        style={{ margin: 'auto' }}
         height="300px"
+        width="250px"
       />
     </Box>
   )
