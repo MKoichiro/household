@@ -74,7 +74,7 @@ const StyledDiv = styled.div`
 
   div:nth-of-type(6) span,
   div:nth-of-type(8) span {
-    animation-delay: 450s;
+    animation-delay: 450ms;
   }
 
   div:nth-of-type(9) span {

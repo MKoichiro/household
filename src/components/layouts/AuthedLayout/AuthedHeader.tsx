@@ -8,6 +8,7 @@ import { headerMenuConfigs, headerMenuTree } from './contextMenuConfigs'
 import ContextMenu from '../../common/ContextMenu/ContextMenu'
 import { useContextMenu } from '../../common/ContextMenu/hooks/useContextMenus'
 import { LogoutIcon, MenuIcon, MoreVertIcon } from '../../../icons'
+import ThemeToggler from './ThemeToggler'
 
 interface AuthedHeaderProps {
   onMenuToggleClick: () => void
@@ -66,13 +67,14 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
 
         <HeaderTitle redirectTo="home" />
 
+        <ThemeToggler />
+
         <IconButton
           aria-label="ヘッダーメニュー開閉ボタン"
           onClick={handleToggle}
           ref={clickAwayRef}
           sx={{
             display: 'flex',
-            ml: 'auto',
             color: 'white',
             borderColor: 'white',
           }}

@@ -1,9 +1,26 @@
 import { createContext, Dispatch, ReactNode, ReactPortal, SetStateAction, useContext, useEffect } from 'react'
 import { Transaction, TransactionFormValues } from '../types'
 import { User } from 'firebase/auth'
-import { AlertColor } from '@mui/material'
+import { AlertColor, PaletteMode } from '@mui/material'
 import { createPortal } from 'react-dom'
 import { DEFAULT_ENTRIES } from '../../app/providers/PortalProvider/constant'
+
+export type ColorMode = PaletteMode | 'os'
+
+interface ColorModeContextValue {
+  setMode: (mode: ColorMode) => void
+  mode: ColorMode
+}
+
+export const ColorModeContext = createContext<ColorModeContextValue>({ setMode: () => {}, mode: 'light' })
+
+export const useColorMode = () => {
+  const context = useContext(ColorModeContext)
+  if (!context) {
+    throw new Error('useColorMode: グローバルなデータはプロバイダーの中で取得してください')
+  }
+  return context
+}
 
 interface AuthContextValue {
   user: User | null
@@ -145,11 +162,7 @@ export const usePortalRegistration = (entries: PortalEntry[]) => {
   const { addEntries, removeEntry } = usePortalEntries()
   useEffect(() => {
     addEntries(entries)
-    return () => {
-      entries.forEach((entry) => {
-        removeEntry(entry.name)
-      })
-    }
+    return () => entries.forEach((entry) => removeEntry(entry.name))
   }, [addEntries, entries, removeEntry])
 }
 

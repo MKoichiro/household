@@ -3,7 +3,7 @@ import { Transaction } from '../../../shared/types'
 import { financeCalculations } from '../../../shared/utils/financeCalculations'
 import { formatCurrency } from '../../../shared/utils/formatting'
 import { ElementType, useState } from 'react'
-import { colorPicker as cp } from '../../../styles/theme/paletteHelpers'
+import { colorPicker as cp } from '../../../styles/theme/helpers/paletteHelpers'
 import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '../../../icons'
 
 interface GridMapType {

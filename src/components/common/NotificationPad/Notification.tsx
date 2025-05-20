@@ -1,14 +1,9 @@
-import { NotificationType } from '../../shared/hooks/useContexts'
+import { NotificationType } from '../../../shared/hooks/useContexts'
 import { Stack, Typography } from '@mui/material'
-import TimerCircularProgress from './TimerCircularProgress'
+import TimerCircularProgress from '../TimerCircularProgress'
 import Snackbar from './Snackbar'
 import { motion } from 'framer-motion'
 import styled from '@emotion/styled'
-
-const StyledSnackbar = styled(Snackbar)<{ isOne: boolean }>`
-  margin-top: ${({ isOne }) => (isOne ? '0' : '0.5rem')};
-  margin-bottom: ${({ isOne }) => (isOne ? '0' : '0.5rem')};
-`
 
 interface NotificationItemProps {
   isOne: boolean
@@ -22,8 +17,9 @@ const Notification = ({
   notification: { id, message, severity, timer: autoHideDuration },
   onClose: handleClose,
 }: NotificationItemProps) => {
-  // autoHideDurationがundefinedまたは0以下の場合は無制限表示
+  // autoHideDuration が undefined または 0 以下の場合は無制限表示
   const isInfinite = autoHideDuration === undefined || autoHideDuration <= 0
+  // const isInfinite = true
 
   return (
     <motion.div
@@ -48,7 +44,14 @@ const Notification = ({
             {message}
           </Typography>
           {!isInfinite && (
-            <TimerCircularProgress color="secondary" size="1rem" variant="determinate" duration={autoHideDuration} />
+            <TimerCircularProgress
+              size="1rem"
+              variant="determinate"
+              duration={autoHideDuration}
+              sx={{
+                color: (theme) => theme.palette.ui.snackBar[severity].icon[theme.palette.mode],
+              }}
+            />
           )}
         </Stack>
       </StyledSnackbar>
@@ -58,4 +61,10 @@ const Notification = ({
 
 export default Notification
 
-// TODO: より新しいmotion.createに書き換え。
+const StyledSnackbar = styled(Snackbar)<{ isOne: boolean }>`
+  margin-top: ${({ isOne }) => (isOne ? '0' : '0.5rem')};
+  margin-bottom: ${({ isOne }) => (isOne ? '0' : '0.5rem')};
+  p {
+    font-size: 1.4rem;
+  }
+`

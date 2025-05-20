@@ -24,7 +24,7 @@ const CalendarHeader = ({
         mb: 2,
       }}
     >
-      <Typography component="h1" variant="h5" sx={{ color: (theme) => theme.palette.app.main }}>
+      <Typography component="h1" variant="h5" sx={{ color: (theme) => theme.palette.appTheme.main }}>
         {format(currentMonth, 'yyyy年 M月')}
       </Typography>
 
@@ -32,7 +32,7 @@ const CalendarHeader = ({
         <IconButton
           aria-label="前月へ移動するボタン"
           onClick={handlePrevMonthClick}
-          sx={{ color: (theme) => theme.palette.app.main }}
+          sx={{ color: (theme) => theme.palette.appTheme.main }}
         >
           <ArrowBackIosNewIcon />
         </IconButton>
@@ -42,7 +42,7 @@ const CalendarHeader = ({
           startIcon={<TodayIcon />}
           onClick={handleTodayClick}
           sx={{
-            color: (theme) => theme.palette.app.main,
+            color: (theme) => theme.palette.appTheme.main,
           }}
         >
           Today
@@ -50,7 +50,7 @@ const CalendarHeader = ({
         <IconButton
           aria-label="翌月へ移動するボタン"
           onClick={handleNextMonthClick}
-          sx={{ color: (theme) => theme.palette.app.main }}
+          sx={{ color: (theme) => theme.palette.appTheme.main }}
         >
           <ArrowForwardIosIcon />
         </IconButton>
