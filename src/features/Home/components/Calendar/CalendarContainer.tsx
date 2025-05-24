@@ -1,8 +1,8 @@
 import FullCalendar from '@fullcalendar/react'
-import { DatesSetArg } from '@fullcalendar/core/index.js'
+import { DatesSetArg, DayCellContentArg } from '@fullcalendar/core/index.js'
 import { DateClickArg } from '@fullcalendar/interaction'
 import { useMediaQuery, useTheme } from '@mui/material'
-import { isSameMonth } from 'date-fns'
+import { format, isSameMonth } from 'date-fns'
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { CalendarContent, DailyBalances, Transaction } from '../../../../shared/types'
 import { calculateDailyBalances } from '../../../../shared/utils/financeCalculations'
@@ -42,6 +42,7 @@ export interface CalendarStates {
 export interface CalendarActions {
   handleDateClick: (dateInfo: DateClickArg) => void
   handleDatesSet: (datesSetInfo: DatesSetArg) => void
+  handleDayCellClassNames: (classNames: string[]) => (cellArg: DayCellContentArg) => string[]
   setAspectRatio: () => number
   headerHandlers: {
     handlePrevMonthClick: () => void
@@ -81,6 +82,10 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
     if (isSameMonth(todayDate, currentMonth)) setSelectedDay(getFormattedToday())
   }
 
+  const handleDayCellClassNames = (classNames: string[]) => (cellArg: DayCellContentArg) => {
+    return format(cellArg.date, 'yyyy-MM-dd') === selectedDay ? classNames : []
+  }
+
   // CalendarHeaderのボタンを押したときの処理
   const handlePrevMonthClick = () => {
     const api = calendarRef.current?.getApi()
@@ -105,7 +110,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
   const selectedEvent = {
     start: selectedDay,
     display: 'background',
-    backgroundColor: theme.palette.incomeColor.light,
+    backgroundColor: theme.palette.ui.calendar.cells.bg.selected[theme.palette.mode],
   }
 
   // アスペクト比をレスポンシブ対応、aspectRatio属性の設定値を返す
@@ -159,6 +164,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
     handleDateClick,
     handleDatesSet,
     setAspectRatio,
+    handleDayCellClassNames,
     headerHandlers: {
       handlePrevMonthClick,
       handleTodayClick,

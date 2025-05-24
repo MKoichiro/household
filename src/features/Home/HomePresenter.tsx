@@ -12,6 +12,7 @@ import {
 import styled from '@emotion/styled'
 import { transactionMenuWidth } from '../../shared/constants/ui'
 import { HomeActions, HomeStates } from '../../pages/HomeContainer'
+import { pagePadding } from '../../styles/constants'
 
 interface HomePresenterProps {
   states: HomeStates
@@ -64,8 +65,8 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
       <Box
         sx={{
           flexGrow: 1,
-          padding: { xs: '0.8rem', lg: '1rem' },
           width: { xs: '100%', lg: `calc(100% - ${transactionMenuWidth}px)` },
+          p: pagePadding,
         }}
       >
         <MonthlySummary {...monthlySummaryProps} />

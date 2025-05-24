@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { footerHeight } from '../../../shared/constants/ui'
-import { indigo, purple } from '@mui/material/colors'
 import { XIcon } from '../../../icons'
 
 const Footer = () => {
@@ -15,11 +14,7 @@ const Footer = () => {
           Contact
         </StyledA>
         <p> | </p>
-        <StyledA
-          // href="https://x.com/ishihaya0331?s=11&t=9dXL_HkutIzhT2vxZa0gvA"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <StyledA target="_blank" rel="noopener noreferrer">
           <XIcon sx={{ fontSize: '1.25rem', color: 'black' }} />
         </StyledA>
       </StyledDiv>
@@ -33,8 +28,8 @@ export default Footer
 
 const FooterRoot = styled.footer`
   min-height: ${footerHeight}px;
-  background-color: ${purple[200]};
-  color: white;
+  background-color: ${({ theme }) => theme.palette.ui.footer.bg[theme.palette.mode]};
+  color: ${({ theme }) => theme.palette.ui.footer.contrastText[theme.palette.mode]};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,7 +43,7 @@ const StyledDiv = styled.div`
 `
 
 const StyledA = styled.a`
-  color: ${indigo['A400']};
+  color: black;
   text-decoration: none;
   margin: 0 10px;
 `

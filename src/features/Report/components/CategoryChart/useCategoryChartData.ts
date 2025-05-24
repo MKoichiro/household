@@ -1,19 +1,3 @@
-// MUI のチャートコンポーネントに切り替えても良いかも。
-// ../../config/chartConfig.txをApp.tsxで読み込み済み
-import {
-  Box,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Theme,
-  useTheme,
-} from '@mui/material'
-import { ChartData, ChartOptions } from 'chart.js'
-import { ChangeEvent, useState } from 'react'
-import { Pie } from 'react-chartjs-2'
 import {
   ExpenseCategory,
   expenseLiterals,
@@ -22,9 +6,9 @@ import {
   incomeLiterals,
   IncomeTransaction,
   Transaction,
-  TransactionType,
-} from '../../../shared/types'
-import { Context } from 'chartjs-plugin-datalabels'
+} from '../../../../shared/types'
+import { Theme } from '@mui/material'
+import { ChartData } from 'chart.js'
 
 // カテゴリーとカラーのマッピングを定義
 interface ExpenseColorMap {
@@ -69,34 +53,18 @@ const incomeCategoryColorMap = (theme: Theme): IncomeColorMap => ({
   },
 })
 
-// コンポーネントここから
-export interface CategoryChartProps {
-  monthlyTransactions: Transaction[]
-}
-
 type ExpenseCategorySum = Partial<Record<ExpenseCategory, number>>
 type IncomeCategorySum = Partial<Record<IncomeCategory, number>>
 
-function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps) {
-  const theme = useTheme()
-
-  // グラフ切り替えのためのステートとイベントハンドラー
-  const [selectedType, setSelectedType] = useState<TransactionType>('expense')
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSelectedType(e.target.value as TransactionType)
-  }
-
-  // 支出データの準備
+const useCategoryChartData = (transactions: Transaction[], theme: Theme) => {
+  // --- 支出データの準備ここから ---
   // 支出タイプのtransactionsを取得
   const expenseTransactions: ExpenseTransaction[] = transactions.filter((t) => t.type === 'expense')
 
   // カテゴリ毎の合計を算出
   // e.g.) [ {"食費": 1950 }, {"日用品": 24000}, {"交際費": 0} ... ]
   const expenseCategorySums: ExpenseCategorySum[] = expenseLiterals.map((label) => {
-    const sum = expenseTransactions.reduce((acc, t) => {
-      return t.category === label ? (acc += t.amount) : acc
-    }, 0)
-
+    const sum = expenseTransactions.reduce((acc, t) => (t.category === label ? (acc += t.amount) : acc), 0)
     return { [label]: sum }
   })
 
@@ -128,14 +96,12 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
       },
     ],
   }
+  // --- 支出データの準備ここまで ---
 
-  // 収入データの準備ここから
+  // --- 収入データの準備ここから ---
   const incomeTransactions: IncomeTransaction[] = transactions.filter((t) => t.type === 'income')
   const incomeCategorySums: IncomeCategorySum[] = incomeLiterals.map((label) => {
-    const sum = incomeTransactions.reduce((acc, t) => {
-      return t.category === label ? acc + t.amount : acc
-    }, 0)
-
+    const sum = incomeTransactions.reduce((acc, t) => (t.category === label ? acc + t.amount : acc), 0)
     return { [label]: sum }
   })
   const incomeSortedSums = incomeCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
@@ -154,92 +120,9 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
       },
     ],
   }
-  // 収入データの準備ここまで
+  // --- 収入データの準備ここまで ---
 
-  // Pieコンポーネントに渡すオプション
-  const options: ChartOptions<'pie'> = {
-    devicePixelRatio: 2.5,
-    maintainAspectRatio: false,
-    responsive: false,
-    plugins: {
-      datalabels: {
-        // backgroundColor: function(context: Context) {
-        //   return context.dataset.backgroundColor;
-        // },
-        formatter: (_, context) => context.chart?.data.labels?.[context.dataIndex],
-        font: {
-          weight: 'bold',
-        },
-        color: 'white',
-        // padding: 6,
-        // backgroundColor: "black",
-        // borderColor: 'white',
-        // borderRadius: 25,
-        // borderWidth: 2,
-
-        // ラベルの表示条件
-        display: (context: Context) => {
-          const dataset = context.dataset
-          const sum = (dataset.data as number[]).reduce((a, b) => a + b, 0)
-          const value = dataset.data[context.dataIndex] as number
-          return value / sum > 0.05 // 5% より大きい場合に表示
-        },
-      },
-    },
-  }
-
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-      <FormControl sx={{ alignItems: 'center' }}>
-        <FormLabel id="type-label">支出 / 収入</FormLabel>
-        <RadioGroup
-          aria-labelledby="type-label"
-          defaultValue="expense"
-          value={selectedType}
-          name="type-radio-group"
-          onChange={handleChange}
-          row
-        >
-          <FormControlLabel
-            value="expense"
-            control={
-              <Radio
-                sx={{
-                  color: theme.palette.expenseColor.main,
-                  '&.Mui-checked': {
-                    color: theme.palette.expenseColor.main,
-                  },
-                }}
-              />
-            }
-            label="支出"
-          />
-          <FormControlLabel
-            value="income"
-            control={
-              <Radio
-                sx={{
-                  color: theme.palette.incomeColor.main,
-                  '&.Mui-checked': {
-                    color: theme.palette.incomeColor.main,
-                  },
-                }}
-              />
-            }
-            label="収入"
-          />
-        </RadioGroup>
-      </FormControl>
-      <Divider sx={{ mt: 1, mb: 0.5 }} />
-      <Pie
-        data={selectedType === 'expense' ? expenseData : incomeData}
-        options={options}
-        style={{ margin: 'auto' }}
-        height="300px"
-        width="250px"
-      />
-    </Box>
-  )
+  return { expenseData, incomeData }
 }
 
-export default CategoryChart
+export default useCategoryChartData

@@ -32,18 +32,26 @@ const TransactionFormBody = ({
   const isNewEntry = selectedTransaction === null // 新規エントリーかどうか
 
   return (
-    <>
+    <Stack spacing={3}>
       {/* 入力エリアヘッダー */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-        <Typography variant="h6">{isNewEntry ? '内訳を追加' : '内訳を編集'}</Typography>
-        <IconButton sx={{ color: (theme) => theme.palette.grey[500] }} onClick={handleCloseClick}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
+        >
+          {isNewEntry ? '内訳を追加' : '内訳を編集'}
+        </Typography>
+        <IconButton
+          sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
+          onClick={handleCloseClick}
+        >
           <CloseIcon />
         </IconButton>
       </Box>
 
       {/* フォーム */}
       <Box component="form" onSubmit={handleSubmit}>
-        <Stack spacing={2}>
+        <Stack spacing={2} useFlexGap>
           {/* F: フィールド部分 */}
           <F.Type control={control} onClick={handleTypeClick} />
           <F.Date control={control} errors={errors} />
@@ -58,6 +66,9 @@ const TransactionFormBody = ({
             color={currentType === 'income' ? 'primary' : 'error'}
             disabled={!isDirty || !isValid}
             fullWidth
+            sx={{
+              marginTop: (theme) => theme.spacing(3),
+            }}
           >
             {isNewEntry ? '保存' : '更新'}
           </Button>
@@ -68,7 +79,7 @@ const TransactionFormBody = ({
           )}
         </Stack>
       </Box>
-    </>
+    </Stack>
   )
 }
 

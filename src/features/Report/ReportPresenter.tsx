@@ -1,4 +1,4 @@
-import { Grid, Paper } from '@mui/material'
+import { Grid, Paper, SxProps, Theme } from '@mui/material'
 import {
   NoData,
   MonthSelector,
@@ -12,17 +12,19 @@ import {
 } from './components'
 import styled from '@emotion/styled'
 import { ReportActions, ReportStates } from '../../pages/ReportContainer'
+import { pagePaddingTemplate } from '../../styles/constants'
 
-const ReportRoot = styled.div`
-  padding: 1rem;
-`
+const paperCommonStyle: SxProps<Theme> = {
+  minHeight: '400px',
+  bgcolor: (theme) => theme.palette.app.lighterBg.level2.bg[theme.palette.mode],
+  px: 2,
+  py: 1,
+}
 
-const commonPaperStyle = {
+const chartCommonStyle: SxProps<Theme> = {
   height: '400px',
   display: 'flex',
   flexDirection: 'column',
-  px: 2,
-  py: 1,
 }
 
 interface ReportPresenterProps {
@@ -62,25 +64,31 @@ const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
 
         {/* 円グラフ */}
         <Grid size={{ xs: 12, md: 4 }}>
-          <Paper sx={commonPaperStyle}>
+          <Paper sx={{ ...paperCommonStyle, ...chartCommonStyle }}>
             {monthlyTransactions.length > 0 ? <CategoryChart {...categoryChartProps} /> : <NoData />}
           </Paper>
         </Grid>
 
         {/* 棒グラフ */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Paper sx={commonPaperStyle}>
+          <Paper sx={{ ...paperCommonStyle, ...chartCommonStyle }}>
             {monthlyTransactions.length > 0 ? <BarChart {...barChartProps} /> : <NoData />}
           </Paper>
         </Grid>
 
         {/* 表 */}
         <Grid size={{ xs: 12 }}>
-          <TransactionTable {...transactionTableProps} />
+          <Paper sx={{ ...paperCommonStyle }}>
+            {monthlyTransactions.length > 0 ? <TransactionTable {...transactionTableProps} /> : <NoData />}
+          </Paper>
         </Grid>
       </Grid>
     </ReportRoot>
   )
 }
+
+const ReportRoot = styled.div`
+  ${({ theme }) => pagePaddingTemplate(theme)}
+`
 
 export default ReportPresenter

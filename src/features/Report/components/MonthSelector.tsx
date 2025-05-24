@@ -40,7 +40,7 @@ const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) 
           先月
         </Button>
         <DatePicker
-          sx={{ mx: 2, background: 'white' }}
+          sx={{ mx: 2 }}
           label="年月を選択"
           defaultValue={selectedMonth} // 単なる初期値
           value={selectedMonth} // 外部から変更可
@@ -48,8 +48,8 @@ const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) 
           openTo="month" // 月選択を最初に開く
           format="yyyy/MM"
           slotProps={{
-            calendarHeader: { format: 'yyyy年MM月' }, // 選択部分の直上部。デスクトップ版とモバイル版
-            toolbar: { toolbarFormat: 'yyyy年MM月' }, // 最上部。モバイル版のみ。
+            calendarHeader: { format: 'yyyy年 MM月' }, // 選択部分の直上部。デスクトップ版とモバイル版
+            toolbar: { toolbarFormat: 'yyyy年 MM月' }, // 最上部。モバイル版のみ。
             // actionbar: {}, // モバイル版のみ。最下部のボタン種(OK, CANCELなど)をカスタムできる。
           }}
           onChange={handleDateChange}

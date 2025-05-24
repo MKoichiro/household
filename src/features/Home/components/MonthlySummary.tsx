@@ -1,5 +1,5 @@
-import { Card, CardContent, Grid, Stack, Theme, Typography } from '@mui/material'
-import { Transaction } from '../../../shared/types'
+import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Transaction, TransactionKeyType } from '../../../shared/types'
 import { financeCalculations } from '../../../shared/utils/financeCalculations'
 import { formatCurrency } from '../../../shared/utils/formatting'
 import { ElementType, useState } from 'react'
@@ -7,9 +7,9 @@ import { colorPicker as cp } from '../../../styles/theme/helpers/paletteHelpers'
 import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '../../../icons'
 
 interface GridMapType {
-  name: 'income' | 'expense' | 'balance'
+  name: TransactionKeyType
   display: string
-  colorPath: keyof Theme['palette']
+  palette: { bg: string; font: { title: string; amount: string }; icon: string }
   icon: ElementType
   value: number
 }
@@ -20,22 +20,21 @@ export interface MonthlySummaryProps {
 
 const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
   const { income, expense, balance } = financeCalculations(monthlyTransactions)
-
-  const [selected, setSelected] = useState<'income' | 'expense' | 'balance' | null>(null)
-  const handleClick = (name: 'income' | 'expense' | 'balance') => () => {
+  const [selected, setSelected] = useState<TransactionKeyType | null>(null)
+  const handleClick = (name: TransactionKeyType) => () => {
     setSelected((prev) => (prev === name ? null : name))
   }
 
-  const occupancy = (name: 'income' | 'expense' | 'balance') =>
+  const occupancy = (name: TransactionKeyType) =>
     selected === null ? { xs: 8 } : selected === name ? { xs: 16, md: 20 } : { xs: 4, md: 2 }
 
-  const wordBreak = (name: 'income' | 'expense' | 'balance') => {
+  const wordBreak = (name: TransactionKeyType) => {
     if (selected === null) return 'break-all'
     if (selected === name) return 'break-all'
     return 'normal'
   }
 
-  const isShrunk = (name: 'income' | 'expense' | 'balance') => selected !== null && selected !== name
+  const isShrunk = (name: TransactionKeyType) => selected !== null && selected !== name
 
   const isNeutral = selected === null
 
@@ -43,21 +42,33 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
     {
       name: 'income',
       display: '収入',
-      colorPath: 'incomeColor',
+      palette: {
+        bg: 'income.bg.lighter',
+        font: { title: 'income.font.darker', amount: 'income.font.lighter' },
+        icon: 'income.font.lighter',
+      },
       icon: ArrowUpwardIcon,
       value: income,
     },
     {
       name: 'expense',
       display: '支出',
-      colorPath: 'expenseColor',
+      palette: {
+        bg: 'expense.bg.lighter',
+        font: { title: 'expense.font.darker', amount: 'expense.font.lighter' },
+        icon: 'expense.font.lighter',
+      },
       icon: ArrowDownwardIcon,
       value: expense,
     },
     {
       name: 'balance',
       display: '残高',
-      colorPath: 'balanceColor',
+      palette: {
+        bg: 'balance.bg.lighter',
+        font: { title: 'balance.font.darker', amount: 'balance.font.lighter' },
+        icon: 'balance.font.lighter',
+      },
       icon: AccountBalanceIcon,
       value: balance,
     },
@@ -77,7 +88,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
         >
           <Card
             sx={{
-              bgcolor: isShrunk(item.name) ? cp(item.colorPath, 'light') : '',
+              bgcolor: isShrunk(item.name) ? cp(item.palette.bg) : cp('app.lighterBg.level1.bg'),
               cursor: 'pointer',
               borderRadius: '0.5rem',
               flexGrow: 1,
@@ -91,7 +102,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                 height: '3em',
                 padding: 0,
                 '&:last-child': { padding: 0 },
-                color: cp(item.colorPath, 'dark'),
+                color: cp(item.palette.font.title),
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
@@ -107,7 +118,8 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                     left: isShrunk(item.name) ? '50%' : 0,
                     transform: `${isShrunk(item.name) ? 'translate(-50%, -50%)' : 'translate(0)'} ${isNeutral ? 'scale(3.5)' : 'scale(1)'}`,
                     opacity: isNeutral ? 0.25 : 1,
-                    color: isShrunk(item.name) ? 'white' : cp(item.colorPath, 'dark'),
+                    // color: isShrunk(item.name) ? cp('app.lighterBg.level1.contrastText') : cp(item.palette.icon),
+                    color: cp(item.palette.icon),
                     transition:
                       'transform 300ms ease, top 300ms ease, left 300ms ease, opacity 300ms ease, color 300ms ease',
                   }}
@@ -138,6 +150,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                   wordBreak: wordBreak(item.name),
                   opacity: isShrunk(item.name) ? 0 : 1,
                   transition: 'opacity 300ms ease',
+                  color: cp(item.palette.font.amount),
                 }}
               >
                 ￥{formatCurrency(item.value)}

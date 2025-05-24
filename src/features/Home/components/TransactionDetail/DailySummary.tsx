@@ -1,7 +1,22 @@
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
-import { Transaction } from '../../../../shared/types'
+import { Transaction, TransactionDisplayType, TransactionKeyType } from '../../../../shared/types'
 import { financeCalculations } from '../../../../shared/utils/financeCalculations'
 import { formatCurrency } from '../../../../shared/utils/formatting'
+import type { ResponsiveStyleValue } from '@mui/system'
+import type { GridSize } from '@mui/material/Grid'
+
+const gridSize: Record<TransactionKeyType, ResponsiveStyleValue<GridSize>> = {
+  income: { xs: 12, md: 4, lg: 12 },
+  expense: { xs: 12, md: 4, lg: 12 },
+  balance: { xs: 12, md: 4, lg: 12 },
+}
+
+interface GridMapType {
+  name: TransactionKeyType
+  display: TransactionDisplayType
+  size: ResponsiveStyleValue<GridSize>
+  amount: number
+}
 
 interface DailySummaryProps {
   dailyTransactions: Transaction[]
@@ -10,62 +25,61 @@ interface DailySummaryProps {
 const DailySummary = ({ dailyTransactions }: DailySummaryProps) => {
   const { income, expense, balance } = financeCalculations(dailyTransactions)
 
+  const gridMap: GridMapType[] = [
+    { name: 'income', display: '収入', size: gridSize.income, amount: income },
+    { name: 'expense', display: '支出', size: gridSize.expense, amount: expense },
+    { name: 'balance', display: '残高', size: gridSize.balance, amount: balance },
+  ]
+
   return (
     <Box>
-      <Grid container spacing={2}>
-        {/* 収入 */}
-        <Grid size={{ xs: 12, md: 4, lg: 6 }} display={'flex'}>
-          <Card sx={{ bgcolor: (theme) => theme.palette.grey[100], flexGrow: 1 }}>
-            <CardContent>
-              <Typography noWrap textAlign="center">
-                収入
-              </Typography>
-              <Typography
-                textAlign="right"
-                fontWeight="fontWeightBold"
-                sx={{ color: (theme) => theme.palette.incomeColor.main, wordBreak: 'break-all' }}
+      <Grid container spacing={1}>
+        {gridMap.map((item) => (
+          <Grid key={item.name} size={item.size} display="flex">
+            <Card
+              sx={{
+                bgcolor: (theme) => theme.palette.app.lighterBg.level1.bg[theme.palette.mode],
+                flexGrow: 1,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  flexDirection: { sm: 'row', md: 'column', lg: 'row', xl: 'column' },
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
               >
-                ¥{formatCurrency(income)}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* 支出 */}
-        <Grid size={{ xs: 12, md: 4, lg: 6 }} display={'flex'}>
-          <Card sx={{ bgcolor: (theme) => theme.palette.grey[100], flexGrow: 1 }}>
-            <CardContent>
-              <Typography noWrap textAlign="center">
-                支出
-              </Typography>
-              <Typography
-                textAlign="right"
-                fontWeight="fontWeightBold"
-                sx={{ color: (theme) => theme.palette.expenseColor.main, wordBreak: 'break-all' }}
-              >
-                ¥{formatCurrency(expense)}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* 残高 */}
-        <Grid size={{ xs: 12, md: 4, lg: 12 }} display={'flex'}>
-          <Card sx={{ bgcolor: (theme) => theme.palette.grey[100], flexGrow: 1 }}>
-            <CardContent>
-              <Typography noWrap textAlign="center">
-                残高
-              </Typography>
-              <Typography
-                textAlign="right"
-                fontWeight="fontWeightBold"
-                sx={{ color: (theme) => theme.palette.balanceColor.main, wordBreak: 'break-all' }}
-              >
-                ¥{formatCurrency(balance)}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+                <Typography
+                  noWrap
+                  textAlign="center"
+                  variant="subtitle2"
+                  sx={{
+                    color: (theme) => theme.palette[item.name].font.darker[theme.palette.mode],
+                    flexShrink: 0,
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  {item.display}
+                </Typography>
+                <Typography
+                  textAlign="right"
+                  fontWeight="fontWeightBold"
+                  sx={{
+                    color: (theme) => theme.palette[item.name].font.lighter[theme.palette.mode],
+                    alignSelf: 'flex-end',
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  ¥{formatCurrency(item.amount)}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </Box>
   )

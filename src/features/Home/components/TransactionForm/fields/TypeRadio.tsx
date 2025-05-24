@@ -17,12 +17,56 @@ const TypeRadio = ({ control, onClick: handleClick }: TypeRadioProps) => {
           <ButtonGroup fullWidth sx={{ height: '2.2em' }}>
             <Button
               variant={field.value === 'expense' ? 'contained' : 'outlined'}
-              color="error"
               onClick={handleClick('expense')}
+              sx={{
+                bgcolor: (theme) =>
+                  field.value === 'expense' ? theme.palette.expense.bg.lighter[theme.palette.mode] : 'transparent',
+                color: (theme) =>
+                  field.value === 'expense'
+                    ? theme.palette.expense.font.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderTopColor: (theme) =>
+                  field.value === 'expense'
+                    ? theme.palette.expense.bg.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderBottomColor: (theme) =>
+                  field.value === 'expense'
+                    ? theme.palette.expense.bg.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderLeftColor: (theme) =>
+                  field.value === 'expense'
+                    ? theme.palette.expense.bg.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderRightColor: 'transparent',
+              }}
             >
               支出
             </Button>
-            <Button variant={field.value === 'income' ? 'contained' : 'outlined'} onClick={handleClick('income')}>
+            <Button
+              variant={field.value === 'income' ? 'contained' : 'outlined'}
+              onClick={handleClick('income')}
+              sx={{
+                bgcolor: (theme) =>
+                  field.value === 'income' ? theme.palette.income.bg.lighter[theme.palette.mode] : 'transparent',
+                color: (theme) =>
+                  field.value === 'income'
+                    ? theme.palette.income.font.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderTopColor: (theme) =>
+                  field.value === 'income'
+                    ? theme.palette.income.bg.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderBottomColor: (theme) =>
+                  field.value === 'income'
+                    ? theme.palette.income.bg.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderRightColor: (theme) =>
+                  field.value === 'income'
+                    ? theme.palette.income.bg.lighter[theme.palette.mode]
+                    : theme.palette.text.disabled,
+                borderLeftColor: 'transparent',
+              }}
+            >
               収入
             </Button>
           </ButtonGroup>

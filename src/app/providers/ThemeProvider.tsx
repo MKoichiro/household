@@ -1,4 +1,3 @@
-// src/app/providers/ThemeProvider.tsx
 import { ReactNode, useMemo, useState } from 'react'
 import { ThemeProvider as MuiThemeProvider, useMediaQuery } from '@mui/material'
 import { getTheme } from '../../styles/theme'
@@ -10,10 +9,7 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   // 初期値を OS 設定に合わせる
   const [mode, setMode] = useState<ColorMode>('os')
 
-  const value = {
-    setMode,
-    mode,
-  }
+  const value = { mode, setMode }
 
   // モード依存でテーマを生成
   const theme = useMemo(

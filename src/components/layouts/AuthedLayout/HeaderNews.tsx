@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import { FlowingText } from '../../common/FlowingText/FlowingText'
 import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { purple } from '@mui/material/colors'
 import { headerNewsHeight } from '../../../shared/constants/ui'
 import { CloseIcon, FiberNewIcon, FirstPageIcon } from '../../../icons'
 import useFlowingText from '../../common/FlowingText/useFlowingText'
@@ -66,8 +65,8 @@ export default NewsBar
 
 const NewsBarRoot = styled.div<{ $isNewsOpen: boolean }>`
   font-size: 1.6rem;
-  background-color: ${purple[100]};
-  color: ${purple[900]};
+  background-color: ${({ theme }) => theme.palette.ui.headerNews.bg[theme.palette.mode]};
+  color: ${({ theme }) => theme.palette.ui.headerNews.contrastText[theme.palette.mode]};
   height: ${headerNewsHeight}px;
   line-height: ${headerNewsHeight}px;
   display: flex;
@@ -90,7 +89,7 @@ const ResetButton = styled.button`
   height: 100%;
   aspect-ratio: 1 / 1;
   background: transparent;
-  color: ${purple[900]};
+  color: ${({ theme }) => theme.palette.ui.headerNews.contrastText[theme.palette.mode]};
 
   svg {
     display: block;

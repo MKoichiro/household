@@ -27,6 +27,7 @@
     "@mui/x-date-pickers": "^7.28.3",
     "chart.js": "^4.4.8",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "chartjs-plugin-zoom": "^2.2.0",
     "date-fns": "^4.1.0",
     "firebase": "^11.5.0",
     "motion": "^12.7.3",

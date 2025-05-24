@@ -5,6 +5,8 @@ type TimerType = {
   type?: 'increment' | 'decrement'
   step?: number
   delay?: number
+  /** コンポーネントのライフサイクルをスタートとストップのトリガーにする指定。
+   * マウント時にスタート、アンマウント時にuseTimerフック内ロジックによってクリーンアップ。 */
   startNow?: boolean
 }
 

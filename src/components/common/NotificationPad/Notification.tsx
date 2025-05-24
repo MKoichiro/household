@@ -1,9 +1,10 @@
 import { NotificationType } from '../../../shared/hooks/useContexts'
 import { Stack, Typography } from '@mui/material'
-import TimerCircularProgress from '../TimerCircularProgress'
+import TimerCircularProgress from './TimerCircularProgress'
 import Snackbar from './Snackbar'
 import { motion } from 'framer-motion'
 import styled from '@emotion/styled'
+import { useRemToPx } from '../../../shared/hooks/useRemToPx'
 
 interface NotificationItemProps {
   isOne: boolean
@@ -19,7 +20,7 @@ const Notification = ({
 }: NotificationItemProps) => {
   // autoHideDuration が undefined または 0 以下の場合は無制限表示
   const isInfinite = autoHideDuration === undefined || autoHideDuration <= 0
-  // const isInfinite = true
+  const { remToPx } = useRemToPx()
 
   return (
     <motion.div
@@ -45,7 +46,7 @@ const Notification = ({
           </Typography>
           {!isInfinite && (
             <TimerCircularProgress
-              size="1rem"
+              size={remToPx(1)}
               variant="determinate"
               duration={autoHideDuration}
               sx={{

@@ -5,24 +5,91 @@ import { components } from './components'
 import { breakpoints } from './breakpoints'
 import { palette } from './palette'
 import { zIndex } from './zIndex'
+import { CSSProperties } from 'react'
+
+type WidthOptions = Record<Breakpoint, CSSProperties['width']>
 
 declare module '@mui/material/styles' {
   interface Palette {
-    appTheme: PaletteColor
-    appBg: {
-      level1: PaletteColor
-      level2: PaletteColor
-      level3: PaletteColor
-      level4: PaletteColor
+    app: {
+      theme: { bg: PaletteColor; contrastText: PaletteColor }
+      lighterBg: {
+        level1: { bg: PaletteColor; contrastText: PaletteColor }
+        level2: { bg: PaletteColor; contrastText: PaletteColor }
+        level3: { bg: PaletteColor; contrastText: PaletteColor }
+        level4: { bg: PaletteColor; contrastText: PaletteColor }
+        level5: { bg: PaletteColor; contrastText: PaletteColor }
+      }
+      darkerBg: {
+        level1: { bg: PaletteColor; contrastText: PaletteColor }
+        level2: { bg: PaletteColor; contrastText: PaletteColor }
+        level3: { bg: PaletteColor; contrastText: PaletteColor }
+        level4: { bg: PaletteColor; contrastText: PaletteColor }
+        level5: { bg: PaletteColor; contrastText: PaletteColor }
+      }
     }
 
     ui: {
-      header: { bg: PaletteColor }
+      header: { bg: PaletteColor; contrastText: PaletteColor }
+      headerNews: { bg: PaletteColor; contrastText: PaletteColor }
       bodyBg: PaletteColor
-      navMenu: { bg: PaletteColor }
-      contextMenu: { bg: PaletteColor }
+      footer: { bg: PaletteColor; contrastText: PaletteColor }
+      mask: PaletteColor
+      navigationMenu: {
+        bodyBg: PaletteColor
+        item: {
+          inactive: { bg: PaletteColor; font: PaletteColor }
+          hover: { bg: PaletteColor; font: PaletteColor }
+          active: { bg: PaletteColor; font: PaletteColor }
+        }
+        accordionHead: {
+          inactive: { bg: PaletteColor; font: PaletteColor }
+          hover: { bg: PaletteColor; font: PaletteColor }
+          active: { bg: PaletteColor; font: PaletteColor }
+        }
+      }
+      contextMenu: { bg: PaletteColor; contrastText: PaletteColor }
       calendar: {
-        head: { bg: PaletteColor; font: PaletteColor }
+        head: {
+          bg: {
+            weekday: PaletteColor
+            saturday: PaletteColor
+            sunday: PaletteColor
+          }
+          font: {
+            weekday: PaletteColor
+            saturday: PaletteColor
+            sunday: PaletteColor
+          }
+          border: {
+            weekday: PaletteColor
+            saturday: PaletteColor
+            sunday: PaletteColor
+          }
+        }
+        cells: {
+          bg: {
+            weekday: PaletteColor
+            saturday: PaletteColor
+            sunday: PaletteColor
+            today: PaletteColor
+            selected: PaletteColor
+          }
+          font: {
+            weekday: PaletteColor
+            saturday: PaletteColor
+            sunday: PaletteColor
+            today: PaletteColor
+            selected: PaletteColor
+          }
+          border: {
+            weekday: PaletteColor
+            saturday: PaletteColor
+            sunday: PaletteColor
+            today: PaletteColor
+            selected: PaletteColor
+          }
+        }
       }
       snackBar: {
         success: { icon: PaletteColor; bg: PaletteColor }
@@ -30,33 +97,114 @@ declare module '@mui/material/styles' {
         info: { icon: PaletteColor; bg: PaletteColor }
         warning: { icon: PaletteColor; bg: PaletteColor }
         closeBtn: PaletteColor
-        // default: { icon: PaletteColor; bg: PaletteColor }
       }
     }
 
     incomeColor: PaletteColor
     expenseColor: PaletteColor
     balanceColor: PaletteColor
+    income: {
+      bg: {
+        lighter: PaletteColor
+        darker: PaletteColor // chart, ...etc
+      }
+      font: { lighter: PaletteColor; darker: PaletteColor }
+      border: PaletteColor
+    }
+    expense: {
+      bg: { lighter: PaletteColor; darker: PaletteColor }
+      font: { lighter: PaletteColor; darker: PaletteColor }
+      border: PaletteColor
+    }
+    balance: {
+      bg: { lighter: PaletteColor; darker: PaletteColor }
+      font: { lighter: PaletteColor; darker: PaletteColor }
+      border: PaletteColor
+    }
     incomeCategoryColor: Record<IncomeCategory, PaletteColor>
     expenseCategoryColor: Record<ExpenseCategory, PaletteColor>
   }
 
   interface PaletteOptions {
-    appTheme: PaletteColorOptions
-    appBg: {
-      level1: PaletteColorOptions
-      level2: PaletteColorOptions
-      level3: PaletteColorOptions
-      level4: PaletteColorOptions
+    app: {
+      theme: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+      lighterBg: {
+        level1: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level2: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level3: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level4: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level5: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+      }
+      darkerBg: {
+        level1: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level2: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level3: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level4: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+        level5: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+      }
     }
 
     ui: {
-      header: { bg: PaletteColorOptions }
+      header: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+      headerNews: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
       bodyBg: PaletteColorOptions
-      navMenu: { bg: PaletteColorOptions }
-      contextMenu: { bg: PaletteColorOptions }
+      footer: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
+      mask: PaletteColorOptions
+      navigationMenu: {
+        bodyBg: PaletteColorOptions
+        item: {
+          inactive: { bg: PaletteColorOptions; font: PaletteColorOptions }
+          hover: { bg: PaletteColorOptions; font: PaletteColorOptions }
+          active: { bg: PaletteColorOptions; font: PaletteColorOptions }
+        }
+        accordionHead: {
+          inactive: { bg: PaletteColorOptions; font: PaletteColorOptions }
+          hover: { bg: PaletteColorOptions; font: PaletteColorOptions }
+          active: { bg: PaletteColorOptions; font: PaletteColorOptions }
+        }
+      }
+      contextMenu: { bg: PaletteColorOptions; contrastText: PaletteColorOptions }
       calendar: {
-        head: { bg: PaletteColorOptions; font: PaletteColorOptions }
+        head: {
+          bg: {
+            weekday: PaletteColorOptions
+            saturday: PaletteColorOptions
+            sunday: PaletteColorOptions
+          }
+          font: {
+            weekday: PaletteColorOptions
+            saturday: PaletteColorOptions
+            sunday: PaletteColorOptions
+          }
+          border: {
+            weekday: PaletteColorOptions
+            saturday: PaletteColorOptions
+            sunday: PaletteColorOptions
+          }
+        }
+        cells: {
+          bg: {
+            weekday: PaletteColorOptions
+            saturday: PaletteColorOptions
+            sunday: PaletteColorOptions
+            today: PaletteColorOptions
+            selected: PaletteColorOptions
+          }
+          font: {
+            weekday: PaletteColorOptions
+            saturday: PaletteColorOptions
+            sunday: PaletteColorOptions
+            today: PaletteColorOptions
+            selected: PaletteColorOptions
+          }
+          border: {
+            weekday: PaletteColorOptions
+            saturday: PaletteColorOptions
+            sunday: PaletteColorOptions
+            today: PaletteColorOptions
+            selected: PaletteColorOptions
+          }
+        }
       }
       snackBar: {
         success: { icon: PaletteColorOptions; bg: PaletteColorOptions }
@@ -64,13 +212,30 @@ declare module '@mui/material/styles' {
         info: { icon: PaletteColorOptions; bg: PaletteColorOptions }
         warning: { icon: PaletteColorOptions; bg: PaletteColorOptions }
         closeBtn: PaletteColorOptions
-        // default: { icon: PaletteColorOptions; bg: PaletteColorOptions }
       }
     }
 
     incomeColor: PaletteColorOptions
     expenseColor: PaletteColorOptions
     balanceColor: PaletteColorOptions
+    income: {
+      bg: {
+        lighter: PaletteColorOptions
+        darker: PaletteColorOptions // chart, ...etc
+      }
+      font: { lighter: PaletteColorOptions; darker: PaletteColorOptions }
+      border: PaletteColorOptions
+    }
+    expense: {
+      bg: { lighter: PaletteColorOptions; darker: PaletteColorOptions }
+      font: { lighter: PaletteColorOptions; darker: PaletteColorOptions }
+      border: PaletteColorOptions
+    }
+    balance: {
+      bg: { lighter: PaletteColorOptions; darker: PaletteColorOptions }
+      font: { lighter: PaletteColorOptions; darker: PaletteColorOptions }
+      border: PaletteColorOptions
+    }
     incomeCategoryColor: Record<IncomeCategory, PaletteColorOptions>
     expenseCategoryColor: Record<ExpenseCategory, PaletteColorOptions>
   }
@@ -95,15 +260,26 @@ declare module '@mui/material/styles' {
     contextMenu: Record<Breakpoint, number>
     notificationPad: Record<Breakpoint, number>
   }
-}
 
-// export const theme = createTheme({
-//   typography,
-//   components,
-//   breakpoints,
-//   palette,
-//   zIndex,
-// })
+  interface Width {
+    navigationMenu: WidthOptions
+  }
+
+  // ここを追加 --------------------
+  interface Theme {
+    /**
+     * navigationMenu 用の幅をテーマから参照できるようにする
+     */
+    width: Width
+  }
+  interface ThemeOptions {
+    /**
+     * createTheme 呼び出し時に渡せるオプション
+     */
+    width?: Partial<Width>
+  }
+  // ───────────────────────────────
+}
 
 export const getTheme = (mode: PaletteMode) =>
   createTheme({
@@ -115,4 +291,13 @@ export const getTheme = (mode: PaletteMode) =>
       ...palette, // 既存のカラー定義を展開
     },
     zIndex,
+    width: {
+      navigationMenu: {
+        xs: '50vw',
+        sm: '50vw',
+        md: '30vw',
+        lg: '240px',
+        xl: '240px',
+      },
+    },
   })

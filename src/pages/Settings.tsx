@@ -18,6 +18,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { User } from 'firebase/auth'
+import styled from '@emotion/styled'
 
 const TitleTypography = (props: TypographyProps<'dt', { component?: 'dt' }>) => (
   <Typography {...props} variant="body1" component="dt" color="text.secondary" fontWeight="fontWeightBold" />
@@ -121,82 +122,86 @@ const Settings = () => {
   }
 
   return (
-    <Stack component="dl" spacing={2} sx={{ width: '100%' }}>
-      {/* ユーザー名: 表示モード */}
-      <Stack sx={switchStyle(displayMode)}>
-        <DisplayNameTypography />
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-          <ValueTypography flex={1}>{user.displayName || '未設定'}</ValueTypography>
-          <IconButton
-            aria-label="ユーザー名編集ボタン"
-            type="button"
-            onClick={handleEditClick}
-            sx={{ height: ddHeight }}
-          >
-            <EditIcon />
-          </IconButton>
+    <SettingRoot>
+      <Stack component="dl" spacing={2} sx={{ width: '100%' }}>
+        {/* ユーザー名: 表示モード */}
+        <Stack sx={switchStyle(displayMode)}>
+          <DisplayNameTypography />
+          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+            <ValueTypography flex={1}>{user.displayName || '未設定'}</ValueTypography>
+            <IconButton
+              aria-label="ユーザー名編集ボタン"
+              type="button"
+              onClick={handleEditClick}
+              sx={{ height: ddHeight }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Stack>
         </Stack>
-      </Stack>
 
-      {/* ユーザー名: 編集モード */}
-      <Box component="form" onSubmit={handleFormSubmit} sx={switchStyle(editMode)}>
-        <Controller
-          name="displayName"
-          control={control}
-          render={({ field }) => (
-            <FormControl fullWidth>
-              <Stack>
-                <FormLabel htmlFor="displayName">
-                  <DisplayNameTypography />
-                </FormLabel>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                  <TextField
-                    {...field}
-                    inputRef={inputRef}
-                    autoComplete="off"
-                    id="displayName"
-                    error={!!errors.displayName}
-                    onBlur={handleDisplayNameBlur}
-                    margin="normal"
-                    fullWidth
-                    sx={{
-                      flex: 1,
-                      m: 0,
-                      '& .MuiInputBase-input': {
-                        px: '0.5em',
-                        py: 0,
-                        lineHeight: ddHeight,
-                        height: ddHeight,
-                        fontSize: '16px',
-                      },
-                    }}
-                  />
-                  <IconButton
-                    id="displayName-submit-btn"
-                    aria-label="ユーザー名編集の提出ボタン"
-                    type="submit"
-                    disabled={!isDirty}
-                    sx={{ height: ddHeight }}
-                  >
-                    <SendIcon />
-                  </IconButton>
+        {/* ユーザー名: 編集モード */}
+        <Box component="form" onSubmit={handleFormSubmit} sx={switchStyle(editMode)}>
+          <Controller
+            name="displayName"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth>
+                <Stack>
+                  <FormLabel htmlFor="displayName">
+                    <DisplayNameTypography />
+                  </FormLabel>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+                    <TextField
+                      {...field}
+                      inputRef={inputRef}
+                      autoComplete="off"
+                      id="displayName"
+                      error={!!errors.displayName}
+                      onBlur={handleDisplayNameBlur}
+                      margin="normal"
+                      fullWidth
+                      sx={{
+                        flex: 1,
+                        m: 0,
+                        '& .MuiInputBase-input': {
+                          px: '0.5em',
+                          py: 0,
+                          lineHeight: ddHeight,
+                          height: ddHeight,
+                          fontSize: '16px',
+                        },
+                      }}
+                    />
+                    <IconButton
+                      id="displayName-submit-btn"
+                      aria-label="ユーザー名編集の提出ボタン"
+                      type="submit"
+                      disabled={!isDirty}
+                      sx={{ height: ddHeight }}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </Stack>
                 </Stack>
-              </Stack>
-              {errors.displayName && <FormHelperText error>{errors.displayName.message}</FormHelperText>}
-            </FormControl>
-          )}
-        />
-      </Box>
+                {errors.displayName && <FormHelperText error>{errors.displayName.message}</FormHelperText>}
+              </FormControl>
+            )}
+          />
+        </Box>
 
-      {/* その他のユーザー情報の表示 */}
-      {userDetails.map((detail) => (
-        <Stack key={detail.label}>
-          <TitleTypography>{detail.label}</TitleTypography>
-          <ValueTypography>{detail.value}</ValueTypography>
-        </Stack>
-      ))}
-    </Stack>
+        {/* その他のユーザー情報の表示 */}
+        {userDetails.map((detail) => (
+          <Stack key={detail.label}>
+            <TitleTypography>{detail.label}</TitleTypography>
+            <ValueTypography>{detail.value}</ValueTypography>
+          </Stack>
+        ))}
+      </Stack>
+    </SettingRoot>
   )
 }
+
+const SettingRoot = styled.div``
 
 export default Settings

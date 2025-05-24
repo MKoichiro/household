@@ -6,7 +6,7 @@ const LayoutRoot = ({ children }: { children: ReactNode }) => {
   return (
     <Box
       sx={{
-        bgcolor: (theme) => theme.palette.grey[100],
+        bgcolor: (theme) => theme.palette.ui.bodyBg[theme.palette.mode],
         minHeight: '100vh',
         width: '100%',
         display: 'flex',

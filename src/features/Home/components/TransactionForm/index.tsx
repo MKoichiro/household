@@ -2,9 +2,9 @@ import { useTheme } from '@mui/material'
 import { ControllerRenderProps } from 'react-hook-form'
 import { Transaction, TransactionFormValues, TransactionType } from '../../../../shared/types'
 import { FormEvent } from 'react'
-import { transactionMenuWidth } from '../../../../shared/constants/ui'
+import { headerMainHeight, transactionMenuWidth } from '../../../../shared/constants/ui'
 import styled from '@emotion/styled'
-import { useLayout, usePortal } from '../../../../shared/hooks/useContexts'
+import { usePortal } from '../../../../shared/hooks/useContexts'
 import Mask from '../../../../components/common/Mask'
 import TransactionFormBody from './TransactionFormBody'
 
@@ -22,7 +22,6 @@ const TransactionForm = (props: TransactionFormProps) => {
   const { isFormOpen, onCloseClick: handleCloseClick } = props
   const portalRenderer = usePortal('modal')
   const theme = useTheme()
-  const { dynamicHeaderHeight } = useLayout()
 
   return (
     <>
@@ -37,7 +36,7 @@ const TransactionForm = (props: TransactionFormProps) => {
       )}
       {/* ラップトップ以上 */}
       <StickyContext>
-        <FormLaptop $isFormOpen={isFormOpen} $dynamicHeaderHeight={dynamicHeaderHeight()}>
+        <FormLaptop $isFormOpen={isFormOpen}>
           <TransactionFormBody {...props} />
         </FormLaptop>
       </StickyContext>
@@ -51,32 +50,35 @@ export default TransactionForm
 const StickyContext = styled.div`
   position: relative;
   width: ${transactionMenuWidth}px;
+  margin-top: 1rem;
   ${({ theme }) => theme.breakpoints.down('lg')} {
     display: none;
   }
 `
 
-const FormLaptop = styled.div<{ $isFormOpen: boolean; $dynamicHeaderHeight: number }>`
-  background-color: ${({ theme }) => theme.palette.background.paper};
+const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
+  background-color: ${({ theme }) => theme.palette.app.lighterBg.level2.bg[theme.palette.mode]};
   border-radius: 0.5rem;
 
   position: sticky;
-  top: ${({ $dynamicHeaderHeight }) => `${$dynamicHeaderHeight}px`};
+  top: calc(${headerMainHeight}px + 1rem);
   z-index: ${({ theme }) => theme.zIndex.transactionForm.lg};
-  transition: top 300ms ease;
 
   padding: 0.5rem 1rem 1rem;
-  margin-top: 1rem;
 
   min-width: ${transactionMenuWidth}px;
   overflow-y: auto;
 
   pointer-events: ${({ $isFormOpen }) => ($isFormOpen ? 'auto' : 'none')};
-  transform: translateX(${({ $isFormOpen }) => (!$isFormOpen ? 0 : `calc(-${2 * transactionMenuWidth}px - 0.5rem)`)});
-  transition: transform 300ms ease-in-out;
+  transform: translateX(${({ $isFormOpen }) => (!$isFormOpen ? 0 : `calc(-${2 * transactionMenuWidth}px - 1rem)`)});
+
+  transition:
+    top 300ms ease,
+    transform 300ms ease;
   box-shadow: ${({ theme }) => theme.shadows[4]};
   ${({ theme }) => theme.breakpoints.down('lg')} {
     display: none;
+    background-color: ${({ theme }) => theme.palette.app.lighterBg.level1.bg[theme.palette.mode]};
   }
 `
 

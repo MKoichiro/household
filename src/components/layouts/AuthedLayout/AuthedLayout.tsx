@@ -1,5 +1,5 @@
 import NavigationMenu from './NavigationMenu'
-import { headerMainHeight, navigationMenuWidth } from '../../../shared/constants/ui'
+import { headerMainHeight } from '../../../shared/constants/ui'
 import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
 import AuthedHeader from './AuthedHeader'
@@ -33,11 +33,7 @@ const AuthedLayout = () => {
 export default AuthedLayout
 
 const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
-  margin-left: ${({ $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0')};
+  margin-left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0')};
   transition: margin-left 300ms ease;
   min-height: calc(100lvh - ${headerMainHeight}px);
-
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    margin-left: 0;
-  }
 `

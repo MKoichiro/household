@@ -1,45 +1,174 @@
-import { PaletteColorOptions, PaletteOptions } from '@mui/material'
+import { PaletteColorOptions, PaletteOptions, alpha } from '@mui/material'
 import * as c from '@mui/material/colors'
 
-const appThemeColors: PaletteColorOptions = { main: c.purple[900], light: c.purple[900], dark: c.purple[900] }
+const undefinedYet: PaletteColorOptions = { main: '', light: '', dark: '' }
 
-const appBgColors = {
-  level1: { main: c.blueGrey[200], light: c.blueGrey[200], dark: c.blueGrey[900] },
-  level2: { main: c.blueGrey[300], light: c.blueGrey[300], dark: c.blueGrey[800] },
-  level3: { main: c.blueGrey[400], light: c.blueGrey[400], dark: c.blueGrey[700] },
-  level4: { main: c.blueGrey[500], light: c.blueGrey[500], dark: c.blueGrey[600] },
+const appTheme = {
+  bg: { main: c.blueGrey[600], light: c.blueGrey[600], dark: c.blueGrey[600] },
+  contrastText: { main: c.grey[50], light: c.grey[50], dark: c.grey[50] },
+}
+
+const app = {
+  theme: appTheme,
+  lighterBg: {
+    level1: {
+      bg: { main: c.grey[50], light: c.grey[50], dark: c.grey[900] },
+      contrastText: { main: c.blueGrey[900], light: c.blueGrey[900], dark: c.blueGrey[100] },
+    },
+    level2: {
+      bg: { main: c.indigo[50], light: c.blueGrey[50], dark: c.blueGrey[900] },
+      contrastText: { main: c.blueGrey[800], light: c.blueGrey[800], dark: c.blueGrey[200] },
+    },
+    level3: {
+      bg: { main: c.blueGrey[50], light: c.blueGrey[50], dark: c.blueGrey[900] },
+      contrastText: { main: c.blueGrey[900], light: c.blueGrey[900], dark: c.blueGrey[100] },
+    },
+    level4: {
+      bg: undefinedYet,
+      contrastText: undefinedYet,
+    },
+    level5: {
+      bg: undefinedYet,
+      contrastText: undefinedYet,
+    },
+  },
+  darkerBg: {
+    level1: {
+      bg: { main: c.blueGrey[900], light: c.blueGrey[900], dark: c.blueGrey[50] },
+      contrastText: { main: c.blueGrey[50], light: c.blueGrey[50], dark: c.blueGrey[900] },
+    },
+    level2: {
+      bg: { main: c.blueGrey[700], light: c.blueGrey[700], dark: c.blueGrey[100] },
+      contrastText: { main: c.blueGrey[100], light: c.blueGrey[100], dark: c.blueGrey[700] },
+    },
+    level3: {
+      bg: { main: c.blueGrey[700], light: c.blueGrey[700], dark: c.blueGrey[200] },
+      contrastText: { main: c.blueGrey[700], light: c.blueGrey[700], dark: c.blueGrey[300] },
+    },
+    level4: {
+      bg: undefinedYet,
+      contrastText: undefinedYet,
+    },
+    level5: {
+      bg: undefinedYet,
+      contrastText: undefinedYet,
+    },
+  },
 }
 
 export const palette: PaletteOptions = {
-  appTheme: appThemeColors,
-  appBg: appBgColors,
+  app,
+
   ui: {
-    header: {
-      bg: { main: c.purple[900], light: c.deepPurple[900], dark: c.deepPurple[900] },
+    header: app.theme,
+    headerNews: app.darkerBg.level2,
+    bodyBg: app.lighterBg.level1.bg,
+    footer: app.theme,
+    mask: {
+      main: `${alpha(c.blueGrey[900], 0.3)}`,
+      light: `${alpha(c.blueGrey[900], 0.3)}`,
+      dark: `${alpha(c.blueGrey[900], 0.3)}`,
     },
-    bodyBg: {
-      // main ,
-      // light ,
-      // dark ,
-    },
-    navMenu: {
-      bg: {
-        // main ,
-        // light ,
-        // dark ,
+    navigationMenu: {
+      bodyBg: { main: '', light: c.blueGrey[100], dark: c.blueGrey[900] },
+      item: {
+        inactive: {
+          bg: undefinedYet,
+          font: app.lighterBg.level1.contrastText,
+        },
+        hover: {
+          bg: app.darkerBg.level2.bg,
+          font: app.darkerBg.level2.contrastText,
+        },
+        active: {
+          bg: app.darkerBg.level1.bg,
+          font: app.darkerBg.level1.contrastText,
+        },
+      },
+      accordionHead: {
+        inactive: {
+          bg: undefinedYet,
+          font: undefinedYet,
+        },
+        hover: {
+          bg: undefinedYet,
+          font: app.darkerBg.level2.bg,
+        },
+        active: {
+          bg: undefinedYet,
+          font: undefinedYet,
+        },
       },
     },
-    contextMenu: {
-      bg: {
-        // main ,
-        // light ,
-        // dark ,
-      },
-    },
+    contextMenu: app.theme,
     calendar: {
       head: {
-        bg: { main: c.grey[50], light: c.purple[900], dark: c.purple[900] },
-        font: { main: c.purple[900], light: c.purple[900], dark: c.purple[900] },
+        bg: {
+          weekday: app.lighterBg.level3.bg,
+          saturday: app.lighterBg.level3.bg,
+          sunday: app.lighterBg.level3.bg,
+        },
+        font: {
+          weekday: app.lighterBg.level3.contrastText,
+          saturday: { main: c.cyan[600], light: c.cyan[600], dark: c.cyan[300] },
+          sunday: { main: c.pink[500], light: c.pink[500], dark: c.pink[300] },
+        },
+        border: {
+          weekday: {
+            main: `1px solid ${c.blueGrey[100]}`,
+            light: `1px solid ${c.blueGrey[100]}`,
+            dark: `1px solid ${c.blueGrey[900]}`,
+          },
+          saturday: {
+            main: `1px solid ${c.blueGrey[100]}`,
+            light: `1px solid ${c.blueGrey[100]}`,
+            dark: `1px solid ${c.blueGrey[900]}`,
+          },
+          sunday: {
+            main: `1px solid ${c.blueGrey[100]}`,
+            light: `1px solid ${c.blueGrey[100]}`,
+            dark: `1px solid ${c.blueGrey[900]}`,
+          },
+        },
+      },
+      cells: {
+        bg: {
+          weekday: app.lighterBg.level1.bg,
+          saturday: { main: c.cyan[50], light: c.cyan[50], dark: '#00191a' },
+          sunday: { main: c.pink[50], light: c.pink[50], dark: '#26171f' },
+          today: { main: '', light: c.purple[50], dark: c.purple[900] },
+          selected: undefinedYet,
+        },
+        font: {
+          weekday: app.lighterBg.level1.contrastText,
+          saturday: app.lighterBg.level1.contrastText,
+          sunday: app.lighterBg.level1.contrastText,
+          today: undefinedYet,
+          selected: undefinedYet,
+        },
+        border: {
+          weekday: {
+            main: `1px solid ${c.blueGrey[100]}`,
+            light: `1px solid ${c.blueGrey[100]}`,
+            dark: `1px solid ${c.blueGrey[900]}`,
+          },
+          saturday: {
+            main: `1px solid ${c.blueGrey[100]}`,
+            light: `1px solid ${c.blueGrey[100]}`,
+            dark: `1px solid ${c.blueGrey[900]}`,
+          },
+          sunday: {
+            main: `1px solid ${c.blueGrey[100]}`,
+            light: `1px solid ${c.blueGrey[100]}`,
+            dark: `1px solid ${c.blueGrey[900]}`,
+          },
+          today: undefinedYet,
+          selected: {
+            main: `1px solid ${c.indigo[900]}`,
+            light: `1px solid ${c.indigo[900]}`,
+            dark: `1px solid ${c.indigo[50]}`,
+          },
+        },
       },
     },
     snackBar: {
@@ -60,16 +189,45 @@ export const palette: PaletteOptions = {
         bg: { main: c.amber[50], light: c.amber[50], dark: c.orange[800] },
       },
       closeBtn: { main: c.blueGrey[500], light: c.blueGrey[500], dark: c.blueGrey[50] },
-      // default: {
-      //   icon: { main: c.grey[500], light: c.grey[100], dark: c.grey[700] },
-      //   bg: { main: c.grey[500], light: c.grey[100], dark: c.grey[700] },
-      // },
     },
   },
 
   incomeColor: { main: c.blue[500], light: c.blue[100], dark: c.blue[700] },
   expenseColor: { main: c.red[500], light: c.red[100], dark: c.red[700] },
   balanceColor: { main: c.green[300], light: c.green[100], dark: c.green[500] },
+  income: {
+    bg: {
+      lighter: { main: c.blue[100], light: c.blue[100], dark: '#002440' },
+      darker: undefinedYet, // chart, ...etc
+    },
+    font: {
+      lighter: { main: '', light: c.blue[500], dark: c.indigo[200] },
+      darker: { main: '', light: c.blue[900], dark: c.indigo[400] },
+    },
+    border: undefinedYet,
+  },
+  expense: {
+    bg: {
+      lighter: { main: '', light: c.red[100], dark: '#660933' },
+      darker: undefinedYet, // chart, ...etc
+    },
+    font: {
+      lighter: { main: '', light: c.red[500], dark: c.pink[200] },
+      darker: { main: '', light: c.red[900], dark: c.pink[600] },
+    },
+    border: undefinedYet,
+  },
+  balance: {
+    bg: {
+      lighter: { main: '', light: c.green[100], dark: c.teal[900] },
+      darker: undefinedYet, // chart, ...etc
+    },
+    font: {
+      lighter: { main: '', light: c.green[500], dark: c.teal[200] },
+      darker: { main: '', light: c.green[900], dark: c.teal[400] },
+    },
+    border: undefinedYet,
+  },
 
   incomeCategoryColor: {
     給与: { main: c.lightBlue[600], dark: c.lightBlue[900] },

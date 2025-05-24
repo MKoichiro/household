@@ -1,6 +1,7 @@
 import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../shared/hooks/useContexts'
+import { pagePadding } from '../../../styles/constants'
 
 const SettingsLayout = () => {
   const { user } = useAuth()
@@ -23,8 +24,14 @@ const SettingsLayout = () => {
   const adjustCenter = { transform: 'translateX(-0.8rem)' }
 
   return (
-    <Box display="flex" justifyContent="center" p={2}>
-      <Card sx={{ maxWidth: 700, width: '100%' }}>
+    <Box display="flex" justifyContent="center" p={pagePadding}>
+      <Card
+        sx={{
+          maxWidth: 700,
+          width: '100%',
+          bgcolor: (theme) => theme.palette.app.lighterBg.level2.bg[theme.palette.mode],
+        }}
+      >
         <CardContent>
           {/* ヘッダー：アバターとタイトル */}
           <Stack component="header" direction="row" alignItems="center" justifyContent="center" spacing={2}>

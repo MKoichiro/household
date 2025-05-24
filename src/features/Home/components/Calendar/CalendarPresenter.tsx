@@ -27,11 +27,11 @@ interface CalendarPresenterProps {
 
 const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
   const { calendarRef, scrollJudgeElementRef, events, selectedEvent, isResizing, currentMonth } = states
-  const { handleDateClick, handleDatesSet, setAspectRatio, headerHandlers } = actions
+  const { handleDateClick, handleDatesSet, setAspectRatio, handleDayCellClassNames, headerHandlers } = actions
   return (
     <>
       <CalendarHeader currentMonth={currentMonth} {...headerHandlers} />
-      <StyleContext ref={scrollJudgeElementRef}>
+      <StyleContext className="calendar-context" ref={scrollJudgeElementRef}>
         <FullCalendar
           ref={calendarRef}
           locale={jaLocal}
@@ -41,6 +41,8 @@ const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
           eventContent={renderEventContent}
           datesSet={handleDatesSet}
           dateClick={handleDateClick}
+          dayCellClassNames={handleDayCellClassNames(['fc-day-selected'])}
+          dayCellContent={(cellInfo) => cellInfo.date.getDate()}
           headerToolbar={false}
           aspectRatio={setAspectRatio()}
           height="auto"
@@ -74,10 +76,100 @@ const StyleContext = styled.div`
   /* カレンダーのスタイルここから */
   /* FullCalendarはclassNameを受け取れないのでこのラッパーから定義 */
 
-  /* 曜日ヘッド */
-  .fc .fc-col-header-cell {
-    background-color: ${({ theme }) => theme.palette.ui.calendar.head.bg.main};
-    color: ${({ theme }) => theme.palette.ui.calendar.head.font.main};
+  box-shadow: ${({ theme }) => theme.shadows[1]};
+  /* ボーダーリセット */
+  &,
+  th,
+  table,
+  td[role='presentation'],
+  .fc-theme-standard .fc-scrollgrid {
+    border-width: 0;
+    border-color: transparent;
+    border: none;
+  }
+  /* border-radius */
+  border-radius: 0.75rem;
+  overflow: hidden;
+
+  /* ─── 曜日ヘッド ─── */
+  /* 平日 */
+  .fc .fc-col-header-cell.fc-day-mon,
+  .fc .fc-col-header-cell.fc-day-tue,
+  .fc .fc-col-header-cell.fc-day-wed,
+  .fc .fc-col-header-cell.fc-day-thu,
+  .fc .fc-col-header-cell.fc-day-fri {
+    background: ${({ theme }) => theme.palette.ui.calendar.head.bg.weekday[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.calendar.head.font.weekday[theme.palette.mode]};
+    border: ${({ theme }) => theme.palette.ui.calendar.head.border.weekday[theme.palette.mode]};
+  }
+  /* 土曜 */
+  .fc .fc-col-header-cell.fc-day-sat {
+    background: ${({ theme }) => theme.palette.ui.calendar.head.bg.saturday[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.calendar.head.font.saturday[theme.palette.mode]};
+    border: ${({ theme }) => theme.palette.ui.calendar.head.border.saturday[theme.palette.mode]};
+  }
+  /* 日曜 */
+  .fc .fc-col-header-cell.fc-day-sun {
+    background: ${({ theme }) => theme.palette.ui.calendar.head.bg.sunday[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.calendar.head.font.sunday[theme.palette.mode]};
+    border: ${({ theme }) => theme.palette.ui.calendar.head.border.sunday[theme.palette.mode]};
+  }
+
+  /* ─── グリッドセル ─── */
+  /* 平日 */
+  .fc-daygrid-day.fc-day-mon,
+  .fc-daygrid-day.fc-day-tue,
+  .fc-daygrid-day.fc-day-wed,
+  .fc-daygrid-day.fc-day-thu,
+  .fc-daygrid-day.fc-day-fri {
+    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.weekday[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.weekday[theme.palette.mode]};
+    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.weekday[theme.palette.mode]};
+  }
+  /* 土曜 */
+  .fc-daygrid-day.fc-day-sat {
+    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.saturday[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.saturday[theme.palette.mode]};
+    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.saturday[theme.palette.mode]};
+  }
+  /* 日曜 */
+  .fc-daygrid-day.fc-day-sun {
+    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.sunday[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.sunday[theme.palette.mode]};
+    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.sunday[theme.palette.mode]};
+  }
+  /* 今日 */
+  .fc-daygrid-day.fc-day-today > .fc-daygrid-day-frame {
+    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.today[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.today[theme.palette.mode]};
+    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.today[theme.palette.mode]};
+  }
+  /* 選択中 */
+  .fc-daygrid-day.fc-day-selected {
+    .fc-bg-event {
+      background: none; /* reset */
+      opacity: 0;
+    }
+    & > .fc-daygrid-day-frame {
+      background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.selected[theme.palette.mode]};
+      border: ${({ theme }) => theme.palette.ui.calendar.cells.border.selected[theme.palette.mode]};
+      color: ${({ theme }) => theme.palette.ui.calendar.cells.font.selected[theme.palette.mode]};
+    }
+  }
+
+  /* 日付部分（通常） */
+  .fc-daygrid-day-top {
+    font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+    font-size: 1.8rem;
+    line-height: 1.5;
+  }
+  /* 日付部分（今日） */
+  .fc-daygrid-day.fc-day-today .fc-daygrid-day-top {
+    font-weight: ${({ theme }) => theme.typography.fontWeightBold};
+  }
+  /* 日付部分（選択中） */
+  .fc-daygrid-day.fc-day-selected .fc-daygrid-day-top {
+    font-weight: ${({ theme }) => theme.typography.fontWeightBold};
   }
 
   /* aタグ */
@@ -91,7 +183,7 @@ const StyleContext = styled.div`
   /* カレンダーの背景色設定 */
   .fc-daygrid-body,
   .fc-day {
-    background-color: white;
+    /* background-color: white; */
   }
 
   .fc .fc-daygrid-day-frame {
@@ -106,13 +198,13 @@ const StyleContext = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     &.income {
-      color: ${({ theme }) => theme.palette.incomeColor.main};
+      color: ${({ theme }) => theme.palette.income.font.lighter[theme.palette.mode]};
     }
     &.expense {
-      color: ${({ theme }) => theme.palette.expenseColor.main};
+      color: ${({ theme }) => theme.palette.expense.font.lighter[theme.palette.mode]};
     }
     &.balance {
-      color: ${({ theme }) => theme.palette.balanceColor.main};
+      color: ${({ theme }) => theme.palette.balance.font.lighter[theme.palette.mode]};
     }
   }
 `

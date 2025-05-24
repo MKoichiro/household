@@ -1,20 +1,16 @@
 import { GlobalStyles as MUIGlobalStyles } from '@mui/material'
+import { htmlFontSizes } from './constants'
 
 const GlobalStyles = () => {
   return (
     <MUIGlobalStyles
       styles={(theme) => ({
         html: {
-          // xl, lg
-          fontSize: '62.5%',
-          // md
-          [theme.breakpoints.down('md')]: {
-            fontSize: '56.25%', // =9px
-          },
-          // sm, xs
-          [theme.breakpoints.down('sm')]: {
-            fontSize: '50%', // =8px
-          },
+          fontSize: `${htmlFontSizes.xl}%`,
+          [theme.breakpoints.down('lg')]: { fontSize: `${htmlFontSizes.lg}%` },
+          [theme.breakpoints.down('md')]: { fontSize: `${htmlFontSizes.md}%` },
+          [theme.breakpoints.down('sm')]: { fontSize: `${htmlFontSizes.sm}%` },
+          [theme.breakpoints.down('xs')]: { fontSize: `${htmlFontSizes.xs}%` },
         },
         nav: {
           padding: 0,

@@ -1,4 +1,4 @@
-export const navigationMenuWidth = 240
+// export const navigationMenuWidth = 240
 export const transactionMenuWidth = 320
 export const headerMainHeight = 64
 export const headerNewsHeight = 32

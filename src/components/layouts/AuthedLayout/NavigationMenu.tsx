@@ -1,10 +1,10 @@
-import { css, IconButton, Typography } from '@mui/material'
+import { IconButton, Theme, Typography } from '@mui/material'
+import { css } from '@emotion/react'
 import { NavLink } from 'react-router-dom'
-import { navigationMenuWidth } from '../../../shared/constants/ui'
 import styled from '@emotion/styled'
 import { BareAccordionHead, BareAccordionContent } from '../../common/Accordion'
 import { useAccordions } from '../../../shared/hooks/useAccordion'
-import { indigo, purple } from '@mui/material/colors'
+// import { indigo, purple } from '@mui/material/colors'
 import { ReactNode } from 'react'
 import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
 import {
@@ -171,7 +171,7 @@ export default NavigationMenu
 
 // スタイル
 const StyledUl = styled.ul`
-  color: ${purple[900]};
+  color: ${({ theme }) => theme.palette.ui.navigationMenu.item.inactive.font[theme.palette.mode]};
   display: flex;
   flex-direction: column;
   list-style-type: none;
@@ -190,7 +190,11 @@ const StyledLi = styled.li`
   margin: 0;
   font-size: 1.6rem;
 `
-const LinkButtonCommonStyle = css`
+const LinkButtonCommonStyle = (theme: Theme) => css`
+  --active-bg-color: ${theme.palette.ui.navigationMenu.item.active.bg[theme.palette.mode]};
+  --active-font-color: ${theme.palette.ui.navigationMenu.item.active.font[theme.palette.mode]};
+  --hover-bg-color: ${theme.palette.ui.navigationMenu.item.hover.bg[theme.palette.mode]};
+  --hover-font-color: ${theme.palette.ui.navigationMenu.item.hover.font[theme.palette.mode]};
   cursor: pointer;
   height: 1.8em;
   color: inherit;
@@ -205,13 +209,13 @@ const LinkButtonCommonStyle = css`
   background-color: inherit;
 
   &.active {
-    color: white;
-    background-color: ${purple[900]};
+    color: var(--active-font-color);
+    background-color: var(--active-bg-color);
     transform: scale(1.05);
   }
   &:hover {
-    background-color: ${purple[500]};
-    color: white;
+    color: var(--hover-font-color);
+    background-color: var(--hover-bg-color);
     transform: scale(1.05);
   }
 
@@ -222,7 +226,7 @@ const LinkButtonCommonStyle = css`
     transform 200ms ease;
 `
 const StyledNavLink = styled(NavLink)`
-  ${LinkButtonCommonStyle}
+  ${({ theme }) => LinkButtonCommonStyle(theme)}
 `
 const StyledInnerNavLink = styled(StyledNavLink)`
   padding-left: 2rem;
@@ -231,9 +235,11 @@ const StyledIconButton = styled(IconButton)`
   font-size: 1.6rem;
   height: 1.8em;
   border-radius: 0;
-  ${LinkButtonCommonStyle}
+  ${({ theme }) => LinkButtonCommonStyle(theme)}
 `
 const AccordionHead = styled(BareAccordionHead)`
+  --active-color: ${({ theme }) => theme.palette.ui.navigationMenu.accordionHead.active.font[theme.palette.mode]};
+  --hover-color: ${({ theme }) => theme.palette.ui.navigationMenu.accordionHead.hover.font[theme.palette.mode]};
   cursor: pointer;
   margin: 0;
   display: flex;
@@ -241,14 +247,13 @@ const AccordionHead = styled(BareAccordionHead)`
   align-items: center;
   padding: 0.25rem 0 0.25rem 1rem;
   height: 1.8em;
-  border-bottom: 0px solid ${purple[500]};
   &:hover {
-    color: ${purple[500]};
-    border-bottom: 6px double ${purple[500]};
+    color: var(--hover-color);
+    border-bottom: 6px double var(--hover-color);
   }
   &[aria-expanded='true'] {
-    color: ${purple[500]};
-    border-bottom: 6px double ${purple[500]};
+    color: var(--active-color);
+    border-bottom: 6px double var(--active-color);
   }
   transition: border-bottom 200ms ease;
 `
@@ -269,9 +274,8 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: 
   z-index: ${({ theme }) => theme.zIndex.navigationMenu.lg};
   display: flex;
   flex-direction: column;
-  width: ${navigationMenuWidth}px;
+  width: ${({ theme }) => theme.width.navigationMenu.lg};
   transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : `translateX(-100%)`)};
-  background-color: ${({ theme }) => theme.palette.background.paper};
   transition:
     transform 300ms ease,
     top 300ms ease;
@@ -281,7 +285,10 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: 
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 70vw;
+    width: ${({ theme }) => theme.width.navigationMenu.md};
+  }
+  ${({ theme }) => theme.breakpoints.down('md')} {
+    width: ${({ theme }) => theme.width.navigationMenu.sm};
   }
 `
 const Mask = styled.div<{ $isOpen: boolean }>`
@@ -305,5 +312,5 @@ const Mask = styled.div<{ $isOpen: boolean }>`
 const StickyContext = styled.div`
   position: relative;
   height: 100%;
-  background-color: ${indigo[100]};
+  background-color: ${({ theme }) => theme.palette.ui.navigationMenu.bodyBg[theme.palette.mode]};
 `

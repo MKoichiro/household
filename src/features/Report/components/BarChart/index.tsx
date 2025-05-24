@@ -1,27 +1,12 @@
-// ../../config/chartConfig.txをApp.tsxで読み込み済み
+// NOTE: ../../config/chartConfig.tx を App.tsx で読み込み済み
 import { ChartData, ChartOptions } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
-import { Transaction } from '../../../shared/types'
-import { calculateDailyBalances } from '../../../shared/utils/financeCalculations'
+import { Transaction } from '../../../../shared/types'
+import { calculateDailyBalances } from '../../../../shared/utils/financeCalculations'
 import { Box, CircularProgress, useTheme } from '@mui/material'
-
-const options: ChartOptions<'bar'> = {
-  devicePixelRatio: 2.5,
-  maintainAspectRatio: false,
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: '日別収支',
-    },
-    datalabels: {
-      display: false,
-    },
-  },
-}
+import { format } from 'date-fns'
+import createBarOptions from './createBarOptions'
+import { useRemToPx } from '../../../../shared/hooks/useRemToPx'
 
 export interface BarChartProps {
   monthlyTransactions: Transaction[]
@@ -31,12 +16,14 @@ export interface BarChartProps {
 const BarChart = ({ monthlyTransactions: transactions, isLoading }: BarChartProps) => {
   const dailySummaries = calculateDailyBalances(transactions)
 
-  const dateLabels = Object.keys(dailySummaries).sort()
-  const incomeData = dateLabels.map((day) => dailySummaries[day].income)
-  const expenseData = dateLabels.map((day) => dailySummaries[day].expense)
-  const balanceData = dateLabels.map((day) => dailySummaries[day].balance)
+  const dates = Object.keys(dailySummaries).sort()
+  const incomeData = dates.map((day) => dailySummaries[day].income)
+  const expenseData = dates.map((day) => dailySummaries[day].expense)
+  const balanceData = dates.map((day) => dailySummaries[day].balance)
+  const dateLabels = dates.map((date) => format(new Date(date), 'd'))
 
   const theme = useTheme()
+  const { remToPx } = useRemToPx()
 
   const data: ChartData<'bar'> = {
     labels: dateLabels,
@@ -65,8 +52,10 @@ const BarChart = ({ monthlyTransactions: transactions, isLoading }: BarChartProp
     ],
   }
 
+  const options: ChartOptions<'bar'> = createBarOptions(theme, remToPx)
+
   return (
-    <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
+    <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center" sx={{ overflowX: 'auto' }}>
       {isLoading ? <CircularProgress /> : <Bar options={options} data={data} />}
     </Box>
   )

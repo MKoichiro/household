@@ -85,7 +85,8 @@ const ThemeTogglerRoot = styled.div<{ $mode: 'light' | 'dark' | 'os' }>`
     }
     label[for='theme-toggler__input-os'] {
       svg {
-        color: ${({ $mode, theme }) => ($mode === 'os' ? theme.palette.appTheme.main : 'var(--icon-inactive-color)')};
+        color: ${({ $mode, theme }) =>
+          $mode === 'os' ? theme.palette.app.theme.contrastText.main : 'var(--icon-inactive-color)'};
       }
     }
     label[for='theme-toggler__input-dark'] {

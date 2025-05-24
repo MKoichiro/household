@@ -3,25 +3,36 @@ import { CloseIcon } from '../../../../icons'
 import { useApp } from '../../../../shared/hooks/useContexts'
 import { format } from 'date-fns'
 
-const TransactionDetailHeaderModal = ({ onClose: handleModalClose }: { onClose: () => void }) => {
-  return (
-    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-      <TransactionDetailHeaderBase />
-
-      {/* 以下閉じるボタン */}
-      <IconButton aria-label="閉じる" sx={{ color: (theme) => theme.palette.grey[500] }} onClick={handleModalClose}>
-        <CloseIcon />
-      </IconButton>
-    </Stack>
-  )
-}
-
+// PC用ヘッダー
 const TransactionDetailHeaderBase = () => {
   const { selectedDay } = useApp()
   return (
-    <Typography variant="h6" fontWeight={'fontWeightBold'}>
+    <Typography
+      variant="h6"
+      fontWeight={'fontWeightBold'}
+      sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
+    >
       {format(selectedDay, 'M月 d日')}
     </Typography>
+  )
+}
+
+// タブレット以下のモーダル用ヘッダー
+const TransactionDetailHeaderModal = ({ onClose: handleModalClose }: { onClose: () => void }) => {
+  const { selectedDay } = useApp()
+  return (
+    <Stack direction="row" justifyContent="space-between" alignItems="center" marginBottom={2}>
+      <TransactionDetailHeaderBase />
+
+      {/* 閉じるボタン */}
+      <IconButton
+        aria-label={`${format(selectedDay, 'M月 d日')}のサマリーを閉じるボタン`}
+        onClick={handleModalClose}
+        sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
+      >
+        <CloseIcon />
+      </IconButton>
+    </Stack>
   )
 }
 

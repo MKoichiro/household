@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Button, IconButton } from '@mui/material'
 import HeaderTitle from '../common/HeaderTitle'
 import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
-import { headerMainHeight, headerNewsHeight, navigationMenuWidth } from '../../../shared/constants/ui'
+import { headerMainHeight, headerNewsHeight } from '../../../shared/constants/ui'
 import NewsBar from './HeaderNews'
 import { headerMenuConfigs, headerMenuTree } from './contextMenuConfigs'
 import ContextMenu from '../../common/ContextMenu/ContextMenu'
@@ -93,13 +93,15 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
 }
 
 const HeaderRoot = styled.header<{ $isNavigationMenuOpen: boolean; $isNewsOpen: boolean }>`
-  background-color: ${({ theme }) => theme.palette.ui.header.bg.main};
+  background-color: ${({ theme }) => theme.palette.ui.header.bg[theme.palette.mode]};
+  color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
 
   position: sticky;
   top: ${({ $isNewsOpen }) => ($isNewsOpen ? `-${headerNewsHeight}px` : '0')};
-  left: ${({ $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? `${navigationMenuWidth}px` : '0')};
+  left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0')};
   z-index: ${({ theme }) => theme.zIndex.header.lg};
-  width: ${({ $isNavigationMenuOpen }) => `calc(100% - ${$isNavigationMenuOpen ? navigationMenuWidth : 0}px)`};
+  width: ${({ $isNavigationMenuOpen, theme }) =>
+    `calc(100% - ${$isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0px'})`};
   height: ${({ $isNewsOpen }) => `${$isNewsOpen ? headerMainHeight + headerNewsHeight : headerMainHeight}px`};
   transition:
     left 300ms ease,
@@ -114,7 +116,6 @@ const HeaderRoot = styled.header<{ $isNavigationMenuOpen: boolean; $isNewsOpen: 
 `
 
 const HeaderMain = styled.div<{ $isNewsOpen: boolean }>`
-  color: white;
   display: flex;
   align-items: center;
   padding: 0 1rem;
@@ -125,9 +126,11 @@ const HeaderMain = styled.div<{ $isNewsOpen: boolean }>`
 
 const StyledContextMenu = styled(ContextMenu)`
   ul.menu-list {
-    background-color: ${({ theme }) => theme.palette.ui.header.bg.main};
+    background-color: ${({ theme }) => theme.palette.ui.header.bg[theme.palette.mode]};
+    color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
     border-radius: 0.8rem;
     margin-left: 0.5rem;
+    box-shadow: ${({ theme }) => theme.shadows[10]};
     li.menu-item {
       button {
         font-size: 1.4rem;
