@@ -44,12 +44,13 @@ const CategorySelect = ({ control, errors, currentType }: CategorySelectProps) =
         const categories = currentType === 'income' ? incomeCategories : expenseCategories
         return (
           <FormControl error={!!errors.category}>
-            <InputLabel id="category-label">カテゴリ</InputLabel>
+            <InputLabel id="category-label">カテゴリ*</InputLabel>
             <Select
+              required
               labelId="category-label"
               id="category-select"
               {...field}
-              label="カテゴリ"
+              label="カテゴリ*"
               MenuProps={{
                 // ドロップダウンメニューがモーダル背後に隠れないようにzIndexを調整
                 sx: { zIndex: (theme) => theme.zIndex.transactionForm.md + 10 },

@@ -15,13 +15,19 @@ const AmountField = ({ control, errors, onBlur: handleBlur }: AmountFieldProps) 
       control={control}
       render={({ field }) => (
         <TextField
+          required
           error={!!errors.amount}
           helperText={errors.amount?.message}
           {...field}
           label="金額"
           type="number"
           onBlur={handleBlur(field)}
-          slotProps={{ htmlInput: { style: { fontSize: '16px' } } }}
+          slotProps={{
+            htmlInput: {
+              style: { fontSize: '16px' },
+              min: 0, // 0円以上を許可
+            },
+          }}
         />
       )}
     />

@@ -7,13 +7,14 @@ export const transactionSchema = z.object({
   amount: z
     .string()
     .nonempty({ message: '金額は必須です' })
-    .refine((val) => val !== '0', {
+    .refine((val) => parseInt(val) > 0, {
       message: '金額は1円以上で入力してください',
     })
     .refine((val) => !isNaN(parseIntFromCommaSeparated(val)), {
       message: '無効な値です',
     }),
-  content: z.string().nonempty({ message: '内容は必須です' }).max(50, '内容は50文字以内にしてください'),
+  // content: z.string().nonempty({ message: '内容は必須です' }).max(120, '内容は120文字以内にしてください'),
+  content: z.string().max(120, '内容は120文字以内にしてください'),
   category: z
     .union([
       z.enum(['食費', '日用品', '住居費', '交際費', '娯楽', '交通費']),

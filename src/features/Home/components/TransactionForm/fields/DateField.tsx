@@ -14,6 +14,7 @@ const DateField = ({ control, errors }: DateFieldProps) => {
       control={control}
       render={({ field }) => (
         <TextField
+          required
           {...field}
           label="日付"
           type="date"
