@@ -88,7 +88,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
         >
           <Card
             sx={{
-              bgcolor: isShrunk(item.name) ? cp(item.palette.bg) : cp('app.lighterBg.level1.bg'),
+              bgcolor: isShrunk(item.name) ? cp(item.palette.bg) : cp('ui.monthlySummary.bg'),
               cursor: 'pointer',
               borderRadius: '0.5rem',
               flexGrow: 1,
@@ -118,7 +118,6 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                     left: isShrunk(item.name) ? '50%' : 0,
                     transform: `${isShrunk(item.name) ? 'translate(-50%, -50%)' : 'translate(0)'} ${isNeutral ? 'scale(3.5)' : 'scale(1)'}`,
                     opacity: isNeutral ? 0.25 : 1,
-                    // color: isShrunk(item.name) ? cp('app.lighterBg.level1.contrastText') : cp(item.palette.icon),
                     color: cp(item.palette.icon),
                     transition:
                       'transform 300ms ease, top 300ms ease, left 300ms ease, opacity 300ms ease, color 300ms ease',

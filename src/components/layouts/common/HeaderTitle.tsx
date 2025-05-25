@@ -1,5 +1,7 @@
 import { Typography } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
+import { APP_NAME } from '../../../shared/constants/app'
+import { FONT_FAMILY } from '../../../styles/theme/typography'
 
 type HeaderTitleProps = {
   redirectTo?: string
@@ -19,10 +21,14 @@ const HeaderTitle = ({ redirectTo }: HeaderTitleProps) => {
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': !noLink ? { opacity: 0.8 } : undefined,
+        fontFamily: FONT_FAMILY.APP_LOGO,
+        fontWeight: 700,
+        letterSpacing: '0.08em',
+        fontSize: '2.4rem',
       }}
-      aria-label="家計簿アプリ ホームへ"
+      aria-label={`${APP_NAME.DISPLAY} ホームへ`}
     >
-      家計簿アプリ
+      {APP_NAME.DISPLAY}
     </Typography>
   )
 }

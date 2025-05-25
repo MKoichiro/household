@@ -28,7 +28,7 @@ const TransactionForm = (props: TransactionFormProps) => {
       {/* タブレット以下 */}
       {portalRenderer(
         <>
-          <Mask $isOpen={isFormOpen} $zIndex={theme.zIndex.transactionForm.md - 1} onClick={handleCloseClick} />
+          <Mask $open={isFormOpen} $zIndex={theme.zIndex.transactionForm.md - 1} onClick={handleCloseClick} />
           <FormTablet $isFormOpen={isFormOpen}>
             <TransactionFormBody {...props} />
           </FormTablet>
@@ -43,8 +43,6 @@ const TransactionForm = (props: TransactionFormProps) => {
     </>
   )
 }
-
-export default TransactionForm
 
 // スタイル
 const StickyContext = styled.div`
@@ -105,3 +103,5 @@ const FormTablet = styled.div<{ $isFormOpen: boolean }>`
     display: none;
   }
 `
+
+export default TransactionForm

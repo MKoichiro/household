@@ -26,7 +26,7 @@ export const HalfModal = ({
     <>
       {portalRenderer(
         <>
-          <Mask $isOpen={isOpen} $zIndex={(zIndex as number) - 1} onClick={handleClose} />
+          <Mask $open={isOpen} $zIndex={(zIndex as number) - 1} onClick={handleClose} />
           <div style={style}>
             <SwipeHandle {...swipeHandlers} />
             {children}

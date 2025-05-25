@@ -6,12 +6,12 @@ const AccordionHead = styled(BareAccordionHead)`
   background-color: lightblue;
 `
 
-const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $height: number }>`
+const AccordionContent = styled(BareAccordionContent)<{ $open: boolean; $height: number }>`
   cursor: pointer;
   overflow: hidden;
   transition: height 300ms ease-in-out;
   background-color: lightblue;
-  height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
+  height: ${({ $open, $height }) => ($open ? `${$height}px` : '0')};
 `
 
 // 使用例
@@ -33,7 +33,7 @@ const TestAccordionSingle = () => {
         Accordion Head
       </AccordionHead>
 
-      <AccordionContent ref={contentRef} $isOpen={isOpen} $height={contentHeight}>
+      <AccordionContent ref={contentRef} $open={isOpen} $height={contentHeight}>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, cumque? Lorem ipsum dolor sit amet consectetur
           adipisicing elit. Quas, cumque? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, cumque? Lorem

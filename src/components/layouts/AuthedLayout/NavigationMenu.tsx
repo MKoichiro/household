@@ -1,10 +1,9 @@
-import { IconButton, Theme, Typography } from '@mui/material'
+import { IconButton, Theme, Typography, useTheme } from '@mui/material'
 import { css } from '@emotion/react'
 import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { BareAccordionHead, BareAccordionContent } from '../../common/Accordion'
 import { useAccordions } from '../../../shared/hooks/useAccordion'
-// import { indigo, purple } from '@mui/material/colors'
 import { ReactNode } from 'react'
 import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
 import {
@@ -17,6 +16,7 @@ import {
   SettingsIcon,
   VpnKeyIcon,
 } from '../../../icons'
+import Mask from '../../common/Mask'
 
 interface MenuItemBase {
   id: string
@@ -81,21 +81,12 @@ const NavigationMenuItemComponent = ({ item }: { item: NavigationMenuItem }) => 
       <AccordionHead open={accordions[item.id].open} component="h3" onClick={toggle(item.id)}>
         {item.icon}
         <Typography>{item.label}</Typography>
-        <IconButton
-          aria-label={`${item.label}のサブメニューを開閉`}
-          sx={{
-            color: 'inherit',
-            ml: 'auto',
-            px: 1,
-            transform: accordions[item.id].open ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 300ms',
-          }}
-        >
+        <AccordionToggleIconButton $open={accordions[item.id].open} aria-label={`${item.label}のサブメニューを開閉`}>
           <ExpandMoreIcon />
-        </IconButton>
+        </AccordionToggleIconButton>
       </AccordionHead>
       <AccordionContent
-        $isOpen={accordions[item.id].open}
+        $open={accordions[item.id].open}
         $height={accordions[item.id].height}
         ref={contentRefs[item.id]}
       >
@@ -148,15 +139,16 @@ interface NavigationMenuProps {
   onClose: () => void
 }
 
-const NavigationMenu = ({ isOpen, onClose }: NavigationMenuProps) => {
+const NavigationMenu = ({ isOpen, onClose: handleClose }: NavigationMenuProps) => {
   const { dynamicHeaderHeight } = useLayout()
+  const theme = useTheme()
   return (
     <aside>
-      <Mask $isOpen={isOpen} onClick={onClose} />
+      <Mask $open={isOpen} $zIndex={theme.zIndex.navigationMenu.md - 1} onClick={handleClose} />
       <NavigationMenuRoot
         role="navigation"
         aria-label="ナビゲーションメニュー"
-        $isOpen={isOpen}
+        $open={isOpen}
         $dynamicHeaderHeight={dynamicHeaderHeight()}
       >
         <StickyContext>
@@ -167,9 +159,6 @@ const NavigationMenu = ({ isOpen, onClose }: NavigationMenuProps) => {
   )
 }
 
-export default NavigationMenu
-
-// スタイル
 const StyledUl = styled.ul`
   color: ${({ theme }) => theme.palette.ui.navigationMenu.item.inactive.font[theme.palette.mode]};
   display: flex;
@@ -178,18 +167,32 @@ const StyledUl = styled.ul`
   padding: 0;
   gap: 0.6rem;
 `
+
 const StyledOuterUl = styled(StyledUl)`
   padding-top: 1rem;
   margin: 0;
   position: sticky;
   top: 0;
 `
+
 const StyledLi = styled.li`
   color: inherit;
   list-style: none;
   margin: 0;
   font-size: 1.6rem;
 `
+
+// DOM に $open を渡さない
+const AccordionToggleIconButton = styled(IconButton, { shouldForwardProp: (prop) => prop !== '$open' })<{
+  $open: boolean
+}>`
+  color: inherit;
+  margin-left: auto;
+  padding: 0 1rem;
+  transform: ${({ $open }) => ($open ? 'rotate(180deg)' : 'rotate(0deg)')};
+  transition: transform 300ms ease;
+`
+
 const LinkButtonCommonStyle = (theme: Theme) => css`
   --active-bg-color: ${theme.palette.ui.navigationMenu.item.active.bg[theme.palette.mode]};
   --active-font-color: ${theme.palette.ui.navigationMenu.item.active.font[theme.palette.mode]};
@@ -225,18 +228,22 @@ const LinkButtonCommonStyle = (theme: Theme) => css`
     color 200ms ease,
     transform 200ms ease;
 `
+
 const StyledNavLink = styled(NavLink)`
   ${({ theme }) => LinkButtonCommonStyle(theme)}
 `
+
 const StyledInnerNavLink = styled(StyledNavLink)`
   padding-left: 2rem;
 `
+
 const StyledIconButton = styled(IconButton)`
   font-size: 1.6rem;
   height: 1.8em;
   border-radius: 0;
   ${({ theme }) => LinkButtonCommonStyle(theme)}
 `
+
 const AccordionHead = styled(BareAccordionHead)`
   --active-color: ${({ theme }) => theme.palette.ui.navigationMenu.accordionHead.active.font[theme.palette.mode]};
   --hover-color: ${({ theme }) => theme.palette.ui.navigationMenu.accordionHead.hover.font[theme.palette.mode]};
@@ -257,16 +264,18 @@ const AccordionHead = styled(BareAccordionHead)`
   }
   transition: border-bottom 200ms ease;
 `
-const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $height: number }>`
+
+const AccordionContent = styled(BareAccordionContent)<{ $open: boolean; $height: number }>`
   overflow: hidden;
   transition: height 300ms ease-in-out;
-  height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
+  height: ${({ $open, $height }) => ($open ? `${$height}px` : '0')};
 
   li:first-of-type {
     margin-top: 0.8rem;
   }
 `
-const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: number }>`
+
+const NavigationMenuRoot = styled.nav<{ $open: boolean; $dynamicHeaderHeight: number }>`
   position: absolute;
   left: 0;
   top: ${({ $dynamicHeaderHeight }) => `-${$dynamicHeaderHeight}px`};
@@ -275,7 +284,7 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: 
   display: flex;
   flex-direction: column;
   width: ${({ theme }) => theme.width.navigationMenu.lg};
-  transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : `translateX(-100%)`)};
+  transform: ${({ $open }) => ($open ? 'translateX(0)' : `translateX(-100%)`)};
   transition:
     transform 300ms ease,
     top 300ms ease;
@@ -291,26 +300,11 @@ const NavigationMenuRoot = styled.nav<{ $isOpen: boolean; $dynamicHeaderHeight: 
     width: ${({ theme }) => theme.width.navigationMenu.sm};
   }
 `
-const Mask = styled.div<{ $isOpen: boolean }>`
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
-  transition: opacity 1s;
 
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: ${({ theme }) => theme.zIndex.navigationMenu.md - 1};
-  height: 100lvh;
-
-  ${({ theme }) => theme.breakpoints.up('lg')} {
-    opacity: 0;
-    pointer-events: none;
-  }
-`
 const StickyContext = styled.div`
   position: relative;
   height: 100%;
   background-color: ${({ theme }) => theme.palette.ui.navigationMenu.bodyBg[theme.palette.mode]};
 `
+
+export default NavigationMenu

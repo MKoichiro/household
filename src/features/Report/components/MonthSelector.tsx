@@ -1,9 +1,10 @@
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import { ja } from 'date-fns/locale'
 import { addMonths } from 'date-fns'
 import { Dispatch, SetStateAction } from 'react'
+import MonthNavButton from '../../../components/common/MonthNavButton'
 
 export interface MonthSelectorProps {
   selectedMonth: Date
@@ -22,25 +23,14 @@ const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) 
   }
 
   const handleDateChange = (newDate: Date | null) => {
-    if (newDate) {
-      setSelectedMonth(newDate)
-    }
+    if (newDate) setSelectedMonth(newDate)
   }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Button color={'error'} variant="contained" onClick={handlePrevClick}>
-          先月
-        </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <MonthNavButton direction="PREV" onClick={handlePrevClick} />
         <DatePicker
-          sx={{ mx: 2 }}
           label="年月を選択"
           defaultValue={selectedMonth} // 単なる初期値
           value={selectedMonth} // 外部から変更可
@@ -53,10 +43,9 @@ const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) 
             // actionbar: {}, // モバイル版のみ。最下部のボタン種(OK, CANCELなど)をカスタムできる。
           }}
           onChange={handleDateChange}
+          sx={{ mx: 2 }}
         />
-        <Button color={'primary'} variant="contained" onClick={handleNextClick}>
-          翌月
-        </Button>
+        <MonthNavButton direction="NEXT" onClick={handleNextClick} />
       </Box>
     </LocalizationProvider>
   )

@@ -36,4 +36,7 @@ const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
   margin-left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0')};
   transition: margin-left 300ms ease;
   min-height: calc(100lvh - ${headerMainHeight}px);
+  ${({ theme }) => theme.breakpoints.down('lg')} {
+    margin-left: 0;
+  }
 `

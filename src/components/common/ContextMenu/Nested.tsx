@@ -32,6 +32,7 @@ const Nested = ({
       display: item.display,
       autoIcon: !!item.autoIcon,
       hasChildren: !!item.children,
+      includeButton: !!item.includeButton,
       open: !!item.open,
       dividerAfter: !!item.dividerAfter,
     })) as MenuItem[]

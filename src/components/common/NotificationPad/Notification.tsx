@@ -1,10 +1,11 @@
 import { NotificationType } from '../../../shared/hooks/useContexts'
-import { Stack, Typography } from '@mui/material'
-import TimerCircularProgress from './TimerCircularProgress'
+import { CircularProgress, Stack, Typography } from '@mui/material'
 import Snackbar from './Snackbar'
 import { motion } from 'framer-motion'
 import styled from '@emotion/styled'
 import { useRemToPx } from '../../../shared/hooks/useRemToPx'
+import { useEffect, useState } from 'react'
+import useTimer from '../../../shared/hooks/useTimer'
 
 interface NotificationItemProps {
   isOne: boolean
@@ -22,6 +23,29 @@ const Notification = ({
   const isInfinite = autoHideDuration === undefined || autoHideDuration <= 0
   const { remToPx } = useRemToPx()
 
+  const [aborted, setAborted] = useState(false)
+
+  const delay = 200
+  const decideStep = () => (!isInfinite ? (delay / autoHideDuration) * 100 : undefined)
+  const step = decideStep()
+  const { count, stop, kill, start } = useTimer({ init: 100, step, type: 'decrement', delay, startNow: false })
+  const handleSnackbarClick = () => {
+    if (isInfinite) return
+    stop()
+    setAborted(true)
+  }
+
+  // 初回レンダリング時に自動で開始
+  useEffect(() => {
+    if (!isInfinite) start()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleSnackbarClose = () => {
+    handleClose()
+    kill()
+  }
+
   return (
     <motion.div
       initial={{ x: '-110%', maxHeight: '4rem' }}
@@ -37,21 +61,22 @@ const Notification = ({
         isOne={isOne}
         severity={severity}
         open={!!message}
+        aborted={aborted}
         autoHideDuration={autoHideDuration}
-        onClose={handleClose}
+        onClose={handleSnackbarClose}
+        onClick={handleSnackbarClick}
       >
         <Stack direction="row" spacing={2} alignItems="center">
           <Typography variant="body2" color="inherit">
             {message}
           </Typography>
           {!isInfinite && (
-            <TimerCircularProgress
-              size={remToPx(1)}
+            <StyledCircularProgress
+              size={remToPx(1.6)}
               variant="determinate"
-              duration={autoHideDuration}
-              sx={{
-                color: (theme) => theme.palette.ui.snackBar[severity].icon[theme.palette.mode],
-              }}
+              value={count >= 0 ? count : 0}
+              $aborted={aborted}
+              sx={{ color: (theme) => theme.palette.ui.snackBar[severity].icon[theme.palette.mode] }}
             />
           )}
         </Stack>
@@ -60,8 +85,6 @@ const Notification = ({
   )
 }
 
-export default Notification
-
 const StyledSnackbar = styled(Snackbar)<{ isOne: boolean }>`
   margin-top: ${({ isOne }) => (isOne ? '0' : '0.5rem')};
   margin-bottom: ${({ isOne }) => (isOne ? '0' : '0.5rem')};
@@ -69,3 +92,12 @@ const StyledSnackbar = styled(Snackbar)<{ isOne: boolean }>`
     font-size: 1.4rem;
   }
 `
+
+const StyledCircularProgress = styled(CircularProgress, { shouldForwardProp: (prop) => prop !== '$aborted' })<{
+  $aborted: boolean
+}>`
+  opacity: ${({ $aborted }) => ($aborted ? 0 : 1)};
+  transition: opacity 500ms ease;
+`
+
+export default Notification

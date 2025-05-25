@@ -9,15 +9,14 @@ import { getAuth } from 'firebase/auth'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// NOTE: firebaseのapiKeyは公開前提とはいえ、気持ち悪ければ後からでも.envに退避しても良いかもしれない。
 const firebaseConfig = {
-  apiKey: 'AIzaSyDbsCqSGbydg4UbT2rQfKoTMVqdCXE_XQU',
-  authDomain: 'household-1dc1b.firebaseapp.com',
-  projectId: 'household-1dc1b',
-  storageBucket: 'household-1dc1b.firebasestorage.app',
-  messagingSenderId: '240696638645',
-  appId: '1:240696638645:web:1912da87edebca9700d2fc',
-  measurementId: 'G-V31KYG8FXL',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID as string,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET as string,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID as string,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID as string,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID as string,
 }
 
 // Initialize Firebase

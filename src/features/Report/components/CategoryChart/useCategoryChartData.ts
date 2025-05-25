@@ -23,33 +23,33 @@ interface IncomeColorMap {
 
 const expenseCategoryColorMap = (theme: Theme): ExpenseColorMap => ({
   backgroundColor: {
-    食費: theme.palette.expenseCategoryColor['食費'].main,
-    日用品: theme.palette.expenseCategoryColor['日用品'].main,
-    住居費: theme.palette.expenseCategoryColor['住居費'].main,
-    交際費: theme.palette.expenseCategoryColor['交際費'].main,
-    娯楽: theme.palette.expenseCategoryColor['娯楽'].main,
-    交通費: theme.palette.expenseCategoryColor['交通費'].main,
+    食費: theme.palette.expenseCategory['食費'][theme.palette.mode],
+    日用品: theme.palette.expenseCategory['日用品'][theme.palette.mode],
+    住居費: theme.palette.expenseCategory['住居費'][theme.palette.mode],
+    交際費: theme.palette.expenseCategory['交際費'][theme.palette.mode],
+    娯楽: theme.palette.expenseCategory['娯楽'][theme.palette.mode],
+    交通費: theme.palette.expenseCategory['交通費'][theme.palette.mode],
   },
   borderColor: {
-    食費: theme.palette.expenseCategoryColor['食費'].dark,
-    日用品: theme.palette.expenseCategoryColor['日用品'].dark,
-    住居費: theme.palette.expenseCategoryColor['住居費'].dark,
-    交際費: theme.palette.expenseCategoryColor['交際費'].dark,
-    娯楽: theme.palette.expenseCategoryColor['娯楽'].dark,
-    交通費: theme.palette.expenseCategoryColor['交通費'].dark,
+    食費: theme.palette.expenseCategory['食費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
+    日用品: theme.palette.expenseCategory['日用品'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
+    住居費: theme.palette.expenseCategory['住居費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
+    交際費: theme.palette.expenseCategory['交際費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
+    娯楽: theme.palette.expenseCategory['娯楽'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
+    交通費: theme.palette.expenseCategory['交通費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
   },
 })
 
 const incomeCategoryColorMap = (theme: Theme): IncomeColorMap => ({
   backgroundColor: {
-    給与: theme.palette.incomeCategoryColor['給与'].main,
-    副収入: theme.palette.incomeCategoryColor['副収入'].main,
-    お小遣い: theme.palette.incomeCategoryColor['お小遣い'].main,
+    給与: theme.palette.incomeCategory['給与'][theme.palette.mode],
+    副収入: theme.palette.incomeCategory['副収入'][theme.palette.mode],
+    お小遣い: theme.palette.incomeCategory['お小遣い'][theme.palette.mode],
   },
   borderColor: {
-    給与: theme.palette.incomeCategoryColor['給与'].dark,
-    副収入: theme.palette.incomeCategoryColor['副収入'].dark,
-    お小遣い: theme.palette.incomeCategoryColor['お小遣い'].dark,
+    給与: theme.palette.incomeCategory['給与'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
+    副収入: theme.palette.incomeCategory['副収入'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
+    お小遣い: theme.palette.incomeCategory['お小遣い'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
   },
 })
 

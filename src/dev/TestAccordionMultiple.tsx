@@ -7,11 +7,11 @@ const AccordionHead = styled(BareAccordionHead)`
   background-color: lightblue;
 `
 
-const AccordionContent = styled(BareAccordionContent)<{ $isOpen: boolean; $height: number }>`
+const AccordionContent = styled(BareAccordionContent)<{ $open: boolean; $height: number }>`
   overflow: hidden;
   transition: height 300ms ease-in-out;
   outline: 1px solid red;
-  height: ${({ $isOpen, $height }) => ($isOpen ? `${$height}px` : '0')};
+  height: ${({ $open, $height }) => ($open ? `${$height}px` : '0')};
 `
 
 const FirstHead = styled.div``
@@ -77,7 +77,7 @@ const TestAccordionMultiple = () => {
 
       <AccordionContent
         ref={outerContentRefs['outer-0']}
-        $isOpen={outerAccordions['outer-0'].open}
+        $open={outerAccordions['outer-0'].open}
         $height={outerAccordions['outer-0'].height}
       >
         {/* アコーディオンのコンテンツ */}
@@ -101,7 +101,7 @@ const TestAccordionMultiple = () => {
 
       <AccordionContent
         ref={outerContentRefs['outer-1']}
-        $isOpen={outerAccordions['outer-1'].open}
+        $open={outerAccordions['outer-1'].open}
         $height={outerAccordions['outer-1'].height}
       >
         <SecondContent>
@@ -131,7 +131,7 @@ const TestAccordionMultiple = () => {
       </AccordionHead>
       <AccordionContent
         ref={outerContentRefs['outer-2']}
-        $isOpen={outerAccordions['outer-2'].open}
+        $open={outerAccordions['outer-2'].open}
         $height={outerAccordions['outer-2'].height}
       >
         <textarea style={{ width: '100%', height: '100%' }} />
@@ -150,7 +150,7 @@ const TestAccordionMultiple = () => {
       </AccordionHead>
       <AccordionContent
         ref={outerContentRefs['outer-3']}
-        $isOpen={outerAccordions['outer-3'].open}
+        $open={outerAccordions['outer-3'].open}
         $height={outerAccordions['outer-3'].height}
       >
         {/* 内側のアコーディオン */}
@@ -167,7 +167,7 @@ const TestAccordionMultiple = () => {
         </AccordionHead>
         <AccordionContent
           ref={innerContentRefs['inner-0']}
-          $isOpen={innerAccordions['inner-0'].open}
+          $open={innerAccordions['inner-0'].open}
           $height={innerAccordions['inner-0'].height}
         >
           <p>インナーコンテンツ1</p>
@@ -184,7 +184,7 @@ const TestAccordionMultiple = () => {
         </AccordionHead>
         <AccordionContent
           ref={innerContentRefs['inner-1']}
-          $isOpen={innerAccordions['inner-1'].open}
+          $open={innerAccordions['inner-1'].open}
           $height={innerAccordions['inner-1'].height}
         >
           <p>インナーコンテンツ2</p>
@@ -201,7 +201,7 @@ const TestAccordionMultiple = () => {
         </AccordionHead>
         <AccordionContent
           ref={innerContentRefs['inner-2']}
-          $isOpen={innerAccordions['inner-2'].open}
+          $open={innerAccordions['inner-2'].open}
           $height={innerAccordions['inner-2'].height}
         >
           <p>インナーコンテンツ3</p>

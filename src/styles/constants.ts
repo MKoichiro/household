@@ -17,8 +17,8 @@ export const pagePaddingY: Record<Breakpoint, string> = {
 }
 
 export const pagePaddingX: Record<Breakpoint, string> = {
-  xs: '0.2rem',
-  sm: '0.2rem',
+  xs: '0.6rem',
+  sm: '0.8rem',
   md: '0.4rem',
   lg: '0.8rem',
   xl: '1rem',

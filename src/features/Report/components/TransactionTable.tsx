@@ -23,6 +23,7 @@ import IconComponents from '../../../components/common/IconComponents'
 import { compareAsc, parseISO } from 'date-fns'
 import { useTransaction } from '../../../shared/hooks/useContexts'
 import { DeleteIcon } from '../../../icons'
+import { colorPicker as cp } from '../../../styles/theme/helpers/paletteHelpers'
 
 // テーブルヘッド部分
 interface TransactionTableHeadProps {
@@ -168,9 +169,9 @@ const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTabl
       {/* 月次サマリー表示部分 */}
       <Grid container sx={{ textAlign: 'center' }}>
         {[
-          { title: '支出', color: 'expenseColor.main', amount: formatCurrency(expense) },
-          { title: '収入', color: 'incomeColor.main', amount: formatCurrency(income) },
-          { title: '残高', color: 'balanceColor.dark', amount: formatCurrency(balance) },
+          { title: '支出', color: cp('expense.font.lighter'), amount: formatCurrency(expense) },
+          { title: '収入', color: cp('income.font.lighter'), amount: formatCurrency(income) },
+          { title: '残高', color: cp('balance.font.lighter'), amount: formatCurrency(balance) },
         ].map((item) => (
           <Grid key={item.title} size={{ xs: 4 }}>
             <Typography variant="subtitle1" component="h3">

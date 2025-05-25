@@ -12,15 +12,16 @@ const app = {
   theme: appTheme,
   lighterBg: {
     level1: {
-      bg: { main: c.grey[50], light: c.grey[50], dark: c.grey[900] },
+      bg: { main: c.grey[50], light: c.blueGrey[50], dark: '#151b1f' },
       contrastText: { main: c.blueGrey[900], light: c.blueGrey[900], dark: c.blueGrey[100] },
     },
     level2: {
-      bg: { main: c.indigo[50], light: c.blueGrey[50], dark: c.blueGrey[900] },
+      // bg: { main: c.indigo[50], light: '#e4e9ed', dark: c.grey[900] },
+      bg: { main: c.indigo[50], light: c.grey[50], dark: '#191919' },
       contrastText: { main: c.blueGrey[800], light: c.blueGrey[800], dark: c.blueGrey[200] },
     },
     level3: {
-      bg: { main: c.blueGrey[50], light: c.blueGrey[50], dark: c.blueGrey[900] },
+      bg: { main: c.blueGrey[50], light: c.grey[100], dark: c.blueGrey[900] },
       contrastText: { main: c.blueGrey[900], light: c.blueGrey[900], dark: c.blueGrey[100] },
     },
     level4: {
@@ -133,7 +134,7 @@ export const palette: PaletteOptions = {
       },
       cells: {
         bg: {
-          weekday: app.lighterBg.level1.bg,
+          weekday: app.lighterBg.level2.bg,
           saturday: { main: c.cyan[50], light: c.cyan[50], dark: '#00191a' },
           sunday: { main: c.pink[50], light: c.pink[50], dark: '#26171f' },
           today: { main: '', light: c.purple[50], dark: c.purple[900] },
@@ -170,6 +171,7 @@ export const palette: PaletteOptions = {
           },
         },
       },
+      mask: app.lighterBg.level2.bg,
     },
     snackBar: {
       success: {
@@ -190,14 +192,17 @@ export const palette: PaletteOptions = {
       },
       closeBtn: { main: c.blueGrey[500], light: c.blueGrey[500], dark: c.blueGrey[50] },
     },
+    monthlySummary: {
+      bg: app.lighterBg.level2.bg,
+    },
+    dailySummary: {
+      bg: app.lighterBg.level3.bg,
+    },
   },
 
-  incomeColor: { main: c.blue[500], light: c.blue[100], dark: c.blue[700] },
-  expenseColor: { main: c.red[500], light: c.red[100], dark: c.red[700] },
-  balanceColor: { main: c.green[300], light: c.green[100], dark: c.green[500] },
   income: {
     bg: {
-      lighter: { main: c.blue[100], light: c.blue[100], dark: '#002440' },
+      lighter: { main: c.blue[50], light: c.blue[50], dark: '#002440' },
       darker: undefinedYet, // chart, ...etc
     },
     font: {
@@ -208,7 +213,7 @@ export const palette: PaletteOptions = {
   },
   expense: {
     bg: {
-      lighter: { main: '', light: c.red[100], dark: '#660933' },
+      lighter: { main: '', light: c.red[50], dark: '#660933' },
       darker: undefinedYet, // chart, ...etc
     },
     font: {
@@ -229,12 +234,12 @@ export const palette: PaletteOptions = {
     border: undefinedYet,
   },
 
-  incomeCategoryColor: {
+  incomeCategory: {
     給与: { main: c.lightBlue[600], dark: c.lightBlue[900] },
     副収入: { main: c.cyan[200], dark: c.cyan[800] },
     お小遣い: { main: c.lightGreen['A700'], dark: c.lightGreen[700] },
   },
-  expenseCategoryColor: {
+  expenseCategory: {
     食費: { main: c.deepOrange[500], dark: c.deepOrange[900] },
     日用品: { main: c.lightGreen[500], dark: c.lightGreen[900] },
     住居費: { main: c.amber[500], dark: c.amber[900] },

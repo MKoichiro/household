@@ -90,6 +90,7 @@ declare module '@mui/material/styles' {
             selected: PaletteColor
           }
         }
+        mask: PaletteColor
       }
       snackBar: {
         success: { icon: PaletteColor; bg: PaletteColor }
@@ -98,11 +99,10 @@ declare module '@mui/material/styles' {
         warning: { icon: PaletteColor; bg: PaletteColor }
         closeBtn: PaletteColor
       }
+      monthlySummary: { bg: PaletteColor }
+      dailySummary: { bg: PaletteColor }
     }
 
-    incomeColor: PaletteColor
-    expenseColor: PaletteColor
-    balanceColor: PaletteColor
     income: {
       bg: {
         lighter: PaletteColor
@@ -121,8 +121,8 @@ declare module '@mui/material/styles' {
       font: { lighter: PaletteColor; darker: PaletteColor }
       border: PaletteColor
     }
-    incomeCategoryColor: Record<IncomeCategory, PaletteColor>
-    expenseCategoryColor: Record<ExpenseCategory, PaletteColor>
+    incomeCategory: Record<IncomeCategory, PaletteColor>
+    expenseCategory: Record<ExpenseCategory, PaletteColor>
   }
 
   interface PaletteOptions {
@@ -205,6 +205,7 @@ declare module '@mui/material/styles' {
             selected: PaletteColorOptions
           }
         }
+        mask: PaletteColorOptions
       }
       snackBar: {
         success: { icon: PaletteColorOptions; bg: PaletteColorOptions }
@@ -213,11 +214,10 @@ declare module '@mui/material/styles' {
         warning: { icon: PaletteColorOptions; bg: PaletteColorOptions }
         closeBtn: PaletteColorOptions
       }
+      monthlySummary: { bg: PaletteColorOptions }
+      dailySummary: { bg: PaletteColorOptions }
     }
 
-    incomeColor: PaletteColorOptions
-    expenseColor: PaletteColorOptions
-    balanceColor: PaletteColorOptions
     income: {
       bg: {
         lighter: PaletteColorOptions
@@ -236,8 +236,8 @@ declare module '@mui/material/styles' {
       font: { lighter: PaletteColorOptions; darker: PaletteColorOptions }
       border: PaletteColorOptions
     }
-    incomeCategoryColor: Record<IncomeCategory, PaletteColorOptions>
-    expenseCategoryColor: Record<ExpenseCategory, PaletteColorOptions>
+    incomeCategory: Record<IncomeCategory, PaletteColorOptions>
+    expenseCategory: Record<ExpenseCategory, PaletteColorOptions>
   }
 
   interface BreakpointOverrides {
@@ -265,7 +265,7 @@ declare module '@mui/material/styles' {
     navigationMenu: WidthOptions
   }
 
-  // ここを追加 --------------------
+  // Theme 拡張部分
   interface Theme {
     /**
      * navigationMenu 用の幅をテーマから参照できるようにする
@@ -278,7 +278,6 @@ declare module '@mui/material/styles' {
      */
     width?: Partial<Width>
   }
-  // ───────────────────────────────
 }
 
 export const getTheme = (mode: PaletteMode) =>

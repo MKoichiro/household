@@ -15,9 +15,9 @@ declare module '@emotion/react' {
 // // @emotion/styled には emotion が提供する「styled-components の styled と同等の styled」をインポート
 // import styled from '@emotion/styled'
 
-// const StyledDiv = styled.div<{ $isOpen: number }>` // $isOpen のみを明示的に指定
+// const StyledDiv = styled.div<{ $open: number }>` // $open のみを明示的に指定
 //   background-color: ${({ theme }) => theme.palette.primary.main};
-//   height: ${({ $isOpen }) => ($isOpen ? '100px' : '50px')};
+//   height: ${({ $open }) => ($open ? '100px' : '50px')};
 
 //   /* メディアクエリ: ${} が "@media (max-width: 600px)" に展開される */
 //   ${({ theme }) => theme.breakpoints.down('sm')} {
@@ -26,4 +26,4 @@ declare module '@emotion/react' {
 // `
 
 // 例: 使用側
-// <StyledDiv $isOpen={isOpen} />
+// <StyledDiv $open={isOpen} />

@@ -7,6 +7,7 @@ import { Transaction, TransactionType } from '../../../../shared/types'
 import useCategoryChartData from './useCategoryChartData'
 import createPieOptions from './createPieOptions'
 import { ChangeEvent, useState } from 'react'
+import { colorPicker as cp } from '../../../../styles/theme/helpers/paletteHelpers'
 
 // コンポーネントここから
 export interface CategoryChartProps {
@@ -49,8 +50,8 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
             control={
               <Radio
                 sx={{
-                  color: theme.palette.expenseColor.main,
-                  '&.Mui-checked': { color: theme.palette.expenseColor.main },
+                  color: cp('expense.font.lighter'),
+                  '&.Mui-checked': { color: cp('expense.font.lighter') },
                 }}
               />
             }
@@ -61,8 +62,8 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
             control={
               <Radio
                 sx={{
-                  color: theme.palette.incomeColor.main,
-                  '&.Mui-checked': { color: theme.palette.incomeColor.main },
+                  color: cp('income.font.lighter'),
+                  '&.Mui-checked': { color: cp('income.font.lighter') },
                 }}
               />
             }

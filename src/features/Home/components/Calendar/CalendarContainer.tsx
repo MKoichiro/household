@@ -146,7 +146,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
     const timeoutId = setTimeout(() => {
       api?.updateSize()
       setTimeout(() => setIsResizing(false), 100) // 余韻を持たせる
-    }, animationDuration)
+    }, animationDuration + 100) // 動作安定化のために100msの余裕を持たせる
 
     return () => clearTimeout(timeoutId)
   }, [downLg, isNavigationMenuOpen])

@@ -3,10 +3,8 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import jaLocal from '@fullcalendar/core/locales/ja'
 import { EventContentArg } from '@fullcalendar/core/index.js'
 import interactionPlugin from '@fullcalendar/interaction'
-import { Backdrop } from '@mui/material'
 import styled from '@emotion/styled'
 import { CalendarActions, CalendarStates } from './CalendarContainer'
-import { indigo } from '@mui/material/colors'
 import CalendarHeader from './CalendarHeader'
 
 const renderEventContent = (eventInfo: EventContentArg) => {
@@ -31,7 +29,7 @@ const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
   return (
     <>
       <CalendarHeader currentMonth={currentMonth} {...headerHandlers} />
-      <StyleContext className="calendar-context" ref={scrollJudgeElementRef}>
+      <StyledContext className="calendar-context" ref={scrollJudgeElementRef}>
         <FullCalendar
           ref={calendarRef}
           locale={jaLocal}
@@ -49,32 +47,32 @@ const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
           longPressDelay={10} // デフォルト 1000ms → 10ms
           selectLongPressDelay={10} // デフォルト 1000ms → 10ms
         />
-        <Backdrop
-          open={isResizing}
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 500,
-            backgroundColor: indigo[100],
-            display: { xs: 'none', md: 'none', lg: 'block' },
-          }}
-        />
-      </StyleContext>
+        <ResizeOverlay $open={isResizing} />
+      </StyledContext>
     </>
   )
 }
 
-export default CalendarPresenter
+const ResizeOverlay = styled.div<{ $open: boolean }>`
+  position: absolute;
+  inset: 0;
+  z-index: 500;
+  background-color: ${({ theme }) => theme.palette.ui.calendar.mask[theme.palette.mode]};
+  display: ${({ $open }) => ($open ? 'block' : 'none')};
+  ${({ theme }) => theme.breakpoints.down('lg')} {
+    display: none;
+  }
+`
 
 // スタイル
-const StyleContext = styled.div`
+const StyledContext = styled.div`
   /* 独立したスタッキングコンテキストを生成し、背面に移動 */
   position: relative;
   isolation: isolate;
   z-index: 0;
 
-  /* カレンダーのスタイルここから */
-  /* FullCalendarはclassNameを受け取れないのでこのラッパーから定義 */
+  /* カレンダーのスタイルここから、CSS 変数のリセットは GlobalStyles.tsx 参照 */
+  /* FullCalendar は className を受け取れないのでこのラッパーから定義 */
 
   box-shadow: ${({ theme }) => theme.shadows[1]};
   /* ボーダーリセット */
@@ -180,12 +178,6 @@ const StyleContext = styled.div`
     pointer-events: none;
   }
 
-  /* カレンダーの背景色設定 */
-  .fc-daygrid-body,
-  .fc-day {
-    /* background-color: white; */
-  }
-
   .fc .fc-daygrid-day-frame {
     height: 100%;
     min-height: 100px;
@@ -208,3 +200,5 @@ const StyleContext = styled.div`
     }
   }
 `
+
+export default CalendarPresenter

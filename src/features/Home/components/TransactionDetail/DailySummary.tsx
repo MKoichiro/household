@@ -38,7 +38,8 @@ const DailySummary = ({ dailyTransactions }: DailySummaryProps) => {
           <Grid key={item.name} size={item.size} display="flex">
             <Card
               sx={{
-                bgcolor: (theme) => theme.palette.app.lighterBg.level1.bg[theme.palette.mode],
+                // bgcolor: (theme) => theme.palette.app.lighterBg.level1.bg[theme.palette.mode],
+                bgcolor: (theme) => theme.palette.ui.dailySummary.bg[theme.palette.mode],
                 flexGrow: 1,
                 display: 'flex',
                 alignItems: 'center',

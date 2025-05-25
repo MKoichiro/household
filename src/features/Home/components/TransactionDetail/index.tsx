@@ -65,7 +65,6 @@ export default TransactionDetail
 const StickyContext = styled.div`
   position: relative;
   min-height: calc(100vh - ${headerMainHeight}px);
-  background-color: ${({ theme }) => theme.palette.background.paper};
   z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;

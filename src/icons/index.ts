@@ -26,6 +26,7 @@ export { default as FirstPageIcon } from '@mui/icons-material/FirstPage'
 
 /** ナビゲーションメニュー展開用 '≡' */
 export { default as MenuIcon } from '@mui/icons-material/Menu'
+export { default as MenuOpenIcon } from '@mui/icons-material/MenuOpen'
 /** コンテキストメニュー展開用 '⋮' */
 export { default as MoreVertIcon } from '@mui/icons-material/MoreVert'
 /** アコーディオンなど縦方向コンテンツの開閉用 '>' */

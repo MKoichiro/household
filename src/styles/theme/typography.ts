@@ -1,7 +1,12 @@
 import { TypographyVariantsOptions } from '@mui/material'
 
+export const FONT_FAMILY = {
+  PRIMARY: 'Noto Sans JP, Roboto, Helvetica Neue, Arial, sans-serif',
+  APP_LOGO: 'Economica, Noto Sans JP, Roboto, Helvetica Neue, Arial, sans-serif',
+}
+
 export const typography: TypographyVariantsOptions = {
-  fontFamily: 'Noto Sans JP, Roboto, Helvetica Neue, Arial, sans-serif',
+  fontFamily: FONT_FAMILY.PRIMARY,
   fontWeightRegular: 400,
   fontWeightMedium: 500,
   fontWeightBold: 700,
@@ -13,9 +18,9 @@ export const typography: TypographyVariantsOptions = {
   h6: { fontSize: '2.0rem', fontWeight: 500 },
   subtitle1: { fontSize: '1.8rem', fontWeight: 500 },
   subtitle2: { fontSize: '1.6rem', fontWeight: 500 },
-  body1: { fontSize: '1.6rem' },
-  body2: { fontSize: '1.2rem' },
-  button: { fontSize: '1.4rem' },
-  caption: { fontSize: '1.2rem' },
-  overline: { fontSize: '1.2rem' },
+  body1: { fontSize: '1.6rem', fontWeight: 400 },
+  body2: { fontSize: '1.2rem', fontWeight: 400 },
+  button: { fontSize: '1.4rem', fontWeight: 400 },
+  caption: { fontSize: '1.2rem', fontWeight: 400 },
+  overline: { fontSize: '1.2rem', fontWeight: 400 },
 }

@@ -26,3 +26,6 @@ dist-ssr
 # For personal use
 /personal
 /trash
+
+# 環境変数ファイルをコミットしない
+.env

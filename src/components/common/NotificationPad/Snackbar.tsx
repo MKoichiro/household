@@ -14,6 +14,7 @@ interface SnackbarProps extends HTMLAttributes<HTMLDivElement> {
   onClose: () => void
   children: ReactNode
   isLast?: boolean
+  aborted: boolean
 }
 
 const severityIconMap: Record<AlertColor, ReactNode> = {
@@ -23,27 +24,34 @@ const severityIconMap: Record<AlertColor, ReactNode> = {
   success: <TaskAlt />,
 }
 
-const Snackbar = ({ className, severity, open, autoHideDuration, onClose, children }: SnackbarProps) => {
+const Snackbar = ({
+  className,
+  severity,
+  open,
+  autoHideDuration,
+  onClose: handleClose,
+  onClick: handleClick,
+  children,
+  aborted,
+}: SnackbarProps) => {
   useEffect(() => {
     if (open) {
       // autoHideDuration が undefined または 0 以下の場合は無制限表示
-      if (autoHideDuration === undefined || autoHideDuration <= 0) return
+      if (autoHideDuration === undefined || autoHideDuration <= 0 || aborted) return
       // autoHideDuration が指定されている場合は、指定された時間後に onClose を呼び出す
-      const timer = setTimeout(() => {
-        onClose()
-      }, autoHideDuration)
+      const timer = setTimeout(handleClose, autoHideDuration)
       return () => clearTimeout(timer)
     }
-  }, [open, autoHideDuration, onClose])
+  }, [open, autoHideDuration, handleClose, aborted])
 
   if (!open) return null
 
   return (
-    <StyledSnackbar className={className} $severity={severity}>
+    <StyledSnackbar className={className} $severity={severity} onClick={handleClick}>
       <StyledAlert $severity={severity}>
         {severityIconMap[severity]}
         <span>{children}</span>
-        <button onClick={onClose}>
+        <button onClick={handleClose}>
           <Close />
         </button>
       </StyledAlert>

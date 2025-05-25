@@ -1,3 +1,3 @@
 export const APP_NAME = {
-  DISPLAY: '家計簿',
+  DISPLAY: 'My Transactions',
 }

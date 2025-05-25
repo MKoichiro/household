@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material'
-import { Control, Controller, ControllerRenderProps, FieldErrors } from 'react-hook-form'
+import { Control, Controller, ControllerRenderProps, FieldErrors, useFormContext } from 'react-hook-form'
 import { TransactionFormValues } from '../../../../../shared/types'
+import { ChangeEvent } from 'react'
 
 interface AmountFieldProps {
   control: Control<TransactionFormValues, object, TransactionFormValues>
@@ -9,6 +10,14 @@ interface AmountFieldProps {
 }
 
 const AmountField = ({ control, errors, onBlur: handleBlur }: AmountFieldProps) => {
+  const { trigger } = useFormContext<TransactionFormValues>()
+  const handleChange = (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => {
+    return (e: ChangeEvent<HTMLInputElement>) => {
+      field.onChange(e) // RHF のデフォルトの onChange を手動で実行しておく
+      void trigger('amount') // バリデーションをトリガー
+    }
+  }
+
   return (
     <Controller
       name="amount"
@@ -19,6 +28,7 @@ const AmountField = ({ control, errors, onBlur: handleBlur }: AmountFieldProps) 
           error={!!errors.amount}
           helperText={errors.amount?.message}
           {...field}
+          onChange={handleChange(field)}
           label="金額"
           type="number"
           onBlur={handleBlur(field)}

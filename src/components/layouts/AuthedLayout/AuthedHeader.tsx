@@ -7,7 +7,7 @@ import NewsBar from './HeaderNews'
 import { headerMenuConfigs, headerMenuTree } from './contextMenuConfigs'
 import ContextMenu from '../../common/ContextMenu/ContextMenu'
 import { useContextMenu } from '../../common/ContextMenu/hooks/useContextMenus'
-import { LogoutIcon, MenuIcon, MoreVertIcon } from '../../../icons'
+import { LogoutIcon, MenuIcon, MenuOpenIcon, MoreVertIcon } from '../../../icons'
 import ThemeToggler from './ThemeToggler'
 
 interface AuthedHeaderProps {
@@ -24,26 +24,9 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
 
   // コンテキストメニューの設定
   const menuTree = headerMenuTree(
-    <Button
-      aria-label="ログアウトボタン"
-      sx={{
-        display: 'flex',
-        m: 0,
-        p: 0,
-        pl: '1rem',
-        color: 'white',
-        borderColor: 'white',
-        fontSize: '1.4rem',
-        lineHeight: '3em',
-        height: '3em',
-        fontWeight: 400,
-      }}
-      disabled={isLogoutProcessing}
-      startIcon={<LogoutIcon />}
-      onClick={logout}
-    >
+    <StyledButton aria-label="ログアウトボタン" disabled={isLogoutProcessing} endIcon={<LogoutIcon />} onClick={logout}>
       ログアウト
-    </Button>
+    </StyledButton>
   )
   const menuConfigs = headerMenuConfigs(menuTree)
   const { open, positionStyle, register, handleToggle, anchorRef, clickAwayRef } = useContextMenu(menuConfigs)
@@ -52,35 +35,23 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
     <HeaderRoot $isNavigationMenuOpen={isNavigationMenuOpen} $isNewsOpen={isNewsOpen} ref={anchorRef}>
       <NewsBar />
       <HeaderMain $isNewsOpen={isNewsOpen}>
-        <IconButton
-          color="inherit"
-          aria-label="ナビゲーションメニュー開閉ボタン"
-          onClick={handleMenuToggleClick}
-          sx={{
-            mr: 2,
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+        {isNavigationMenuOpen ? (
+          <NavigationMenuIconButton aria-label="ナビゲーションメニューを閉じるボタン" onClick={handleMenuToggleClick}>
+            <MenuOpenIcon />
+          </NavigationMenuIconButton>
+        ) : (
+          <NavigationMenuIconButton aria-label="ナビゲーションメニューを開くボタン" onClick={handleMenuToggleClick}>
+            <MenuIcon />
+          </NavigationMenuIconButton>
+        )}
 
         <HeaderTitle redirectTo="home" />
 
         <ThemeToggler />
 
-        <IconButton
-          aria-label="ヘッダーメニュー開閉ボタン"
-          onClick={handleToggle}
-          ref={clickAwayRef}
-          sx={{
-            display: 'flex',
-            color: 'white',
-            borderColor: 'white',
-          }}
-        >
+        <ContextMenuIconButton aria-label="コンテキストメニュー開閉ボタン" onClick={handleToggle} ref={clickAwayRef}>
           <MoreVertIcon />
-        </IconButton>
+        </ContextMenuIconButton>
       </HeaderMain>
       <StyledContextMenu
         {...register}
@@ -91,6 +62,34 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
     </HeaderRoot>
   )
 }
+
+const StyledButton = styled(Button)`
+  --common-color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding-left: 0;
+  color: var(--common-color);
+  border-color: var(--common-color);
+  font-size: 1.4rem;
+  line-height: 3em;
+  height: 3em;
+  font-weight: 400;
+`
+
+const NavigationMenuIconButton = styled(IconButton)`
+  margin-right: 1.6rem;
+  color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
+  display: flex;
+  align-items: center;
+`
+
+const ContextMenuIconButton = styled(IconButton)`
+  display: flex;
+  color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
+`
 
 const HeaderRoot = styled.header<{ $isNavigationMenuOpen: boolean; $isNewsOpen: boolean }>`
   background-color: ${({ theme }) => theme.palette.ui.header.bg[theme.palette.mode]};

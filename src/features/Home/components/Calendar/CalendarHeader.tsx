@@ -1,6 +1,7 @@
-import { Box, Button, IconButton, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { format } from 'date-fns'
-import { ArrowBackIosNewIcon, ArrowForwardIosIcon, TodayIcon } from '../../../../icons'
+import { TodayIcon } from '../../../../icons'
+import MonthNavButton from '../../../../components/common/MonthNavButton'
 
 interface CalendarHeaderProps {
   currentMonth: Date
@@ -33,14 +34,7 @@ const CalendarHeader = ({
       </Typography>
 
       <Box sx={{ ml: 'auto', display: 'flex', gap: 1 }}>
-        <IconButton
-          aria-label="前月へ移動するボタン"
-          onClick={handlePrevMonthClick}
-          sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
-        >
-          <ArrowBackIosNewIcon />
-        </IconButton>
-
+        <MonthNavButton direction="PREV" onClick={handlePrevMonthClick} />
         <Button
           aria-label="今日の日付へ移動するボタン"
           startIcon={<TodayIcon />}
@@ -49,13 +43,7 @@ const CalendarHeader = ({
         >
           Today
         </Button>
-        <IconButton
-          aria-label="翌月へ移動するボタン"
-          onClick={handleNextMonthClick}
-          sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
-        >
-          <ArrowForwardIosIcon />
-        </IconButton>
+        <MonthNavButton direction="NEXT" onClick={handleNextMonthClick} />
       </Box>
     </Box>
   )
