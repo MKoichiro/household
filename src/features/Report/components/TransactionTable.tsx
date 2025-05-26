@@ -23,7 +23,7 @@ import IconComponents from '../../../components/common/IconComponents'
 import { compareAsc, parseISO } from 'date-fns'
 import { useTransaction } from '../../../shared/hooks/useContexts'
 import { DeleteIcon } from '../../../icons'
-import { colorPicker as cp } from '../../../styles/theme/helpers/paletteHelpers'
+import { cpf } from '../../../styles/theme/helpers/colorPickers'
 
 // テーブルヘッド部分
 interface TransactionTableHeadProps {
@@ -68,12 +68,7 @@ function TransactionTableToolbar({ numSelected, onDeleteClick }: TransactionTabl
   return (
     <Box
       sx={[
-        {
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-          mt: 1,
-          display: 'flex',
-        },
+        { pl: { sm: 2 }, pr: { xs: 1, sm: 1 }, mt: 1, display: 'flex' },
         numSelected > 0 && {
           bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         },
@@ -169,9 +164,9 @@ const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTabl
       {/* 月次サマリー表示部分 */}
       <Grid container sx={{ textAlign: 'center' }}>
         {[
-          { title: '支出', color: cp('expense.font.lighter'), amount: formatCurrency(expense) },
-          { title: '収入', color: cp('income.font.lighter'), amount: formatCurrency(income) },
-          { title: '残高', color: cp('balance.font.lighter'), amount: formatCurrency(balance) },
+          { title: '支出', color: cpf('expense.font.lighter'), amount: formatCurrency(expense) },
+          { title: '収入', color: cpf('income.font.lighter'), amount: formatCurrency(income) },
+          { title: '残高', color: cpf('balance.font.lighter'), amount: formatCurrency(balance) },
         ].map((item) => (
           <Grid key={item.title} size={{ xs: 4 }}>
             <Typography variant="subtitle1" component="h3">
@@ -206,12 +201,17 @@ const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTabl
         >
           {/* ここで列幅だけ定義 ★ */}
           <colgroup>
-            <col style={{ width: '2rem' }} /> {/* チェックボックス列 */}
-            <col style={{ width: '1%' }} /> {/* 日付：nowrapかつ最小幅 */}
-            <col style={{ width: '1%', maxWidth: '7em' }} /> {/* カテゴリ：最大120px */}
-            <col style={{ width: '1%' }} /> {/* 金額：nowrapかつ最小幅 */}
-            <col /> {/* 内容：残りすべて */}
+            {[
+              { name: 'checkbox', style: { width: '2rem' } },
+              { name: 'date', style: { width: '1%' } },
+              { name: 'category', style: { width: '1%', maxWidth: '7em' } },
+              { name: 'amount', style: { width: '1%' } },
+              { name: 'content', style: {} },
+            ].map((col) => (
+              <col key={col.name} style={col.style} className={`col-${col.name}`} />
+            ))}
           </colgroup>
+
           {/* テーブルヘッド */}
           <TransactionTableHead
             numSelected={selected.length}
@@ -230,7 +230,7 @@ const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTabl
                 // 一行の定義部分
                 <TableRow
                   hover
-                  onClick={(event) => handleClick(event, t.id)}
+                  onClick={(e) => handleClick(e, t.id)}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
@@ -243,11 +243,7 @@ const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTabl
                     <Checkbox
                       color="primary"
                       checked={isItemSelected}
-                      slotProps={{
-                        input: {
-                          'aria-labelledby': labelId,
-                        },
-                      }}
+                      slotProps={{ input: { 'aria-labelledby': labelId } }}
                     />
                   </TableCell>
 
@@ -269,25 +265,12 @@ const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTabl
                   </TableCell>
 
                   {/* 金額 */}
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: (theme) =>
-                        t.type === 'income'
-                          ? theme.palette.income.font.lighter[theme.palette.mode]
-                          : theme.palette.expense.font.lighter[theme.palette.mode],
-                    }}
-                  >
+                  <TableCell align="right" sx={{ color: cpf(`${t.type}.font.lighter`) }}>
                     {t.amount}
                   </TableCell>
 
                   {/* 内容 */}
-                  <TableCell
-                    align="left"
-                    sx={{
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
+                  <TableCell align="left" sx={{ whiteSpace: 'nowrap' }}>
                     {t.content}
                   </TableCell>
                 </TableRow>
@@ -314,18 +297,10 @@ const TransactionTable = ({ monthlyTransactions: transactions }: TransactionTabl
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         sx={{
-          '& .MuiTablePagination-toolbar': {
-            fontSize: '1.4rem',
-          },
-          '& .MuiTablePagination-displayedRows': {
-            fontSize: '1.4rem',
-          },
-          '& .MuiTablePagination-selectLabel': {
-            fontSize: '1.4rem',
-          },
-          '& .MuiTablePagination-selectIcon': {
-            fontSize: '2rem',
-          },
+          '& .MuiTablePagination-toolbar': { fontSize: '1.4rem' },
+          '& .MuiTablePagination-displayedRows': { fontSize: '1.4rem' },
+          '& .MuiTablePagination-selectLabel': { fontSize: '1.4rem' },
+          '& .MuiTablePagination-selectIcon': { fontSize: '2rem' },
         }}
       />
     </>

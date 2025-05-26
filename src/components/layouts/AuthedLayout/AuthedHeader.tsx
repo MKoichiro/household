@@ -1,14 +1,16 @@
 import styled from '@emotion/styled'
-import { Button, IconButton } from '@mui/material'
+import { alpha, IconButton } from '@mui/material'
 import HeaderTitle from '../common/HeaderTitle'
 import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
-import { headerMainHeight, headerNewsHeight } from '../../../shared/constants/ui'
 import NewsBar from './HeaderNews'
-import { headerMenuConfigs, headerMenuTree } from './contextMenuConfigs'
+import { createMenuConfigs, createMenuTree } from './contextMenuConfigs'
 import ContextMenu from '../../common/ContextMenu/ContextMenu'
 import { useContextMenu } from '../../common/ContextMenu/hooks/useContextMenus'
 import { LogoutIcon, MenuIcon, MenuOpenIcon, MoreVertIcon } from '../../../icons'
 import ThemeToggler from './ThemeToggler'
+import { LogoutButton } from './ContextMenuButtons'
+import { cp } from '../../../styles/theme/helpers/colorPickers'
+import { useLocation } from 'react-router-dom'
 
 interface AuthedHeaderProps {
   onMenuToggleClick: () => void
@@ -18,17 +20,18 @@ interface AuthedHeaderProps {
 const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMenuOpen }: AuthedHeaderProps) => {
   const { isLogoutProcessing, handleLogout } = useAuth()
   const { isNewsOpen } = useLayout()
+  const location = useLocation()
 
   // エラーハンドリングはhandleLogout内で行う
   const logout = () => void handleLogout()
 
   // コンテキストメニューの設定
-  const menuTree = headerMenuTree(
-    <StyledButton aria-label="ログアウトボタン" disabled={isLogoutProcessing} endIcon={<LogoutIcon />} onClick={logout}>
+  const menuTree = createMenuTree(
+    <LogoutButton aria-label="ログアウトボタン" disabled={isLogoutProcessing} endIcon={<LogoutIcon />} onClick={logout}>
       ログアウト
-    </StyledButton>
+    </LogoutButton>
   )
-  const menuConfigs = headerMenuConfigs(menuTree)
+  const menuConfigs = createMenuConfigs(menuTree)
   const { open, positionStyle, register, handleToggle, anchorRef, clickAwayRef } = useContextMenu(menuConfigs)
 
   return (
@@ -45,7 +48,7 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
           </NavigationMenuIconButton>
         )}
 
-        <HeaderTitle redirectTo="home" />
+        <HeaderTitle redirectTo={location.pathname === '/app/home' ? undefined : 'home'} />
 
         <ThemeToggler />
 
@@ -63,54 +66,58 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
   )
 }
 
-const StyledButton = styled(Button)`
-  --common-color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin: 0;
-  padding-left: 0;
-  color: var(--common-color);
-  border-color: var(--common-color);
-  font-size: 1.4rem;
-  line-height: 3em;
-  height: 3em;
-  font-weight: 400;
-`
-
-const NavigationMenuIconButton = styled(IconButton)`
-  margin-right: 1.6rem;
-  color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
-  display: flex;
-  align-items: center;
-`
-
-const ContextMenuIconButton = styled(IconButton)`
-  display: flex;
-  color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
-`
-
+// NOTE: position: sticky の場合、left: 明示; right: 0;で幅は変わらないので、width も明示する必要がある。
 const HeaderRoot = styled.header<{ $isNavigationMenuOpen: boolean; $isNewsOpen: boolean }>`
-  background-color: ${({ theme }) => theme.palette.ui.header.bg[theme.palette.mode]};
-  color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
+  background-color: ${({ theme }) => cp(theme, 'ui.header.bg')};
+  color: ${({ theme }) => cp(theme, 'ui.header.contrastText')};
 
   position: sticky;
-  top: ${({ $isNewsOpen }) => ($isNewsOpen ? `-${headerNewsHeight}px` : '0')};
-  left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0')};
-  z-index: ${({ theme }) => theme.zIndex.header.lg};
-  width: ${({ $isNavigationMenuOpen, theme }) =>
-    `calc(100% - ${$isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0px'})`};
-  height: ${({ $isNewsOpen }) => `${$isNewsOpen ? headerMainHeight + headerNewsHeight : headerMainHeight}px`};
-  transition:
-    left 300ms ease,
-    width 300ms ease,
-    height 300ms ease;
+  top: ${({ $isNewsOpen, theme }) => ($isNewsOpen ? `-${theme.height.headerNews.xs}` : '0')};
+  left: 0;
+  width: 100%;
 
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    left: 0;
-    width: 100%;
+  z-index: ${({ theme }) => theme.zIndex.header.xs};
+  height: ${({ theme, $isNewsOpen }) =>
+    $isNewsOpen ? `calc(${theme.height.header.xs} + ${theme.height.headerNews.xs})` : theme.height.header.xs};
+
+  transition-duration: 300ms;
+  transition: left, width, height;
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    top: ${({ $isNewsOpen, theme }) => ($isNewsOpen ? `-${theme.height.headerNews.sm}` : '0')};
+    height: ${({ theme, $isNewsOpen }) =>
+      $isNewsOpen ? `calc(${theme.height.header.sm} + ${theme.height.headerNews.sm})` : theme.height.header.sm};
+    z-index: ${({ theme }) => theme.zIndex.header.sm};
+  }
+
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    top: ${({ $isNewsOpen, theme }) => ($isNewsOpen ? `-${theme.height.headerNews.md}` : '0')};
+    left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.md : '0')};
+    width: ${({ $isNavigationMenuOpen, theme }) =>
+      `calc(100% - ${$isNavigationMenuOpen ? theme.width.navigationMenu.md : '0'})`};
+    height: ${({ theme, $isNewsOpen }) =>
+      $isNewsOpen ? `calc(${theme.height.header.md} + ${theme.height.headerNews.md})` : theme.height.header.md};
     z-index: ${({ theme }) => theme.zIndex.header.md};
+  }
+
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    top: ${({ $isNewsOpen, theme }) => ($isNewsOpen ? `-${theme.height.headerNews.lg}` : '0')};
+    left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0')};
+    width: ${({ $isNavigationMenuOpen, theme }) =>
+      `calc(100% - ${$isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0'})`};
+    height: ${({ theme, $isNewsOpen }) =>
+      $isNewsOpen ? `calc(${theme.height.header.lg} + ${theme.height.headerNews.lg})` : theme.height.header.lg};
+    z-index: ${({ theme }) => theme.zIndex.header.lg};
+  }
+
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    top: ${({ theme, $isNewsOpen }) => ($isNewsOpen ? `-${theme.height.headerNews.xl}` : '0')};
+    left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.xl : '0')};
+    width: ${({ $isNavigationMenuOpen, theme }) =>
+      `calc(100% - ${$isNavigationMenuOpen ? theme.width.navigationMenu.xl : '0'})`};
+    height: ${({ theme, $isNewsOpen }) =>
+      $isNewsOpen ? `calc(${theme.height.header.xl} + ${theme.height.headerNews.xl})` : theme.height.header.xl};
+    z-index: ${({ theme }) => theme.zIndex.header.xl};
   }
 `
 
@@ -118,15 +125,42 @@ const HeaderMain = styled.div<{ $isNewsOpen: boolean }>`
   display: flex;
   align-items: center;
   padding: 0 1rem;
-  height: ${headerMainHeight}px;
-  transform: translateY(${({ $isNewsOpen }) => ($isNewsOpen ? '0' : '-32px')});
-  transition: transform 300ms ease;
+  height: ${({ theme }) => theme.height.header.xs};
+  transform: translateY(${({ theme, $isNewsOpen }) => ($isNewsOpen ? '0' : `-${theme.height.headerNews.lg}`)});
+  transition: transform 300ms;
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    height: ${({ theme }) => theme.height.header.sm};
+  }
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    height: ${({ theme }) => theme.height.header.md};
+  }
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    height: ${({ theme }) => theme.height.header.lg};
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    height: ${({ theme }) => theme.height.header.xl};
+  }
+`
+
+const NavigationMenuIconButton = styled(IconButton)`
+  margin-right: 1.6rem;
+  color: inherit;
+  display: flex;
+  align-items: center;
+`
+
+const ContextMenuIconButton = styled(IconButton)`
+  display: flex;
+  color: inherit;
+  margin-left: 1.6rem;
 `
 
 const StyledContextMenu = styled(ContextMenu)`
   ul.menu-list {
-    background-color: ${({ theme }) => theme.palette.ui.header.bg[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.header.contrastText[theme.palette.mode]};
+    background-color: ${({ theme }) => alpha(cp(theme, 'ui.header.bg'), 0.6)};
+    backdrop-filter: blur(3px);
+    color: inherit;
     border-radius: 0.8rem;
     margin-left: 0.5rem;
     box-shadow: ${({ theme }) => theme.shadows[10]};

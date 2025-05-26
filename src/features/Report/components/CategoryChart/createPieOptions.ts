@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material'
 import { ChartOptions } from 'chart.js'
 import { Context } from 'chartjs-plugin-datalabels'
+import { cp } from '../../../../styles/theme/helpers/colorPickers'
 
 // Pieコンポーネントに渡すオプション
 const createPieOptions = (theme: Theme): ChartOptions<'pie'> => ({
@@ -9,7 +10,7 @@ const createPieOptions = (theme: Theme): ChartOptions<'pie'> => ({
   responsive: false,
   plugins: {
     legend: {
-      labels: { color: theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] },
+      labels: { color: cp(theme, 'app.lighterBg.level1.contrastText') },
     },
     datalabels: {
       formatter: (_, context) => context.chart?.data.labels?.[context.dataIndex],

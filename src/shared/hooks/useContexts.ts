@@ -1,4 +1,13 @@
-import { createContext, Dispatch, ReactNode, ReactPortal, SetStateAction, useContext, useEffect } from 'react'
+import {
+  createContext,
+  CSSProperties,
+  Dispatch,
+  ReactNode,
+  ReactPortal,
+  SetStateAction,
+  useContext,
+  useEffect,
+} from 'react'
 import { Transaction, TransactionFormValues } from '../types'
 import { User } from 'firebase/auth'
 import { AlertColor, PaletteMode } from '@mui/material'
@@ -115,7 +124,7 @@ export const useApp = () => {
 }
 
 export interface LayoutContextType {
-  dynamicHeaderHeight: () => number
+  dynamicHeaderHeight: CSSProperties['height']
   isNavigationMenuOpen: boolean
   isNewsOpen: boolean
   setIsNavigationMenuOpen: Dispatch<SetStateAction<boolean>>

@@ -3,20 +3,22 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import { Outlet } from 'react-router-dom'
 import HeaderTitle from './common/HeaderTitle'
-import { headerMainHeight } from '../../shared/constants/ui'
 import LayoutRoot from './common/LayoutRoot'
+import { cpf } from '../../styles/theme/helpers/colorPickers'
+import { useBreakpoint } from '../../shared/hooks/useBreakpoint'
 
 const NonAuthedLayout = () => {
+  const { bp } = useBreakpoint()
   return (
     <LayoutRoot>
       {/* ヘッダー */}
       <AppBar
-        position="fixed"
         sx={{
+          position: 'fixed',
           width: '100%',
           ml: 2,
-          backgroundColor: (theme) => theme.palette.ui.header.bg.main,
-          zIndex: (theme) => theme.zIndex.header,
+          bgcolor: cpf('ui.header.bg.main'),
+          zIndex: (theme) => theme.zIndex.header[bp],
         }}
       >
         <Toolbar>
@@ -25,7 +27,7 @@ const NonAuthedLayout = () => {
       </AppBar>
 
       {/* メインコンテンツ */}
-      <Box component="main" sx={{ p: 3, width: '100%', mt: `${headerMainHeight}px` }}>
+      <Box component="main" sx={{ p: 3, width: '100%', mt: (theme) => theme.height.header[bp] }}>
         <Outlet />
       </Box>
     </LayoutRoot>

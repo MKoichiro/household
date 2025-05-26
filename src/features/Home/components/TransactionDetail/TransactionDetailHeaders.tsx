@@ -2,16 +2,13 @@ import { IconButton, Stack, Typography } from '@mui/material'
 import { CloseIcon } from '../../../../icons'
 import { useApp } from '../../../../shared/hooks/useContexts'
 import { format } from 'date-fns'
+import { cpf } from '../../../../styles/theme/helpers/colorPickers'
 
 // PC用ヘッダー
 const TransactionDetailHeaderBase = () => {
   const { selectedDay } = useApp()
   return (
-    <Typography
-      variant="h6"
-      fontWeight={'fontWeightBold'}
-      sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
-    >
+    <Typography variant="h6" fontWeight={'fontWeightBold'} sx={{ color: cpf('app.lighterBg.level1.contrastText') }}>
       {format(selectedDay, 'M月 d日')}
     </Typography>
   )
@@ -28,7 +25,7 @@ const TransactionDetailHeaderModal = ({ onClose: handleModalClose }: { onClose: 
       <IconButton
         aria-label={`${format(selectedDay, 'M月 d日')}のサマリーを閉じるボタン`}
         onClick={handleModalClose}
-        sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
+        sx={{ color: cpf('app.lighterBg.level1.contrastText') }}
       >
         <CloseIcon />
       </IconButton>

@@ -10,10 +10,12 @@ export const transactionSchema = z.object({
     .refine((val) => parseInt(val) > 0, {
       message: '金額は1円以上で入力してください',
     })
+    .refine((val) => parseInt(val) < 1000000000, {
+      message: '金額は10桁（10億円）未満で入力してください',
+    })
     .refine((val) => !isNaN(parseIntFromCommaSeparated(val)), {
       message: '無効な値です',
     }),
-  // content: z.string().nonempty({ message: '内容は必須です' }).max(120, '内容は120文字以内にしてください'),
   content: z.string().max(120, '内容は120文字以内にしてください'),
   category: z
     .union([

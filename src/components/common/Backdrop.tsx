@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 import { CSSProperties } from '@mui/material'
+import { cp } from '../../styles/theme/helpers/colorPickers'
 
-const Mask = styled.div<{ $open: boolean; $zIndex: CSSProperties['zIndex'] }>`
-  background-color: ${({ theme }) => theme.palette.ui.mask[theme.palette.mode]};
+const Backdrop = styled.div<{ $open: boolean; $zIndex: CSSProperties['zIndex'] }>`
+  background-color: ${({ theme }) => cp(theme, 'ui.mask')};
   backdrop-filter: blur(1px);
   opacity: ${({ $open }) => ($open ? 1 : 0)};
 
@@ -22,4 +23,4 @@ const Mask = styled.div<{ $open: boolean; $zIndex: CSSProperties['zIndex'] }>`
   }
 `
 
-export default Mask
+export default Backdrop

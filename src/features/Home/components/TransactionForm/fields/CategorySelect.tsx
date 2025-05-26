@@ -13,6 +13,7 @@ import {
   SavingsIcon,
   TrainIcon,
 } from '../../../../../icons'
+import { useBreakpoint } from '../../../../../shared/hooks/useBreakpoint'
 
 const expenseCategories: { label: ExpenseCategory; icon: JSX.Element }[] = [
   { label: '食費', icon: <FastfoodIcon /> },
@@ -36,6 +37,7 @@ interface CategorySelectProps {
 }
 
 const CategorySelect = ({ control, errors, currentType }: CategorySelectProps) => {
+  const { bp } = useBreakpoint()
   return (
     <Controller
       name="category"
@@ -53,7 +55,7 @@ const CategorySelect = ({ control, errors, currentType }: CategorySelectProps) =
               label="カテゴリ*"
               MenuProps={{
                 // ドロップダウンメニューがモーダル背後に隠れないようにzIndexを調整
-                sx: { zIndex: (theme) => theme.zIndex.transactionForm.md + 10 },
+                sx: { zIndex: (theme) => theme.zIndex.transactionForm[bp] + 10 },
               }}
             >
               {categories.map((category) => (

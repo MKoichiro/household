@@ -38,11 +38,11 @@ const GlobalStyles = () => {
           // '--fc-now-indicator-color': red;
         },
         html: {
-          fontSize: `${htmlFontSizes.xl}%`,
-          [theme.breakpoints.down('lg')]: { fontSize: `${htmlFontSizes.lg}%` },
-          [theme.breakpoints.down('md')]: { fontSize: `${htmlFontSizes.md}%` },
-          [theme.breakpoints.down('sm')]: { fontSize: `${htmlFontSizes.sm}%` },
-          [theme.breakpoints.down('xs')]: { fontSize: `${htmlFontSizes.xs}%` },
+          fontSize: `${htmlFontSizes.xs}%`,
+          [theme.breakpoints.up('sm')]: { fontSize: `${htmlFontSizes.sm}%` },
+          [theme.breakpoints.up('md')]: { fontSize: `${htmlFontSizes.md}%` },
+          [theme.breakpoints.up('lg')]: { fontSize: `${htmlFontSizes.lg}%` },
+          [theme.breakpoints.up('xl')]: { fontSize: `${htmlFontSizes.xl}%` },
         },
         nav: {
           padding: 0,

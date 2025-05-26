@@ -6,6 +6,8 @@ import interactionPlugin from '@fullcalendar/interaction'
 import styled from '@emotion/styled'
 import { CalendarActions, CalendarStates } from './CalendarContainer'
 import CalendarHeader from './CalendarHeader'
+import { cp } from '../../../../styles/theme/helpers/colorPickers'
+import { CircularProgress } from '@mui/material'
 
 const renderEventContent = (eventInfo: EventContentArg) => {
   const { income, expense, balance } = eventInfo.event.extendedProps
@@ -47,20 +49,24 @@ const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
           longPressDelay={10} // デフォルト 1000ms → 10ms
           selectLongPressDelay={10} // デフォルト 1000ms → 10ms
         />
-        <ResizeOverlay $open={isResizing} />
+        <ResizeOverlay $open={isResizing}>
+          <CircularProgress />
+        </ResizeOverlay>
       </StyledContext>
     </>
   )
 }
 
 const ResizeOverlay = styled.div<{ $open: boolean }>`
-  position: absolute;
-  inset: 0;
-  z-index: 500;
-  background-color: ${({ theme }) => theme.palette.ui.calendar.mask[theme.palette.mode]};
-  display: ${({ $open }) => ($open ? 'block' : 'none')};
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    display: none;
+  display: none;
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    display: ${({ $open }) => ($open ? 'flex' : 'none')};
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    z-index: 500;
+    background-color: ${({ theme }) => cp(theme, 'ui.calendar.mask')};
   }
 `
 
@@ -96,21 +102,21 @@ const StyledContext = styled.div`
   .fc .fc-col-header-cell.fc-day-wed,
   .fc .fc-col-header-cell.fc-day-thu,
   .fc .fc-col-header-cell.fc-day-fri {
-    background: ${({ theme }) => theme.palette.ui.calendar.head.bg.weekday[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.calendar.head.font.weekday[theme.palette.mode]};
-    border: ${({ theme }) => theme.palette.ui.calendar.head.border.weekday[theme.palette.mode]};
+    background: ${({ theme }) => cp(theme, 'ui.calendar.head.bg.weekday')};
+    color: ${({ theme }) => cp(theme, 'ui.calendar.head.font.weekday')};
+    border: ${({ theme }) => cp(theme, 'ui.calendar.head.border.weekday')};
   }
   /* 土曜 */
   .fc .fc-col-header-cell.fc-day-sat {
-    background: ${({ theme }) => theme.palette.ui.calendar.head.bg.saturday[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.calendar.head.font.saturday[theme.palette.mode]};
-    border: ${({ theme }) => theme.palette.ui.calendar.head.border.saturday[theme.palette.mode]};
+    background: ${({ theme }) => cp(theme, 'ui.calendar.head.bg.saturday')};
+    color: ${({ theme }) => cp(theme, 'ui.calendar.head.font.saturday')};
+    border: ${({ theme }) => cp(theme, 'ui.calendar.head.border.saturday')};
   }
   /* 日曜 */
   .fc .fc-col-header-cell.fc-day-sun {
-    background: ${({ theme }) => theme.palette.ui.calendar.head.bg.sunday[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.calendar.head.font.sunday[theme.palette.mode]};
-    border: ${({ theme }) => theme.palette.ui.calendar.head.border.sunday[theme.palette.mode]};
+    background: ${({ theme }) => cp(theme, 'ui.calendar.head.bg.sunday')};
+    color: ${({ theme }) => cp(theme, 'ui.calendar.head.font.sunday')};
+    border: ${({ theme }) => cp(theme, 'ui.calendar.head.border.sunday')};
   }
 
   /* ─── グリッドセル ─── */
@@ -120,27 +126,27 @@ const StyledContext = styled.div`
   .fc-daygrid-day.fc-day-wed,
   .fc-daygrid-day.fc-day-thu,
   .fc-daygrid-day.fc-day-fri {
-    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.weekday[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.weekday[theme.palette.mode]};
-    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.weekday[theme.palette.mode]};
+    background: ${({ theme }) => cp(theme, 'ui.calendar.cells.bg.weekday')};
+    color: ${({ theme }) => cp(theme, 'ui.calendar.cells.font.weekday')};
+    border: ${({ theme }) => cp(theme, 'ui.calendar.cells.border.weekday')};
   }
   /* 土曜 */
   .fc-daygrid-day.fc-day-sat {
-    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.saturday[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.saturday[theme.palette.mode]};
-    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.saturday[theme.palette.mode]};
+    background: ${({ theme }) => cp(theme, 'ui.calendar.cells.bg.saturday')};
+    color: ${({ theme }) => cp(theme, 'ui.calendar.cells.font.saturday')};
+    border: ${({ theme }) => cp(theme, 'ui.calendar.cells.border.saturday')};
   }
   /* 日曜 */
   .fc-daygrid-day.fc-day-sun {
-    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.sunday[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.sunday[theme.palette.mode]};
-    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.sunday[theme.palette.mode]};
+    background: ${({ theme }) => cp(theme, 'ui.calendar.cells.bg.sunday')};
+    color: ${({ theme }) => cp(theme, 'ui.calendar.cells.font.sunday')};
+    border: ${({ theme }) => cp(theme, 'ui.calendar.cells.border.sunday')};
   }
   /* 今日 */
   .fc-daygrid-day.fc-day-today > .fc-daygrid-day-frame {
-    background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.today[theme.palette.mode]};
-    color: ${({ theme }) => theme.palette.ui.calendar.cells.font.today[theme.palette.mode]};
-    border: ${({ theme }) => theme.palette.ui.calendar.cells.border.today[theme.palette.mode]};
+    background: ${({ theme }) => cp(theme, 'ui.calendar.cells.bg.today')};
+    color: ${({ theme }) => cp(theme, 'ui.calendar.cells.font.today')};
+    border: ${({ theme }) => cp(theme, 'ui.calendar.cells.border.today')};
   }
   /* 選択中 */
   .fc-daygrid-day.fc-day-selected {
@@ -149,9 +155,9 @@ const StyledContext = styled.div`
       opacity: 0;
     }
     & > .fc-daygrid-day-frame {
-      background: ${({ theme }) => theme.palette.ui.calendar.cells.bg.selected[theme.palette.mode]};
-      border: ${({ theme }) => theme.palette.ui.calendar.cells.border.selected[theme.palette.mode]};
-      color: ${({ theme }) => theme.palette.ui.calendar.cells.font.selected[theme.palette.mode]};
+      background: ${({ theme }) => cp(theme, 'ui.calendar.cells.bg.selected')};
+      border: ${({ theme }) => cp(theme, 'ui.calendar.cells.border.selected')};
+      color: ${({ theme }) => cp(theme, 'ui.calendar.cells.font.selected')};
     }
   }
 
@@ -190,13 +196,13 @@ const StyledContext = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     &.income {
-      color: ${({ theme }) => theme.palette.income.font.lighter[theme.palette.mode]};
+      color: ${({ theme }) => cp(theme, 'income.font.lighter')};
     }
     &.expense {
-      color: ${({ theme }) => theme.palette.expense.font.lighter[theme.palette.mode]};
+      color: ${({ theme }) => cp(theme, 'expense.font.lighter')};
     }
     &.balance {
-      color: ${({ theme }) => theme.palette.balance.font.lighter[theme.palette.mode]};
+      color: ${({ theme }) => cp(theme, 'balance.font.lighter')};
     }
   }
 `

@@ -1,13 +1,15 @@
 // MUI のチャートコンポーネントに切り替えても良いかも。
 // NOTE: ../../config/chartConfig.tx を App.tsx で読み込み済み
-import { Box, Divider, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, useTheme } from '@mui/material'
+import { Divider, Stack, Typography, useTheme } from '@mui/material'
 import { ChartOptions } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 import { Transaction, TransactionType } from '../../../../shared/types'
 import useCategoryChartData from './useCategoryChartData'
 import createPieOptions from './createPieOptions'
-import { ChangeEvent, useState } from 'react'
-import { colorPicker as cp } from '../../../../styles/theme/helpers/paletteHelpers'
+import { MouseEvent, useState } from 'react'
+import styled from '@emotion/styled'
+import TransactionTypeToggleButton from '../../../../components/common/TransactionTypeToggleButton'
+import { cp } from '../../../../styles/theme/helpers/colorPickers'
 
 // コンポーネントここから
 export interface CategoryChartProps {
@@ -17,70 +19,36 @@ export interface CategoryChartProps {
 function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps) {
   const theme = useTheme()
   const [selectedType, setSelectedType] = useState<TransactionType>('expense')
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSelectedType(e.target.value as TransactionType)
+  const handleChange = (_e: MouseEvent<HTMLElement>, newValue: TransactionType) => {
+    setSelectedType(newValue)
   }
 
   const { expenseData, incomeData } = useCategoryChartData(transactions, theme)
   const options: ChartOptions<'pie'> = createPieOptions(theme)
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-      <FormControl sx={{ alignItems: 'center' }}>
-        <FormLabel
-          id="type-label"
-          sx={{
-            color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode],
-            fontWeight: 'fontWeightBold',
-            fontSize: '1.6rem',
-          }}
-        >
-          カテゴリ内訳
-        </FormLabel>
-        <RadioGroup
-          aria-labelledby="type-label"
-          defaultValue="expense"
-          value={selectedType}
-          name="type-radio-group"
-          onChange={handleChange}
-          row
-        >
-          <FormControlLabel
-            value="expense"
-            control={
-              <Radio
-                sx={{
-                  color: cp('expense.font.lighter'),
-                  '&.Mui-checked': { color: cp('expense.font.lighter') },
-                }}
-              />
-            }
-            label="支出"
-          />
-          <FormControlLabel
-            value="income"
-            control={
-              <Radio
-                sx={{
-                  color: cp('income.font.lighter'),
-                  '&.Mui-checked': { color: cp('income.font.lighter') },
-                }}
-              />
-            }
-            label="収入"
-          />
-        </RadioGroup>
-      </FormControl>
-      <Divider sx={{ mt: 1, mb: 0.5 }} />
-      <Pie
-        data={selectedType === 'expense' ? expenseData : incomeData}
-        options={options}
-        style={{ margin: 'auto' }}
-        height="300px"
-        width="250px"
-      />
-    </Box>
+    <Stack gap={2}>
+      <StyledTypography variant="subtitle1">カテゴリ内訳</StyledTypography>
+      <Stack gap={1}>
+        <TransactionTypeToggleButton currentType={selectedType} handleChange={handleChange} />
+        <Divider />
+        <Pie
+          data={selectedType === 'expense' ? expenseData : incomeData}
+          options={options}
+          height="280px"
+          width="250px"
+          style={{ margin: 'auto' }}
+        />
+      </Stack>
+    </Stack>
   )
 }
+
+const StyledTypography = styled(Typography)`
+  font-weight: bold;
+  font-size: 1.6rem;
+  text-align: center;
+  color: ${({ theme }) => cp(theme, 'app.lighterBg.level1.contrastText')};
+`
 
 export default CategoryChart

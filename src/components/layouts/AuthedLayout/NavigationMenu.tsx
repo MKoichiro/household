@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { BareAccordionHead, BareAccordionContent } from '../../common/Accordion'
 import { useAccordions } from '../../../shared/hooks/useAccordion'
 import { ReactNode } from 'react'
-import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
+import { useAuth } from '../../../shared/hooks/useContexts'
 import {
   AccountCircleIcon,
   CampaignIcon,
@@ -16,7 +16,9 @@ import {
   SettingsIcon,
   VpnKeyIcon,
 } from '../../../icons'
-import Mask from '../../common/Mask'
+import Backdrop from '../../common/Backdrop'
+import { cp } from '../../../styles/theme/helpers/colorPickers'
+import { useBreakpoint } from '../../../shared/hooks/useBreakpoint'
 
 interface MenuItemBase {
   id: string
@@ -140,17 +142,12 @@ interface NavigationMenuProps {
 }
 
 const NavigationMenu = ({ isOpen, onClose: handleClose }: NavigationMenuProps) => {
-  const { dynamicHeaderHeight } = useLayout()
   const theme = useTheme()
+  const { bp, isUp } = useBreakpoint()
   return (
     <aside>
-      <Mask $open={isOpen} $zIndex={theme.zIndex.navigationMenu.md - 1} onClick={handleClose} />
-      <NavigationMenuRoot
-        role="navigation"
-        aria-label="ナビゲーションメニュー"
-        $open={isOpen}
-        $dynamicHeaderHeight={dynamicHeaderHeight()}
-      >
+      <Backdrop $open={isUp.md ? false : isOpen} $zIndex={theme.zIndex.navigationMenu[bp] - 1} onClick={handleClose} />
+      <NavigationMenuRoot role="navigation" aria-label="ナビゲーションメニュー" $open={isOpen}>
         <StickyContext>
           <NavigationMenuItemsList />
         </StickyContext>
@@ -160,7 +157,7 @@ const NavigationMenu = ({ isOpen, onClose: handleClose }: NavigationMenuProps) =
 }
 
 const StyledUl = styled.ul`
-  color: ${({ theme }) => theme.palette.ui.navigationMenu.item.inactive.font[theme.palette.mode]};
+  color: ${({ theme }) => cp(theme, 'ui.navigationMenu.item.inactive.font')};
   display: flex;
   flex-direction: column;
   list-style-type: none;
@@ -190,14 +187,14 @@ const AccordionToggleIconButton = styled(IconButton, { shouldForwardProp: (prop)
   margin-left: auto;
   padding: 0 1rem;
   transform: ${({ $open }) => ($open ? 'rotate(180deg)' : 'rotate(0deg)')};
-  transition: transform 300ms ease;
+  transition: transform 300ms;
 `
 
 const LinkButtonCommonStyle = (theme: Theme) => css`
-  --active-bg-color: ${theme.palette.ui.navigationMenu.item.active.bg[theme.palette.mode]};
-  --active-font-color: ${theme.palette.ui.navigationMenu.item.active.font[theme.palette.mode]};
-  --hover-bg-color: ${theme.palette.ui.navigationMenu.item.hover.bg[theme.palette.mode]};
-  --hover-font-color: ${theme.palette.ui.navigationMenu.item.hover.font[theme.palette.mode]};
+  --active-bg-color: ${cp(theme, 'ui.navigationMenu.item.active.bg')};
+  --active-font-color: ${cp(theme, 'ui.navigationMenu.item.active.font')};
+  --hover-bg-color: ${cp(theme, 'ui.navigationMenu.item.hover.bg')};
+  --hover-font-color: ${cp(theme, 'ui.navigationMenu.item.hover.font')};
   cursor: pointer;
   height: 1.8em;
   color: inherit;
@@ -223,10 +220,8 @@ const LinkButtonCommonStyle = (theme: Theme) => css`
   }
 
   transform-origin: center;
-  transition:
-    background-color 200ms ease,
-    color 200ms ease,
-    transform 200ms ease;
+  transition-duration: 200ms;
+  transition: background-color, color, transform;
 `
 
 const StyledNavLink = styled(NavLink)`
@@ -245,8 +240,8 @@ const StyledIconButton = styled(IconButton)`
 `
 
 const AccordionHead = styled(BareAccordionHead)`
-  --active-color: ${({ theme }) => theme.palette.ui.navigationMenu.accordionHead.active.font[theme.palette.mode]};
-  --hover-color: ${({ theme }) => theme.palette.ui.navigationMenu.accordionHead.hover.font[theme.palette.mode]};
+  --active-color: ${({ theme }) => cp(theme, 'ui.navigationMenu.accordionHead.active.font')};
+  --hover-color: ${({ theme }) => cp(theme, 'ui.navigationMenu.accordionHead.hover.font')};
   cursor: pointer;
   margin: 0;
   display: flex;
@@ -262,12 +257,12 @@ const AccordionHead = styled(BareAccordionHead)`
     color: var(--active-color);
     border-bottom: 6px double var(--active-color);
   }
-  transition: border-bottom 200ms ease;
+  transition: border-bottom 200ms;
 `
 
 const AccordionContent = styled(BareAccordionContent)<{ $open: boolean; $height: number }>`
   overflow: hidden;
-  transition: height 300ms ease-in-out;
+  transition: height 300ms;
   height: ${({ $open, $height }) => ($open ? `${$height}px` : '0')};
 
   li:first-of-type {
@@ -275,36 +270,43 @@ const AccordionContent = styled(BareAccordionContent)<{ $open: boolean; $height:
   }
 `
 
-const NavigationMenuRoot = styled.nav<{ $open: boolean; $dynamicHeaderHeight: number }>`
-  position: absolute;
-  left: 0;
-  top: ${({ $dynamicHeaderHeight }) => `-${$dynamicHeaderHeight}px`};
+const NavigationMenuRoot = styled.nav<{ $open: boolean }>`
+  position: fixed;
+  top: 0;
   bottom: 0;
-  z-index: ${({ theme }) => theme.zIndex.navigationMenu.lg};
+  left: 0;
+  z-index: ${({ theme }) => theme.zIndex.navigationMenu.xs};
   display: flex;
   flex-direction: column;
-  width: ${({ theme }) => theme.width.navigationMenu.lg};
+  width: ${({ theme }) => theme.width.navigationMenu.xs};
   transform: ${({ $open }) => ($open ? 'translateX(0)' : `translateX(-100%)`)};
-  transition:
-    transform 300ms ease,
-    top 300ms ease;
+  transition-duration: 300ms;
+  transition: transform;
   overflow: clip;
 
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    position: fixed;
-    top: 0;
-    bottom: 0;
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    z-index: ${({ theme }) => theme.zIndex.navigationMenu.sm};
+    width: ${({ theme }) => theme.width.navigationMenu.sm};
+  }
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    z-index: ${({ theme }) => theme.zIndex.navigationMenu.md};
     width: ${({ theme }) => theme.width.navigationMenu.md};
   }
-  ${({ theme }) => theme.breakpoints.down('md')} {
-    width: ${({ theme }) => theme.width.navigationMenu.sm};
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    position: absolute;
+    z-index: ${({ theme }) => theme.zIndex.navigationMenu.lg};
+    width: ${({ theme }) => theme.width.navigationMenu.lg};
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    z-index: ${({ theme }) => theme.zIndex.navigationMenu.xl};
+    width: ${({ theme }) => theme.width.navigationMenu.xl};
   }
 `
 
 const StickyContext = styled.div`
   position: relative;
   height: 100%;
-  background-color: ${({ theme }) => theme.palette.ui.navigationMenu.bodyBg[theme.palette.mode]};
+  background-color: ${({ theme }) => cp(theme, 'ui.navigationMenu.bodyBg')};
 `
 
 export default NavigationMenu

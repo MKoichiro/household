@@ -85,8 +85,7 @@ const ThemeTogglerRoot = styled.div<{ $mode: 'light' | 'dark' | 'os' }>`
     }
     label[for='theme-toggler__input-os'] {
       svg {
-        color: ${({ $mode, theme }) =>
-          $mode === 'os' ? theme.palette.app.theme.contrastText.main : 'var(--icon-inactive-color)'};
+        color: ${({ $mode }) => ($mode === 'os' ? grey[700] : 'var(--icon-inactive-color)')};
       }
     }
     label[for='theme-toggler__input-dark'] {
@@ -110,9 +109,8 @@ const ThemeTogglerRoot = styled.div<{ $mode: 'light' | 'dark' | 'os' }>`
           : $mode === 'os'
             ? 'calc(var(--size) + var(--gap))'
             : 'calc(2 * (var(--size) + var(--gap)))'};
-      transition:
-        left 300ms ease,
-        background-color 300ms ease;
+      transition-duration: 300ms;
+      transition: left, background-color;
     }
   }
 `

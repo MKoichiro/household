@@ -1,7 +1,7 @@
 import FullCalendar from '@fullcalendar/react'
 import { DatesSetArg, DayCellContentArg } from '@fullcalendar/core/index.js'
 import { DateClickArg } from '@fullcalendar/interaction'
-import { useMediaQuery, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material'
 import { format, isSameMonth } from 'date-fns'
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { CalendarContent, DailyBalances, Transaction } from '../../../../shared/types'
@@ -11,6 +11,8 @@ import CalendarPresenter from './CalendarPresenter'
 import { useApp, useLayout } from '../../../../shared/hooks/useContexts'
 import { debounce } from '../../../../shared/utils/debounce'
 import useScrollJudge from '../../../../shared/hooks/useScrollJudge'
+import { cp } from '../../../../styles/theme/helpers/colorPickers'
+import { useBreakpoint } from '../../../../shared/hooks/useBreakpoint'
 
 // eventsCreator returns like this:
 // const events = [
@@ -110,20 +112,27 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
   const selectedEvent = {
     start: selectedDay,
     display: 'background',
-    backgroundColor: theme.palette.ui.calendar.cells.bg.selected[theme.palette.mode],
+    backgroundColor: cp(theme, 'ui.calendar.cells.bg.selected'),
   }
 
   // アスペクト比をレスポンシブ対応、aspectRatio属性の設定値を返す
   // 縦1の時の横の指定, see: https://fullcalendar.io/docs/aspectRatio
-  const downMd = useMediaQuery(theme.breakpoints.down('md'))
-  const downLg = useMediaQuery(theme.breakpoints.down('lg'))
-  const downXl = useMediaQuery(theme.breakpoints.down('xl'))
+  const { bp, isDown } = useBreakpoint()
 
   const setAspectRatio = () => {
-    if (downMd) return 2 // スマホ
-    if (downLg) return 1.35 // タブレット
-    if (downXl) return 2 // デスクトップ以下
-    return 2 // 大きいデスクトップ
+    switch (bp) {
+      case 'xs':
+        return 2
+      case 'sm':
+        return 1.35
+      case 'md':
+        return 2
+      case 'lg':
+      case 'xl':
+        return 2
+      default:
+        return 2
+    }
   }
 
   // navigationMenuの開閉に応じてカレンダーをリサイズを更新するため処理
@@ -134,7 +143,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
 
   useEffect(() => {
     // タブレット以下ではNavigationMenuはオーバーレイ表示なのでカレンダーのリサイズは発生しない
-    if (downLg) return
+    if (isDown.md) return
 
     // 前回開閉状態と比較するロジックを用いて、メニュー開閉以外でのリサイズを防ぐ
     if (previouslyOpen.current === isNavigationMenuOpen) return
@@ -145,11 +154,11 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
     // 開閉アニメーションの後にサイズを更新
     const timeoutId = setTimeout(() => {
       api?.updateSize()
-      setTimeout(() => setIsResizing(false), 100) // 余韻を持たせる
-    }, animationDuration + 100) // 動作安定化のために100msの余裕を持たせる
+      setTimeout(() => setIsResizing(false), 200) // 余韻を持たせる
+    }, animationDuration + 200) // 動作安定化のために200msの余裕を持たせる
 
     return () => clearTimeout(timeoutId)
-  }, [downLg, isNavigationMenuOpen])
+  }, [isDown.md, isNavigationMenuOpen])
 
   const states: CalendarStates = {
     calendarRef,

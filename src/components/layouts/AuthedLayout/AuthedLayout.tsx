@@ -1,5 +1,4 @@
 import NavigationMenu from './NavigationMenu'
-import { headerMainHeight } from '../../../shared/constants/ui'
 import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
 import AuthedHeader from './AuthedHeader'
@@ -33,10 +32,23 @@ const AuthedLayout = () => {
 export default AuthedLayout
 
 const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
-  margin-left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0')};
-  transition: margin-left 300ms ease;
-  min-height: calc(100lvh - ${headerMainHeight}px);
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    margin-left: 0;
+  margin-left: 0;
+  transition: margin-left 300ms;
+  min-height: calc(100lvh - ${({ theme }) => theme.height.header.xs});
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    min-height: calc(100lvh - ${({ theme }) => theme.height.header.sm});
+  }
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    margin-left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.md : '0')};
+    min-height: calc(100lvh - ${({ theme }) => theme.height.header.md});
+  }
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    margin-left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.lg : '0')};
+    min-height: calc(100lvh - ${({ theme }) => theme.height.header.lg});
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    margin-left: ${({ $isNavigationMenuOpen, theme }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.xl : '0')};
+    min-height: calc(100lvh - ${({ theme }) => theme.height.header.xl});
   }
 `

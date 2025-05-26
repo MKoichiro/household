@@ -17,11 +17,11 @@ const app = {
     },
     level2: {
       // bg: { main: c.indigo[50], light: '#e4e9ed', dark: c.grey[900] },
-      bg: { main: c.indigo[50], light: c.grey[50], dark: '#191919' },
+      bg: { main: c.indigo[50], light: c.grey[100], dark: '#191919' },
       contrastText: { main: c.blueGrey[800], light: c.blueGrey[800], dark: c.blueGrey[200] },
     },
     level3: {
-      bg: { main: c.blueGrey[50], light: c.grey[100], dark: c.blueGrey[900] },
+      bg: { main: c.blueGrey[50], light: c.grey[50], dark: c.blueGrey[900] },
       contrastText: { main: c.blueGrey[900], light: c.blueGrey[900], dark: c.blueGrey[100] },
     },
     level4: {
@@ -202,49 +202,49 @@ export const palette: PaletteOptions = {
 
   income: {
     bg: {
-      lighter: { main: c.blue[50], light: c.blue[50], dark: '#002440' },
-      darker: undefinedYet, // chart, ...etc
+      lighter: { main: c.blue[50], light: c.blue[100], dark: '#002440' },
+      darker: { main: c.blue[500], light: c.blue[500], dark: c.indigo[200] },
     },
     font: {
-      lighter: { main: '', light: c.blue[500], dark: c.indigo[200] },
-      darker: { main: '', light: c.blue[900], dark: c.indigo[400] },
+      lighter: { main: c.blue[500], light: c.blue[500], dark: c.indigo[200] },
+      darker: { main: c.blue[900], light: c.blue[900], dark: c.indigo[400] },
     },
     border: undefinedYet,
   },
   expense: {
     bg: {
-      lighter: { main: '', light: c.red[50], dark: '#660933' },
-      darker: undefinedYet, // chart, ...etc
+      lighter: { main: c.red[100], light: c.red[100], dark: '#660933' },
+      darker: { main: c.red[500], light: c.red[500], dark: c.pink[200] },
     },
     font: {
-      lighter: { main: '', light: c.red[500], dark: c.pink[200] },
-      darker: { main: '', light: c.red[900], dark: c.pink[600] },
+      lighter: { main: c.red[500], light: c.red[500], dark: c.pink[200] },
+      darker: { main: c.red[900], light: c.red[900], dark: c.pink[600] },
     },
     border: undefinedYet,
   },
   balance: {
     bg: {
-      lighter: { main: '', light: c.green[100], dark: c.teal[900] },
-      darker: undefinedYet, // chart, ...etc
+      lighter: { main: c.green[100], light: c.green[100], dark: c.teal[900] },
+      darker: { main: c.green[500], light: c.green[500], dark: c.teal[200] },
     },
     font: {
-      lighter: { main: '', light: c.green[500], dark: c.teal[200] },
-      darker: { main: '', light: c.green[900], dark: c.teal[400] },
+      lighter: { main: c.green[500], light: c.green[500], dark: c.teal[200] },
+      darker: { main: c.green[900], light: c.green[900], dark: c.teal[400] },
     },
     border: undefinedYet,
   },
 
   incomeCategory: {
-    給与: { main: c.lightBlue[600], dark: c.lightBlue[900] },
-    副収入: { main: c.cyan[200], dark: c.cyan[800] },
-    お小遣い: { main: c.lightGreen['A700'], dark: c.lightGreen[700] },
+    給与: { main: c.lightBlue[600], light: c.lightBlue[600], dark: c.lightBlue[900] },
+    副収入: { main: c.cyan[200], light: c.cyan[200], dark: c.cyan[800] },
+    お小遣い: { main: c.lightGreen['A700'], light: c.lightGreen['A700'], dark: c.lightGreen[700] },
   },
   expenseCategory: {
-    食費: { main: c.deepOrange[500], dark: c.deepOrange[900] },
-    日用品: { main: c.lightGreen[500], dark: c.lightGreen[900] },
-    住居費: { main: c.amber[500], dark: c.amber[900] },
-    交際費: { main: c.pink[300], dark: c.pink[700] },
-    娯楽: { main: c.cyan[200], dark: c.cyan[800] },
-    交通費: { main: c.purple[300], dark: c.purple[800] },
+    食費: { main: c.deepOrange[500], light: c.deepOrange[500], dark: c.deepOrange[900] },
+    日用品: { main: c.lightGreen[500], light: c.lightGreen[500], dark: c.lightGreen[900] },
+    住居費: { main: c.amber[500], light: c.amber[500], dark: c.amber[900] },
+    交際費: { main: c.pink[300], light: c.pink[300], dark: c.pink[700] },
+    娯楽: { main: c.cyan[200], light: c.cyan[200], dark: c.cyan[800] },
+    交通費: { main: c.purple[300], light: c.purple[300], dark: c.purple[800] },
   },
 }

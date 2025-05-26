@@ -13,10 +13,11 @@ import {
 import styled from '@emotion/styled'
 import { ReportActions, ReportStates } from '../../pages/ReportContainer'
 import { pagePaddingTemplate } from '../../styles/constants'
+import { cpf } from '../../styles/theme/helpers/colorPickers'
 
 const paperCommonStyle: SxProps<Theme> = {
   minHeight: '400px',
-  bgcolor: (theme) => theme.palette.app.lighterBg.level2.bg[theme.palette.mode],
+  bgcolor: cpf('app.lighterBg.level2.bg'),
   px: 2,
   py: 1,
 }

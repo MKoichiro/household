@@ -10,9 +10,9 @@ import {
   TransactionFormProps,
 } from './components'
 import styled from '@emotion/styled'
-import { transactionMenuWidth } from '../../shared/constants/ui'
 import { HomeActions, HomeStates } from '../../pages/HomeContainer'
 import { pagePadding } from '../../styles/constants'
+import { useBreakpoint } from '../../shared/hooks/useBreakpoint'
 
 interface HomePresenterProps {
   states: HomeStates
@@ -21,14 +21,14 @@ interface HomePresenterProps {
 
 const HomePresenter = ({ states, actions }: HomePresenterProps) => {
   const { monthlyTransactions, dailyTransactions, isFormOpen, isDetailOpen, selectedTransaction } = states
-
+  const { bp } = useBreakpoint()
   const {
     handleDetailClose,
     handleTransactionAddClick,
     handleTransactionCardClick,
     handleEntryCloseClick,
     handleFormSubmit,
-    handleTypeClick,
+    handleTypeChange,
     handleAmountBlur,
     handleDeleteClick,
     handleDateClick,
@@ -55,7 +55,7 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
     isFormOpen,
     onSubmit: handleFormSubmit,
     onAmountBlur: handleAmountBlur,
-    onTypeClick: handleTypeClick,
+    onTypeChange: handleTypeChange,
     onDeleteClick: handleDeleteClick,
     onCloseClick: handleEntryCloseClick,
   }
@@ -65,7 +65,7 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
       <Box
         sx={{
           flexGrow: 1,
-          width: { xs: '100%', lg: `calc(100% - ${transactionMenuWidth}px)` },
+          width: (theme) => `calc(100% - ${theme.width.transactionMenu[bp]})`,
           p: pagePadding,
         }}
       >
@@ -73,7 +73,7 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
         <Calendar {...calendarProps} />
       </Box>
 
-      <Box sx={{ display: 'flex', width: { xs: 0, lg: `${transactionMenuWidth}px` } }}>
+      <Box sx={{ display: 'flex', width: (theme) => theme.width.transactionMenu[bp] }}>
         <TransactionDetail {...transactionDetailProps} />
         <TransactionForm {...transactionFormProps} />
       </Box>

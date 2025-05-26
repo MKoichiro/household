@@ -66,32 +66,41 @@ const NotificationPadRoot = styled.div<{ $length: number }>`
   border-radius: 0.5rem;
   position: fixed;
   bottom: 0.5rem;
-  left: 0.5rem;
-  z-index: ${({ theme }) => theme.zIndex.notificationPad.xs};
-  max-width: 50vw;
+  width: 90vw;
+  max-width: 90vw;
+  left: 50%;
+  transform: translateX(-50%);
   max-height: 30vh;
   overflow-y: auto;
   background: ${({ $length }) => ($length <= 1 ? 'transparent' : 'rgba(255 255 255 / 0.3)')};
-
-  /* 通知が１つのときは、ラッパー消失分だけマージンをつける */
+  /* 通知が１つのときはラッパーを消して表示している。ラッパーに付いている分の余白を別途つける */
   margin-left: ${({ $length }) => ($length === 1 ? '0.5rem' : 0)};
   margin-bottom: ${({ $length }) => ($length === 1 ? '0.5rem' : 0)};
-  /* box‑shadow の切り替え */
   box-shadow: ${({ $length }) => ($length === 0 ? 'none' : '0.125rem 0.125rem 0.25rem 0.125rem rgba(0 0 0 / 0.1)')};
-
   /* スクロールバー非表示 */
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
   }
   overscroll-behavior: contain;
+  z-index: ${({ theme }) => theme.zIndex.notificationPad.xs};
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
-    width: 90vw;
-    max-width: 90vw;
-    left: 50%;
-    transform: translateX(-50%);
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    width: auto;
+    max-width: 50vw;
+    left: 0.5rem;
+    transform: none;
+    z-index: ${({ theme }) => theme.zIndex.notificationPad.sm};
+  }
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    z-index: ${({ theme }) => theme.zIndex.notificationPad.md};
+  }
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    z-index: ${({ theme }) => theme.zIndex.notificationPad.lg};
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    z-index: ${({ theme }) => theme.zIndex.notificationPad.xl};
   }
 `
 

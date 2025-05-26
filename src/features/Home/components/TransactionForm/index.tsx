@@ -2,18 +2,19 @@ import { useTheme } from '@mui/material'
 import { ControllerRenderProps } from 'react-hook-form'
 import { Transaction, TransactionFormValues, TransactionType } from '../../../../shared/types'
 import { FormEvent } from 'react'
-import { headerMainHeight, transactionMenuWidth } from '../../../../shared/constants/ui'
 import styled from '@emotion/styled'
-import { usePortal } from '../../../../shared/hooks/useContexts'
-import Mask from '../../../../components/common/Mask'
+import { useLayout, usePortal } from '../../../../shared/hooks/useContexts'
+import Backdrop from '../../../../components/common/Backdrop'
 import TransactionFormBody from './TransactionFormBody'
+import { cp } from '../../../../styles/theme/helpers/colorPickers'
+import { useModalScrollLock } from '../../../../shared/hooks/useModalScrollLock'
 
 export interface TransactionFormProps {
   selectedTransaction: Transaction | null
   isFormOpen: boolean
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
   onAmountBlur: (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => () => void
-  onTypeClick: (type: TransactionType) => () => void
+  onTypeChange: (type: TransactionType) => () => void
   onDeleteClick: () => void
   onCloseClick: () => void
 }
@@ -22,14 +23,21 @@ const TransactionForm = (props: TransactionFormProps) => {
   const { isFormOpen, onCloseClick: handleCloseClick } = props
   const portalRenderer = usePortal('modal')
   const theme = useTheme()
+  const { isNavigationMenuOpen } = useLayout()
+  const { setOverflowableRef: overflowableRef, setModalBackdropRef: modalBackdropRef } = useModalScrollLock(isFormOpen)
 
   return (
     <>
       {/* タブレット以下 */}
       {portalRenderer(
         <>
-          <Mask $open={isFormOpen} $zIndex={theme.zIndex.transactionForm.md - 1} onClick={handleCloseClick} />
-          <FormTablet $isFormOpen={isFormOpen}>
+          <Backdrop
+            ref={modalBackdropRef}
+            $open={isFormOpen}
+            $zIndex={theme.zIndex.transactionForm.md - 1}
+            onClick={handleCloseClick}
+          />
+          <FormTablet ref={overflowableRef} $isFormOpen={isFormOpen} $isNavigationMenuOpen={isNavigationMenuOpen}>
             <TransactionFormBody {...props} />
           </FormTablet>
         </>
@@ -46,41 +54,54 @@ const TransactionForm = (props: TransactionFormProps) => {
 
 // スタイル
 const StickyContext = styled.div`
-  position: relative;
-  width: ${transactionMenuWidth}px;
-  margin-top: 1rem;
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    display: none;
+  display: none;
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    display: block;
+    position: relative;
+    width: ${({ theme }) => theme.width.transactionMenu.lg};
+    margin-top: 1rem;
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    width: ${({ theme }) => theme.width.transactionMenu.xl};
   }
 `
 
 const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
-  background-color: ${({ theme }) => theme.palette.app.lighterBg.level2.bg[theme.palette.mode]};
-  border-radius: 0.5rem;
+  /* デフォルトは非表示 */
+  display: none;
 
-  position: sticky;
-  top: calc(${headerMainHeight}px + 1rem);
-  z-index: ${({ theme }) => theme.zIndex.transactionForm.lg};
+  /* lg以上で表示 */
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    display: block;
+    background-color: ${({ theme }) => cp(theme, 'app.lighterBg.level2.bg')};
+    border-radius: 0.5rem;
+    position: sticky;
+    top: calc(${({ theme }) => theme.height.header.lg} + 1rem);
+    z-index: ${({ theme }) => theme.zIndex.transactionForm.lg};
+    padding: 0.5rem 1rem 1rem;
+    min-width: ${({ theme }) => theme.width.transactionMenu.lg};
+    overflow-y: auto;
+    pointer-events: ${({ $isFormOpen }) => ($isFormOpen ? 'auto' : 'none')};
+    transform: translateX(
+      ${({ theme, $isFormOpen }) => (!$isFormOpen ? 0 : `calc(-2 * ${theme.width.transactionMenu.lg} - 1rem)`)}
+    );
+    transition-duration: 300ms;
+    transition: top, transform;
+    box-shadow: ${({ theme }) => theme.shadows[4]};
+  }
 
-  padding: 0.5rem 1rem 1rem;
-
-  min-width: ${transactionMenuWidth}px;
-  overflow-y: auto;
-
-  pointer-events: ${({ $isFormOpen }) => ($isFormOpen ? 'auto' : 'none')};
-  transform: translateX(${({ $isFormOpen }) => (!$isFormOpen ? 0 : `calc(-${2 * transactionMenuWidth}px - 1rem)`)});
-
-  transition:
-    top 300ms ease,
-    transform 300ms ease;
-  box-shadow: ${({ theme }) => theme.shadows[4]};
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    display: none;
-    background-color: ${({ theme }) => theme.palette.app.lighterBg.level1.bg[theme.palette.mode]};
+  /* xl以上で設定をxl用に上書き */
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    top: calc(${({ theme }) => theme.height.header.xl} + 1rem);
+    z-index: ${({ theme }) => theme.zIndex.transactionForm.xl};
+    min-width: ${({ theme }) => theme.width.transactionMenu.xl};
+    transform: translateX(
+      ${({ theme, $isFormOpen }) => (!$isFormOpen ? 0 : `calc(-2 * ${theme.width.transactionMenu.xl} - 1rem)`)}
+    );
   }
 `
 
-const FormTablet = styled.div<{ $isFormOpen: boolean }>`
+const FormTablet = styled.div<{ $isFormOpen: boolean; $isNavigationMenuOpen: boolean }>`
   background-color: ${({ theme }) => theme.palette.background.paper};
   opacity: ${({ $isFormOpen }) => ($isFormOpen ? 1 : 0)};
   border-radius: 1rem;
@@ -90,15 +111,31 @@ const FormTablet = styled.div<{ $isFormOpen: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
+  right: 0;
   transform: translate(-50%, -50%) scale(${({ $isFormOpen }) => ($isFormOpen ? 1 : 0)});
-  transition:
-    transform 300ms ease,
-    opacity 300ms ease;
+  transition-duration: 300ms;
+  transition: transform, opacity;
 
-  width: 90vw;
+  min-width: 90vw;
   max-height: 90vh;
-  z-index: ${({ theme }) => theme.zIndex.transactionForm.md};
+  overflow-y: auto;
+  z-index: ${({ theme }) => theme.zIndex.transactionForm.xs};
 
+  /* スクロールチェーン防止 */
+  overscroll-behavior: none;
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    z-index: ${({ theme }) => theme.zIndex.transactionForm.sm};
+  }
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    min-width: auto;
+    transform: translateX(
+        ${({ $isNavigationMenuOpen, theme }) =>
+          $isNavigationMenuOpen ? `calc(-50% + ${theme.width.navigationMenu.md} / 2)` : '-50%'}
+      )
+      translateY(-50%) scale(${({ $isFormOpen }) => ($isFormOpen ? 1 : 0)});
+    z-index: ${({ theme }) => theme.zIndex.transactionForm.md};
+  }
   ${({ theme }) => theme.breakpoints.up('lg')} {
     display: none;
   }

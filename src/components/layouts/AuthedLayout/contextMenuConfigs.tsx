@@ -1,30 +1,23 @@
-import { Link } from 'react-router-dom'
-import styled from '@emotion/styled'
 import { ReactNode } from 'react'
 import { ContextMenuConfig, MenuTree } from '../../common/ContextMenu/types'
+import { PageLink } from './ContextMenuButtons'
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-  display: block;
-`
-
-export const headerMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
+export const createMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
   {
     id: 'pages',
     display: 'ページ遷移',
     children: [
-      { id: 'home', display: <StyledLink to="/app/home">ホーム</StyledLink> },
-      { id: 'report', display: <StyledLink to="/app/report">月間レポート</StyledLink> },
+      { id: 'home', display: <PageLink to="/app/home">ホーム</PageLink> },
+      { id: 'report', display: <PageLink to="/app/report">月間レポート</PageLink> },
       {
         id: 'settings',
-        display: <StyledLink to="/">設定</StyledLink>,
+        display: <PageLink to="/">設定</PageLink>,
         children: [
-          { id: 'basic', display: <StyledLink to="/app/settings/basic">ユーザー設定</StyledLink> },
-          { id: 'security', display: <StyledLink to="/app/settings/security">アカウント設定</StyledLink> },
+          { id: 'basic', display: <PageLink to="/app/settings/basic">ユーザー設定</PageLink> },
+          { id: 'security', display: <PageLink to="/app/settings/security">アカウント設定</PageLink> },
         ],
       },
-      { id: '3-1-norm-1', display: <StyledLink to="/app/news">お知らせ</StyledLink> },
+      { id: '3-1-norm-1', display: <PageLink to="/app/news">お知らせ</PageLink> },
     ],
     dividerAfter: true,
   },
@@ -35,7 +28,7 @@ export const headerMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
   },
 ]
 
-export const headerMenuConfigs = (menuTree: MenuTree[]): ContextMenuConfig => ({
+export const createMenuConfigs = (menuTree: MenuTree[]): ContextMenuConfig => ({
   id: 'header-context-menu',
   menuTree,
   autoIcon: true,

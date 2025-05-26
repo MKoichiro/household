@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react'
 import { usePortal } from '../../../shared/hooks/useContexts'
-import Mask from '../Mask'
+import Backdrop from '../Backdrop'
 import styled from '@emotion/styled'
 import { SwipeableHandlers } from 'react-swipeable'
 
@@ -12,13 +12,14 @@ interface HalfModalProps {
     swipeHandlers: SwipeableHandlers
     style: CSSProperties
     zIndex: CSSProperties['zIndex']
+    backdropRef: (el: HTMLElement | null) => void
   }
 }
 
 export const HalfModal = ({
   isOpen,
   children,
-  register: { swipeHandlers, handleClose, style, zIndex },
+  register: { swipeHandlers, handleClose, style, zIndex, backdropRef },
 }: HalfModalProps) => {
   const portalRenderer = usePortal('half-modal')
 
@@ -26,7 +27,7 @@ export const HalfModal = ({
     <>
       {portalRenderer(
         <>
-          <Mask $open={isOpen} $zIndex={(zIndex as number) - 1} onClick={handleClose} />
+          <Backdrop ref={backdropRef} $open={isOpen} $zIndex={(zIndex as number) - 1} onClick={handleClose} />
           <div style={style}>
             <SwipeHandle {...swipeHandlers} />
             {children}

@@ -2,6 +2,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import { TodayIcon } from '../../../../icons'
 import MonthNavButton from '../../../../components/common/MonthNavButton'
+import { cpf } from '../../../../styles/theme/helpers/colorPickers'
 
 interface CalendarHeaderProps {
   currentMonth: Date
@@ -17,19 +18,8 @@ const CalendarHeader = ({
   handleNextMonthClick,
 }: CalendarHeaderProps) => {
   return (
-    <Box
-      component="header"
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        mb: 2,
-      }}
-    >
-      <Typography
-        component="h1"
-        variant="h5"
-        sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
-      >
+    <Box component="header" sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+      <Typography component="h1" variant="h5" sx={{ color: cpf('app.lighterBg.level1.contrastText') }}>
         {format(currentMonth, 'yyyy年 M月')}
       </Typography>
 
@@ -39,7 +29,7 @@ const CalendarHeader = ({
           aria-label="今日の日付へ移動するボタン"
           startIcon={<TodayIcon />}
           onClick={handleTodayClick}
-          sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
+          sx={{ color: cpf('app.lighterBg.level1.contrastText') }}
         >
           Today
         </Button>

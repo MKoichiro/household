@@ -6,9 +6,11 @@ import {
   incomeLiterals,
   IncomeTransaction,
   Transaction,
+  TransactionType,
 } from '../../../../shared/types'
-import { Theme } from '@mui/material'
+import { PaletteMode, Theme } from '@mui/material'
 import { ChartData } from 'chart.js'
+import { cp } from '../../../../styles/theme/helpers/colorPickers'
 
 // カテゴリーとカラーのマッピングを定義
 interface ExpenseColorMap {
@@ -21,36 +23,36 @@ interface IncomeColorMap {
   borderColor: Record<IncomeCategory, string>
 }
 
+const oppositeShade = (mode: PaletteMode): PaletteMode => {
+  return mode === 'light' ? 'dark' : 'light'
+}
+
+const createColorMap = <T extends ExpenseCategory | IncomeCategory>(
+  theme: Theme,
+  property: 'backgroundColor' | 'borderColor',
+  category: TransactionType
+): Record<T, string> => {
+  return (category === 'expense' ? expenseLiterals : incomeLiterals).reduce(
+    (acc, label) => {
+      acc[label as T] = cp(
+        theme,
+        `${category}Category.${label}`,
+        property === 'borderColor' ? oppositeShade(theme.palette.mode) : undefined
+      )
+      return acc
+    },
+    {} as Record<T, string>
+  )
+}
+
 const expenseCategoryColorMap = (theme: Theme): ExpenseColorMap => ({
-  backgroundColor: {
-    食費: theme.palette.expenseCategory['食費'][theme.palette.mode],
-    日用品: theme.palette.expenseCategory['日用品'][theme.palette.mode],
-    住居費: theme.palette.expenseCategory['住居費'][theme.palette.mode],
-    交際費: theme.palette.expenseCategory['交際費'][theme.palette.mode],
-    娯楽: theme.palette.expenseCategory['娯楽'][theme.palette.mode],
-    交通費: theme.palette.expenseCategory['交通費'][theme.palette.mode],
-  },
-  borderColor: {
-    食費: theme.palette.expenseCategory['食費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-    日用品: theme.palette.expenseCategory['日用品'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-    住居費: theme.palette.expenseCategory['住居費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-    交際費: theme.palette.expenseCategory['交際費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-    娯楽: theme.palette.expenseCategory['娯楽'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-    交通費: theme.palette.expenseCategory['交通費'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-  },
+  backgroundColor: createColorMap<ExpenseCategory>(theme, 'backgroundColor', 'expense'),
+  borderColor: createColorMap<ExpenseCategory>(theme, 'borderColor', 'expense'),
 })
 
 const incomeCategoryColorMap = (theme: Theme): IncomeColorMap => ({
-  backgroundColor: {
-    給与: theme.palette.incomeCategory['給与'][theme.palette.mode],
-    副収入: theme.palette.incomeCategory['副収入'][theme.palette.mode],
-    お小遣い: theme.palette.incomeCategory['お小遣い'][theme.palette.mode],
-  },
-  borderColor: {
-    給与: theme.palette.incomeCategory['給与'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-    副収入: theme.palette.incomeCategory['副収入'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-    お小遣い: theme.palette.incomeCategory['お小遣い'][`${theme.palette.mode === 'light' ? 'dark' : 'light'}`],
-  },
+  backgroundColor: createColorMap<IncomeCategory>(theme, 'backgroundColor', 'income'),
+  borderColor: createColorMap<IncomeCategory>(theme, 'borderColor', 'income'),
 })
 
 type ExpenseCategorySum = Partial<Record<ExpenseCategory, number>>

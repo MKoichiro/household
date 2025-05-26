@@ -1,5 +1,6 @@
 import { Breakpoint, css, Theme } from '@mui/material'
 
+// 1rem の定義、theme の typography を使うと何かしら不都合があったため GlobalStyles で適用
 export const htmlFontSizes: Record<Breakpoint, number> = {
   xl: 62.5,
   lg: 62.5,
@@ -8,6 +9,7 @@ export const htmlFontSizes: Record<Breakpoint, number> = {
   xs: 43.75,
 }
 
+// 各ページの layout レベルで適用する padding
 export const pagePaddingY: Record<Breakpoint, string> = {
   xs: '1.6rem',
   sm: '1.6rem',
@@ -33,17 +35,18 @@ export const pagePadding: Record<Breakpoint, string> = {
 }
 
 export const pagePaddingTemplate = (theme: Theme) => css`
-  padding: ${pagePadding['xl']};
-  ${theme.breakpoints.down('lg')} {
-    padding: ${pagePadding['lg']};
-  }
-  ${theme.breakpoints.down('md')} {
-    padding: ${pagePadding['md']};
-  }
-  ${theme.breakpoints.down('sm')} {
+  padding: ${pagePadding['xs']};
+
+  ${theme.breakpoints.up('sm')} {
     padding: ${pagePadding['sm']};
   }
-  ${theme.breakpoints.down('xs')} {
-    padding: ${pagePadding['xs']};
+  ${theme.breakpoints.up('md')} {
+    padding: ${pagePadding['md']};
+  }
+  ${theme.breakpoints.up('lg')} {
+    padding: ${pagePadding['lg']};
+  }
+  ${theme.breakpoints.up('xl')} {
+    padding: ${pagePadding['xl']};
   }
 `

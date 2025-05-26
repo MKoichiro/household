@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { transactionSchema } from '../shared/validations/schema'
 import { useApp, useTransaction } from '../shared/hooks/useContexts'
 import HomePresenter from '../features/Home/HomePresenter'
+import { mqp } from '../styles/theme/helpers/mediaqueryPicker'
 
 export interface HomeStates {
   selectedDay: string
@@ -26,7 +27,7 @@ export interface HomeActions {
   handleTransactionCardClick: (transaction: Transaction) => () => void
   handleEntryCloseClick: () => void
   handleFormSubmit: (e: FormEvent<HTMLFormElement>) => void
-  handleTypeClick: (type: TransactionType) => () => void
+  handleTypeChange: (type: TransactionType) => () => void
   handleAmountBlur: (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => () => void
   handleDeleteClick: () => void
   handleDateClick: (dateInfo: DateClickArg) => void
@@ -53,8 +54,8 @@ const HomeContainer = () => {
   })
   const { handleSubmit, setValue, reset } = methods
 
-  const isDownLaptop = useMediaQuery((theme) => theme.breakpoints.down('lg'))
-  const [isDetailOpen, setIsDetailOpen] = useState(isDownLaptop ? false : true)
+  const isDownMd = useMediaQuery(mqp('down', 'md'))
+  const [isDetailOpen, setIsDetailOpen] = useState(isDownMd ? false : true)
 
   /* Helpers */
   const handleDetailOpen = () => setIsDetailOpen(true)
@@ -119,11 +120,11 @@ const HomeContainer = () => {
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => void handleSubmit(onSubmit)(e)
 
   // 収支タイプを切り替える関数
-  // type="submit"ではないButtonはreact-hook-formにフォームパーツとして認識されない。
-  // そのため、更新処理はonClickを使って手動で行う。
-  const handleTypeClick = (type: TransactionType) => {
+  // type="submit" ではない Buttonは RHF にフォームパーツとして認識されない。
+  // そのため、更新処理は onClick を使って手動で行う。
+  const handleTypeChange = (type: TransactionType) => {
     return () => {
-      // shouldDirty: trueで差分と認識させる
+      // shouldDirty: true で差分と認識させる
       setValue('type', type, { shouldDirty: true })
       setValue('category', '', { shouldDirty: true })
       setValue('amount', '', { shouldDirty: true })
@@ -165,7 +166,7 @@ const HomeContainer = () => {
     handleTransactionCardClick,
     handleEntryCloseClick,
     handleFormSubmit,
-    handleTypeClick,
+    handleTypeChange,
     handleAmountBlur,
     handleDeleteClick,
     handleDateClick,

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { FormEvent, ReactNode } from 'react'
+import { CSSProperties, FormEvent, ReactNode } from 'react'
 import { Box, Button, ButtonProps, Paper, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useLayout } from '../shared/hooks/useContexts'
@@ -11,7 +11,7 @@ interface RootProps {
 const Root = ({ children }: RootProps) => {
   const { dynamicHeaderHeight } = useLayout()
   return (
-    <AuthPagesRoot $dynamicHeaderHeight={dynamicHeaderHeight()}>
+    <AuthPagesRoot $dynamicHeaderHeight={dynamicHeaderHeight}>
       <Paper elevation={3} sx={{ width: { xs: '100%', sm: 400, md: 600 }, p: 4 }}>
         {children}
       </Paper>
@@ -19,8 +19,8 @@ const Root = ({ children }: RootProps) => {
   )
 }
 
-const AuthPagesRoot = styled.div<{ $dynamicHeaderHeight: number }>`
-  height: calc(100% - ${({ $dynamicHeaderHeight }) => $dynamicHeaderHeight}px);
+const AuthPagesRoot = styled.div<{ $dynamicHeaderHeight: CSSProperties['height'] }>`
+  height: calc(100% - ${({ $dynamicHeaderHeight }) => $dynamicHeaderHeight});
   display: flex;
   justify-content: center;
   align-items: center;

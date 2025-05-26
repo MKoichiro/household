@@ -6,6 +6,7 @@ import IconComponents from '../../../../components/common/IconComponents'
 import { ReactNode } from 'react'
 import { NotesIcon, AddCircleIcon } from '../../../../icons'
 import { pagePadding } from '../../../../styles/constants'
+import { cpf } from '../../../../styles/theme/helpers/colorPickers'
 
 interface TransactionDetailProps {
   dailyTransactions: Transaction[]
@@ -41,10 +42,7 @@ const TransactionDetailBody = ({
           {/* 左側のアイコンとテキスト */}
           <Stack direction="row" alignItems="center">
             <NotesIcon sx={{ mr: 1 }} />
-            <Typography
-              variant="subtitle2"
-              sx={{ color: (theme) => theme.palette.app.lighterBg.level2.contrastText[theme.palette.mode] }}
-            >
+            <Typography variant="subtitle2" sx={{ color: cpf('app.lighterBg.level2.contrastText') }}>
               内訳
             </Typography>
           </Stack>
@@ -70,11 +68,8 @@ const TransactionDetailBody = ({
                   <Card
                     sx={{
                       width: '100%',
-                      bgcolor: (theme) =>
-                        transaction.type === 'income'
-                          ? theme.palette.income.bg.lighter[theme.palette.mode]
-                          : theme.palette.expense.bg.lighter[theme.palette.mode],
-                      color: (theme) => theme.palette.app.lighterBg.level2.contrastText[theme.palette.mode],
+                      bgcolor: transaction.type === 'income' ? cpf('income.bg.lighter') : cpf('expense.bg.lighter'),
+                      color: cpf('app.lighterBg.level2.contrastText'),
                     }}
                   >
                     <CardActionArea onClick={handleCardClick(transaction)}>
@@ -88,17 +83,13 @@ const TransactionDetailBody = ({
                             direction="row"
                             alignSelf="flex-start"
                             flexShrink={0}
-                            sx={{
-                              color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode],
-                            }}
+                            sx={{ color: cpf('app.lighterBg.level1.contrastText') }}
                           >
                             {IconComponents[transaction.category]}
                             <Typography
                               variant="caption"
                               display="block"
-                              sx={{
-                                color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode],
-                              }}
+                              sx={{ color: cpf('app.lighterBg.level1.contrastText') }}
                             >
                               {transaction.category}
                             </Typography>
@@ -108,9 +99,7 @@ const TransactionDetailBody = ({
                           <Typography
                             variant="body2"
                             alignSelf="flex-start"
-                            sx={{
-                              color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode],
-                            }}
+                            sx={{ color: cpf('app.lighterBg.level1.contrastText') }}
                           >
                             {transaction.content}
                           </Typography>
@@ -123,7 +112,7 @@ const TransactionDetailBody = ({
                               ml: 'auto',
                               alignSelf: 'flex-end',
                               flexShrink: 0,
-                              color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode],
+                              color: cpf('app.lighterBg.level1.contrastText'),
                               wordBreak: 'break-all',
                             }}
                           >

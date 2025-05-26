@@ -21,6 +21,7 @@ const HeaderTitle = ({ redirectTo }: HeaderTitleProps) => {
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': !noLink ? { opacity: 0.8 } : undefined,
+        cursor: noLink ? 'default' : 'pointer',
         fontFamily: FONT_FAMILY.APP_LOGO,
         fontWeight: 700,
         letterSpacing: '0.08em',

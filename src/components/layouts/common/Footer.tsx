@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
-import { footerHeight } from '../../../shared/constants/ui'
 import { XIcon } from '../../../icons'
+import { cp } from '../../../styles/theme/helpers/colorPickers'
+import { useLayout } from '../../../shared/hooks/useContexts'
 
 const Footer = () => {
+  const { isNavigationMenuOpen } = useLayout()
   return (
-    <FooterRoot>
+    <FooterRoot $isNavigationMenuOpen={isNavigationMenuOpen}>
       <StyledDiv>
         <StyledA href="https://github.com/MKoichiro/household" target="_blank" rel="noopener noreferrer">
           About
@@ -24,16 +26,31 @@ const Footer = () => {
   )
 }
 
-export default Footer
-
-const FooterRoot = styled.footer`
-  min-height: ${footerHeight}px;
-  background-color: ${({ theme }) => theme.palette.ui.footer.bg[theme.palette.mode]};
-  color: ${({ theme }) => theme.palette.ui.footer.contrastText[theme.palette.mode]};
+const FooterRoot = styled.footer<{ $isNavigationMenuOpen: boolean }>`
+  height: ${({ theme }) => theme.height.footer.xs};
+  background-color: ${({ theme }) => cp(theme, 'ui.footer.bg')};
+  color: ${({ theme }) => cp(theme, 'ui.footer.contrastText')};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: ${({ theme, $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.xs : '0')};
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    height: ${({ theme }) => theme.height.footer.sm};
+    margin-left: ${({ theme, $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.sm : '0')};
+  }
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    height: ${({ theme }) => theme.height.footer.md};
+    margin-left: ${({ theme, $isNavigationMenuOpen }) => ($isNavigationMenuOpen ? theme.width.navigationMenu.md : '0')};
+  }
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    height: ${({ theme }) => theme.height.footer.lg};
+    margin-left: 0;
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    height: ${({ theme }) => theme.height.footer.xl};
+  }
 `
 const StyledDiv = styled.div`
   display: flex;
@@ -45,5 +62,7 @@ const StyledDiv = styled.div`
 const StyledA = styled.a`
   color: black;
   text-decoration: none;
-  margin: 0 10px;
+  margin: 0 1rem;
 `
+
+export default Footer

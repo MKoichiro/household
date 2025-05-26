@@ -1,7 +1,5 @@
 import { Transaction } from '../../../../shared/types'
-import { headerMainHeight, transactionMenuWidth } from '../../../../shared/constants/ui'
 import styled from '@emotion/styled'
-import { useLayout } from '../../../../shared/hooks/useContexts'
 import TransactionDetailBody from './TransactionDetailBody'
 import { useTheme } from '@mui/material'
 import { CSSProperties } from 'react'
@@ -9,6 +7,8 @@ import * as Header from './TransactionDetailHeaders'
 import { HalfModal } from '../../../../components/common/HalfModal/HalfModal'
 import { useHalfModal } from '../../../../components/common/HalfModal/useHalfModal'
 import { useBreakpoint } from '../../../../shared/hooks/useBreakpoint'
+import { cp } from '../../../../styles/theme/helpers/colorPickers'
+import { useLayout } from '../../../../shared/hooks/useContexts'
 
 export interface TransactionDetailProps {
   dailyTransactions: Transaction[]
@@ -20,11 +20,11 @@ export interface TransactionDetailProps {
 
 const TransactionDetail = (props: TransactionDetailProps) => {
   const { isOpen, onClose: handleClose, ...rest } = props
-  const { isNavigationMenuOpen } = useLayout()
   const theme = useTheme()
-  const breakpoint = useBreakpoint()
-  const isDownLg = breakpoint === 'md' || breakpoint === 'sm' || breakpoint === 'xs'
-  const isMd = breakpoint === 'md'
+  const { isNavigationMenuOpen } = useLayout()
+  const { bp, isDown } = useBreakpoint()
+  const isMd = bp === 'md'
+  console.log(isMd)
 
   const {
     register: { style, ...registerRest },
@@ -33,17 +33,15 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
   const styleOverride: CSSProperties = {
     ...style,
-    left: isNavigationMenuOpen && isMd ? `${theme.width.navigationMenu.md}` : 0,
-    backgroundColor: isDownLg
-      ? theme.palette.app.lighterBg.level1.bg[theme.palette.mode]
-      : theme.palette.app.lighterBg.level2.bg[theme.palette.mode],
+    left: isNavigationMenuOpen && isMd ? theme.width.navigationMenu.md : 0,
+    backgroundColor: isDown.md ? cp(theme, 'app.lighterBg.level1.bg') : cp(theme, 'app.lighterBg.level2.bg'),
     overflowX: 'hidden',
     overflowY: 'auto',
   }
 
   return (
     <>
-      {isDownLg ? (
+      {isDown.lg ? (
         // タブレット以下
         <HalfModal isOpen={isOpen} register={{ ...registerRest, style: styleOverride }}>
           <TransactionDetailBody {...rest} header={<Header.Modal onClose={handleClose} />} ref={overflowableRef} />
@@ -60,26 +58,44 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   )
 }
 
-export default TransactionDetail
-
 const StickyContext = styled.div`
-  position: relative;
-  min-height: calc(100vh - ${headerMainHeight}px);
-  z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.palette.app.lighterBg.level2.bg[theme.palette.mode]};
+  display: none;
+
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    display: block;
+    position: relative;
+    min-height: ${({ theme }) => `calc(100vh - ${theme.height.header.lg})`};
+    z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    background-color: ${({ theme }) => cp(theme, 'app.lighterBg.level2.bg')};
+  }
+
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    min-height: ${({ theme }) => `calc(100vh - ${theme.height.header.xl})`};
+    z-index: ${({ theme }) => theme.zIndex.transactionDetail.xl};
+  }
 `
 
 const DetailLaptop = styled.div`
-  position: sticky;
-  min-width: ${transactionMenuWidth}px;
-  max-height: calc(100vh - ${headerMainHeight}px);
-  top: ${headerMainHeight}px;
-  transition: top 300ms ease;
-  overflow-y: auto;
-  z-index: ${({ theme }) => theme.zIndex.transactionDetail.lg};
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    display: none;
+  display: none;
+
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    display: block;
+    position: sticky;
+    min-width: ${({ theme }) => theme.width.transactionMenu.xl};
+    max-height: calc(100vh - ${({ theme }) => theme.height.header.xl});
+    top: ${({ theme }) => theme.height.header.xl};
+    transition: top 300ms;
+    overflow-y: auto;
+    z-index: ${({ theme }) => theme.zIndex.transactionDetail.xl};
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    min-width: ${({ theme }) => theme.width.transactionMenu.xl};
+    max-height: calc(100vh - ${({ theme }) => theme.height.header.xl});
+    top: ${({ theme }) => theme.height.header.xl};
+    z-index: ${({ theme }) => theme.zIndex.transactionDetail.xl};
   }
 `
+
+export default TransactionDetail

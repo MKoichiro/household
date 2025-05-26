@@ -4,6 +4,7 @@ import { financeCalculations } from '../../../../shared/utils/financeCalculation
 import { formatCurrency } from '../../../../shared/utils/formatting'
 import type { ResponsiveStyleValue } from '@mui/system'
 import type { GridSize } from '@mui/material/Grid'
+import { cpf } from '../../../../styles/theme/helpers/colorPickers'
 
 const gridSize: Record<TransactionKeyType, ResponsiveStyleValue<GridSize>> = {
   income: { xs: 12, md: 4, lg: 12 },
@@ -38,8 +39,7 @@ const DailySummary = ({ dailyTransactions }: DailySummaryProps) => {
           <Grid key={item.name} size={item.size} display="flex">
             <Card
               sx={{
-                // bgcolor: (theme) => theme.palette.app.lighterBg.level1.bg[theme.palette.mode],
-                bgcolor: (theme) => theme.palette.ui.dailySummary.bg[theme.palette.mode],
+                bgcolor: cpf('ui.dailySummary.bg'),
                 flexGrow: 1,
                 display: 'flex',
                 alignItems: 'center',
@@ -59,7 +59,7 @@ const DailySummary = ({ dailyTransactions }: DailySummaryProps) => {
                   textAlign="center"
                   variant="subtitle2"
                   sx={{
-                    color: (theme) => theme.palette[item.name].font.darker[theme.palette.mode],
+                    color: cpf(`${item.name}.font.darker`),
                     flexShrink: 0,
                     alignSelf: 'flex-start',
                   }}
@@ -70,7 +70,7 @@ const DailySummary = ({ dailyTransactions }: DailySummaryProps) => {
                   textAlign="right"
                   fontWeight="fontWeightBold"
                   sx={{
-                    color: (theme) => theme.palette[item.name].font.lighter[theme.palette.mode],
+                    color: cpf(`${item.name}.font.lighter`),
                     alignSelf: 'flex-end',
                     wordBreak: 'break-all',
                   }}

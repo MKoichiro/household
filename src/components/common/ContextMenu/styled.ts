@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import { indigo } from '@mui/material/colors'
 import { css } from '@mui/material'
 import { PositionStyle } from './types'
 import { CSSProperties } from 'react'
@@ -36,13 +35,12 @@ const MenuUl = styled.ul`
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-color: ${indigo[400]};
   box-sizing: border-box;
   flex-shrink: 0;
   border-radius: 0.25rem;
-  min-width: 10vw;
-  ${({ theme }) => theme.breakpoints.down('lg')} {
-    min-width: 30vw;
+  min-width: 30vw;
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    min-width: 10vw;
   }
   li:first-of-type > button {
     margin-top: 0.5rem;

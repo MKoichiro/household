@@ -29,7 +29,7 @@ const useTimer = ({ init = 0, step = 1, type = 'increment', delay = 1000, startN
 
     intervalId.current = setInterval(() => {
       if (!isRunning) return
-      console.log('timer: running')
+      if (import.meta.env.DEV) console.log('timer: running')
       switch (type) {
         case 'increment':
           setCount((prev) => prev + step)

@@ -2,6 +2,7 @@
 
 import { IconButton } from '@mui/material'
 import { ArrowBackIosNewIcon, ArrowForwardIosIcon } from '../../icons'
+import { cpf } from '../../styles/theme/helpers/colorPickers'
 
 interface MonthNavButtonProps {
   direction: 'prev' | 'next' | 'PREV' | 'NEXT'
@@ -15,7 +16,7 @@ const MonthNavButton = ({ direction, onClick }: MonthNavButtonProps) => {
     <IconButton
       aria-label={`${a11yPrefix}へ移動するボタン`}
       onClick={onClick}
-      sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
+      sx={{ color: cpf('app.lighterBg.level1.contrastText') }}
     >
       {isPrev ? <ArrowBackIosNewIcon /> : <ArrowForwardIosIcon />}
     </IconButton>

@@ -4,13 +4,14 @@ import { Transaction, TransactionFormValues, TransactionType } from '../../../..
 import { FormEvent } from 'react'
 import * as F from './fields'
 import { CloseIcon } from '../../../../icons'
+import { cpf } from '../../../../styles/theme/helpers/colorPickers'
 
 interface TransactionFormBodyProps {
   selectedTransaction: Transaction | null
   isFormOpen: boolean
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
   onAmountBlur: (field: ControllerRenderProps<TransactionFormValues, 'amount'>) => () => void
-  onTypeClick: (type: TransactionType) => () => void
+  onTypeChange: (type: TransactionType) => () => void
   onDeleteClick: () => void
   onCloseClick: () => void
 }
@@ -19,7 +20,7 @@ const TransactionFormBody = ({
   onCloseClick: handleCloseClick,
   onSubmit: handleSubmit,
   onAmountBlur: handleAmountBlur,
-  onTypeClick: handleTypeClick,
+  onTypeChange: handleTypeChange,
   onDeleteClick: handleDeleteClick,
   selectedTransaction,
 }: TransactionFormBodyProps) => {
@@ -35,16 +36,10 @@ const TransactionFormBody = ({
     <Stack spacing={3}>
       {/* 入力エリアヘッダー */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography
-          variant="subtitle1"
-          sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
-        >
+        <Typography variant="subtitle1" sx={{ color: cpf('app.lighterBg.level1.contrastText') }}>
           {isNewEntry ? '内訳を追加' : '内訳を編集'}
         </Typography>
-        <IconButton
-          sx={{ color: (theme) => theme.palette.app.lighterBg.level1.contrastText[theme.palette.mode] }}
-          onClick={handleCloseClick}
-        >
+        <IconButton onClick={handleCloseClick} sx={{ color: cpf('app.lighterBg.level1.contrastText') }}>
           <CloseIcon />
         </IconButton>
       </Box>
@@ -53,7 +48,7 @@ const TransactionFormBody = ({
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2} useFlexGap>
           {/* F: フィールド部分 */}
-          <F.Type control={control} onClick={handleTypeClick} />
+          <F.Type control={control} onTypeChange={handleTypeChange} />
           <F.Date control={control} errors={errors} />
           <F.Category control={control} errors={errors} currentType={currentType} />
           <F.Amount control={control} errors={errors} onBlur={handleAmountBlur} />
@@ -66,9 +61,7 @@ const TransactionFormBody = ({
             color={currentType === 'income' ? 'primary' : 'error'}
             disabled={!isDirty || !isValid}
             fullWidth
-            sx={{
-              marginTop: (theme) => theme.spacing(3),
-            }}
+            sx={{ mt: 3 }}
           >
             {isNewEntry ? '保存' : '更新'}
           </Button>

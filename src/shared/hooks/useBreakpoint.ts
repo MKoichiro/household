@@ -4,19 +4,55 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 /**
  * 現在のブレイクポイントを返すカスタムフック
  */
-export const useBreakpoint = (): Breakpoint => {
+// export const useBreakpoint = (): Breakpoint => {
+//   const theme = useTheme()
+
+//   const isUpXl = useMediaQuery(theme.breakpoints.up('xl'))
+//   const isUpLg = useMediaQuery(theme.breakpoints.up('lg'))
+//   const isUpMd = useMediaQuery(theme.breakpoints.up('md'))
+//   const isUpSm = useMediaQuery(theme.breakpoints.up('sm'))
+
+//   const isXl = isUpLg
+//   const isLg = isUpLg && !isUpXl
+//   const isMd = isUpMd && !isUpLg
+//   const isSm = isUpSm && !isUpMd
+
+//   // 判定は後から
+//   if (isXl) return 'xl'
+//   if (isLg) return 'lg'
+//   if (isMd) return 'md'
+//   if (isSm) return 'sm'
+//   return 'xs'
+// }
+
+export const useBreakpoint = (): {
+  bp: Breakpoint
+  isUp: { sm: boolean; md: boolean; lg: boolean; xl: boolean }
+  isDown: { xs: boolean; sm: boolean; md: boolean; lg: boolean }
+} => {
   const theme = useTheme()
 
-  // フックは必ずトップレベルで呼び出す
-  const isXl = useMediaQuery(theme.breakpoints.up('xl'))
-  const isLg = useMediaQuery(theme.breakpoints.up('lg'))
-  const isMd = useMediaQuery(theme.breakpoints.up('md'))
-  const isSm = useMediaQuery(theme.breakpoints.up('sm'))
+  const isUpXl = useMediaQuery(theme.breakpoints.up('xl'))
+  const isUpLg = useMediaQuery(theme.breakpoints.up('lg'))
+  const isUpMd = useMediaQuery(theme.breakpoints.up('md'))
+  const isUpSm = useMediaQuery(theme.breakpoints.up('sm'))
 
-  // 判定は後から
-  if (isXl) return 'xl'
-  if (isLg) return 'lg'
-  if (isMd) return 'md'
-  if (isSm) return 'sm'
-  return 'xs'
+  const isDownXs = useMediaQuery(theme.breakpoints.down('xs'))
+  const isDownSm = useMediaQuery(theme.breakpoints.down('sm'))
+  const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
+  const isDownLg = useMediaQuery(theme.breakpoints.down('lg'))
+
+  const bp = () => {
+    if (isUpXl) return 'xl'
+    if (isUpLg) return 'lg'
+    if (isUpMd) return 'md'
+    if (isUpSm) return 'sm'
+    return 'xs'
+  }
+
+  return {
+    bp: bp(),
+    isUp: { sm: isUpSm, md: isUpMd, lg: isUpLg, xl: isUpXl },
+    isDown: { xs: isDownXs, sm: isDownSm, md: isDownMd, lg: isDownLg },
+  }
 }

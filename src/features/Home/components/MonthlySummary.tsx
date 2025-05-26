@@ -3,7 +3,7 @@ import { Transaction, TransactionKeyType } from '../../../shared/types'
 import { financeCalculations } from '../../../shared/utils/financeCalculations'
 import { formatCurrency } from '../../../shared/utils/formatting'
 import { ElementType, useState } from 'react'
-import { colorPicker as cp } from '../../../styles/theme/helpers/paletteHelpers'
+import { cpf } from '../../../styles/theme/helpers/colorPickers'
 import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '../../../icons'
 
 interface GridMapType {
@@ -88,7 +88,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
         >
           <Card
             sx={{
-              bgcolor: isShrunk(item.name) ? cp(item.palette.bg) : cp('ui.monthlySummary.bg'),
+              bgcolor: isShrunk(item.name) ? cpf(item.palette.bg) : cpf('ui.monthlySummary.bg'),
               cursor: 'pointer',
               borderRadius: '0.5rem',
               flexGrow: 1,
@@ -102,7 +102,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                 height: '3em',
                 padding: 0,
                 '&:last-child': { padding: 0 },
-                color: cp(item.palette.font.title),
+                color: cpf(item.palette.font.title),
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
@@ -118,7 +118,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                     left: isShrunk(item.name) ? '50%' : 0,
                     transform: `${isShrunk(item.name) ? 'translate(-50%, -50%)' : 'translate(0)'} ${isNeutral ? 'scale(3.5)' : 'scale(1)'}`,
                     opacity: isNeutral ? 0.25 : 1,
-                    color: cp(item.palette.icon),
+                    color: cpf(item.palette.icon),
                     transition:
                       'transform 300ms ease, top 300ms ease, left 300ms ease, opacity 300ms ease, color 300ms ease',
                   }}
@@ -149,7 +149,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
                   wordBreak: wordBreak(item.name),
                   opacity: isShrunk(item.name) ? 0 : 1,
                   transition: 'opacity 300ms ease',
-                  color: cp(item.palette.font.amount),
+                  color: cpf(item.palette.font.amount),
                 }}
               >
                 ￥{formatCurrency(item.value)}

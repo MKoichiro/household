@@ -1,18 +1,19 @@
-import { IconButton, useMediaQuery } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { useLayout } from '../../../shared/hooks/useContexts'
 import { useNews } from '../../../shared/hooks/useNews'
 import { useEffect } from 'react'
 import { FlowingText } from '../../common/FlowingText/FlowingText'
 import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { headerNewsHeight } from '../../../shared/constants/ui'
 import { CloseIcon, FiberNewIcon, FirstPageIcon } from '../../../icons'
 import useFlowingText from '../../common/FlowingText/useFlowingText'
+import { cp } from '../../../styles/theme/helpers/colorPickers'
+import { useBreakpoint } from '../../../shared/hooks/useBreakpoint'
 
 const NewsBar = () => {
   const { isNewsOpen, handleNewsOpen, handleNewsClose } = useLayout()
   const { news, loading } = useNews()
-  const isDownLG = useMediaQuery((theme) => theme.breakpoints.down('lg'))
+  const { bp, isDown } = useBreakpoint()
 
   const register = useFlowingText({
     textContent: news[0]?.description.plain,
@@ -22,8 +23,8 @@ const NewsBar = () => {
     },
     pxPerSec: 180,
     spacerWidth: 64,
-    trigger: isDownLG ? 'click' : 'hover',
-    flowAfter: isDownLG ? undefined : 300,
+    trigger: isDown.md ? 'click' : 'hover',
+    flowAfter: isDown.md ? undefined : 300,
   })
 
   const { handleReset, isDirty } = register
@@ -42,7 +43,12 @@ const NewsBar = () => {
         </ResetButton>
       ) : (
         <FiberNewIcon
-          sx={{ ml: '0.5rem', height: '100%', width: `calc(${headerNewsHeight}px - 0.5rem)`, padding: '0.3rem' }}
+          sx={{
+            ml: '0.5rem',
+            height: '100%',
+            width: (theme) => `calc(${theme.height.headerNews[bp]} - 0.5rem)`,
+            padding: '0.3rem',
+          }}
         />
       )}
       <FlowingText {...register} />
@@ -61,23 +67,36 @@ const NewsBar = () => {
   )
 }
 
-export default NewsBar
-
 const NewsBarRoot = styled.div<{ $isNewsOpen: boolean }>`
   font-size: 1.6rem;
-  background-color: ${({ theme }) => theme.palette.ui.headerNews.bg[theme.palette.mode]};
-  color: ${({ theme }) => theme.palette.ui.headerNews.contrastText[theme.palette.mode]};
-  height: ${headerNewsHeight}px;
-  line-height: ${headerNewsHeight}px;
+  background-color: ${({ theme }) => cp(theme, 'ui.headerNews.bg')};
+  color: ${({ theme }) => cp(theme, 'ui.headerNews.contrastText')};
+  height: ${({ theme }) => theme.height.headerNews.xs};
+  line-height: ${({ theme }) => theme.height.headerNews.xs};
   display: flex;
   transform: translateY(${({ $isNewsOpen }) => ($isNewsOpen ? '0' : '-100%')});
-
-  /* 閉じた後にスクロールバウンスでちらつくので、不可視化 */
+  /* 閉じた後にもスクロールバウンスによって見えてしまうので不可視化 */
   visibility: ${({ $isNewsOpen }) => ($isNewsOpen ? 'visible' : 'hidden')};
-
   transition:
-    transform 300ms ease,
+    transform 300ms,
     visibility 0 linear ${({ $isNewsOpen }) => ($isNewsOpen ? '0' : '300ms')};
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    height: ${({ theme }) => theme.height.headerNews.sm};
+    line-height: ${({ theme }) => theme.height.headerNews.sm};
+  }
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    height: ${({ theme }) => theme.height.headerNews.md};
+    line-height: ${({ theme }) => theme.height.headerNews.md};
+  }
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    height: ${({ theme }) => theme.height.headerNews.lg};
+    line-height: ${({ theme }) => theme.height.headerNews.lg};
+  }
+  ${({ theme }) => theme.breakpoints.up('xl')} {
+    height: ${({ theme }) => theme.height.headerNews.xl};
+    line-height: ${({ theme }) => theme.height.headerNews.xl};
+  }
 `
 
 const ResetButton = styled.button`
@@ -89,7 +108,7 @@ const ResetButton = styled.button`
   height: 100%;
   aspect-ratio: 1 / 1;
   background: transparent;
-  color: ${({ theme }) => theme.palette.ui.headerNews.contrastText[theme.palette.mode]};
+  color: inherit;
 
   svg {
     display: block;
@@ -98,3 +117,5 @@ const ResetButton = styled.button`
     height: inherit;
   }
 `
+
+export default NewsBar

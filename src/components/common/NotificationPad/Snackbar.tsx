@@ -1,4 +1,4 @@
-import { useEffect, ReactNode, HTMLAttributes } from 'react'
+import { ReactNode, HTMLAttributes } from 'react'
 import styled from '@emotion/styled'
 import ErrorOutline from '@mui/icons-material/ErrorOutline'
 import WarningAmber from '@mui/icons-material/WarningAmber'
@@ -6,15 +6,13 @@ import InfoOutline from '@mui/icons-material/InfoOutline'
 import TaskAlt from '@mui/icons-material/TaskAlt'
 import Close from '@mui/icons-material/Close'
 import { AlertColor } from '@mui/material'
+import { cp } from '../../../styles/theme/helpers/colorPickers'
 
 interface SnackbarProps extends HTMLAttributes<HTMLDivElement> {
   severity: AlertColor
   open: boolean
-  autoHideDuration?: number
   onClose: () => void
   children: ReactNode
-  isLast?: boolean
-  aborted: boolean
 }
 
 const severityIconMap: Record<AlertColor, ReactNode> = {
@@ -28,22 +26,10 @@ const Snackbar = ({
   className,
   severity,
   open,
-  autoHideDuration,
   onClose: handleClose,
   onClick: handleClick,
   children,
-  aborted,
 }: SnackbarProps) => {
-  useEffect(() => {
-    if (open) {
-      // autoHideDuration が undefined または 0 以下の場合は無制限表示
-      if (autoHideDuration === undefined || autoHideDuration <= 0 || aborted) return
-      // autoHideDuration が指定されている場合は、指定された時間後に onClose を呼び出す
-      const timer = setTimeout(handleClose, autoHideDuration)
-      return () => clearTimeout(timer)
-    }
-  }, [open, autoHideDuration, handleClose, aborted])
-
   if (!open) return null
 
   return (
@@ -62,7 +48,7 @@ const Snackbar = ({
 const StyledSnackbar = styled.div<{ $severity: AlertColor }>`
   width: 100%;
   padding: 0.75rem 1.25rem;
-  background-color: ${({ theme, $severity }) => theme.palette.ui.snackBar[$severity].bg[theme.palette.mode]};
+  background-color: ${({ theme, $severity }) => cp(theme, `ui.snackBar.${$severity}.bg`)};
   border-radius: 0.8rem;
 `
 
@@ -96,12 +82,12 @@ const StyledAlert = styled.div<{ $severity: AlertColor }>`
       padding: 0.1rem;
       margin-left: 1rem;
       display: block;
-      color: ${({ theme }) => theme.palette.ui.snackBar.closeBtn[theme.palette.mode]};
+      color: ${({ theme }) => cp(theme, 'ui.snackBar.closeBtn')};
     }
   }
 
   svg {
-    color: ${({ theme, $severity }) => theme.palette.ui.snackBar[$severity].icon[theme.palette.mode]};
+    color: ${({ theme, $severity }) => cp(theme, `ui.snackBar.${$severity}.icon`)};
     height: 1em;
     width: 1em;
   }
