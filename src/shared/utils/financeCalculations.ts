@@ -1,4 +1,4 @@
-import { Balance, DailyBalances, Transaction } from '../types'
+import type { Balance, DailyBalances, Transaction } from '@shared/types'
 
 export function financeCalculations(transactions: Transaction[]): Balance {
   return transactions.reduce(
@@ -41,39 +41,3 @@ export function calculateDailyBalances(transactions: Transaction[]): DailyBalanc
     return acc
   }, {})
 }
-
-// const transactions: Transaction[] = [
-//   {
-//     amount: 1800,
-//     category: "娯楽",
-//     content: "映画鑑賞",
-//     date: "2025-02-18",
-//     id: "2zNvfUBnQfvZDu9FLmFK",
-//     type: "expense",
-//   },
-//   {
-//     amount: 5000,
-//     category: "お小遣い",
-//     content: "映画鑑賞",
-//     date: "2025-02-18",
-//     id: "2zNvfUBnQfvZDu9FLmFK",
-//     type: "income",
-//   },
-//   {
-//     amount: 225000,
-//     category: "給与",
-//     content: "映画鑑賞",
-//     date: "2025-02-01",
-//     id: "2zNvfUBnQfvZDu9FLmFK",
-//     type: "income",
-//   },
-//   {
-//     amount: 50000,
-//     category: "交際費",
-//     content: "映画鑑賞",
-//     date: "2025-02-01",
-//     id: "2zNvfUBnQfvZDu9FLmFK",
-//     type: "expense",
-//   },
-// ]
-// console.log(calculateDailyBalances(transactions));

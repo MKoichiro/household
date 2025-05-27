@@ -4,12 +4,14 @@
 // - @mui/icons-material: アイコン部分のみ。
 // - styled 関数
 
-import { usePortal } from '../../../shared/hooks/useContexts'
 import { AnimatePresence } from 'framer-motion'
+
+import { usePortal } from '@shared/hooks/useContexts'
+
 import MotionContext from './MotionContext'
 import Nested from './Nested'
 import { ContextMenuRoot } from './styled'
-import { ContextMenuProps } from './types'
+import type { ContextMenuProps } from './types'
 
 const ContextMenu = ({
   className,

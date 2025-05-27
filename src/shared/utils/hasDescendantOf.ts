@@ -1,4 +1,5 @@
-import { ReactNode, ReactElement, Children, isValidElement } from 'react'
+import type { ReactNode, ReactElement } from 'react'
+import { Children, isValidElement } from 'react'
 
 /**
  * ReactNode の子孫を再帰的に走査し、

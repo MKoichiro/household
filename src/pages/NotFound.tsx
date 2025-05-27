@@ -1,10 +1,11 @@
+import { Box, Button, Divider, Typography } from '@mui/material'
+import { grey } from '@mui/material/colors'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import useTimer from '../shared/hooks/useTimer'
-import { Box, Button, Divider, Typography } from '@mui/material'
-import { useAuth } from '../shared/hooks/useContexts'
-import { grey } from '@mui/material/colors'
-import { useBreakpoint } from '../shared/hooks/useBreakpoint'
+
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { useAuth } from '@shared/hooks/useContexts'
+import useTimer from '@shared/hooks/useTimer'
 
 const home = { path: '/app/home', display: 'ホーム' }
 const login = { path: '/auth/login', display: 'ログインページ' }

@@ -1,10 +1,13 @@
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
-import { ControllerRenderProps, useFormContext } from 'react-hook-form'
-import { Transaction, TransactionFormValues, TransactionType } from '../../../../shared/types'
-import { FormEvent } from 'react'
+import type { FormEvent } from 'react'
+import type { ControllerRenderProps } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
+
+import { CloseIcon } from '@icons'
+import type { Transaction, TransactionFormValues, TransactionType } from '@shared/types'
+import { cpf } from '@styles/theme/helpers/colorPickers'
+
 import * as F from './fields'
-import { CloseIcon } from '../../../../icons'
-import { cpf } from '../../../../styles/theme/helpers/colorPickers'
 
 interface TransactionFormBodyProps {
   selectedTransaction: Transaction | null

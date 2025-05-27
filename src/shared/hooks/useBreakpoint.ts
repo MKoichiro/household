@@ -1,30 +1,10 @@
-import { Breakpoint, useTheme } from '@mui/material'
+import type { Breakpoint } from '@mui/material'
+import { useTheme } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 /**
  * 現在のブレイクポイントを返すカスタムフック
  */
-// export const useBreakpoint = (): Breakpoint => {
-//   const theme = useTheme()
-
-//   const isUpXl = useMediaQuery(theme.breakpoints.up('xl'))
-//   const isUpLg = useMediaQuery(theme.breakpoints.up('lg'))
-//   const isUpMd = useMediaQuery(theme.breakpoints.up('md'))
-//   const isUpSm = useMediaQuery(theme.breakpoints.up('sm'))
-
-//   const isXl = isUpLg
-//   const isLg = isUpLg && !isUpXl
-//   const isMd = isUpMd && !isUpLg
-//   const isSm = isUpSm && !isUpMd
-
-//   // 判定は後から
-//   if (isXl) return 'xl'
-//   if (isLg) return 'lg'
-//   if (isMd) return 'md'
-//   if (isSm) return 'sm'
-//   return 'xs'
-// }
-
 export const useBreakpoint = (): {
   bp: Breakpoint
   isUp: { sm: boolean; md: boolean; lg: boolean; xl: boolean }

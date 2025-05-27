@@ -1,12 +1,13 @@
-import { ReactNode, HTMLAttributes } from 'react'
 import styled from '@emotion/styled'
+import Close from '@mui/icons-material/Close'
 import ErrorOutline from '@mui/icons-material/ErrorOutline'
-import WarningAmber from '@mui/icons-material/WarningAmber'
 import InfoOutline from '@mui/icons-material/InfoOutline'
 import TaskAlt from '@mui/icons-material/TaskAlt'
-import Close from '@mui/icons-material/Close'
-import { AlertColor } from '@mui/material'
-import { cp } from '../../../styles/theme/helpers/colorPickers'
+import WarningAmber from '@mui/icons-material/WarningAmber'
+import type { AlertColor } from '@mui/material'
+import type { ReactNode, HTMLAttributes } from 'react'
+
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 interface SnackbarProps extends HTMLAttributes<HTMLDivElement> {
   severity: AlertColor

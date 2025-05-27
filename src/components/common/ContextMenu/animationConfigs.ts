@@ -1,5 +1,6 @@
 import { type Variants } from 'framer-motion'
-import { AnimeConfigs } from './types'
+
+import type { AnimeConfigs } from './types'
 
 const variantsMap: Record<string, Variants> = {
   scale: {

@@ -1,4 +1,5 @@
 import { RouterProvider } from 'react-router-dom'
+
 import './configs/chartConfig'
 import router from './router/routes'
 

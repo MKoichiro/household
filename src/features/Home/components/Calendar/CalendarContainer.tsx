@@ -1,18 +1,21 @@
-import FullCalendar from '@fullcalendar/react'
-import { DatesSetArg, DayCellContentArg } from '@fullcalendar/core/index.js'
-import { DateClickArg } from '@fullcalendar/interaction'
+import type { DatesSetArg, DayCellContentArg } from '@fullcalendar/core'
+import type { DateClickArg } from '@fullcalendar/interaction'
+import type FullCalendar from '@fullcalendar/react'
 import { useTheme } from '@mui/material'
 import { format, isSameMonth } from 'date-fns'
-import { RefObject, useEffect, useRef, useState } from 'react'
-import { CalendarContent, DailyBalances, Transaction } from '../../../../shared/types'
-import { calculateDailyBalances } from '../../../../shared/utils/financeCalculations'
-import { formatCurrency, getFormattedToday } from '../../../../shared/utils/formatting'
+import type { RefObject } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { useApp, useLayout } from '@shared/hooks/useContexts'
+import useScrollJudge from '@shared/hooks/useScrollJudge'
+import type { CalendarContent, DailyBalances, Transaction } from '@shared/types'
+import { debounce } from '@shared/utils/debounce'
+import { calculateDailyBalances } from '@shared/utils/financeCalculations'
+import { formatCurrency, getFormattedToday } from '@shared/utils/formatting'
+import { cp } from '@styles/theme/helpers/colorPickers'
+
 import CalendarPresenter from './CalendarPresenter'
-import { useApp, useLayout } from '../../../../shared/hooks/useContexts'
-import { debounce } from '../../../../shared/utils/debounce'
-import useScrollJudge from '../../../../shared/hooks/useScrollJudge'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
-import { useBreakpoint } from '../../../../shared/hooks/useBreakpoint'
 
 // eventsCreator returns like this:
 // const events = [

@@ -1,11 +1,13 @@
-import { Control, Controller, ControllerRenderProps } from 'react-hook-form'
-import { TransactionFormValues } from '../../../../../shared/types'
-import { MouseEvent } from 'react'
-import TransactionTypeToggleButton from '../../../../../components/common/TransactionTypeToggleButton'
+import type { MouseEvent } from 'react'
+import type { Control, ControllerRenderProps } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
+
+import TransactionTypeToggleButton from '@components/common/TransactionTypeToggleButton'
+import type { TransactionFormValues } from '@shared/types'
 
 interface TypeRadioProps {
   control: Control<TransactionFormValues, object, TransactionFormValues>
-  onTypeChange: (type: 'expense' | 'income') => (event: MouseEvent<HTMLElement>) => void
+  onTypeChange: (type: 'expense' | 'income') => (e: MouseEvent<HTMLElement>) => void
 }
 
 const TypeRadio = ({ control, onTypeChange }: TypeRadioProps) => {

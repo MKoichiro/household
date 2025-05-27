@@ -1,6 +1,8 @@
-import { ReactNode, useState } from 'react'
-import { getFormattedToday } from '../../shared/utils/formatting'
-import { AppContext } from '../../shared/hooks/useContexts'
+import type { ReactNode } from 'react'
+import { useState } from 'react'
+
+import { AppContext } from '@shared/hooks/useContexts'
+import { getFormattedToday } from '@shared/utils/formatting'
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date())

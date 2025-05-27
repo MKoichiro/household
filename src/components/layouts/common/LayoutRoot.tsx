@@ -1,7 +1,9 @@
 import { Box } from '@mui/material'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+
+import { cpf } from '@styles/theme/helpers/colorPickers'
+
 import Footer from './Footer'
-import { cpf } from '../../../styles/theme/helpers/colorPickers'
 
 const LayoutRoot = ({ children }: { children: ReactNode }) => {
   return (

@@ -1,8 +1,11 @@
-import { MouseEvent, useEffect, useRef, useState } from 'react'
-import { TriggerType, UseFlowingTextArg, UseFlowingTextReturn } from './types'
 import { useMotionValue, useAnimationFrame, animate } from 'framer-motion'
-import { useResizeObserver } from '../../../shared/hooks/useResizeObserver'
+import type { MouseEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+import { useResizeObserver } from '@shared/hooks/useResizeObserver'
+
 import { defaults } from './constants'
+import type { TriggerType, UseFlowingTextArg, UseFlowingTextReturn } from './types'
 
 const useFlowingText = ({
   animeDuration,

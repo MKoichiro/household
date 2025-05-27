@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material'
-import { APP_NAME } from '../shared/constants/app'
+
+import { APP_NAME } from '@shared/constants/app'
 
 const Landing = () => {
   return (

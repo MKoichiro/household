@@ -1,5 +1,5 @@
-import { Theme } from '@mui/material/styles'
-import { PaletteColor } from '@mui/material'
+import type { PaletteColor } from '@mui/material'
+import type { Theme } from '@mui/material/styles'
 
 // オーバーロード宣言：theme を直接受け取る場合
 function colorPickerFunction(path: string, shade?: keyof PaletteColor): (theme: Theme) => string

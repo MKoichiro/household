@@ -2,10 +2,12 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import { Outlet } from 'react-router-dom'
+
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { cpf } from '@styles/theme/helpers/colorPickers'
+
 import HeaderTitle from './common/HeaderTitle'
 import LayoutRoot from './common/LayoutRoot'
-import { cpf } from '../../styles/theme/helpers/colorPickers'
-import { useBreakpoint } from '../../shared/hooks/useBreakpoint'
 
 const NonAuthedLayout = () => {
   const { bp } = useBreakpoint()

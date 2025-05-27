@@ -1,8 +1,13 @@
 import { useEffect } from 'react'
-import { ContextMenuPositionConfig, ContextMenuPositionConfigs, UseContextMenusEffectsArgs } from '../types'
-import { useClickAway } from '../../../../shared/hooks/useClickAway'
-import { debounce } from '../../../../shared/utils/debounce'
-import { useResizeEffects } from '../../../../shared/hooks/useResizeEffects'
+
+import type {
+  ContextMenuPositionConfig,
+  ContextMenuPositionConfigs,
+  UseContextMenusEffectsArgs,
+} from '@components/common/ContextMenu/types'
+import { useClickAway } from '@shared/hooks/useClickAway'
+import { useResizeEffects } from '@shared/hooks/useResizeEffects'
+import { debounce } from '@shared/utils/debounce'
 
 /**
  * @internal

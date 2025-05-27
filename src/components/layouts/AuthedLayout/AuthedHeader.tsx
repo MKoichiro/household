@@ -1,16 +1,19 @@
 import styled from '@emotion/styled'
 import { alpha, IconButton } from '@mui/material'
-import HeaderTitle from '../common/HeaderTitle'
-import { useAuth, useLayout } from '../../../shared/hooks/useContexts'
-import NewsBar from './HeaderNews'
-import { createMenuConfigs, createMenuTree } from './contextMenuConfigs'
-import ContextMenu from '../../common/ContextMenu/ContextMenu'
-import { useContextMenu } from '../../common/ContextMenu/hooks/useContextMenus'
-import { LogoutIcon, MenuIcon, MenuOpenIcon, MoreVertIcon } from '../../../icons'
-import ThemeToggler from './ThemeToggler'
-import { LogoutButton } from './ContextMenuButtons'
-import { cp } from '../../../styles/theme/helpers/colorPickers'
 import { useLocation } from 'react-router-dom'
+
+import ContextMenu from '@components/common/ContextMenu/ContextMenu'
+import { useContextMenu } from '@components/common/ContextMenu/hooks/useContextMenus'
+import type { ContextMenuConfig } from '@components/common/ContextMenu/types'
+import { MenuIcon, MenuOpenIcon, MoreVertIcon } from '@icons'
+import HeaderTitle from '@layouts/common/HeaderTitle'
+import { useAuth, useLayout } from '@shared/hooks/useContexts'
+import { cp } from '@styles/theme/helpers/colorPickers'
+
+import { createMenuConfigs, createMenuTree } from './contextMenuConfigs'
+import NewsBar from './HeaderNews'
+import ThemeToggler from './ThemeToggler'
+import useContextMenuTop from './useContextMenuTop'
 
 interface AuthedHeaderProps {
   onMenuToggleClick: () => void
@@ -21,22 +24,15 @@ const AuthedHeader = ({ onMenuToggleClick: handleMenuToggleClick, isNavigationMe
   const { isLogoutProcessing, handleLogout } = useAuth()
   const { isNewsOpen } = useLayout()
   const location = useLocation()
-
-  // エラーハンドリングはhandleLogout内で行う
   const logout = () => void handleLogout()
-
-  // コンテキストメニューの設定
-  const menuTree = createMenuTree(
-    <LogoutButton aria-label="ログアウトボタン" disabled={isLogoutProcessing} endIcon={<LogoutIcon />} onClick={logout}>
-      ログアウト
-    </LogoutButton>
-  )
-  const menuConfigs = createMenuConfigs(menuTree)
-  const { open, positionStyle, register, handleToggle, anchorRef, clickAwayRef } = useContextMenu(menuConfigs)
+  const menuTree = createMenuTree({ logoutButton: { isLogoutProcessing, logout } })
+  const menuConfigs: ContextMenuConfig = createMenuConfigs(menuTree)
+  const { open, register, handleToggle, clickAwayRef } = useContextMenu(menuConfigs)
+  const { positionStyle, newsBarRef } = useContextMenuTop({ isContextMenuOpen: open, isNewsOpen })
 
   return (
-    <HeaderRoot $isNavigationMenuOpen={isNavigationMenuOpen} $isNewsOpen={isNewsOpen} ref={anchorRef}>
-      <NewsBar />
+    <HeaderRoot $isNavigationMenuOpen={isNavigationMenuOpen} $isNewsOpen={isNewsOpen}>
+      <NewsBar ref={newsBarRef} />
       <HeaderMain $isNewsOpen={isNewsOpen}>
         {isNavigationMenuOpen ? (
           <NavigationMenuIconButton aria-label="ナビゲーションメニューを閉じるボタン" onClick={handleMenuToggleClick}>
@@ -80,8 +76,10 @@ const HeaderRoot = styled.header<{ $isNavigationMenuOpen: boolean; $isNewsOpen: 
   height: ${({ theme, $isNewsOpen }) =>
     $isNewsOpen ? `calc(${theme.height.header.xs} + ${theme.height.headerNews.xs})` : theme.height.header.xs};
 
-  transition-duration: 300ms;
-  transition: left, width, height;
+  transition:
+    left 300ms,
+    width 300ms,
+    height 300ms;
 
   ${({ theme }) => theme.breakpoints.up('sm')} {
     top: ${({ $isNewsOpen, theme }) => ($isNewsOpen ? `-${theme.height.headerNews.sm}` : '0')};
@@ -157,6 +155,7 @@ const ContextMenuIconButton = styled(IconButton)`
 `
 
 const StyledContextMenu = styled(ContextMenu)`
+  transition: top 200ms linear;
   ul.menu-list {
     background-color: ${({ theme }) => alpha(cp(theme, 'ui.header.bg'), 0.6)};
     backdrop-filter: blur(3px);

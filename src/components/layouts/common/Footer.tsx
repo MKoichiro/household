@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
-import { XIcon } from '../../../icons'
-import { cp } from '../../../styles/theme/helpers/colorPickers'
-import { useLayout } from '../../../shared/hooks/useContexts'
+
+import { XIcon } from '@icons'
+import { useLayout } from '@shared/hooks/useContexts'
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 const Footer = () => {
   const { isNavigationMenuOpen } = useLayout()

@@ -1,9 +1,11 @@
-import { isValidElement } from 'react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { CoordinateRect, EventRect, Separator } from './styled'
-import { hasDescendantOf } from '../../../shared/utils/hasDescendantOf'
 import { Button } from '@mui/material'
-import { MenuContentProps } from './types'
+import { isValidElement } from 'react'
+
+import { hasDescendantOf } from '@shared/utils/hasDescendantOf'
+
+import { CoordinateRect, EventRect, Separator } from './styled'
+import type { MenuContentProps } from './types'
 
 const MenuContent = ({
   id,

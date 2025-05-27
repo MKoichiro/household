@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import {
+
+import type {
   ContextMenuConfig,
   ContextMenuPositionConfigs,
   ContextMenusInstance,
@@ -9,12 +10,13 @@ import {
   ContextMenusConfigsWithId,
   ContextMenusConfig,
   MenuTreeWithId,
-} from '../types'
+} from '@components/common/ContextMenu/types'
+
 import { orDefault } from './defaultConfigs'
-import useContextMenuStates from './useContextMenuStates'
-import useContextMenuRefs from './useContextMenuRefs'
-import useContextMenuHandlers from './useContextMenuHandlers'
 import useContextMenuEffects from './useContextMenuEffects'
+import useContextMenuHandlers from './useContextMenuHandlers'
+import useContextMenuRefs from './useContextMenuRefs'
+import useContextMenuStates from './useContextMenuStates'
 
 /**
  * @internal

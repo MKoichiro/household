@@ -1,13 +1,15 @@
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import jaLocal from '@fullcalendar/core/locales/ja'
-import { EventContentArg } from '@fullcalendar/core/index.js'
-import interactionPlugin from '@fullcalendar/interaction'
 import styled from '@emotion/styled'
-import { CalendarActions, CalendarStates } from './CalendarContainer'
-import CalendarHeader from './CalendarHeader'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
+import type { EventContentArg } from '@fullcalendar/core'
+import jaLocal from '@fullcalendar/core/locales/ja'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import FullCalendar from '@fullcalendar/react'
 import { CircularProgress } from '@mui/material'
+
+import { cp } from '@styles/theme/helpers/colorPickers'
+
+import type { CalendarActions, CalendarStates } from './CalendarContainer'
+import CalendarHeader from './CalendarHeader'
 
 const renderEventContent = (eventInfo: EventContentArg) => {
   const { income, expense, balance } = eventInfo.event.extendedProps

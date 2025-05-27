@@ -1,5 +1,5 @@
-import { MotionContextProps } from './types'
 import { MotionContextBase } from './styled'
+import type { MotionContextProps } from './types'
 
 const MotionContext = ({ id, animeConfig, toLeft = true, style, children }: MotionContextProps) => {
   const { transformOrigin, ...rest } = animeConfig

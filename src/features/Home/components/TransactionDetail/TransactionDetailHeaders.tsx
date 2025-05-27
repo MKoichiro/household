@@ -1,8 +1,9 @@
 import { IconButton, Stack, Typography } from '@mui/material'
-import { CloseIcon } from '../../../../icons'
-import { useApp } from '../../../../shared/hooks/useContexts'
 import { format } from 'date-fns'
-import { cpf } from '../../../../styles/theme/helpers/colorPickers'
+
+import { CloseIcon } from '@icons'
+import { useApp } from '@shared/hooks/useContexts'
+import { cpf } from '@styles/theme/helpers/colorPickers'
 
 // PC用ヘッダー
 const TransactionDetailHeaderBase = () => {

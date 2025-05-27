@@ -1,5 +1,5 @@
-import { defaultAnimeConfigs } from '../animationConfigs'
-import {
+import { defaultAnimeConfigs } from '@components/common/ContextMenu/animationConfigs'
+import type {
   ContextMenuConfig,
   ContextMenuProps,
   ContextMenusCommonConfig,
@@ -10,7 +10,7 @@ import {
   Mode,
   PositionConfig,
   PositionStrategy,
-} from '../types'
+} from '@components/common/ContextMenu/types'
 
 /**
  * @internal
@@ -25,8 +25,11 @@ const normalizePosition = (position: PositionStrategy): PositionConfig => {
     case 'custom':
       return {
         offset: baseOffset,
-        customPos: position.custom,
-        mode: { main: 'custom' },
+        customPos: position.custom ?? { top: 0, left: 0 },
+        mode: {
+          main: 'custom',
+          sub: position.customRelativity && position.customRelativity === 'windowTopLeft' ? 'window' : 'document',
+        },
       }
     case 'anchor':
       return {
@@ -113,7 +116,9 @@ export const orDefault = (common?: ContextMenusCommonConfig): DefaultSettings =>
     if (common?.direction === 'right') return false
     return defaults.toLeft!
   },
-  shouldFix: (mode: Mode) => mode.main === 'clicked' && mode.sub === 'window',
+  // shouldFix: (mode: Mode) => mode.main === 'clicked' && mode.sub === 'window',
+  shouldFix: (mode: Mode) =>
+    (mode.main === 'clicked' && mode.sub === 'window') || (mode.main === 'custom' && mode.sub === 'window'),
   zIndex: (raw?: ContextMenuConfig['zIndex']) => raw || common?.zIndex || defaults.zIndex!,
   open: (raw?: ContextMenuConfig['open']) => raw ?? common?.open ?? defaults.open!,
   position: (raw?: ContextMenuConfig['position']) => normalizePosition(raw || common?.position || defaults.position!),

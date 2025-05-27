@@ -1,8 +1,18 @@
-import { ReactNode } from 'react'
-import { ContextMenuConfig, MenuTree } from '../../common/ContextMenu/types'
-import { PageLink } from './ContextMenuButtons'
+import type { ContextMenuConfig, MenuTree } from '@components/common/ContextMenu/types'
+import { LogoutIcon } from '@icons'
 
-export const createMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
+import { LogoutButton, PageLink } from './ContextMenuButtons'
+
+interface LogoutButtonVars {
+  isLogoutProcessing: boolean
+  logout: () => void
+}
+
+interface CreateMenuTreeArgs {
+  logoutButton: LogoutButtonVars
+}
+
+export const createMenuTree = ({ logoutButton: { isLogoutProcessing, logout } }: CreateMenuTreeArgs): MenuTree[] => [
   {
     id: 'pages',
     display: 'ページ遷移',
@@ -23,7 +33,16 @@ export const createMenuTree = (logoutComponent: ReactNode): MenuTree[] => [
   },
   {
     id: 'logout',
-    display: logoutComponent,
+    display: (
+      <LogoutButton
+        aria-label="ログアウトボタン"
+        disabled={isLogoutProcessing}
+        onClick={logout}
+        endIcon={<LogoutIcon />}
+      >
+        ログアウト
+      </LogoutButton>
+    ),
     includeButton: true,
   },
 ]
@@ -33,9 +52,8 @@ export const createMenuConfigs = (menuTree: MenuTree[]): ContextMenuConfig => ({
   menuTree,
   autoIcon: true,
   position: {
-    type: 'anchor',
-    anchorRelativity: 'outerBottomRight',
-    offset: { x: -8, y: 8 },
+    type: 'custom',
+    customRelativity: 'windowTopLeft',
   },
   zIndex: 3000,
   closeOnClickAway: true,

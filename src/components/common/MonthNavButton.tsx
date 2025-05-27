@@ -1,8 +1,9 @@
 // 次の（/前の）月に移動するボタン
 
 import { IconButton } from '@mui/material'
-import { ArrowBackIosNewIcon, ArrowForwardIosIcon } from '../../icons'
-import { cpf } from '../../styles/theme/helpers/colorPickers'
+
+import { ArrowBackIosNewIcon, ArrowForwardIosIcon } from '@icons'
+import { cpf } from '@styles/theme/helpers/colorPickers'
 
 interface MonthNavButtonProps {
   direction: 'prev' | 'next' | 'PREV' | 'NEXT'

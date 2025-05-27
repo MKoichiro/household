@@ -1,14 +1,16 @@
-import { Transaction } from '../../../../shared/types'
 import styled from '@emotion/styled'
-import TransactionDetailBody from './TransactionDetailBody'
 import { useTheme } from '@mui/material'
-import { CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
+
+import { HalfModal } from '@components/common/HalfModal/HalfModal'
+import { useHalfModal } from '@components/common/HalfModal/useHalfModal'
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { useLayout } from '@shared/hooks/useContexts'
+import type { Transaction } from '@shared/types'
+import { cp } from '@styles/theme/helpers/colorPickers'
+
+import TransactionDetailBody from './TransactionDetailBody'
 import * as Header from './TransactionDetailHeaders'
-import { HalfModal } from '../../../../components/common/HalfModal/HalfModal'
-import { useHalfModal } from '../../../../components/common/HalfModal/useHalfModal'
-import { useBreakpoint } from '../../../../shared/hooks/useBreakpoint'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
-import { useLayout } from '../../../../shared/hooks/useContexts'
 
 export interface TransactionDetailProps {
   dailyTransactions: Transaction[]
@@ -24,7 +26,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const { isNavigationMenuOpen } = useLayout()
   const { bp, isDown } = useBreakpoint()
   const isMd = bp === 'md'
-  console.log(isMd)
 
   const {
     register: { style, ...registerRest },

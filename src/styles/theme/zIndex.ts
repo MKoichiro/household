@@ -1,4 +1,4 @@
-import { ZIndex } from '@mui/material'
+import type { ZIndex } from '@mui/material'
 
 export const zIndex: Partial<ZIndex> = {
   // clear default z-index

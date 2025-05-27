@@ -1,6 +1,8 @@
-import { CSSProperties, useState } from 'react'
+import type { CSSProperties } from 'react'
+import { useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
-import { useModalScrollLock } from '../../../shared/hooks/useModalScrollLock'
+
+import { useModalScrollLock } from '@shared/hooks/useModalScrollLock'
 
 const useSwipeToClose = (isOpen: boolean, handleClose: () => void) => {
   // スワイプ中の移動量(px) とスワイプ中フラグ

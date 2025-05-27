@@ -1,10 +1,12 @@
 import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
-import { Transaction, TransactionKeyType } from '../../../shared/types'
-import { financeCalculations } from '../../../shared/utils/financeCalculations'
-import { formatCurrency } from '../../../shared/utils/formatting'
-import { ElementType, useState } from 'react'
-import { cpf } from '../../../styles/theme/helpers/colorPickers'
-import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '../../../icons'
+import type { ElementType } from 'react'
+import { useState } from 'react'
+
+import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '@icons'
+import type { Transaction, TransactionKeyType } from '@shared/types'
+import { financeCalculations } from '@shared/utils/financeCalculations'
+import { formatCurrency } from '@shared/utils/formatting'
+import { cpf } from '@styles/theme/helpers/colorPickers'
 
 interface GridMapType {
   name: TransactionKeyType

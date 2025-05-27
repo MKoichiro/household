@@ -1,7 +1,8 @@
 import { FormControl, FormHelperText, InputLabel, ListItemIcon, MenuItem, Select } from '@mui/material'
-import { Control, Controller, FieldErrors } from 'react-hook-form'
-import { ExpenseCategory, IncomeCategory, TransactionFormValues, TransactionType } from '../../../../../shared/types'
-import { JSX } from 'react'
+import type { JSX } from 'react'
+import type { Control, FieldErrors } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
+
 import {
   AlarmIcon,
   FastfoodIcon,
@@ -12,8 +13,9 @@ import {
   AddBusinessIcon,
   SavingsIcon,
   TrainIcon,
-} from '../../../../../icons'
-import { useBreakpoint } from '../../../../../shared/hooks/useBreakpoint'
+} from '@icons'
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import type { ExpenseCategory, IncomeCategory, TransactionFormValues, TransactionType } from '@shared/types'
 
 const expenseCategories: { label: ExpenseCategory; icon: JSX.Element }[] = [
   { label: '食費', icon: <FastfoodIcon /> },

@@ -1,7 +1,9 @@
 import { TextField } from '@mui/material'
-import { Control, Controller, ControllerRenderProps, FieldErrors, useFormContext } from 'react-hook-form'
-import { TransactionFormValues } from '../../../../../shared/types'
-import { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
+import type { Control, ControllerRenderProps, FieldErrors } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
+
+import type { TransactionFormValues } from '@shared/types'
 
 interface ContentFieldProps {
   control: Control<TransactionFormValues, object, TransactionFormValues>

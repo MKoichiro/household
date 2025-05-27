@@ -1,10 +1,12 @@
-import { ReactNode } from 'react'
-import AuthProvider from './AuthProvider'
-import NotificationProvider from './NotificationProvider'
 import { CssBaseline } from '@mui/material'
-import GlobalStyles from '../../styles/GlobalStyles'
-import PortalProvider from './PortalProvider'
+import type { ReactNode } from 'react'
+
+import GlobalStyles from '@styles/GlobalStyles'
+
+import AuthProvider from './AuthProvider'
 import LayoutProvider from './LayoutProvider'
+import NotificationProvider from './NotificationProvider'
+import PortalProvider from './PortalProvider'
 import ThemeProvider from './ThemeProvider'
 
 const Providers = ({ children }: { children: ReactNode }) => {

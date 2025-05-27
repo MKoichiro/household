@@ -1,14 +1,17 @@
-import { useMediaQuery } from '@mui/material'
-import { Transaction, TransactionFormValues, TransactionType } from '../shared/types'
-import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
-import { DateClickArg } from '@fullcalendar/interaction/index.js'
-import { ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { formatMonth } from '../shared/utils/formatting'
+import type { DateClickArg } from '@fullcalendar/interaction'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { transactionSchema } from '../shared/validations/schema'
-import { useApp, useTransaction } from '../shared/hooks/useContexts'
-import HomePresenter from '../features/Home/HomePresenter'
-import { mqp } from '../styles/theme/helpers/mediaqueryPicker'
+import { useMediaQuery } from '@mui/material'
+import type { Dispatch, FormEvent, SetStateAction } from 'react'
+import { useState } from 'react'
+import type { ControllerRenderProps, SubmitHandler } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
+
+import HomePresenter from '@features/Home/HomePresenter'
+import { useApp, useTransaction } from '@shared/hooks/useContexts'
+import type { Transaction, TransactionFormValues, TransactionType } from '@shared/types'
+import { formatMonth } from '@shared/utils/formatting'
+import { transactionSchema } from '@shared/validations/schema'
+import { mqp } from '@styles/theme/helpers/mediaqueryPicker'
 
 export interface HomeStates {
   selectedDay: string

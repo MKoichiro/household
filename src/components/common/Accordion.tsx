@@ -1,6 +1,8 @@
 // 汎用性の高いアコーディオンコンポーネント
-import { forwardRef, ReactNode, ElementType, ComponentPropsWithoutRef } from 'react'
-import { keyEventCreator } from '../../shared/utils/a11y'
+import type { ReactNode, ElementType, ComponentPropsWithoutRef } from 'react'
+import { forwardRef } from 'react'
+
+import { keyEventCreator } from '@shared/utils/a11y'
 
 // コンポーネント固有のpropsを引き継ぐための型
 type BareAccordionHeadProps<C extends ElementType = 'div'> = {

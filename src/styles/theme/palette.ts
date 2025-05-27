@@ -1,4 +1,5 @@
-import { PaletteColorOptions, PaletteOptions, alpha } from '@mui/material'
+import type { PaletteColorOptions, PaletteOptions } from '@mui/material'
+import { alpha } from '@mui/material'
 import * as c from '@mui/material/colors'
 
 const undefinedYet: PaletteColorOptions = { main: '', light: '', dark: '' }

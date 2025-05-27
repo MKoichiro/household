@@ -1,13 +1,15 @@
-import { useTheme } from '@mui/material'
-import { ControllerRenderProps } from 'react-hook-form'
-import { Transaction, TransactionFormValues, TransactionType } from '../../../../shared/types'
-import { FormEvent } from 'react'
 import styled from '@emotion/styled'
-import { useLayout, usePortal } from '../../../../shared/hooks/useContexts'
-import Backdrop from '../../../../components/common/Backdrop'
+import { useTheme } from '@mui/material'
+import type { FormEvent } from 'react'
+import type { ControllerRenderProps } from 'react-hook-form'
+
+import Backdrop from '@components/common/Backdrop'
+import { useLayout, usePortal } from '@shared/hooks/useContexts'
+import { useModalScrollLock } from '@shared/hooks/useModalScrollLock'
+import type { Transaction, TransactionFormValues, TransactionType } from '@shared/types'
+import { cp } from '@styles/theme/helpers/colorPickers'
+
 import TransactionFormBody from './TransactionFormBody'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
-import { useModalScrollLock } from '../../../../shared/hooks/useModalScrollLock'
 
 export interface TransactionFormProps {
   selectedTransaction: Transaction | null
@@ -85,8 +87,9 @@ const FormLaptop = styled.div<{ $isFormOpen: boolean }>`
     transform: translateX(
       ${({ theme, $isFormOpen }) => (!$isFormOpen ? 0 : `calc(-2 * ${theme.width.transactionMenu.lg} - 1rem)`)}
     );
-    transition-duration: 300ms;
-    transition: top, transform;
+    transition:
+      top 300ms,
+      transform 300ms;
     box-shadow: ${({ theme }) => theme.shadows[4]};
   }
 
@@ -113,8 +116,9 @@ const FormTablet = styled.div<{ $isFormOpen: boolean; $isNavigationMenuOpen: boo
   left: 50%;
   right: 0;
   transform: translate(-50%, -50%) scale(${({ $isFormOpen }) => ($isFormOpen ? 1 : 0)});
-  transition-duration: 300ms;
-  transition: transform, opacity;
+  transition:
+    transform 300ms,
+    opacity 300ms;
 
   min-width: 90vw;
   max-height: 90vh;

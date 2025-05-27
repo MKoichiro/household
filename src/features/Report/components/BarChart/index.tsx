@@ -1,13 +1,15 @@
 // NOTE: ../../config/chartConfig.tx を App.tsx で読み込み済み
-import { ChartData, ChartOptions } from 'chart.js'
-import { Bar } from 'react-chartjs-2'
-import { Transaction } from '../../../../shared/types'
-import { calculateDailyBalances } from '../../../../shared/utils/financeCalculations'
 import { Box, CircularProgress, useTheme } from '@mui/material'
+import type { ChartData, ChartOptions } from 'chart.js'
 import { format } from 'date-fns'
+import { Bar } from 'react-chartjs-2'
+
+import { useRemToPx } from '@shared/hooks/useRemToPx'
+import type { Transaction } from '@shared/types'
+import { calculateDailyBalances } from '@shared/utils/financeCalculations'
+import { cp } from '@styles/theme/helpers/colorPickers'
+
 import createBarOptions from './createBarOptions'
-import { useRemToPx } from '../../../../shared/hooks/useRemToPx'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
 
 export interface BarChartProps {
   monthlyTransactions: Transaction[]

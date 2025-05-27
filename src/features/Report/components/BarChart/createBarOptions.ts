@@ -1,6 +1,8 @@
-import { alpha, Theme } from '@mui/material'
-import { ChartOptions } from 'chart.js'
-import { cpf } from '../../../../styles/theme/helpers/colorPickers'
+import type { Theme } from '@mui/material'
+import { alpha } from '@mui/material'
+import type { ChartOptions } from 'chart.js'
+
+import { cpf } from '@styles/theme/helpers/colorPickers'
 
 // 「千」、「万」、「億」...を使ってフォーマット
 const yTicksFormatter = (value: string | number): string => {

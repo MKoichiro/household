@@ -1,4 +1,5 @@
-import { Breakpoint, css, Theme } from '@mui/material'
+import type { Breakpoint, Theme } from '@mui/material'
+import { css } from '@mui/material'
 
 // 1rem の定義、theme の typography を使うと何かしら不都合があったため GlobalStyles で適用
 export const htmlFontSizes: Record<Breakpoint, number> = {

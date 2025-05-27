@@ -1,8 +1,9 @@
 import { Box, Button, Typography } from '@mui/material'
 import { format } from 'date-fns'
-import { TodayIcon } from '../../../../icons'
-import MonthNavButton from '../../../../components/common/MonthNavButton'
-import { cpf } from '../../../../styles/theme/helpers/colorPickers'
+
+import MonthNavButton from '@components/common/MonthNavButton'
+import { TodayIcon } from '@icons'
+import { cpf } from '@styles/theme/helpers/colorPickers'
 
 interface CalendarHeaderProps {
   currentMonth: Date

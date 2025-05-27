@@ -1,18 +1,11 @@
-import {
-  createContext,
-  CSSProperties,
-  Dispatch,
-  ReactNode,
-  ReactPortal,
-  SetStateAction,
-  useContext,
-  useEffect,
-} from 'react'
-import { Transaction, TransactionFormValues } from '../types'
-import { User } from 'firebase/auth'
-import { AlertColor, PaletteMode } from '@mui/material'
+import type { AlertColor, PaletteMode } from '@mui/material'
+import type { User } from 'firebase/auth'
+import type { CSSProperties, Dispatch, ReactNode, ReactPortal, SetStateAction } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { DEFAULT_ENTRIES } from '../../app/providers/PortalProvider/constant'
+
+import { DEFAULT_ENTRIES } from '@app/providers/PortalProvider/constant'
+import type { Transaction, TransactionFormValues } from '@shared/types'
 
 export type ColorMode = PaletteMode | 'os'
 
@@ -183,14 +176,14 @@ type PortalRendererType = ((content: ReactNode) => ReactPortal) | (() => null)
 
 export const usePortal = (name: string): PortalRendererType => {
   // フック使用側の呼び出しミスを通知
-  if (!PortalElementContext) {
+  if (!PortalElementContext && import.meta.env.DEV) {
     console.error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
     throw new Error('usePortal: グローバルなデータはプロバイダーの中で取得してください')
   }
   const map = useContext(PortalElementContext)
   const mountTarget = map && map[name] // nameに対応する <div> を取得
   if (!mountTarget) {
-    console.warn(`usePortal: ${name} は未登録です。`)
+    if (import.meta.env.DEV) console.warn(`usePortal: ${name} は未登録です。`)
     return () => null
   }
 

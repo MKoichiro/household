@@ -1,22 +1,24 @@
 // NOTE: 冗長に感じる場合はroutes.tsxのelementディレクティブに直接指定することも可能。好み。
 
 import { lazy } from 'react'
+
+import AppProvider from '@app/providers/AppProvider'
+import TransactionProvider from '@app/providers/TransactionProvider'
+import AuthedLayout from '@components/layouts/AuthedLayout/AuthedLayout'
+import SettingsLayout from '@components/layouts/AuthedLayout/SettingsLayout'
+import LandingLayout from '@components/layouts/LandingLayout'
+import NonAuthedLayout from '@components/layouts/NonAuthedLayout'
+import * as Dev from '@dev'
+import Landing from '@pages/Landing'
+import Login from '@pages/Login'
+import NotFound from '@pages/NotFound'
+import PrivateNews from '@pages/PrivateNews'
+import Security from '@pages/Security'
+import Settings from '@pages/Settings'
+import SignUp from '@pages/Signup'
+import VerifyEmail from '@pages/VerifyEmail'
+
 import { createLayout, createPage } from './enhancers'
-import LandingLayout from '../../components/layouts/LandingLayout'
-import AuthedLayout from '../../components/layouts/AuthedLayout/AuthedLayout'
-import SettingsLayout from '../../components/layouts/AuthedLayout/SettingsLayout'
-import NonAuthedLayout from '../../components/layouts/NonAuthedLayout'
-import Landing from '../../pages/Landing'
-import PrivateNews from '../../pages/PrivateNews'
-import SignUp from '../../pages/Signup'
-import VerifyEmail from '../../pages/VerifyEmail'
-import NotFound from '../../pages/NotFound'
-import Login from '../../pages/Login'
-import Settings from '../../pages/Settings'
-import Security from '../../pages/Security'
-import TransactionProvider from '../providers/TransactionProvider'
-import AppProvider from '../providers/AppProvider'
-import * as Dev from '../../dev'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
 const Home = lazy(() => import('../../pages/HomeContainer'))

@@ -1,16 +1,16 @@
-import {
+import type { PaletteMode, Theme } from '@mui/material'
+import type { ChartData } from 'chart.js'
+
+import type {
   ExpenseCategory,
-  expenseLiterals,
   ExpenseTransaction,
   IncomeCategory,
-  incomeLiterals,
   IncomeTransaction,
   Transaction,
   TransactionType,
-} from '../../../../shared/types'
-import { PaletteMode, Theme } from '@mui/material'
-import { ChartData } from 'chart.js'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
+} from '@shared/types'
+import { expenseLiterals, incomeLiterals } from '@shared/types'
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 // カテゴリーとカラーのマッピングを定義
 interface ExpenseColorMap {

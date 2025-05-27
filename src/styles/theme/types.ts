@@ -1,6 +1,7 @@
-import { Breakpoint, PaletteColor, PaletteColorOptions } from '@mui/material'
-import { CSSProperties } from 'react'
-import { ExpenseCategory, IncomeCategory } from '../../shared/types'
+import type { Breakpoint, PaletteColor, PaletteColorOptions } from '@mui/material'
+import type { CSSProperties } from 'react'
+
+import type { ExpenseCategory, IncomeCategory } from '@shared/types'
 
 type WidthOptions = Record<Breakpoint, NonNullable<CSSProperties['width']>>
 type HeightOptions = Record<Breakpoint, NonNullable<CSSProperties['height']>>

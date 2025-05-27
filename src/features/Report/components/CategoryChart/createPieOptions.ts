@@ -1,7 +1,8 @@
-import { Theme } from '@mui/material'
-import { ChartOptions } from 'chart.js'
-import { Context } from 'chartjs-plugin-datalabels'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
+import type { Theme } from '@mui/material'
+import type { ChartOptions } from 'chart.js'
+import type { Context } from 'chartjs-plugin-datalabels'
+
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 // Pieコンポーネントに渡すオプション
 const createPieOptions = (theme: Theme): ChartOptions<'pie'> => ({

@@ -1,8 +1,9 @@
-import { alpha, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import styled from '@emotion/styled'
-import { MouseEvent } from 'react'
-import { TransactionType } from '../../shared/types'
-import { cp } from '../../styles/theme/helpers/colorPickers'
+import { alpha, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import type { MouseEvent } from 'react'
+
+import type { TransactionType } from '@shared/types'
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 interface TransactionTypeToggleButtonProps {
   currentType: TransactionType
@@ -46,8 +47,9 @@ const StyledToggleButton = styled(ToggleButton, {
   border-left-color: ${({ $type }) => ($type === 'expense' ? 'var(--common-color)' : 'transparent')};
   border-right-color: ${({ $type }) => ($type === 'income' ? 'var(--common-color)' : 'transparent')};
 
-  transition-duration: 300ms;
-  transition: opacity, background-color;
+  transition:
+    opacity 300ms,
+    background-color 300ms;
 `
 
 export default TransactionTypeToggleButton

@@ -1,16 +1,22 @@
-import { IconButton } from '@mui/material'
-import { useLayout } from '../../../shared/hooks/useContexts'
-import { useNews } from '../../../shared/hooks/useNews'
-import { useEffect } from 'react'
-import { FlowingText } from '../../common/FlowingText/FlowingText'
-import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { CloseIcon, FiberNewIcon, FirstPageIcon } from '../../../icons'
-import useFlowingText from '../../common/FlowingText/useFlowingText'
-import { cp } from '../../../styles/theme/helpers/colorPickers'
-import { useBreakpoint } from '../../../shared/hooks/useBreakpoint'
+import { IconButton } from '@mui/material'
+import type { HTMLAttributes, RefObject } from 'react'
+import { useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
 
-const NewsBar = () => {
+import { FlowingText } from '@components/common/FlowingText/FlowingText'
+import useFlowingText from '@components/common/FlowingText/useFlowingText'
+import { CloseIcon, FiberNewIcon, FirstPageIcon } from '@icons'
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { useLayout } from '@shared/hooks/useContexts'
+import { useNews } from '@shared/hooks/useNews'
+import { cp } from '@styles/theme/helpers/colorPickers'
+
+interface NewsBarProps extends HTMLAttributes<HTMLDivElement> {
+  ref: RefObject<HTMLDivElement | null>
+}
+
+const NewsBar = (props: NewsBarProps) => {
   const { isNewsOpen, handleNewsOpen, handleNewsClose } = useLayout()
   const { news, loading } = useNews()
   const { bp, isDown } = useBreakpoint()
@@ -36,7 +42,7 @@ const NewsBar = () => {
   }, [news, loading, handleNewsOpen])
 
   return (
-    <NewsBarRoot className="news" $isNewsOpen={isNewsOpen}>
+    <NewsBarRoot className="news" $isNewsOpen={isNewsOpen} {...props}>
       {isDirty ? (
         <ResetButton className="flowing-text-reset-btn" type="button" aria-label="リセットボタン" onClick={handleReset}>
           <FirstPageIcon />

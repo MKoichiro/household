@@ -1,6 +1,7 @@
-import { ReactNode } from 'react'
-import PortalEntriesProvider from './PortalEntriesProvider'
+import type { ReactNode } from 'react'
+
 import PortalElementProvider from './PortalElementProvider'
+import PortalEntriesProvider from './PortalEntriesProvider'
 
 const PortalProvider = ({ children }: { children: ReactNode }) => {
   return (

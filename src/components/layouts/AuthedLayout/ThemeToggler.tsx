@@ -1,10 +1,13 @@
 import styled from '@emotion/styled'
-import { ColorMode, useColorMode } from '../../../shared/hooks/useContexts'
+import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import NightlightRoundIcon from '@mui/icons-material/NightlightRound'
-import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
 import { grey, indigo } from '@mui/material/colors'
-import { Fragment, JSX } from 'react'
+import type { JSX } from 'react'
+import { Fragment } from 'react'
+
+import type { ColorMode } from '@shared/hooks/useContexts'
+import { useColorMode } from '@shared/hooks/useContexts'
 
 const themeMap: { mode: ColorMode; icon: JSX.Element }[] = [
   { mode: 'light', icon: <LightModeIcon /> },
@@ -109,8 +112,9 @@ const ThemeTogglerRoot = styled.div<{ $mode: 'light' | 'dark' | 'os' }>`
           : $mode === 'os'
             ? 'calc(var(--size) + var(--gap))'
             : 'calc(2 * (var(--size) + var(--gap)))'};
-      transition-duration: 300ms;
-      transition: left, background-color;
+      transition:
+        left 300ms,
+        background-color 300ms;
     }
   }
 `

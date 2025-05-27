@@ -1,5 +1,6 @@
+import { htmlFontSizes } from '@styles/constants'
+
 import { useBreakpoint } from './useBreakpoint'
-import { htmlFontSizes } from '../../styles/constants'
 
 export const useRemToPx = () => {
   const { bp: currentBP } = useBreakpoint()

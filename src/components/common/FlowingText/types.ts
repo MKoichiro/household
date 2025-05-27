@@ -1,5 +1,5 @@
-import { CSSProperties, MouseEvent, RefObject } from 'react'
-import { MotionValue } from 'framer-motion'
+import type { MotionValue } from 'framer-motion'
+import type { CSSProperties, MouseEvent, RefObject } from 'react'
 
 export type TriggerType = 'hover' | 'click'
 

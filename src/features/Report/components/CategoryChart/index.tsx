@@ -1,15 +1,18 @@
 // MUI のチャートコンポーネントに切り替えても良いかも。
 // NOTE: ../../config/chartConfig.tx を App.tsx で読み込み済み
-import { Divider, Stack, Typography, useTheme } from '@mui/material'
-import { ChartOptions } from 'chart.js'
-import { Pie } from 'react-chartjs-2'
-import { Transaction, TransactionType } from '../../../../shared/types'
-import useCategoryChartData from './useCategoryChartData'
-import createPieOptions from './createPieOptions'
-import { MouseEvent, useState } from 'react'
 import styled from '@emotion/styled'
-import TransactionTypeToggleButton from '../../../../components/common/TransactionTypeToggleButton'
-import { cp } from '../../../../styles/theme/helpers/colorPickers'
+import { Divider, Stack, Typography, useTheme } from '@mui/material'
+import type { ChartOptions } from 'chart.js'
+import type { MouseEvent } from 'react'
+import { useState } from 'react'
+import { Pie } from 'react-chartjs-2'
+
+import TransactionTypeToggleButton from '@components/common/TransactionTypeToggleButton'
+import type { Transaction, TransactionType } from '@shared/types'
+import { cp } from '@styles/theme/helpers/colorPickers'
+
+import createPieOptions from './createPieOptions'
+import useCategoryChartData from './useCategoryChartData'
 
 // コンポーネントここから
 export interface CategoryChartProps {

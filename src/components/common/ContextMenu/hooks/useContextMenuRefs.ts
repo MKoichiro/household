@@ -1,6 +1,7 @@
+import type { RefObject } from '@fullcalendar/core/preact.js'
 import { useCallback, useMemo, useRef } from 'react'
-import { RefObject } from '@fullcalendar/core/preact.js'
-import { UseContextMenuRefsArgs, UseContextMenuRefsReturns } from '../types'
+
+import type { UseContextMenuRefsArgs, UseContextMenuRefsReturns } from '@components/common/ContextMenu/types'
 
 /**
  * @internal

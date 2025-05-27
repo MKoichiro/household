@@ -1,8 +1,10 @@
 import styled from '@emotion/styled'
-import { CSSProperties, FormEvent, ReactNode } from 'react'
-import { Box, Button, ButtonProps, Paper, Stack, Typography } from '@mui/material'
+import type { ButtonProps } from '@mui/material'
+import { Box, Button, Paper, Stack, Typography } from '@mui/material'
+import type { CSSProperties, FormEvent, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useLayout } from '../shared/hooks/useContexts'
+
+import { useLayout } from '@shared/hooks/useContexts'
 
 interface RootProps {
   children: ReactNode

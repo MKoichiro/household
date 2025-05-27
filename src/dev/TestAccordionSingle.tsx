@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
-import { useAccordion } from '../shared/hooks/useAccordion'
-import { BareAccordionHead, BareAccordionContent } from '../components/common/Accordion'
+
+import { BareAccordionHead, BareAccordionContent } from '@components/common/Accordion'
+import { useAccordion } from '@shared/hooks/useAccordion'
 
 const AccordionHead = styled(BareAccordionHead)`
   background-color: lightblue;

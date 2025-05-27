@@ -1,19 +1,13 @@
-import { Grid, Paper, SxProps, Theme } from '@mui/material'
-import {
-  NoData,
-  MonthSelector,
-  MonthSelectorProps,
-  CategoryChart,
-  CategoryChartProps,
-  BarChart,
-  BarChartProps,
-  TransactionTable,
-  TransactionTableProps,
-} from './components'
 import styled from '@emotion/styled'
-import { ReportActions, ReportStates } from '../../pages/ReportContainer'
-import { pagePaddingTemplate } from '../../styles/constants'
-import { cpf } from '../../styles/theme/helpers/colorPickers'
+import type { SxProps, Theme } from '@mui/material'
+import { Grid, Paper } from '@mui/material'
+
+import type { ReportActions, ReportStates } from '@pages/ReportContainer'
+import { pagePaddingTemplate } from '@styles/constants'
+import { cpf } from '@styles/theme/helpers/colorPickers'
+
+import type { MonthSelectorProps, CategoryChartProps, BarChartProps, TransactionTableProps } from './components'
+import { NoData, MonthSelector, CategoryChart, BarChart, TransactionTable } from './components'
 
 const paperCommonStyle: SxProps<Theme> = {
   minHeight: '400px',

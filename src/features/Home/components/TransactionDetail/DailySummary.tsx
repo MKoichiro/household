@@ -1,10 +1,11 @@
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
-import { Transaction, TransactionDisplayType, TransactionKeyType } from '../../../../shared/types'
-import { financeCalculations } from '../../../../shared/utils/financeCalculations'
-import { formatCurrency } from '../../../../shared/utils/formatting'
-import type { ResponsiveStyleValue } from '@mui/system'
 import type { GridSize } from '@mui/material/Grid'
-import { cpf } from '../../../../styles/theme/helpers/colorPickers'
+import type { ResponsiveStyleValue } from '@mui/system'
+
+import type { Transaction, TransactionDisplayType, TransactionKeyType } from '@shared/types'
+import { financeCalculations } from '@shared/utils/financeCalculations'
+import { formatCurrency } from '@shared/utils/formatting'
+import { cpf } from '@styles/theme/helpers/colorPickers'
 
 const gridSize: Record<TransactionKeyType, ResponsiveStyleValue<GridSize>> = {
   income: { xs: 12, md: 4, lg: 12 },

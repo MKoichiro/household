@@ -1,10 +1,12 @@
 import { AppBar, Box, Button, Toolbar } from '@mui/material'
 import { NavLink, Outlet } from 'react-router-dom'
+
+import { AddBoxIcon, LoginIcon } from '@icons'
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { cpf } from '@styles/theme/helpers/colorPickers'
+
 import HeaderTitle from './common/HeaderTitle'
 import LayoutRoot from './common/LayoutRoot'
-import { AddBoxIcon, LoginIcon } from '../../icons'
-import { cpf } from '../../styles/theme/helpers/colorPickers'
-import { useBreakpoint } from '../../shared/hooks/useBreakpoint'
 
 const LandingLayout = () => {
   const { bp } = useBreakpoint()

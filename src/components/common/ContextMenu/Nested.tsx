@@ -1,11 +1,14 @@
-import { CSSProperties, useMemo, useReducer, useRef } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import MotionContext from './MotionContext'
-import MenuContent from './MenuContent'
+import type { CSSProperties } from 'react'
+import { useMemo, useReducer, useRef } from 'react'
+
+import { keyEventCreator } from '@shared/utils/a11y'
+
 import { defaultAnimeConfigs } from './animationConfigs'
+import MenuContent from './MenuContent'
+import MotionContext from './MotionContext'
 import { CoordinateOrigin, MenuUl } from './styled'
-import { MenuItem, NestedProps } from './types'
-import { keyEventCreator } from '../../../shared/utils/a11y'
+import type { MenuItem, NestedProps } from './types'
 
 const reducer = (state: MenuItem[], action: { id?: string; type: 'openOnly' | 'closeAll' }) => {
   switch (action.type) {

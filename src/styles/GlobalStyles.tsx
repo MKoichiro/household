@@ -1,5 +1,6 @@
 /** グローバル変数や、CSSBaseline でカバーしきれないリセットを記述 */
 import { GlobalStyles as MUIGlobalStyles } from '@mui/material'
+
 import { htmlFontSizes } from './constants'
 
 const GlobalStyles = () => {

@@ -1,11 +1,12 @@
-import { IconButton, Theme, Typography, useTheme } from '@mui/material'
 import { css } from '@emotion/react'
-import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { BareAccordionHead, BareAccordionContent } from '../../common/Accordion'
-import { useAccordions } from '../../../shared/hooks/useAccordion'
-import { ReactNode } from 'react'
-import { useAuth } from '../../../shared/hooks/useContexts'
+import type { Theme } from '@mui/material'
+import { IconButton, Typography, useTheme } from '@mui/material'
+import type { ReactNode } from 'react'
+import { NavLink } from 'react-router-dom'
+
+import { BareAccordionHead, BareAccordionContent } from '@components/common/Accordion'
+import Backdrop from '@components/common/Backdrop'
 import {
   AccountCircleIcon,
   CampaignIcon,
@@ -15,10 +16,11 @@ import {
   LogoutIcon,
   SettingsIcon,
   VpnKeyIcon,
-} from '../../../icons'
-import Backdrop from '../../common/Backdrop'
-import { cp } from '../../../styles/theme/helpers/colorPickers'
-import { useBreakpoint } from '../../../shared/hooks/useBreakpoint'
+} from '@icons'
+import { useAccordions } from '@shared/hooks/useAccordion'
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { useAuth } from '@shared/hooks/useContexts'
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 interface MenuItemBase {
   id: string
@@ -128,7 +130,7 @@ const NavigationMenuItemsList = () => {
       <StyledLi>
         <StyledIconButton onClick={logout} aria-label="ログアウトボタン" disabled={isLogoutProcessing}>
           <LogoutIcon />
-          <Typography>ログアウト</Typography>
+          ログアウト
         </StyledIconButton>
       </StyledLi>
     </StyledOuterUl>
@@ -147,7 +149,7 @@ const NavigationMenu = ({ isOpen, onClose: handleClose }: NavigationMenuProps) =
   return (
     <aside>
       <Backdrop $open={isUp.md ? false : isOpen} $zIndex={theme.zIndex.navigationMenu[bp] - 1} onClick={handleClose} />
-      <NavigationMenuRoot role="navigation" aria-label="ナビゲーションメニュー" $open={isOpen}>
+      <NavigationMenuRoot aria-label="ナビゲーションメニュー" $open={isOpen}>
         <StickyContext>
           <NavigationMenuItemsList />
         </StickyContext>
@@ -219,9 +221,11 @@ const LinkButtonCommonStyle = (theme: Theme) => css`
     transform: scale(1.05);
   }
 
+  transition:
+    background-color 200ms,
+    color 200ms,
+    transform 200ms;
   transform-origin: center;
-  transition-duration: 200ms;
-  transition: background-color, color, transform;
 `
 
 const StyledNavLink = styled(NavLink)`
@@ -280,8 +284,7 @@ const NavigationMenuRoot = styled.nav<{ $open: boolean }>`
   flex-direction: column;
   width: ${({ theme }) => theme.width.navigationMenu.xs};
   transform: ${({ $open }) => ($open ? 'translateX(0)' : `translateX(-100%)`)};
-  transition-duration: 300ms;
-  transition: transform;
+  transition: transform 300ms;
   overflow: clip;
 
   ${({ theme }) => theme.breakpoints.up('sm')} {

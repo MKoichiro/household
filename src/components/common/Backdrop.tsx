@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
-import { CSSProperties } from '@mui/material'
-import { cp } from '../../styles/theme/helpers/colorPickers'
+import type { CSSProperties } from '@mui/material'
+
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 const Backdrop = styled.div<{ $open: boolean; $zIndex: CSSProperties['zIndex'] }>`
   background-color: ${({ theme }) => cp(theme, 'ui.mask')};

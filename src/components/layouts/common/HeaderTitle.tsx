@@ -1,7 +1,8 @@
 import { Typography } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
-import { APP_NAME } from '../../../shared/constants/app'
-import { FONT_FAMILY } from '../../../styles/theme/typography'
+
+import { APP_NAME } from '@shared/constants/app'
+import { FONT_FAMILY } from '@styles/theme/typography'
 
 type HeaderTitleProps = {
   redirectTo?: string

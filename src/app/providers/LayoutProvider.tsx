@@ -1,8 +1,10 @@
 // アプリケーションのレイアウトに関する状態を管理するプロバイダー
-import { CSSProperties, ReactNode, useCallback, useState } from 'react'
 import { useTheme } from '@mui/material'
-import { LayoutContext } from '../../shared/hooks/useContexts'
-import { useBreakpoint } from '../../shared/hooks/useBreakpoint'
+import type { CSSProperties, ReactNode } from 'react'
+import { useCallback, useState } from 'react'
+
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { LayoutContext } from '@shared/hooks/useContexts'
 
 const LayoutProvider = ({ children }: { children: ReactNode }) => {
   const theme = useTheme()

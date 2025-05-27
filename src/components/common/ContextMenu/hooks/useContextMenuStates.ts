@@ -1,5 +1,7 @@
 import { useReducer, useMemo, useState } from 'react'
-import {
+
+import positionCalculators from '@components/common/ContextMenu/positionCalculators'
+import type {
   Coordinate,
   IdOpenMap,
   IdOpenMapAction,
@@ -8,9 +10,9 @@ import {
   PositionStylesAction,
   UseContextMenuStatesArgs,
   UseContextMenuStatesReturns,
-} from '../types'
+} from '@components/common/ContextMenu/types'
+
 import { orDefault } from './defaultConfigs'
-import positionCalculators from '../positionCalculators'
 
 /** IdOpenMap を更新する reducer */
 const idOpenReducer = (state: IdOpenMap, action: IdOpenMapAction): IdOpenMap => {

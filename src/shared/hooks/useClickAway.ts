@@ -1,4 +1,5 @@
-import { RefObject, useEffect } from 'react'
+import type { RefObject } from 'react'
+import { useEffect } from 'react'
 
 type Falsy = false | null | undefined
 type ClickAwayTarget = RefObject<HTMLElement | null> | (() => HTMLElement | Falsy) | HTMLElement | Falsy
@@ -16,14 +17,13 @@ const isFunction = (target: ClickAwayTarget | EventElement): target is () => HTM
 
 const targetGuard = (target: ClickAwayTarget): HTMLElement | null => {
   if (isRefObject(target)) {
-    console.log('isRefObject', target)
     return target.current
   } else if (isHTMLElement(target)) {
     return target
   } else if (isFunction(target)) {
     return target()
   }
-  console.warn('targetGuard: target is not valid', target)
+  if (import.meta.env.DEV) console.warn('targetGuard: target is not valid', target)
   return null
 }
 

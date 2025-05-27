@@ -7,6 +7,22 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
+    /* Paths */
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@components/*": ["components/*"],
+      "@layouts/*": ["components/layouts/*"],
+      "@pages/*": ["pages/*"],
+      "@features/*": ["features/*"],
+      "@dev/*": ["dev/*"],
+      "@dev": ["dev/index"],
+      "@shared/*": ["shared/*"],
+      "@styles/*": ["styles/*"],
+      "@icons/*": ["icons/*"],
+      "@icons": ["icons/index"]
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -22,6 +38,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  // "include": ["src", "eslint.config.ts"],
   "include": ["src"]
 }

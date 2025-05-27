@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+
 import { useNotifications } from './useContexts'
 
 // "id": 1,
@@ -69,7 +70,7 @@ export const useNews = () => {
       })
       .catch((error) => {
         notifyError()
-        console.error('news.json の読み込みに失敗:', error)
+        if (import.meta.env.DEV) console.error('news.json の読み込みに失敗:', error)
       })
       .finally(() => {
         setLoading(false)

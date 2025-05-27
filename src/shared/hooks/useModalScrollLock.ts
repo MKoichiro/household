@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import { debounce } from '../utils/debounce'
+
+import { debounce } from '@shared/utils/debounce'
 
 /**
  * モーダル展開時に背景のスクロールを抑制するカスタムフック

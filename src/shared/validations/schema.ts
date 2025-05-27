@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { parseIntFromCommaSeparated } from '../utils/formatting'
+
+import { parseIntFromCommaSeparated } from '@shared/utils/formatting'
 
 export const transactionSchema = z.object({
   type: z.enum(['income', 'expense']),

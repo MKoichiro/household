@@ -1,12 +1,14 @@
 // TransactionContext.tsx - 取引の状態と操作を提供するContext
 
-import { ReactNode, useEffect, useState } from 'react'
-import { Transaction, TransactionFormValues } from '../../shared/types'
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
-import { db } from '../configs/firebase'
-import { parseIntFromCommaSeparated } from '../../shared/utils/formatting'
-import { withErrorHandling } from '../../shared/utils/errorHandlings'
-import { TransactionContext, useAuth, useNotifications } from '../../shared/hooks/useContexts'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
+
+import { db } from '@app/configs/firebase'
+import { TransactionContext, useAuth, useNotifications } from '@shared/hooks/useContexts'
+import type { Transaction, TransactionFormValues } from '@shared/types'
+import { withErrorHandling } from '@shared/utils/errorHandlings'
+import { parseIntFromCommaSeparated } from '@shared/utils/formatting'
 
 const COLLECTION_NAME = 'Transactions'
 

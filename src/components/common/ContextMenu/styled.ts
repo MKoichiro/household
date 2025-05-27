@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 import { css } from '@mui/material'
-import { PositionStyle } from './types'
-import { CSSProperties } from 'react'
 import { motion } from 'framer-motion'
+import type { CSSProperties } from 'react'
+
+import type { PositionStyle } from './types'
 
 // ContextMenu
 const ContextMenuRoot = styled.div<{

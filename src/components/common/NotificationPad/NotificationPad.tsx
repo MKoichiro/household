@@ -1,9 +1,11 @@
-import NotificationItem from './Notification'
-import { useNotifications, usePortal } from '../../../shared/hooks/useContexts'
-import { Badge, Divider, styled as muiStyled } from '@mui/material'
 import styled from '@emotion/styled'
-import { AnimatePresence } from 'framer-motion'
 import NotificationsIcon from '@mui/icons-material/Notifications'
+import { Badge, Divider, styled as muiStyled } from '@mui/material'
+import { AnimatePresence } from 'framer-motion'
+
+import { useNotifications, usePortal } from '@shared/hooks/useContexts'
+
+import NotificationItem from './Notification'
 
 const NotificationPad = () => {
   const { notifications, removeNotification, removeAllNotifications } = useNotifications()

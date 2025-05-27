@@ -1,8 +1,9 @@
 import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../../../shared/hooks/useContexts'
-import { pagePadding } from '../../../styles/constants'
-import { cpf } from '../../../styles/theme/helpers/colorPickers'
+
+import { useAuth } from '@shared/hooks/useContexts'
+import { pagePadding } from '@styles/constants'
+import { cpf } from '@styles/theme/helpers/colorPickers'
 
 const SettingsLayout = () => {
   const { user } = useAuth()

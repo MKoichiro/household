@@ -1,4 +1,4 @@
-import { Breakpoint, Theme } from '@mui/material'
+import type { Breakpoint, Theme } from '@mui/material'
 
 const mediaqueryPicker =
   (direction: 'up' | 'down', breakpoint: Breakpoint) =>

@@ -3,9 +3,11 @@
 // see: https://reactrouter.com/start/changelog#componenterrorboundary-route-properties
 
 import { Navigate, createBrowserRouter } from 'react-router-dom'
+
+import LayoutFallback from '@components/common/fallback/LayoutFallback'
+import PageFallback from '@components/common/fallback/PageFallback'
+
 import { layouts, pages } from './elements'
-import LayoutFallback from '../../components/common/fallback/LayoutFallback'
-import PageFallback from '../../components/common/fallback/PageFallback'
 
 const router = createBrowserRouter([
   {

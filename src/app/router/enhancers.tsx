@@ -1,7 +1,11 @@
-import { ComponentType, ReactNode, Suspense } from 'react'
-import LoadingOverlay from '../../components/common/LoadingOverlay'
-import Guard, { GuardType } from './guard'
-import { APP_NAME } from '../../shared/constants/app'
+import type { ComponentType, ReactNode } from 'react'
+import { Suspense } from 'react'
+
+import LoadingOverlay from '@components/common/LoadingOverlay'
+import { APP_NAME } from '@shared/constants/app'
+
+import type { GuardType } from './guard'
+import Guard from './guard'
 
 interface MetaType {
   title?: { prefix?: string; body?: string; noBody?: boolean }

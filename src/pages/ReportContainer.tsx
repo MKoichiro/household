@@ -1,8 +1,10 @@
-import { Dispatch, SetStateAction, useState } from 'react'
-import { formatMonth } from '../shared/utils/formatting'
-import { useTransaction } from '../shared/hooks/useContexts'
-import { Transaction } from '../shared/types'
-import ReportPresenter from '../features/Report/ReportPresenter'
+import type { Dispatch, SetStateAction } from 'react'
+import { useState } from 'react'
+
+import ReportPresenter from '@features/Report/ReportPresenter'
+import { useTransaction } from '@shared/hooks/useContexts'
+import type { Transaction } from '@shared/types'
+import { formatMonth } from '@shared/utils/formatting'
 
 export interface ReportStates {
   monthlyTransactions: Transaction[]

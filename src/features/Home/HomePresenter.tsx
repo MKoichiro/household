@@ -1,18 +1,12 @@
-import { Box } from '@mui/material'
-import {
-  MonthlySummary,
-  MonthlySummaryProps,
-  Calendar,
-  CalendarProps,
-  TransactionDetail,
-  TransactionDetailProps,
-  TransactionForm,
-  TransactionFormProps,
-} from './components'
 import styled from '@emotion/styled'
-import { HomeActions, HomeStates } from '../../pages/HomeContainer'
-import { pagePadding } from '../../styles/constants'
-import { useBreakpoint } from '../../shared/hooks/useBreakpoint'
+import { Box } from '@mui/material'
+
+import type { HomeActions, HomeStates } from '@pages/HomeContainer'
+import { useBreakpoint } from '@shared/hooks/useBreakpoint'
+import { pagePadding } from '@styles/constants'
+
+import type { MonthlySummaryProps, CalendarProps, TransactionDetailProps, TransactionFormProps } from './components'
+import { MonthlySummary, Calendar, TransactionDetail, TransactionForm } from './components'
 
 interface HomePresenterProps {
   states: HomeStates

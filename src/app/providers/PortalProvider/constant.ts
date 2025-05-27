@@ -1,4 +1,4 @@
-import { PortalEntry } from '../../../shared/hooks/useContexts'
+import type { PortalEntry } from '@shared/hooks/useContexts'
 
 export const DEFAULT_ENTRIES: PortalEntry[] = [
   // タブレット以下でのTransactionのメニュー

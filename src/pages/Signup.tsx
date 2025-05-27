@@ -1,13 +1,16 @@
 // SignUp.tsx - 新規登録ページコンポーネント
 // サインアップ後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
-import { TextField, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../shared/hooks/useContexts'
-import { z } from 'zod'
-import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormEvent, useState } from 'react'
-import * as AuthPagesCommon from '../features/AuthPagesCommons'
+import { TextField, Typography } from '@mui/material'
+import type { FormEvent } from 'react'
+import { useState } from 'react'
+import type { SubmitHandler } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { z } from 'zod'
+
+import * as AuthPagesCommon from '@features/AuthPagesCommons'
+import { useAuth } from '@shared/hooks/useContexts'
 
 // 前半部分の条件:
 // 英字が少なくとも1文字含まれることをチェック (?=.*[A-Za-z])

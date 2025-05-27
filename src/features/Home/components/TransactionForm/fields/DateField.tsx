@@ -1,6 +1,8 @@
 import { TextField } from '@mui/material'
-import { Control, Controller, FieldErrors } from 'react-hook-form'
-import { TransactionFormValues } from '../../../../../shared/types'
+import type { Control, FieldErrors } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
+
+import type { TransactionFormValues } from '@shared/types'
 
 interface DateFieldProps {
   control: Control<TransactionFormValues, object, TransactionFormValues>

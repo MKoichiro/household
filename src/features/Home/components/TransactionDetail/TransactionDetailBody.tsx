@@ -1,12 +1,14 @@
 import { Box, Button, Card, CardActionArea, CardContent, List, ListItem, Stack, Typography } from '@mui/material'
+import type { ReactNode } from 'react'
+
+import IconComponents from '@components/common/IconComponents'
+import { NotesIcon, AddCircleIcon } from '@icons'
+import type { Transaction } from '@shared/types'
+import { formatCurrency } from '@shared/utils/formatting'
+import { pagePadding } from '@styles/constants'
+import { cpf } from '@styles/theme/helpers/colorPickers'
+
 import DailySummary from './DailySummary'
-import { Transaction } from '../../../../shared/types'
-import { formatCurrency } from '../../../../shared/utils/formatting'
-import IconComponents from '../../../../components/common/IconComponents'
-import { ReactNode } from 'react'
-import { NotesIcon, AddCircleIcon } from '../../../../icons'
-import { pagePadding } from '../../../../styles/constants'
-import { cpf } from '../../../../styles/theme/helpers/colorPickers'
 
 interface TransactionDetailProps {
   dailyTransactions: Transaction[]

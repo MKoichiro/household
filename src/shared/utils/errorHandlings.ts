@@ -1,4 +1,4 @@
-import { Notifiers } from '../hooks/useContexts'
+import type { Notifiers } from '@shared/hooks/useContexts'
 
 // Firestoreによるエラーかを判定する型ガード
 function isDBError(error: unknown): error is { code: string; message: string } {

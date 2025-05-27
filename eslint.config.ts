@@ -9,6 +9,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import tseslint, { ConfigArray } from 'typescript-eslint'
 import tsParser from '@typescript-eslint/parser'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import importPlugin from 'eslint-plugin-import' // 公式で型定義は未公開らしい、eslintのruntimeで影響があるものでは無いので無視
 
 // グローバル設定
 const globalConfigs: Linter.Config[] = defineConfig([
@@ -18,6 +19,7 @@ const globalConfigs: Linter.Config[] = defineConfig([
     'build',
     'personal',
     'src/assets',
+    'docs',
     'public',
     'trash',
     '*.config.ts',
@@ -32,11 +34,18 @@ const globalConfigs: Linter.Config[] = defineConfig([
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        tsconfigRootDir: import.meta.dirname,
+        project: ['./tsconfig.app.json'],
       },
     },
     settings: {
       react: {
         version: 'detect',
+      },
+      'import/resolver': {
+        typescript: {
+          project: ['./tsconfig.app.json'],
+        },
       },
     },
   },
@@ -116,15 +125,69 @@ const tsConfig: ConfigArray = tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports', // 型のみなら import type を使う
+          disallowTypeAnnotations: false, // 型注釈内での import type は許可
+        },
+      ],
     },
   }
 )
 
 // その他の設定
 const commonConfigs: Linter.Config[] = defineConfig([
-  // eslintのフォーマット関連のエラーを無視し、prettierのエラーをeslintのエラーとして表示する
+  // eslint のフォーマット関連のエラーを無視し、prettier のエラーを eslint のエラーとして表示
   // see: https://github.com/prettier/eslint-plugin-prettier?tab=readme-ov-file#configuration-new-eslintconfigjs
   eslintPluginPrettierRecommended,
+
+  // import での path alias 強制
+  {
+    name: 'alias/enforce',
+    plugins: { import: importPlugin },
+    rules: {
+      // 以下二行で、親ディレクトリからの相対パスインポートを禁止し、@* は許可
+      // 'import/no-relative-parent-imports': ['error', { ignores: ['@*'] }] と動作的に等価だが、一般的ではないようなので不採用とした
+      'import/no-relative-parent-imports': 'off',
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: ['../*'],
+        },
+      ],
+    },
+  },
+
+  // import の順序を制御
+  {
+    name: 'import/order',
+    plugins: { import: importPlugin },
+    rules: {
+      'import/order': [
+        'error',
+        {
+          // 記述順がルールとして適用される
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling', 'index'], // 相対パスは細分化
+          ],
+          'newlines-between': 'always', // グループ間改行
+          alphabetize: { order: 'asc', caseInsensitive: true },
+        },
+      ],
+    },
+  },
+  {
+    name: 'no-useless-index',
+    plugins: { import: importPlugin },
+    rules: {
+      // index.(js|ts|tsx) の末尾指定を禁止し、自動解決に任せる
+      'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
+    },
+  },
 ])
 
 export default tseslint.config(globalConfigs, vanillaConfigs, reactConfigs, commonConfigs, tsConfig)

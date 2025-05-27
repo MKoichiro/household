@@ -1,4 +1,5 @@
-import { RefObject, useEffect, useRef } from 'react'
+import type { RefObject } from 'react'
+import { useEffect, useRef } from 'react'
 
 /** モニタリング対象としきい値を指定するオプション */
 interface ScrollJudgeOptions {

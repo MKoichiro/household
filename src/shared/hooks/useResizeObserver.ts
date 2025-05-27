@@ -1,6 +1,8 @@
-import { RefObject, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { debounce } from '../utils/debounce'
+import type { RefObject } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+
+import { debounce } from '@shared/utils/debounce'
 
 // DOM要素のrefとその要素に対する任意のコールバックを受け取り、
 // その返り値をstateとして保持するカスタムフック

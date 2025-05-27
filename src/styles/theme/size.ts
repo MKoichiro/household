@@ -1,4 +1,4 @@
-import { Height, Width } from '@mui/material'
+import type { Height, Width } from '@mui/material'
 
 export const width: Width = {
   navigationMenu: { xs: '50vw', sm: '50vw', md: '30vw', lg: '240px', xl: '240px' },

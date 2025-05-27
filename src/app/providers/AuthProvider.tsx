@@ -4,20 +4,22 @@
 // 個別の「非同期処理中...」を示すステートは個別は不要。
 // そのためreduxは使用せず、context APIにとどめる。
 
-import { ReactNode, useEffect, useState } from 'react'
+import type { User } from 'firebase/auth'
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  User,
   updateProfile,
   sendEmailVerification,
 } from 'firebase/auth'
-import { auth } from '../configs/firebase'
-import { withErrorHandling } from '../../shared/utils/errorHandlings'
-import LoadingOverlay from '../../components/common/LoadingOverlay'
-import { AuthContext, useNotifications } from '../../shared/hooks/useContexts'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
+
+import { auth } from '@app/configs/firebase'
+import LoadingOverlay from '@components/common/LoadingOverlay'
+import { AuthContext, useNotifications } from '@shared/hooks/useContexts'
+import { withErrorHandling } from '@shared/utils/errorHandlings'
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)

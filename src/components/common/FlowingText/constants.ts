@@ -1,4 +1,4 @@
-import { UseFlowingTextArg } from './types'
+import type { UseFlowingTextArg } from './types'
 
 export const defaults: Required<
   Pick<UseFlowingTextArg, 'pxPerSec' | 'spacerWidth' | 'trigger' | 'initializeDuration'>

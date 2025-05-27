@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
-import { Link } from 'react-router-dom'
 import { List, ListItem, ListItemText, Paper, Button, Box, Typography } from '@mui/material'
-import ContextMenu from '../components/common/ContextMenu/ContextMenu'
-import type { ContextMenusCommonConfig, ContextMenusConfigs, MenuTree } from '../components/common/ContextMenu/types'
-import { useContextMenus } from '../components/common/ContextMenu/hooks/useContextMenus'
+import { Link } from 'react-router-dom'
+
+import ContextMenu from '@components/common/ContextMenu/ContextMenu'
+import { useContextMenus } from '@components/common/ContextMenu/hooks/useContextMenus'
+import type { ContextMenusCommonConfig, ContextMenusConfigs, MenuTree } from '@components/common/ContextMenu/types'
 
 const StyledLink = styled(Link)`
   text-decoration: none;

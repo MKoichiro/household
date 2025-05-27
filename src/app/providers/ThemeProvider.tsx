@@ -1,7 +1,10 @@
-import { ReactNode, useMemo, useState } from 'react'
 import { ThemeProvider as MuiThemeProvider, useMediaQuery } from '@mui/material'
-import { getTheme } from '../../styles/theme'
-import { ColorMode, ColorModeContext } from '../../shared/hooks/useContexts'
+import type { ReactNode } from 'react'
+import { useMemo, useState } from 'react'
+
+import type { ColorMode } from '@shared/hooks/useContexts'
+import { ColorModeContext } from '@shared/hooks/useContexts'
+import { getTheme } from '@styles/theme'
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   // OS のカラーモードを取得 (初期値の判定用)

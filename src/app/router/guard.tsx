@@ -3,9 +3,10 @@
 // AuthProviderと重複してuserオブジェクトを取得する通信が発生する。
 // Guardは自前で実装し、そこでAuthProviderからuser情報を取得するのが良い。
 
-import { ReactNode } from 'react'
-import { useAuth } from '../../shared/hooks/useContexts'
+import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
+
+import { useAuth } from '@shared/hooks/useContexts'
 
 interface GuardConfig {
   predicate: (user: ReturnType<typeof useAuth>['user']) => boolean

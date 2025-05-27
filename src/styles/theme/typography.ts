@@ -1,4 +1,4 @@
-import { TypographyVariantsOptions } from '@mui/material'
+import type { TypographyVariantsOptions } from '@mui/material'
 
 export const FONT_FAMILY = {
   PRIMARY: 'Noto Sans JP, Roboto, Helvetica Neue, Arial, sans-serif',

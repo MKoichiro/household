@@ -1,9 +1,12 @@
 // リダイレクト処理を行うコンポーネントで、リダイレクト処理時にaddNotificationでメッセージをセット。
 // NotificationコンポーネントをBrowserRouterの外に配置することで、ページ遷移に影響されず通知を表示することができる。
 
-import { ReactNode, useState } from 'react'
-import { NotificationContext, NotificationType } from '../../shared/hooks/useContexts'
+import type { ReactNode } from 'react'
+import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+
+import type { NotificationType } from '@shared/hooks/useContexts'
+import { NotificationContext } from '@shared/hooks/useContexts'
 
 type NotifyActionType =
   | 'login'

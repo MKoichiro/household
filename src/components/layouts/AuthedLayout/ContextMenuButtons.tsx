@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
 import { Button } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { cp } from '../../../styles/theme/helpers/colorPickers'
+
+import { cp } from '@styles/theme/helpers/colorPickers'
 
 export const PageLink = styled(Link)`
   text-decoration: none;

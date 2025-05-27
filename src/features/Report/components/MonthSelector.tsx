@@ -1,10 +1,11 @@
+import { Box } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
-import { Box } from '@mui/material'
-import { ja } from 'date-fns/locale'
 import { addMonths } from 'date-fns'
-import { Dispatch, SetStateAction } from 'react'
-import MonthNavButton from '../../../components/common/MonthNavButton'
+import { ja } from 'date-fns/locale'
+import type { Dispatch, SetStateAction } from 'react'
+
+import MonthNavButton from '@components/common/MonthNavButton'
 
 export interface MonthSelectorProps {
   selectedMonth: Date

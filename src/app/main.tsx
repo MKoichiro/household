@@ -1,10 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { ErrorBoundary } from 'react-error-boundary'
+
+import GlobalErrorFallback from '@components/common/fallback/GlobalFallback'
+import NotificationPad from '@components/common/NotificationPad/NotificationPad'
+
 import App from './App'
 import Providers from './providers/Providers'
-import NotificationPad from '../components/common/NotificationPad/NotificationPad'
-import { ErrorBoundary } from 'react-error-boundary'
-import GlobalErrorFallback from '../components/common/fallback/GlobalFallback'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,6 +1,8 @@
-import { useEffect, useRef, createRef, RefObject, useReducer, useMemo } from 'react'
-import { useResizeObservers } from './useResizeObserver'
+import type { RefObject } from 'react'
+import { useEffect, useRef, createRef, useReducer, useMemo } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+
+import { useResizeObservers } from './useResizeObserver'
 
 /* ------------------------------------------------------------------
  *  複数 Accordion
@@ -75,7 +77,8 @@ export const useAccordions = (defaultStates: AccordionsDefaultType, OBSERVER_DEL
         dispatch({ type: 'SET_HEIGHT', id, height: newH })
       }
     })
-    // heights が変わるたび走る。
+    // heights が変わるたび走る。idKey で監視しているので ids の警告は無視。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [heights, idKey])
 
   /* id 安全チェック */

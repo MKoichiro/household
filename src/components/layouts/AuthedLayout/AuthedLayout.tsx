@@ -1,9 +1,11 @@
-import NavigationMenu from './NavigationMenu'
-import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
+import { Outlet } from 'react-router-dom'
+
+import LayoutRoot from '@layouts/common/LayoutRoot'
+import { useLayout } from '@shared/hooks/useContexts'
+
 import AuthedHeader from './AuthedHeader'
-import { useLayout } from '../../../shared/hooks/useContexts'
-import LayoutRoot from '../common/LayoutRoot'
+import NavigationMenu from './NavigationMenu'
 
 const AuthedLayout = () => {
   const { isNavigationMenuOpen, setIsNavigationMenuOpen } = useLayout()

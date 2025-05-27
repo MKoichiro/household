@@ -1,6 +1,6 @@
 // accessibility utils
 
-import { KeyboardEvent, MouseEvent } from 'react'
+import type { KeyboardEvent, MouseEvent } from 'react'
 
 type Handler<E> = (e: MouseEvent<E> | KeyboardEvent<E>) => void
 

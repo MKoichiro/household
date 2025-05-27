@@ -1,5 +1,7 @@
-import { RefObject, useLayoutEffect, useMemo, useRef } from 'react'
-import { debounce } from '../utils/debounce'
+import type { RefObject } from 'react'
+import { useLayoutEffect, useMemo, useRef } from 'react'
+
+import { debounce } from '@shared/utils/debounce'
 
 type ResizeEffectOptions = {
   /** デフォルト 50ms */
@@ -19,6 +21,8 @@ export function useResizeEffects<Id extends string>(
 ): void {
   const { delay = 50 } = options || {}
 
+  // if (Object.keys(targets).length === 0) return
+
   // refs のキー一覧をソートして文字列化 → 変化を検知
   const keyString = useMemo(() => Object.keys(targets).sort().join(','), [targets])
   const ids = useMemo(() => keyString.split(',') as Id[], [keyString])
@@ -36,7 +40,14 @@ export function useResizeEffects<Id extends string>(
     const cancelers: Partial<Record<Id, () => void>> = {}
 
     ids.forEach((id) => {
-      const el = typeof targets[id] === 'function' ? targets[id]() : targets[id].current
+      let el: HTMLElement | null = null
+      if (typeof targets[id] === 'function') {
+        el = targets[id]()
+      } else {
+        if (targets[id]) {
+          el = targets[id].current
+        }
+      }
       if (!el) return
 
       // デバウンス付きハンドラ
@@ -66,10 +77,11 @@ export function useResizeEffects<Id extends string>(
   }, [
     keyString,
     delay,
-    ...ids.map((id) => {
-      const target = targets[id]
-      return typeof target === 'function' ? target() : target.current
-    }),
+    ids,
+    // ...ids.map((id) => {
+    //   const target = targets[id]
+    //   return typeof target === 'function' ? target() : target.current
+    // }),
   ])
 }
 

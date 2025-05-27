@@ -1,8 +1,9 @@
-import { CSSProperties, ReactNode } from 'react'
-import { usePortal } from '../../../shared/hooks/useContexts'
-import Backdrop from '../Backdrop'
 import styled from '@emotion/styled'
-import { SwipeableHandlers } from 'react-swipeable'
+import type { CSSProperties, ReactNode } from 'react'
+import type { SwipeableHandlers } from 'react-swipeable'
+
+import Backdrop from '@components/common/Backdrop'
+import { usePortal } from '@shared/hooks/useContexts'
 
 interface HalfModalProps {
   isOpen: boolean

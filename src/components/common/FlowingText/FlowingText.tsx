@@ -3,6 +3,7 @@
 // 再レンダリング頻度は低め（アニメーション中は発生しない）なので現状メモ化はしていない。
 
 import FirstPageIcon from '@mui/icons-material/FirstPage'
+
 import {
   FlowingTextContainer,
   FlowingTextCopy,
@@ -11,7 +12,7 @@ import {
   FlowingTextRoot,
   ResetButton,
 } from './styles'
-import { FlowingTextProps } from './types'
+import type { FlowingTextProps } from './types'
 
 export const FlowingText = ({
   textContent,

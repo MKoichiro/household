@@ -1,4 +1,5 @@
-import {
+import type { Variants } from 'framer-motion'
+import type {
   ActionDispatch,
   CSSProperties,
   Dispatch,
@@ -8,12 +9,17 @@ import {
   RefObject,
   SetStateAction,
 } from 'react'
-import type { Variants } from 'framer-motion'
 
 /**
- * 位置情報に関する CSS プロパティ（top, left, right, bottom, transform）。
+ * 位置情報に関する top, left, right, bottom [px]と、transform。
  */
-export type PositionStyle = Partial<Pick<CSSProperties, 'top' | 'left' | 'right' | 'bottom' | 'transform'>>
+export type PositionStyle = {
+  top?: number | 'auto'
+  left?: number | 'auto'
+  right?: number | 'auto'
+  bottom?: number | 'auto'
+  transform?: CSSProperties['transform']
+}
 
 /**
  * メニュー位置計算で使用するオフセット量や正規化座標を表現。px 単位。
@@ -31,9 +37,14 @@ export interface Coordinate {
 export type ClickMode = 'window' | 'document' | 'anchor'
 
 /**
+ * 'custom' モードで、CSS で位置を決定する際の基準を指定。
+ */
+export type CustomMode = 'document' | 'window'
+
+/**
  * 位置決定のモードを表す列挙型。
  */
-export type Mode = { main: 'custom' } | { main: 'clicked'; sub: ClickMode } | { main: 'anchor' }
+export type Mode = { main: 'custom'; sub: CustomMode } | { main: 'clicked'; sub: ClickMode } | { main: 'anchor' }
 
 /**
  * アンカー要素に対するサブメニューの相対配置を示す列挙型。
@@ -83,6 +94,11 @@ export type CursorRelativity =
   | 'bottomLeft'
   | 'leftCenter'
   | 'center'
+
+/**
+ * custom モードで、CSS で位置を決定する際の基準を示す列挙型。
+ */
+export type CustomRelativity = 'documentTopLeft' | 'windowTopLeft'
 
 /**
  * @internal
@@ -155,8 +171,10 @@ export interface Clicked {
  */
 export interface Custom {
   type: 'custom'
+  /** CSS で位置を決定する際の基準。'documentTopLeft' は document の左上、'windowTopLeft' は window の左上を基準とする。 */
+  customRelativity?: CustomRelativity
   /** 自前の CSS で document の左上基準から決定する */
-  custom: PositionStyle
+  custom?: PositionStyle
 }
 /**
  * コンテキストメニューを表示する際の位置決定の戦略を示す型。

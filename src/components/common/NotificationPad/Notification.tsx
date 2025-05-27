@@ -1,12 +1,14 @@
-import { NotificationType } from '../../../shared/hooks/useContexts'
-import { CircularProgress, Stack, Typography } from '@mui/material'
-import Snackbar from './Snackbar'
-import { motion } from 'framer-motion'
 import styled from '@emotion/styled'
-import { useRemToPx } from '../../../shared/hooks/useRemToPx'
+import { CircularProgress, Stack, Typography } from '@mui/material'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import useTimer from '../../../shared/hooks/useTimer'
-import { cpf } from '../../../styles/theme/helpers/colorPickers'
+
+import type { NotificationType } from '@shared/hooks/useContexts'
+import { useRemToPx } from '@shared/hooks/useRemToPx'
+import useTimer from '@shared/hooks/useTimer'
+import { cpf } from '@styles/theme/helpers/colorPickers'
+
+import Snackbar from './Snackbar'
 
 const slideVariants = {
   initial: { x: '-110%', maxHeight: '4rem' },

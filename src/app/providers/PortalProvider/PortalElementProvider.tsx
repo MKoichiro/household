@@ -1,6 +1,9 @@
 // PortalContext.tsx
-import { ReactNode, useCallback, useState } from 'react'
-import { usePortalEntries, PortalElementMap, PortalElementContext } from '../../../shared/hooks/useContexts'
+import type { ReactNode } from 'react'
+import { useCallback, useState } from 'react'
+
+import type { PortalElementMap } from '@shared/hooks/useContexts'
+import { usePortalEntries, PortalElementContext } from '@shared/hooks/useContexts'
 
 const PortalElementProvider = ({ children }: { children: ReactNode }) => {
   const { entries } = usePortalEntries()

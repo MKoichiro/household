@@ -1,3 +1,5 @@
+import type { JSX } from 'react'
+
 import {
   AlarmIcon,
   FastfoodIcon,
@@ -8,9 +10,8 @@ import {
   SavingsIcon,
   TrainIcon,
   WorkIcon,
-} from '../../icons'
-import { ExpenseCategory, IncomeCategory } from '../../shared/types'
-import { JSX } from 'react'
+} from '@icons'
+import type { ExpenseCategory, IncomeCategory } from '@shared/types'
 
 const IconComponents: Record<IncomeCategory | ExpenseCategory, JSX.Element> = {
   // income
