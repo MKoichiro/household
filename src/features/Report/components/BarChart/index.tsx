@@ -6,7 +6,7 @@ import { Bar } from 'react-chartjs-2'
 
 import { useRemToPx } from '@shared/hooks/useRemToPx'
 import type { Transaction } from '@shared/types'
-import { calculateDailyBalances } from '@shared/utils/financeCalculations'
+import { calculateDailySummaries } from '@shared/utils/financeCalculations'
 import { cp } from '@styles/theme/helpers/colorPickers'
 
 import createBarOptions from './createBarOptions'
@@ -17,7 +17,7 @@ export interface BarChartProps {
 }
 
 const BarChart = ({ monthlyTransactions: transactions, isLoading }: BarChartProps) => {
-  const dailySummaries = calculateDailyBalances(transactions)
+  const dailySummaries = calculateDailySummaries(transactions)
 
   const dates = Object.keys(dailySummaries).sort()
   const incomeData = dates.map((day) => dailySummaries[day].income)

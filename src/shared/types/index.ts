@@ -26,20 +26,23 @@ export type IncomeTransaction = BaseTransaction<'income', IncomeCategory>
 export type ExpenseTransaction = BaseTransaction<'expense', ExpenseCategory>
 export type Transaction = IncomeTransaction | ExpenseTransaction
 
-export interface Balance {
+export interface Summary {
   income: number
   expense: number
   balance: number
 }
 
-export type DailyBalances = Record<string, Balance>
-
-export interface CalendarContent {
-  start: string
+export interface SummaryFormatted {
   income: string // e.g.) "1,000"
   expense: string
   balance: string
 }
+
+export type DailySummaries = Record<string, Summary>
+
+export type CalendarContent = {
+  start: string
+} & SummaryFormatted
 
 // useFormのジェネリクス、初期値を含めた緩い型
 // zodのvalidationで初期値の禁止（""など）ははじく

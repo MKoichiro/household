@@ -1,6 +1,6 @@
-import type { Balance, DailyBalances, Transaction } from '@shared/types'
+import type { Summary, DailySummaries, Transaction } from '@shared/types'
 
-export function financeCalculations(transactions: Transaction[]): Balance {
+export function financeCalculations(transactions: Transaction[]): Summary {
   return transactions.reduce(
     (acc, transaction) => {
       switch (transaction.type) {
@@ -22,8 +22,8 @@ export function financeCalculations(transactions: Transaction[]): Balance {
 
 // 一日あたりの収支を計算
 // { "2025-03-01": { income: 100, expense: 100, balance: 0 }, ... }
-export function calculateDailyBalances(transactions: Transaction[]): DailyBalances {
-  return transactions.reduce<DailyBalances>((acc, transaction) => {
+export function calculateDailySummaries(transactions: Transaction[]): DailySummaries {
+  return transactions.reduce<DailySummaries>((acc, transaction) => {
     const day = transaction.date
     if (!acc[day]) {
       acc[day] = { income: 0, expense: 0, balance: 0 }

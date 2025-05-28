@@ -9,9 +9,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'
 import { useApp, useLayout } from '@shared/hooks/useContexts'
 import useScrollJudge from '@shared/hooks/useScrollJudge'
-import type { CalendarContent, DailyBalances, Transaction } from '@shared/types'
+import type { CalendarContent, DailySummaries, Transaction } from '@shared/types'
 import { debounce } from '@shared/utils/debounce'
-import { calculateDailyBalances } from '@shared/utils/financeCalculations'
+import { calculateDailySummaries } from '@shared/utils/financeCalculations'
 import { formatCurrency, getFormattedToday } from '@shared/utils/formatting'
 import { cp } from '@styles/theme/helpers/colorPickers'
 
@@ -22,10 +22,10 @@ import CalendarPresenter from './CalendarPresenter'
 //   { title: 'Meeting', start: "2025-03-31", income: 300, expense: 200, balance: 100 },
 //   ...,
 // ]
-const eventsCreator = (dailyBalances: DailyBalances): CalendarContent[] => {
-  const dates: string[] = Object.keys(dailyBalances)
+const eventsCreator = (dailySummaries: DailySummaries): CalendarContent[] => {
+  const dates: string[] = Object.keys(dailySummaries)
   return dates.map((date) => {
-    const { income, expense, balance } = dailyBalances[date]
+    const { income, expense, balance } = dailySummaries[date]
     return {
       start: date,
       income: formatCurrency(income),
@@ -68,8 +68,8 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
   const scrollJudgeElementRef = useRef<HTMLDivElement>(null)
   const isScrollingRef = useScrollJudge(scrollJudgeElementRef, { watchX: true })
 
-  const dailyBalances = calculateDailyBalances(transactions)
-  const calendarEvents = eventsCreator(dailyBalances)
+  const dailySummaries = calculateDailySummaries(transactions)
+  const calendarEvents = eventsCreator(dailySummaries)
 
   // fullcalendarの問題でスマホ版で、タップの感度が高く二重発火してしまうので、debounceをかける
   const handleDateClick = debounce((dateInfo: DateClickArg) => {

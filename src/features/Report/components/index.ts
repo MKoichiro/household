@@ -9,5 +9,5 @@ export type { CategoryChartProps } from './CategoryChart'
 export { default as BarChart } from './BarChart'
 export type { BarChartProps } from './BarChart'
 
-export { default as TransactionTable } from './TransactionTable'
-export type { TransactionTableProps } from './TransactionTable'
+export { default as TransactionTable } from './TransactionTable/Container'
+export type { TransactionTableProps } from './TransactionTable/Container'

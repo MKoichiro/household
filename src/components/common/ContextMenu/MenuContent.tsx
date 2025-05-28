@@ -39,7 +39,7 @@ const MenuContent = ({
           aria-label="サブメニューの開閉"
           tabIndex={0}
         >
-          {content}
+          <span className="context-menu event-btn-rect-content">{content}</span>
           {hasChildren && autoIcon ? <ArrowForwardIosIcon /> : null}
         </EventRect>
       </CoordinateRect>

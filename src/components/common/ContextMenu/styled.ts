@@ -97,6 +97,9 @@ const EventRect = styled.button`
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
+  span {
+    flex-grow: 1;
+  }
   svg {
     margin-left: auto;
     font-size: inherit;
