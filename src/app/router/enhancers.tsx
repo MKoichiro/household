@@ -1,8 +1,8 @@
 import type { ComponentType, ReactNode } from 'react'
 import { Suspense } from 'react'
 
-import LoadingOverlay from '@components/common/LoadingOverlay'
 import { APP_NAME } from '@shared/constants/app'
+import LoadingOverlay from '@ui/LoadingOverlay'
 
 import type { GuardType } from './guard'
 import Guard from './guard'

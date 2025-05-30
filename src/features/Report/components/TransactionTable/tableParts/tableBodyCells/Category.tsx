@@ -1,6 +1,6 @@
 import { TableCell } from '@mui/material'
 
-import IconComponents from '@components/common/IconComponents'
+import IconComponents from '@ui/IconComponents'
 import type { Transaction } from '@shared/types'
 import { cpf } from '@styles/theme/helpers/colorPickers'
 

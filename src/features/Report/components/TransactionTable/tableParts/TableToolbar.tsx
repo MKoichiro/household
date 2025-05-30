@@ -1,7 +1,7 @@
 import { alpha, Box, IconButton, Tooltip, Typography } from '@mui/material'
 import type { MouseEvent } from 'react'
 
-import { DeleteIcon } from '@icons/index'
+import { DeleteIcon } from '@shared/icons/index'
 
 interface TransactionTableToolbarProps {
   numSelected: number

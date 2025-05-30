@@ -17,9 +17,9 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import { auth } from '@app/configs/firebase'
-import LoadingOverlay from '@components/common/LoadingOverlay'
 import { AuthContext, useNotifications } from '@shared/hooks/useContexts'
 import { withErrorHandling } from '@shared/utils/errorHandlings'
+import LoadingOverlay from '@ui/LoadingOverlay'
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)

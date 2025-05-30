@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material'
 import type { FormEvent } from 'react'
 import type { ControllerRenderProps } from 'react-hook-form'
 
-import Backdrop from '@components/common/Backdrop'
+import Backdrop from '@ui/Backdrop'
 import { useLayout, usePortal } from '@shared/hooks/useContexts'
 import { useModalScrollLock } from '@shared/hooks/useModalScrollLock'
 import type { Transaction, TransactionFormValues, TransactionType } from '@shared/types'

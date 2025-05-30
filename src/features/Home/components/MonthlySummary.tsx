@@ -2,7 +2,7 @@ import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import type { ElementType } from 'react'
 import { useState } from 'react'
 
-import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '@icons'
+import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '@shared/icons'
 import type { Transaction, TransactionKeyType } from '@shared/types'
 import { financeCalculations } from '@shared/utils/financeCalculations'
 import { formatCurrency } from '@shared/utils/formatting'
@@ -77,7 +77,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
   ]
 
   return (
-    <Grid container spacing={{ xs: 1, sm: 2 }} mb={2} sx={{ maxWidth: '100%' }} columns={24}>
+    <Grid component="section" container spacing={{ xs: 1, sm: 2 }} mb={2} sx={{ maxWidth: '100%' }} columns={24}>
       {gridMap.map((item) => (
         <Grid
           key={item.name}

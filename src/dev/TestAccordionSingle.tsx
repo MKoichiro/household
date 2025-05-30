@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { BareAccordionHead, BareAccordionContent } from '@components/common/Accordion'
+import { BareAccordionHead, BareAccordionContent } from '@ui/Accordion'
 import { useAccordion } from '@shared/hooks/useAccordion'
 
 const AccordionHead = styled(BareAccordionHead)`

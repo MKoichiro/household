@@ -7,7 +7,7 @@ import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { Pie } from 'react-chartjs-2'
 
-import TransactionTypeToggleButton from '@components/common/TransactionTypeToggleButton'
+import TransactionTypeToggleButton from '@ui/TransactionTypeToggleButton'
 import type { Transaction, TransactionType } from '@shared/types'
 import { cp } from '@styles/theme/helpers/colorPickers'
 

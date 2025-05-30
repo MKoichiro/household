@@ -1,7 +1,7 @@
 import { IconButton, Stack, Typography } from '@mui/material'
 import { format } from 'date-fns'
 
-import { CloseIcon } from '@icons'
+import { CloseIcon } from '@shared/icons'
 import { useApp } from '@shared/hooks/useContexts'
 import { cpf } from '@styles/theme/helpers/colorPickers'
 

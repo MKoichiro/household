@@ -4,32 +4,33 @@ import { lazy } from 'react'
 
 import AppProvider from '@app/providers/AppProvider'
 import TransactionProvider from '@app/providers/TransactionProvider'
-import AuthedLayout from '@components/layouts/AuthedLayout/AuthedLayout'
-import SettingsLayout from '@components/layouts/AuthedLayout/SettingsLayout'
-import LandingLayout from '@components/layouts/LandingLayout'
-import NonAuthedLayout from '@components/layouts/NonAuthedLayout'
 import * as Dev from '@dev'
-import Landing from '@pages/Landing'
-import Login from '@pages/Login'
-import NotFound from '@pages/NotFound'
-import PrivateNews from '@pages/PrivateNews'
-import Security from '@pages/Security'
-import Settings from '@pages/Settings'
-import SignUp from '@pages/Signup'
-import VerifyEmail from '@pages/VerifyEmail'
+import AppLayout from '@layouts/app'
+import SettingsLayout from '@layouts/app/settings/SettingsLayout'
+import AuthLayout from '@layouts/auth'
+import PublicLayout from '@layouts/public'
+import PrivateNews from '@pages/app/PrivateNews'
+import Security from '@pages/app/settings/Security'
+import Settings from '@pages/app/settings/Settings'
+import Login from '@pages/auth/Login'
+import SignUp from '@pages/auth/Signup'
+import VerifyEmail from '@pages/auth/VerifyEmail'
+import NotFound from '@pages/common/NotFound'
+import Landing from '@pages/public/Landing'
 
 import { createLayout, createPage } from './enhancers'
 
 // 比較的大きなコンポーネントは、React.lazyで遅延読み込み
-const Home = lazy(() => import('../../pages/HomeContainer'))
-const Report = lazy(() => import('../../pages/ReportContainer'))
+const Home = lazy(() => import('../../pages/app/Home'))
+const Report = lazy(() => import('../../pages/app/Report'))
 
+// ガード付きレイアウトコンポーネントを定義。
 const layouts = {
   public: {
-    root: createLayout(<LandingLayout />, { guards: ['CheckAuth'] }),
+    root: createLayout(<PublicLayout />, { guards: ['CheckAuth'] }),
   },
   app: {
-    root: createLayout(<AuthedLayout />, {
+    root: createLayout(<AppLayout />, {
       guards: ['RequireAuth', 'RequireEmailVerification'],
       providers: [AppProvider, TransactionProvider],
     }),
@@ -38,16 +39,17 @@ const layouts = {
     },
   },
   auth: {
-    root: createLayout(<NonAuthedLayout />, { guards: ['CheckAuth'] }),
+    root: createLayout(<AuthLayout />, { guards: ['CheckAuth'] }),
   },
   emailVerification: {
-    root: createLayout(<NonAuthedLayout />, { guards: ['CheckAuth', 'RequireAuth'] }),
+    root: createLayout(<AuthLayout />, { guards: ['CheckAuth', 'RequireAuth'] }),
   },
   dev: {
-    root: createLayout(<NonAuthedLayout />, { guards: [] }),
+    root: createLayout(<AuthLayout />, { guards: [] }),
   },
 }
 
+// メタ情報付きページコンポーネントを定義。
 const pages = {
   public: {
     index: createPage(<Landing />, { meta: { title: { noBody: true } } }),

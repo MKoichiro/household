@@ -13,7 +13,7 @@ const LayoutProvider = ({ children }: { children: ReactNode }) => {
   const [isNewsOpen, setIsNewsOpen] = useState(false)
 
   // useLayoutEffect の依存配列に含めるので参照を安定化。
-  // see: .src/components/layouts/AuthedHeader.tsx
+  // see: .src/layouts/AppHeader.tsx
   const handleNewsOpen = useCallback(() => setIsNewsOpen(true), [])
 
   const handleNewsClose = () => setIsNewsOpen(false)

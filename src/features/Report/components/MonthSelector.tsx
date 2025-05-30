@@ -5,7 +5,7 @@ import { addMonths } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import type { Dispatch, SetStateAction } from 'react'
 
-import MonthNavButton from '@components/common/MonthNavButton'
+import MonthNavButton from '@ui/MonthNavButton'
 
 export interface MonthSelectorProps {
   selectedMonth: Date

@@ -4,19 +4,20 @@
 
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 
-import LayoutFallback from '@components/common/fallback/LayoutFallback'
-import PageFallback from '@components/common/fallback/PageFallback'
+import LayoutFallback from '@ui/fallback/LayoutFallback'
+import PageFallback from '@ui/fallback/PageFallback'
 
 import { layouts, pages } from './elements'
 
 const router = createBrowserRouter([
+  // 公開ページのルート。パスレスルートのネストで、レイアウトとフォールバックを設定している。
   {
-    path: undefined, // パスレスルートで共通レイアウトを指定
+    path: undefined,
     element: layouts.public.root,
     errorElement: <LayoutFallback />,
     children: [
       {
-        path: undefined, // パスレスルートで共通フォールバックを設定
+        path: undefined,
         errorElement: <PageFallback />,
         children: [
           { path: '/', element: pages.public.index },
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
     ],
   },
 
+  // 認証済みユーザーがアクセスするアプリケーション本体のルート。
   {
     path: '/app',
     element: layouts.app.root,
@@ -51,6 +53,8 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  // 認証時にアクセスする認証関連のルート。ログイン/サインアップページなど。
   {
     path: '/auth',
     element: layouts.auth.root,
@@ -67,6 +71,7 @@ const router = createBrowserRouter([
     ],
   },
 
+  // メール認証時、サインアップ後の自動リダイレクト先のルート。
   {
     path: '/verify-email',
     errorElement: <LayoutFallback />,
@@ -74,6 +79,7 @@ const router = createBrowserRouter([
     children: [{ index: true, element: pages.emailVerification.index, errorElement: <PageFallback /> }],
   },
 
+  // 開発用のルート。ガードにより dev 環境以外ではアクセス不可。
   {
     path: '/dev',
     element: layouts.dev.root,

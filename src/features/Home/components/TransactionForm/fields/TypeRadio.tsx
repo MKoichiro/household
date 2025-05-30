@@ -2,7 +2,7 @@ import type { MouseEvent } from 'react'
 import type { Control, ControllerRenderProps } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
-import TransactionTypeToggleButton from '@components/common/TransactionTypeToggleButton'
+import TransactionTypeToggleButton from '@ui/TransactionTypeToggleButton'
 import type { TransactionFormValues } from '@shared/types'
 
 interface TypeRadioProps {

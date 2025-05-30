@@ -11,16 +11,17 @@
     "baseUrl": "src",
     "paths": {
       "@app/*": ["app/*"],
-      "@components/*": ["components/*"],
-      "@layouts/*": ["components/layouts/*"],
-      "@pages/*": ["pages/*"],
-      "@features/*": ["features/*"],
+      "@assets/*": ["assets/*"],
       "@dev/*": ["dev/*"],
       "@dev": ["dev/index"],
+      "@features/*": ["features/*"],
+      "@icons/*": ["shared/icons/*"],
+      "@icons": ["shared/icons/index"],
+      "@layouts/*": ["layouts/*"],
+      "@pages/*": ["pages/*"],
       "@shared/*": ["shared/*"],
       "@styles/*": ["styles/*"],
-      "@icons/*": ["icons/*"],
-      "@icons": ["icons/index"]
+      "@ui/*": ["ui/*"]
     },
 
     /* Bundler mode */
