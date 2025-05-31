@@ -6,6 +6,7 @@ import type { ReportActions, ReportStates } from '@pages/app/Report'
 import { pagePaddingTemplate } from '@styles/constants'
 import { cpf } from '@styles/theme/helpers/colorPickers'
 
+import AIAdvisor from './AIAdvisor'
 import type { MonthSelectorProps, CategoryChartProps, BarChartProps, TransactionTableProps } from './components'
 import { NoData, MonthSelector, CategoryChart, BarChart, TransactionTable } from './components'
 
@@ -36,6 +37,10 @@ const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
     setSelectedMonth,
   }
 
+  const aiAdvisorProps = {
+    monthlyTransactions,
+  }
+
   const categoryChartProps: CategoryChartProps = {
     monthlyTransactions,
   }
@@ -55,6 +60,11 @@ const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
         {/* 月選択部分 */}
         <Grid component="section" size={{ xs: 12 }}>
           <MonthSelector {...monthSelectorProps} />
+        </Grid>
+
+        {/* 月選択部分 */}
+        <Grid component="section" size={{ xs: 12 }}>
+          <AIAdvisor {...aiAdvisorProps} />
         </Grid>
 
         {/* 円グラフ */}

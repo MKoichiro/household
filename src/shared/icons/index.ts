@@ -63,6 +63,11 @@ export { default as AccountBalanceIcon } from '@mui/icons-material/AccountBalanc
 /** ゴミ箱 */
 export { default as DeleteIcon } from '@mui/icons-material/Delete'
 
+/** AIアドバイザー: ヘッダーテキスト部 */
+export { default as LightbulbOutlineIcon } from '@mui/icons-material/LightbulbOutline'
+/** AIアドバイザー: 生成ボタン */
+export { default as AutoAwesomeIcon } from '@mui/icons-material/AutoAwesome'
+
 /** カテゴリ用 */
 export { default as AddBusinessIcon } from '@mui/icons-material/AddBusiness'
 export { default as AddHomeIcon } from '@mui/icons-material/AddHome'

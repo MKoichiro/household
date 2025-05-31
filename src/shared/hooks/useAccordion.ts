@@ -64,7 +64,7 @@ export const useAccordions = (defaultStates: AccordionsDefaultType, OBSERVER_DEL
   })
 
   /* ResizeObserver */
-  // 自作フックで全要素のスクロール高さだけを取得
+  // 全要素のスクロール高さだけを取得
   const heights = useResizeObservers(refs.current, (el) => el.scrollHeight, {
     delay: OBSERVER_DELAY,
     initialValues: {},

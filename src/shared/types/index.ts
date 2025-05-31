@@ -40,6 +40,9 @@ export interface SummaryFormatted {
 
 export type DailySummaries = Record<string, Summary>
 
+export type ExpenseCategorySum = Partial<Record<ExpenseCategory, number>>
+export type IncomeCategorySum = Partial<Record<IncomeCategory, number>>
+
 export type CalendarContent = {
   start: string
 } & SummaryFormatted

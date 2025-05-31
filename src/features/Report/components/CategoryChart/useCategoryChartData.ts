@@ -1,15 +1,9 @@
 import type { PaletteMode, Theme } from '@mui/material'
 import type { ChartData } from 'chart.js'
 
-import type {
-  ExpenseCategory,
-  ExpenseTransaction,
-  IncomeCategory,
-  IncomeTransaction,
-  Transaction,
-  TransactionType,
-} from '@shared/types'
+import type { ExpenseCategory, IncomeCategory, Transaction, TransactionType } from '@shared/types'
 import { expenseLiterals, incomeLiterals } from '@shared/types'
+import { calculateCategorySummaries } from '@shared/utils/financeCalculations'
 import { cp } from '@styles/theme/helpers/colorPickers'
 
 // カテゴリーとカラーのマッピングを定義
@@ -55,27 +49,13 @@ const incomeCategoryColorMap = (theme: Theme): IncomeColorMap => ({
   borderColor: createColorMap<IncomeCategory>(theme, 'borderColor', 'income'),
 })
 
-type ExpenseCategorySum = Partial<Record<ExpenseCategory, number>>
-type IncomeCategorySum = Partial<Record<IncomeCategory, number>>
-
 const useCategoryChartData = (transactions: Transaction[], theme: Theme) => {
+  // 収入タイプ毎、カテゴリ毎の、合計金額降順の配列を用意
+  // e.g.) incomeSortedSums: [ {"給与": 500000 }, {"副収入": 10000}, ... ]
+  const { expense: expenseSortedSums, income: incomeSortedSums } = calculateCategorySummaries(transactions)
+
   // --- 支出データの準備ここから ---
-  // 支出タイプのtransactionsを取得
-  const expenseTransactions: ExpenseTransaction[] = transactions.filter((t) => t.type === 'expense')
-
-  // カテゴリ毎の合計を算出
-  // e.g.) [ {"食費": 1950 }, {"日用品": 24000}, {"交際費": 0} ... ]
-  const expenseCategorySums: ExpenseCategorySum[] = expenseLiterals.map((label) => {
-    const sum = expenseTransactions.reduce((acc, t) => (t.category === label ? (acc += t.amount) : acc), 0)
-    return { [label]: sum }
-  })
-
-  // 金額の降順にソート
-  const expenseSortedSums = expenseCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
-
-  // ラベルのみの配列を用意
-  // Object.*()の返り値は常にstring[]型になるためアサーションで明示
-  // e.g.) ["食費", "交際費"]
+  // ソートされたラベルのみの配列を用意: e.g.) ["食費", "交際費"]
   const expenseLabels = expenseSortedSums.map((item) => Object.keys(item)[0]) as ExpenseCategory[]
 
   // マッピングを参照して各部分の色を準備
@@ -101,12 +81,6 @@ const useCategoryChartData = (transactions: Transaction[], theme: Theme) => {
   // --- 支出データの準備ここまで ---
 
   // --- 収入データの準備ここから ---
-  const incomeTransactions: IncomeTransaction[] = transactions.filter((t) => t.type === 'income')
-  const incomeCategorySums: IncomeCategorySum[] = incomeLiterals.map((label) => {
-    const sum = incomeTransactions.reduce((acc, t) => (t.category === label ? acc + t.amount : acc), 0)
-    return { [label]: sum }
-  })
-  const incomeSortedSums = incomeCategorySums.sort((a, b) => Object.values(b)[0] - Object.values(a)[0])
   const incomeLabels = incomeSortedSums.map((item) => Object.keys(item)[0]) as IncomeCategory[]
   const incomeBackgroundColors = incomeLabels.map((label) => incomeCategoryColorMap(theme).backgroundColor[label])
   const incomeBorderColors = incomeLabels.map((label) => incomeCategoryColorMap(theme).borderColor[label])

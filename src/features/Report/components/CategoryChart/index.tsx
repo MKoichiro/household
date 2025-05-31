@@ -7,14 +7,13 @@ import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { Pie } from 'react-chartjs-2'
 
-import TransactionTypeToggleButton from '@ui/TransactionTypeToggleButton'
 import type { Transaction, TransactionType } from '@shared/types'
 import { cp } from '@styles/theme/helpers/colorPickers'
+import TransactionTypeToggleButton from '@ui/TransactionTypeToggleButton'
 
 import createPieOptions from './createPieOptions'
 import useCategoryChartData from './useCategoryChartData'
 
-// コンポーネントここから
 export interface CategoryChartProps {
   monthlyTransactions: Transaction[]
 }
