@@ -4,7 +4,7 @@ import { lazy } from 'react'
 
 import AppProvider from '@app/providers/AppProvider'
 import TransactionProvider from '@app/providers/TransactionProvider'
-import * as Dev from '@dev'
+import * as Dev from '@dev/index'
 import AppLayout from '@layouts/app'
 import SettingsLayout from '@layouts/app/settings/SettingsLayout'
 import AuthLayout from '@layouts/auth'
@@ -75,7 +75,7 @@ const pages = {
   },
   dev: {
     index: undefined,
-    canvas1: createPage(<Dev.HeaderModalMenu />, { meta: { title: { body: '開発者専用ページ' } } }),
+    canvas1: createPage(<Dev.OpenAIDemo />, { meta: { title: { body: '開発者専用ページ' } } }),
   },
   others: {
     notFound: createPage(<NotFound />, { meta: { title: { body: '404 Not Found' } } }),
