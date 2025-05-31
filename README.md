@@ -1,13 +1,13 @@
 # household
 
-## 概要
+## 📋 概要
 - プロジェクト名: "household"
 - アプリケーション名: **"My Transactions"**  
 
 個人開発の家計簿アプリケーションです。日々の収支を直感的に記録・閲覧でき、月次レポートをグラフで確認できます。
-[動画教材](https://www.udemy.com/course/reacttypescrip-reacttypescript)を参考にしています。
+[動画教材](https://www.udemy.com/course/reacttypescrip-reacttypescript)を参考に、拡張しています。
 
-## 📋 特徴
+## 🔍 特徴
 
 ### 講座部分（１週間）
 - **収支の記録**: 日付、金額、カテゴリ、メモを入力
@@ -28,27 +28,27 @@
   - ...etc
 - **テーマ変更**: ライトモード／ダークモードの切り替え機能
 - **レスポンシブ対応**: PC／タブレット／スマホに対応
-- **その他**: 画面単位、コンポーネント単位の遅延読み込みやローディング、などなど...
+- **その他**: 画面単位、コンポーネント単位の遅延読み込みやローディング、...
 
 ## 🛠 技術スタック
 
-- フロントエンド: TypeScript + React(19系)
-  - ルーティング: React Router DOM
-- UI: MUI（Material-UI）
-- スタイリング: styled from @emotion/styled  
+- フロントエンド: `TypeScript` + `React19`
+  - ルーティング: `React Router DOM`
+- UI: `MUI（Material-UI）`
+- スタイリング: `styled from @emotion/styled`  
   （mui の依存関係の emotion が提供する styled-components の styled 関数のような関数）
-- バリデーション: Zod
-- バックエンド: Firebase Firestore
-- 認証: Firebase Authentication
-- デプロイ: Firebase Hosting
+- バリデーション: `Zod`
+- バックエンド: `Firebase Firestore`
+- 認証: `Firebase Authentication`
+- デプロイ: `Firebase Hosting`
 - その他:
-  - React Hook Form
-  - Chart.js（react-chartjs-2）
-  - FullCalendar ...etc
+  - `React Hook Form`
+  - `Chart.js`（react-chartjs-2）
+  - `FullCalendar` ...etc
 ---
-- ビルドツール、開発サーバー: vite
-- コード整形: prettier, eslint(flat config)
-- ドキュメント（汎用部分のみ）: TSDoc
+- ビルドツール、開発サーバー: `vite`
+- コード整形: `prettier`, `eslint`(flat config)
+- ドキュメント（汎用部分のみ）: `TSDoc`
 
 ## 📂 ディレクトリ構成（抜粋）
 
@@ -67,7 +67,7 @@ root/
 └── index.html         # エントリポイントのマウント先
 ```
 
-## 動作確認
+## ✅ 動作確認
 ### 画面遷移図
 [こちら](https://overflow.io/s/A37AY1B8)を参照ください。
 
@@ -90,10 +90,9 @@ root/
 3. 編集用フォームが展開されるので、「削除」、または入力して「編集」
 
 ### 環境
-- Chrome（windows 11, iPadOS, iOS）
-- Edge（windows 11, iPadOS）
+- Chrome（windows 11, iOS）
+- Edge（windows 11）
 - Safari（iPadOS, iOS）
-- firefox
 
 ※ どれも2025/05（確認時点）での最新版とします。
 ※ 厳密なテストなどに基づくものではありません。手持ちのデバイスでアクセスして確認した程度です。万が一不具合がある場合には、画面のリロードをお願いします。改善されなければ、お手数ですがデバイスやブラウザを変えてお試しください。

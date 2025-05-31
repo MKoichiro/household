@@ -10,7 +10,7 @@ import {
   SavingsIcon,
   TrainIcon,
   WorkIcon,
-} from '@shared/icons'
+} from '@icons'
 import type { ExpenseCategory, IncomeCategory } from '@shared/types'
 
 const IconComponents: Record<IncomeCategory | ExpenseCategory, JSX.Element> = {

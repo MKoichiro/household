@@ -2,7 +2,7 @@ import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import type { ElementType } from 'react'
 import { useState } from 'react'
 
-import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '@shared/icons'
+import { AccountBalanceIcon, ArrowDownwardIcon, ArrowUpwardIcon } from '@icons'
 import type { Transaction, TransactionKeyType } from '@shared/types'
 import { financeCalculations } from '@shared/utils/financeCalculations'
 import { formatCurrency } from '@shared/utils/formatting'

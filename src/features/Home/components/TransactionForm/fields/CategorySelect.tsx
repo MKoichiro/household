@@ -13,7 +13,7 @@ import {
   AddBusinessIcon,
   SavingsIcon,
   TrainIcon,
-} from '@shared/icons'
+} from '@icons'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'
 import type { ExpenseCategory, IncomeCategory, TransactionFormValues, TransactionType } from '@shared/types'
 

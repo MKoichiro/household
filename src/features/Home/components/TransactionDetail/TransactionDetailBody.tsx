@@ -2,7 +2,7 @@ import { Box, Button, Card, CardActionArea, CardContent, List, ListItem, Stack, 
 import type { ReactNode } from 'react'
 
 import IconComponents from '@ui/IconComponents'
-import { NotesIcon, AddCircleIcon } from '@shared/icons'
+import { NotesIcon, AddCircleIcon } from '@icons'
 import type { Transaction } from '@shared/types'
 import { formatCurrency } from '@shared/utils/formatting'
 import { pagePadding } from '@styles/constants'

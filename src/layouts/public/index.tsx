@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Toolbar } from '@mui/material'
 import { NavLink, Outlet } from 'react-router-dom'
 
-import { AddBoxIcon, LoginIcon } from '@shared/icons'
+import { AddBoxIcon, LoginIcon } from '@icons'
 import HeaderTitle from '@layouts/components/HeaderTitle'
 import LayoutRoot from '@layouts/components/LayoutRoot'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'

@@ -2,12 +2,12 @@ import styled from '@emotion/styled'
 import { useTheme } from '@mui/material'
 import type { CSSProperties } from 'react'
 
-import { HalfModal } from '@ui/HalfModal/HalfModal'
-import { useHalfModal } from '@ui/HalfModal/useHalfModal'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'
 import { useLayout } from '@shared/hooks/useContexts'
 import type { Transaction } from '@shared/types'
 import { cp } from '@styles/theme/helpers/colorPickers'
+import { HalfModal } from '@ui/HalfModal/HalfModal'
+import { useHalfModal } from '@ui/HalfModal/useHalfModal'
 
 import TransactionDetailBody from './TransactionDetailBody'
 import * as Header from './TransactionDetailHeaders'
@@ -60,7 +60,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 }
 
 const StickyContext = styled.div`
-  display: none;
+  /* display: none; */
 
   ${({ theme }) => theme.breakpoints.up('lg')} {
     display: block;
@@ -79,7 +79,7 @@ const StickyContext = styled.div`
 `
 
 const DetailLaptop = styled.div`
-  display: none;
+  /* display: none; */
 
   ${({ theme }) => theme.breakpoints.up('lg')} {
     display: block;

@@ -2,7 +2,7 @@
 
 import { IconButton } from '@mui/material'
 
-import { ArrowBackIosNewIcon, ArrowForwardIosIcon } from '@shared/icons'
+import { ArrowBackIosNewIcon, ArrowForwardIosIcon } from '@icons'
 import { cpf } from '@styles/theme/helpers/colorPickers'
 
 interface MonthNavButtonProps {

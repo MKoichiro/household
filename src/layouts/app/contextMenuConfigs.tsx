@@ -1,5 +1,5 @@
 import type { ContextMenuConfig, MenuTree } from '@ui/ContextMenu/types'
-import { LogoutIcon } from '@shared/icons'
+import { LogoutIcon } from '@icons'
 
 import { LogoutButton, PageLink } from './ContextMenuButtons'
 

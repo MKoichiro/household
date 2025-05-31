@@ -16,7 +16,7 @@ import {
   LogoutIcon,
   SettingsIcon,
   VpnKeyIcon,
-} from '@shared/icons'
+} from '@icons'
 import { useAccordions } from '@shared/hooks/useAccordion'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'
 import { useAuth } from '@shared/hooks/useContexts'

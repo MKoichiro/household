@@ -58,14 +58,14 @@ const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
         </Grid>
 
         {/* 円グラフ */}
-        <Grid component="section" size={{ xs: 12, md: 4 }}>
+        <Grid component="section" size={{ xs: 12, md: 6, lg: 4 }}>
           <Paper sx={{ ...paperCommonStyle, ...chartCommonStyle }}>
             {monthlyTransactions.length > 0 ? <CategoryChart {...categoryChartProps} /> : <NoData />}
           </Paper>
         </Grid>
 
         {/* 棒グラフ */}
-        <Grid component="section" size={{ xs: 12, md: 8 }}>
+        <Grid component="section" size={{ xs: 12, md: 6, lg: 8 }}>
           <Paper sx={{ ...paperCommonStyle, ...chartCommonStyle }}>
             {monthlyTransactions.length > 0 ? <BarChart {...barChartProps} /> : <NoData />}
           </Paper>

@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import type { ControllerRenderProps } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 
-import { CloseIcon } from '@shared/icons'
+import { CloseIcon } from '@icons'
 import type { Transaction, TransactionFormValues, TransactionType } from '@shared/types'
 import { cpf } from '@styles/theme/helpers/colorPickers'
 

@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 
 import { FlowingText } from '@ui/FlowingText/FlowingText'
 import useFlowingText from '@ui/FlowingText/useFlowingText'
-import { CloseIcon, FiberNewIcon, FirstPageIcon } from '@shared/icons'
+import { CloseIcon, FiberNewIcon, FirstPageIcon } from '@icons'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'
 import { useLayout } from '@shared/hooks/useContexts'
 import { useNews } from '@shared/hooks/useNews'

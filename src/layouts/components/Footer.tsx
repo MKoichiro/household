@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { XIcon } from '@shared/icons'
+import { XIcon } from '@icons'
 import { useLayout } from '@shared/hooks/useContexts'
 import { cp } from '@styles/theme/helpers/colorPickers'
 

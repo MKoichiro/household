@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@mui/material'
 import { format } from 'date-fns'
 
-import { TodayIcon } from '@shared/icons'
+import { TodayIcon } from '@icons'
 import { cpf } from '@styles/theme/helpers/colorPickers'
 import MonthNavButton from '@ui/MonthNavButton'
 
