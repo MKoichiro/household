@@ -1,6 +1,6 @@
 export type TransactionType = 'income' | 'expense'
 export type TransactionKeyType = TransactionType | 'balance'
-export type TransactionDisplayType = '収入' | '支出' | '残高'
+export type TransactionDisplayType = '収入' | '支出' | '収支'
 
 // 読み取り専用の定義
 const expenseLiteralsConst = ['食費', '日用品', '住居費', '交際費', '娯楽', '交通費'] as const

@@ -57,7 +57,7 @@ export { default as XIcon } from '@mui/icons-material/X'
 export { default as ArrowUpwardIcon } from '@mui/icons-material/ArrowUpward'
 /** 支出 '↓' */
 export { default as ArrowDownwardIcon } from '@mui/icons-material/ArrowDownward'
-/** 残高 */
+/** 収支 */
 export { default as AccountBalanceIcon } from '@mui/icons-material/AccountBalance'
 
 /** ゴミ箱 */

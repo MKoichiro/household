@@ -34,7 +34,7 @@ const TransactionDetailBody = ({
       {/* 全体のヘッダー */}
       {header}
 
-      {/* 収入・支出・残高 の日次合計 */}
+      {/* 収入・支出・収支 の日次合計 */}
       <DailySummary dailyTransactions={dailyTransactions} />
 
       {/* 内訳 */}

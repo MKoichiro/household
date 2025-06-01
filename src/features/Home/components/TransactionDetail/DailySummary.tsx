@@ -30,7 +30,7 @@ const DailySummary = ({ dailyTransactions }: DailySummaryProps) => {
   const gridMap: GridMapType[] = [
     { name: 'income', display: '収入', size: gridSize.income, amount: income },
     { name: 'expense', display: '支出', size: gridSize.expense, amount: expense },
-    { name: 'balance', display: '残高', size: gridSize.balance, amount: balance },
+    { name: 'balance', display: '収支', size: gridSize.balance, amount: balance },
   ]
 
   return (

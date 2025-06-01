@@ -59,6 +59,7 @@ const Login = () => {
               helperText={errors.email ? errors.email.message : ''}
               margin="normal"
               fullWidth
+              slotProps={{ htmlInput: { style: { fontSize: '16px' } } }}
             />
           )}
         />

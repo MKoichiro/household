@@ -65,7 +65,7 @@ const MonthlySummary = ({ monthlyTransactions }: MonthlySummaryProps) => {
     },
     {
       name: 'balance',
-      display: '残高',
+      display: '収支',
       palette: {
         bg: 'balance.bg.lighter',
         font: { title: 'balance.font.darker', amount: 'balance.font.lighter' },

@@ -1,5 +1,3 @@
-// TransactionContext.tsx - 取引の状態と操作を提供するContext
-
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'

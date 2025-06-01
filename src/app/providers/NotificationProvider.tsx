@@ -94,34 +94,34 @@ const notifyMap: NotifyMapType = {
   addTransaction: {
     ok: {
       severity: 'success',
-      message: '取引を追加しました！',
+      message: '内訳を追加しました！',
       timer: 6000,
     },
     ng: {
       severity: 'error',
-      message: '取引の追加に失敗しました。再度お試しください。',
+      message: '内訳の追加に失敗しました。再度お試しください。',
     },
   },
   deleteTransaction: {
     ok: {
       severity: 'success',
-      message: '取引を削除しました！',
+      message: '内訳を削除しました！',
       timer: 6000,
     },
     ng: {
       severity: 'error',
-      message: '取引の削除に失敗しました。再度お試しください。',
+      message: '内訳の削除に失敗しました。再度お試しください。',
     },
   },
   updateTransaction: {
     ok: {
       severity: 'success',
-      message: '取引を更新しました！',
+      message: '内訳を更新しました！',
       timer: 6000,
     },
     ng: {
       severity: 'error',
-      message: '取引の更新に失敗しました。再度お試しください。',
+      message: '内訳の更新に失敗しました。再度お試しください。',
     },
   },
 
