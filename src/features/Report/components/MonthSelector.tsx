@@ -10,15 +10,13 @@ import MonthNavButton from '@ui/MonthNavButton'
 export interface MonthSelectorProps {
   selectedMonth: Date
   setSelectedMonth: Dispatch<SetStateAction<Date>>
-  // setResult: Dispatch<SetStateAction<string>>
-  // setError: Dispatch<SetStateAction<string | null>>
-  // setLoading: Dispatch<SetStateAction<boolean>>
 }
 
 const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) => {
   const handlePrevClick = () => {
     const prevMonth = addMonths(selectedMonth, -1)
     setSelectedMonth(prevMonth)
+    localStorage.setItem('selectedMonth', prevMonth.toISOString())
   }
 
   const handleNextClick = () => {

@@ -82,6 +82,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
   const handleDatesSet = (datesSetInfo: DatesSetArg) => {
     const currentMonth = datesSetInfo.view.currentStart
     setCurrentMonth(currentMonth)
+    localStorage.setItem('currentMonth', currentMonth.toISOString())
     const todayDate = new Date()
 
     if (isSameMonth(todayDate, currentMonth)) setSelectedDay(getFormattedToday())

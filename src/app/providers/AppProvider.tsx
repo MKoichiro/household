@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { AppContext } from '@shared/hooks/useContexts'
 import { getFormattedToday } from '@shared/utils/formatting'
@@ -7,6 +7,13 @@ import { getFormattedToday } from '@shared/utils/formatting'
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDay, setSelectedDay] = useState(getFormattedToday())
+
+  useEffect(() => {
+    const savedMonth = localStorage.getItem('currentMonth')
+    if (savedMonth) {
+      setCurrentMonth(new Date(savedMonth))
+    }
+  }, [])
 
   const value = {
     currentMonth,

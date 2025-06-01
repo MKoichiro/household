@@ -35,9 +35,6 @@ const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
   const monthSelectorProps: MonthSelectorProps = {
     selectedMonth,
     setSelectedMonth,
-    // setResult,
-    // setError,
-    // setLoading,
   }
 
   const aiAdvisorProps = {
