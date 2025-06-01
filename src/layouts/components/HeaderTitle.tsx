@@ -16,7 +16,7 @@ const HeaderTitle = ({ redirectTo }: HeaderTitleProps) => {
       noWrap
       component={noLink ? 'div' : RouterLink}
       to={noLink ? undefined : redirectTo}
-      replace={!noLink}
+      replace={noLink ? undefined : true}
       sx={{
         color: 'white',
         textDecoration: 'none',

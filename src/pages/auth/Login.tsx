@@ -1,5 +1,3 @@
-// Login.tsx - ログインページコンポーネント
-// ログイン後リダイレクト、ログインユーザーのアクセス時のリダイレクト処理はCheckAuthコンポーネントに一任
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField } from '@mui/material'
 import type { FormEvent } from 'react'
@@ -8,7 +6,7 @@ import type { SubmitHandler } from 'react-hook-form'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import * as AuthPagesCommon from '@features/AuthPagesCommons'
+import * as AuthPagesCommon from '@pages/common/AuthPagesCommons'
 import { useAuth } from '@shared/hooks/useContexts'
 
 // zodスキーマでバリデーションルールを定義

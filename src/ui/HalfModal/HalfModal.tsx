@@ -2,8 +2,8 @@ import styled from '@emotion/styled'
 import type { CSSProperties, ReactNode } from 'react'
 import type { SwipeableHandlers } from 'react-swipeable'
 
-import Backdrop from '@ui/Backdrop'
 import { usePortal } from '@shared/hooks/useContexts'
+import Backdrop from '@ui/Backdrop'
 
 interface HalfModalProps {
   isOpen: boolean

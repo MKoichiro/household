@@ -7,7 +7,7 @@ export const width: Width = {
 }
 
 export const height: Height = {
-  header: { xs: '64px', sm: '64px', md: '64px', lg: '64px', xl: '64px' },
-  headerNews: { xs: '32px', sm: '32px', md: '32px', lg: '32px', xl: '32px' },
+  header: { xs: '6rem', sm: '6rem', md: '6rem', lg: '6rem', xl: '6rem' },
+  headerNews: { xs: '3.6rem', sm: '3.6rem', md: '3.6rem', lg: '3.6rem', xl: '3.6rem' },
   footer: { xs: '160px', sm: '160px', md: '160px', lg: '160px', xl: '160px' },
 }

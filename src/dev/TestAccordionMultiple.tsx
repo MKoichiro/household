@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
-import { BareAccordionHead, BareAccordionContent } from '@ui/Accordion'
 import { useAccordions } from '@shared/hooks/useAccordion'
+import { BareAccordionHead, BareAccordionContent } from '@ui/Accordion'
 
 const AccordionHead = styled(BareAccordionHead)`
   cursor: pointer;

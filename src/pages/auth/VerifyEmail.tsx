@@ -1,4 +1,3 @@
-// src/pages/VerifyEmail.tsx
 import { Button, Typography, Box } from '@mui/material'
 
 import { useAuth } from '@shared/hooks/useContexts'

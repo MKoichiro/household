@@ -4,13 +4,13 @@ import type { HTMLAttributes, RefObject } from 'react'
 import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { FlowingText } from '@ui/FlowingText/FlowingText'
-import useFlowingText from '@ui/FlowingText/useFlowingText'
 import { CloseIcon, FiberNewIcon, FirstPageIcon } from '@icons'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'
 import { useLayout } from '@shared/hooks/useContexts'
 import { useNews } from '@shared/hooks/useNews'
 import { cp } from '@styles/theme/helpers/colorPickers'
+import { FlowingText } from '@ui/FlowingText/FlowingText'
+import useFlowingText from '@ui/FlowingText/useFlowingText'
 
 interface NewsBarProps extends HTMLAttributes<HTMLDivElement> {
   ref: RefObject<HTMLDivElement | null>

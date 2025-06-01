@@ -15,6 +15,7 @@ type NotifyActionType =
   | 'logout'
   | 'updateDisplayName'
   | 'addTransaction'
+  | 'addTransactions'
   | 'deleteTransaction'
   | 'updateTransaction'
   | 'getNews'
@@ -100,6 +101,17 @@ const notifyMap: NotifyMapType = {
     ng: {
       severity: 'error',
       message: '内訳の追加に失敗しました。再度お試しください。',
+    },
+  },
+  addTransactions: {
+    ok: {
+      severity: 'success',
+      message: '内訳を一括追加しました！',
+      timer: 6000,
+    },
+    ng: {
+      severity: 'error',
+      message: '内訳の一括追加に失敗しました。再度お試しください。',
     },
   },
   deleteTransaction: {

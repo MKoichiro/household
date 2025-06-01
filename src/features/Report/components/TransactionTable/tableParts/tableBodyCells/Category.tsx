@@ -1,8 +1,8 @@
 import { TableCell } from '@mui/material'
 
-import IconComponents from '@ui/IconComponents'
 import type { Transaction } from '@shared/types'
 import { cpf } from '@styles/theme/helpers/colorPickers'
+import IconComponents from '@ui/IconComponents'
 
 const Category = ({ transaction: t }: { transaction: Transaction }) => {
   return (

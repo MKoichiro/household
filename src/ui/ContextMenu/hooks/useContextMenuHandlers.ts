@@ -1,13 +1,13 @@
 import type { MouseEventHandler, MouseEvent } from 'react'
 import { useCallback } from 'react'
 
+import { withFalsyGuard } from '@shared/utils/withFalsyGuard'
 import type {
   Coordinate,
   PositionStyle,
   UseContextMenuHandlersArgs,
   UseContextMenuHandlersReturns,
 } from '@ui/ContextMenu/types'
-import { withFalsyGuard } from '@shared/utils/withFalsyGuard'
 
 /**
  * @internal

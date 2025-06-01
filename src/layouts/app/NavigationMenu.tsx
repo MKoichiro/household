@@ -5,8 +5,6 @@ import { IconButton, Typography, useTheme } from '@mui/material'
 import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { BareAccordionHead, BareAccordionContent } from '@ui/Accordion'
-import Backdrop from '@ui/Backdrop'
 import {
   AccountCircleIcon,
   CampaignIcon,
@@ -21,6 +19,8 @@ import { useAccordions } from '@shared/hooks/useAccordion'
 import { useBreakpoint } from '@shared/hooks/useBreakpoint'
 import { useAuth } from '@shared/hooks/useContexts'
 import { cp } from '@styles/theme/helpers/colorPickers'
+import { BareAccordionHead, BareAccordionContent } from '@ui/Accordion'
+import Backdrop from '@ui/Backdrop'
 
 interface MenuItemBase {
   id: string

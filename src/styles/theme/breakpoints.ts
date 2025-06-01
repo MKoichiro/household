@@ -7,9 +7,5 @@ export const breakpoints: BreakpointsOptions = {
     md: 900,
     lg: 1200,
     xl: 1536,
-    // mobile: 0,
-    // tablet: 600,
-    // laptop: 900,
-    // desktop: 1200,
   },
 }

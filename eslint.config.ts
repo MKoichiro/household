@@ -21,6 +21,7 @@ const globalConfigs: Linter.Config[] = defineConfig([
     'src/assets',
     'docs',
     'public',
+    'functions',
     'trash',
     '*.config.ts',
     '*.config.js',

@@ -1,9 +1,3 @@
-// AuthContext.tsx - 認証状態を提供するContext
-
-// Authでのuser関係の操作は操作後にリダイレクトする前提なので、
-// 個別の「非同期処理中...」を示すステートは個別は不要。
-// そのためreduxは使用せず、context APIにとどめる。
-
 import type { User } from 'firebase/auth'
 import {
   createUserWithEmailAndPassword,
