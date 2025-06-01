@@ -41,7 +41,7 @@ export interface CalendarStates {
   events: CalendarContent[]
   selectedEvent: { start: string; display: string; backgroundColor: string }
   isResizing: boolean
-  currentMonth: Date
+  homeMonth: Date
 }
 
 export interface CalendarActions {
@@ -63,7 +63,7 @@ export interface CalendarProps {
 
 const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: CalendarProps) => {
   const theme = useTheme()
-  const { currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
+  const { homeMonth, setHomeMonth, selectedDay, setSelectedDay } = useApp()
   const calendarRef = useRef<FullCalendar>(null)
   const scrollJudgeElementRef = useRef<HTMLDivElement>(null)
   const isScrollingRef = useScrollJudge(scrollJudgeElementRef, { watchX: true })
@@ -80,12 +80,12 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
   // datesSet 属性のハンドラ何らかの方法で日付範囲が変更されたときにコールされる
   // see: https://fullcalendar.io/docs/datesSet
   const handleDatesSet = (datesSetInfo: DatesSetArg) => {
-    const currentMonth = datesSetInfo.view.currentStart
-    setCurrentMonth(currentMonth)
-    localStorage.setItem('currentMonth', currentMonth.toISOString())
+    const homeMonth = datesSetInfo.view.currentStart
+    setHomeMonth(homeMonth)
+    localStorage.setItem('homeMonth', homeMonth.toISOString())
     const todayDate = new Date()
 
-    if (isSameMonth(todayDate, currentMonth)) setSelectedDay(getFormattedToday())
+    if (isSameMonth(todayDate, homeMonth)) setSelectedDay(getFormattedToday())
   }
 
   const handleDayCellClassNames = (classNames: string[]) => (cellArg: DayCellContentArg) => {
@@ -96,7 +96,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
   const handlePrevMonthClick = () => {
     const api = calendarRef.current?.getApi()
     api?.prev()
-    // NOTE: currentMonth の更新は handleDatesSet で行われる
+    // NOTE: homeMonth の更新は handleDatesSet で行われる
     // .prev() が呼ばれて日付範囲が変わると、datesSet 属性に指定した handleDatesSet が発火する仕組み
     // see: https://fullcalendar.io/docs/datesSet
   }
@@ -110,7 +110,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
   const handleNextMonthClick = () => {
     const api = calendarRef.current?.getApi()
     api?.next()
-    // NOTE: currentMonth の更新は handleDatesSet で行う
+    // NOTE: homeMonth の更新は handleDatesSet で行う
   }
 
   const selectedEvent = {
@@ -170,7 +170,7 @@ const CalendarContainer = ({ monthlyTransactions: transactions, onDateClick }: C
     events: calendarEvents,
     selectedEvent,
     isResizing,
-    currentMonth,
+    homeMonth,
   }
 
   const actions: CalendarActions = {

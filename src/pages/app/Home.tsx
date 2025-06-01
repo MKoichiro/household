@@ -23,7 +23,7 @@ export interface HomeStates {
 }
 
 export interface HomeActions {
-  setCurrentMonth: Dispatch<SetStateAction<Date>>
+  setHomeMonth: Dispatch<SetStateAction<Date>>
   setSelectedDay: Dispatch<SetStateAction<string>>
   handleDetailClose: () => void
   handleTransactionAddClick: () => void
@@ -37,9 +37,9 @@ export interface HomeActions {
 }
 
 const HomeContainer = () => {
-  const { currentMonth, setCurrentMonth, selectedDay, setSelectedDay } = useApp()
+  const { homeMonth, setHomeMonth, selectedDay, setSelectedDay } = useApp()
   const { transactions, handleAddTransaction, handleUpdateTransaction, handleDeleteTransaction } = useTransaction()
-  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(currentMonth)))
+  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(homeMonth)))
   const dailyTransactions = monthlyTransactions.filter((transaction) => transaction.date === selectedDay)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
@@ -162,7 +162,7 @@ const HomeContainer = () => {
   }
 
   const actions: HomeActions = {
-    setCurrentMonth,
+    setHomeMonth,
     setSelectedDay,
     handleDetailClose,
     handleTransactionAddClick,

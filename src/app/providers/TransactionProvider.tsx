@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where, writeBatch } from 'firebase/firestore'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
@@ -25,6 +25,21 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
         uid: user?.uid,
       }
       await addDoc(collection(db, COLLECTION_NAME), formattedData)
+    },
+    addTransactions: async (transactions: TransactionFormValues[]) => {
+      const batch = writeBatch(db)
+      const formattedTransactions = transactions.map((transaction) => ({
+        ...transaction,
+        amount: parseIntFromCommaSeparated(transaction.amount),
+        uid: user?.uid,
+      }))
+      // 一個ずつセット
+      formattedTransactions.forEach((transaction) => {
+        const docRef = doc(collection(db, COLLECTION_NAME))
+        batch.set(docRef, transaction)
+      })
+      // 一括コミット
+      await batch.commit()
     },
     deleteTransaction: async (transactionIds: string | readonly string[]) => {
       const ids = (Array.isArray(transactionIds) ? transactionIds : [transactionIds]) as string[] | readonly string[]
@@ -69,6 +84,7 @@ const TransactionProvider = ({ children }: { children: ReactNode }) => {
 
   const handlers = {
     handleAddTransaction: withErrorHandling(notify.addTransaction, asyncCriticals.addTransaction),
+    handleAddTransactions: withErrorHandling(notify.addTransactions, asyncCriticals.addTransactions),
     handleDeleteTransaction: withErrorHandling(notify.deleteTransaction, asyncCriticals.deleteTransaction),
     handleUpdateTransaction: withErrorHandling(notify.updateTransaction, asyncCriticals.updateTransaction),
   }

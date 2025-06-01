@@ -58,6 +58,7 @@ interface TransactionContextType {
   isLoading: boolean
   setIsLoading: Dispatch<SetStateAction<boolean>>
   handleAddTransaction: (transaction: TransactionFormValues) => Promise<unknown>
+  handleAddTransactions: (transactions: TransactionFormValues[]) => Promise<unknown>
   handleDeleteTransaction: (transactionIds: string | readonly string[]) => Promise<unknown>
   handleUpdateTransaction: (transaction: TransactionFormValues, transactionId: string) => Promise<unknown>
 }
@@ -100,8 +101,8 @@ export const useNotifications = () => {
 }
 
 interface AppContextType {
-  currentMonth: Date
-  setCurrentMonth: Dispatch<SetStateAction<Date>>
+  homeMonth: Date
+  setHomeMonth: Dispatch<SetStateAction<Date>>
   selectedDay: string
   setSelectedDay: Dispatch<SetStateAction<string>>
 }

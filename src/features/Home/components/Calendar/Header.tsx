@@ -6,14 +6,14 @@ import { cpf } from '@styles/theme/helpers/colorPickers'
 import MonthNavButton from '@ui/MonthNavButton'
 
 interface CalendarHeaderProps {
-  currentMonth: Date
+  homeMonth: Date
   handlePrevMonthClick: () => void
   handleTodayClick: () => void
   handleNextMonthClick: () => void
 }
 
 const CalendarHeader = ({
-  currentMonth,
+  homeMonth,
   handlePrevMonthClick,
   handleTodayClick,
   handleNextMonthClick,
@@ -21,7 +21,7 @@ const CalendarHeader = ({
   return (
     <Box component="header" sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
       <Typography component="h1" variant="h5" sx={{ color: cpf('app.lighterBg.level1.contrastText') }}>
-        {format(currentMonth, 'yyyy年 M月')}
+        {format(homeMonth, 'yyyy年 M月')}
       </Typography>
 
       <Box sx={{ ml: 'auto', display: 'flex', gap: 1 }}>

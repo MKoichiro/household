@@ -8,24 +8,24 @@ import type { Dispatch, SetStateAction } from 'react'
 import MonthNavButton from '@ui/MonthNavButton'
 
 export interface MonthSelectorProps {
-  selectedMonth: Date
-  setSelectedMonth: Dispatch<SetStateAction<Date>>
+  reportMonth: Date
+  setReportMonth: Dispatch<SetStateAction<Date>>
 }
 
-const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) => {
+const MonthSelector = ({ reportMonth, setReportMonth }: MonthSelectorProps) => {
   const handlePrevClick = () => {
-    const prevMonth = addMonths(selectedMonth, -1)
-    setSelectedMonth(prevMonth)
-    localStorage.setItem('selectedMonth', prevMonth.toISOString())
+    const prevMonth = addMonths(reportMonth, -1)
+    setReportMonth(prevMonth)
+    localStorage.setItem('reportMonth', prevMonth.toISOString())
   }
 
   const handleNextClick = () => {
-    const nextMonth = addMonths(selectedMonth, +1)
-    setSelectedMonth(nextMonth)
+    const nextMonth = addMonths(reportMonth, +1)
+    setReportMonth(nextMonth)
   }
 
   const handleDateChange = (newDate: Date | null) => {
-    if (newDate) setSelectedMonth(newDate)
+    if (newDate) setReportMonth(newDate)
   }
 
   return (
@@ -34,8 +34,8 @@ const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) 
         <MonthNavButton direction="PREV" onClick={handlePrevClick} />
         <DatePicker
           label="年月を選択"
-          defaultValue={selectedMonth} // 単なる初期値
-          value={selectedMonth} // 外部から変更可
+          defaultValue={reportMonth} // 単なる初期値
+          value={reportMonth} // 外部から変更可
           views={['year', 'month']} // 年 -> 月で選択
           openTo="month" // 月選択を最初に開く
           format="yyyy/MM"

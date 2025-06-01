@@ -29,17 +29,17 @@ interface ReportPresenterProps {
 }
 
 const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
-  const { monthlyTransactions, selectedMonth, isLoading } = states
-  const { setSelectedMonth } = actions
+  const { monthlyTransactions, reportMonth, isLoading } = states
+  const { setReportMonth } = actions
 
   const monthSelectorProps: MonthSelectorProps = {
-    selectedMonth,
-    setSelectedMonth,
+    reportMonth,
+    setReportMonth,
   }
 
   const aiAdvisorProps = {
     monthlyTransactions,
-    selectedMonth,
+    reportMonth,
   }
 
   const categoryChartProps: CategoryChartProps = {

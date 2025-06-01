@@ -28,11 +28,11 @@ interface CalendarPresenterProps {
 }
 
 const CalendarPresenter = ({ states, actions }: CalendarPresenterProps) => {
-  const { calendarRef, scrollJudgeElementRef, events, selectedEvent, isResizing, currentMonth } = states
+  const { calendarRef, scrollJudgeElementRef, events, selectedEvent, isResizing, homeMonth } = states
   const { handleDateClick, handleDatesSet, setAspectRatio, handleDayCellClassNames, headerHandlers } = actions
   return (
     <section>
-      <CalendarHeader currentMonth={currentMonth} {...headerHandlers} />
+      <CalendarHeader homeMonth={homeMonth} {...headerHandlers} />
       <StyledContext className="calendar-context" ref={scrollJudgeElementRef}>
         <FullCalendar
           ref={calendarRef}

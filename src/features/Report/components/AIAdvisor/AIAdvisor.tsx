@@ -27,7 +27,7 @@ interface GenerateResponseResult {
 
 interface AIAdvisorProps {
   monthlyTransactions: Transaction[]
-  selectedMonth: Date
+  reportMonth: Date
 }
 
 interface AIResult {
@@ -35,7 +35,7 @@ interface AIResult {
   createdAt: Date | null
 }
 
-const AIAdvisor = ({ monthlyTransactions, selectedMonth }: AIAdvisorProps) => {
+const AIAdvisor = ({ monthlyTransactions, reportMonth }: AIAdvisorProps) => {
   const { contentRef, isOpen, contentHeight, toggle, open, close } = useAccordion(false)
   const headerRef = useRef<HTMLDivElement>(null)
   const { remToPx } = useRemToPx()
@@ -50,7 +50,7 @@ const AIAdvisor = ({ monthlyTransactions, selectedMonth }: AIAdvisorProps) => {
   const prompt = useMemo(() => createPrompt(monthlyTransactions), [monthlyTransactions])
 
   // 月ごとに、生成結果を保持しておくためのローカルストレージのキー
-  const storageKey = `${STORAGE_KEY_PREFIX}_${format(selectedMonth, 'yyyy-MM')}`
+  const storageKey = `${STORAGE_KEY_PREFIX}_${format(reportMonth, 'yyyy-MM')}`
 
   // NOTE: 結局、月を切り替えるときの処理なので、すべて親コンポーネントに外部化すれば、useEffect 不要で MonthSelector のハンドラに組み込める。
   useEffect(() => {
@@ -62,7 +62,7 @@ const AIAdvisor = ({ monthlyTransactions, selectedMonth }: AIAdvisorProps) => {
       initialize()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedMonth])
+  }, [reportMonth])
 
   // ハンドラー
   const handleAsk = () => void generate()

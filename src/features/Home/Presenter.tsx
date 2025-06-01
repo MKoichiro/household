@@ -7,6 +7,7 @@ import { pagePadding } from '@styles/constants'
 
 import type { MonthlySummaryProps, CalendarProps, TransactionDetailProps, TransactionFormProps } from './components'
 import { MonthlySummary, Calendar, TransactionDetail, TransactionForm } from './components'
+import BulkInsert from './components/BulkInsert'
 
 interface HomePresenterProps {
   states: HomeStates
@@ -66,6 +67,7 @@ const HomePresenter = ({ states, actions }: HomePresenterProps) => {
       >
         <MonthlySummary {...monthlySummaryProps} />
         <Calendar {...calendarProps} />
+        <BulkInsert />
       </Box>
 
       <Box component="aside" sx={{ display: 'flex', width: (theme) => theme.width.transactionMenu[bp] }}>

@@ -8,34 +8,34 @@ import { formatMonth } from '@shared/utils/formatting'
 
 export interface ReportStates {
   monthlyTransactions: Transaction[]
-  selectedMonth: Date
+  reportMonth: Date
   isLoading: boolean
 }
 
 export interface ReportActions {
-  setSelectedMonth: Dispatch<SetStateAction<Date>>
+  setReportMonth: Dispatch<SetStateAction<Date>>
 }
 
 const ReportContainer = () => {
   const { transactions, isLoading } = useTransaction()
-  const [selectedMonth, setSelectedMonth] = useState(new Date())
-  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(selectedMonth)))
+  const [reportMonth, setReportMonth] = useState(new Date())
+  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(reportMonth)))
 
   useEffect(() => {
-    const savedMonth = localStorage.getItem('selectedMonth')
+    const savedMonth = localStorage.getItem('reportMonth')
     if (savedMonth) {
-      setSelectedMonth(new Date(savedMonth))
+      setReportMonth(new Date(savedMonth))
     }
   }, [])
 
   const states: ReportStates = {
     monthlyTransactions,
-    selectedMonth,
+    reportMonth,
     isLoading,
   }
 
   const actions: ReportActions = {
-    setSelectedMonth,
+    setReportMonth,
   }
 
   return <ReportPresenter states={states} actions={actions} />
