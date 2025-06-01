@@ -17,7 +17,10 @@ const themeMap: { mode: ColorMode; icon: JSX.Element }[] = [
 
 const ThemeToggler = () => {
   const { mode, setMode } = useColorMode()
-  const handleChange = (mode: ColorMode) => () => setMode(mode)
+  const handleChange = (mode: ColorMode) => () => {
+    setMode(mode)
+    localStorage.setItem('colorMode', mode)
+  }
 
   return (
     <ThemeTogglerRoot
