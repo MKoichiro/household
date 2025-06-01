@@ -6,9 +6,9 @@ import type { ReportActions, ReportStates } from '@pages/app/Report'
 import { pagePaddingTemplate } from '@styles/constants'
 import { cpf } from '@styles/theme/helpers/colorPickers'
 
-import AIAdvisor from './AIAdvisor'
 import type { MonthSelectorProps, CategoryChartProps, BarChartProps, TransactionTableProps } from './components'
 import { NoData, MonthSelector, CategoryChart, BarChart, TransactionTable } from './components'
+import AIAdvisor from './components/AIAdvisor/AIAdvisor'
 
 const paperCommonStyle: SxProps<Theme> = {
   minHeight: '400px',
@@ -35,10 +35,14 @@ const ReportPresenter = ({ states, actions }: ReportPresenterProps) => {
   const monthSelectorProps: MonthSelectorProps = {
     selectedMonth,
     setSelectedMonth,
+    // setResult,
+    // setError,
+    // setLoading,
   }
 
   const aiAdvisorProps = {
     monthlyTransactions,
+    selectedMonth,
   }
 
   const categoryChartProps: CategoryChartProps = {

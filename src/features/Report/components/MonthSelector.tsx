@@ -10,6 +10,9 @@ import MonthNavButton from '@ui/MonthNavButton'
 export interface MonthSelectorProps {
   selectedMonth: Date
   setSelectedMonth: Dispatch<SetStateAction<Date>>
+  // setResult: Dispatch<SetStateAction<string>>
+  // setError: Dispatch<SetStateAction<string | null>>
+  // setLoading: Dispatch<SetStateAction<boolean>>
 }
 
 const MonthSelector = ({ selectedMonth, setSelectedMonth }: MonthSelectorProps) => {

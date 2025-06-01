@@ -98,6 +98,14 @@ declare module '@mui/material/styles' {
       }
       monthlySummary: { bg: PaletteColor }
       dailySummary: { bg: PaletteColor }
+      aiAdvisor: {
+        bg: PaletteColor
+        contrastText: PaletteColor
+        gradations: {
+          start: PaletteColor
+          end: PaletteColor
+        }
+      }
     }
 
     income: {
@@ -213,6 +221,14 @@ declare module '@mui/material/styles' {
       }
       monthlySummary: { bg: PaletteColorOptions }
       dailySummary: { bg: PaletteColorOptions }
+      aiAdvisor: {
+        bg: PaletteColorOptions
+        contrastText: PaletteColorOptions
+        gradations: {
+          start: PaletteColorOptions
+          end: PaletteColorOptions
+        }
+      }
     }
 
     income: {

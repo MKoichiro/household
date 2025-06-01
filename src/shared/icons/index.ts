@@ -64,9 +64,14 @@ export { default as AccountBalanceIcon } from '@mui/icons-material/AccountBalanc
 export { default as DeleteIcon } from '@mui/icons-material/Delete'
 
 /** AIアドバイザー: ヘッダーテキスト部 */
-export { default as LightbulbOutlineIcon } from '@mui/icons-material/LightbulbOutline'
+// export { default as LightbulbOutlineIcon } from '@mui/icons-material/LightbulbOutline'
+export { default as TipsAndUpdatesIcon } from '@mui/icons-material/TipsAndUpdates'
 /** AIアドバイザー: 生成ボタン */
 export { default as AutoAwesomeIcon } from '@mui/icons-material/AutoAwesome'
+/** もう一度試す */
+export { default as AutoModeIcon } from '@mui/icons-material/AutoMode'
+/** 最終生成日時 */
+export { default as HistoryIcon } from '@mui/icons-material/History'
 
 /** カテゴリ用 */
 export { default as AddBusinessIcon } from '@mui/icons-material/AddBusiness'

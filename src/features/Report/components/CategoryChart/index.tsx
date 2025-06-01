@@ -2,11 +2,12 @@
 // NOTE: ../../config/chartConfig.tx を App.tsx で読み込み済み
 import styled from '@emotion/styled'
 import { Divider, Stack, Typography, useTheme } from '@mui/material'
-import type { ChartOptions } from 'chart.js'
+import type { ChartData, ChartOptions } from 'chart.js'
 import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { Pie } from 'react-chartjs-2'
 
+import NoData from '@features/Report/components/NoData'
 import type { Transaction, TransactionType } from '@shared/types'
 import { cp } from '@styles/theme/helpers/colorPickers'
 import TransactionTypeToggleButton from '@ui/TransactionTypeToggleButton'
@@ -34,16 +35,15 @@ function CategoryChart({ monthlyTransactions: transactions }: CategoryChartProps
       <Stack gap={1}>
         <TransactionTypeToggleButton currentType={selectedType} handleChange={handleChange} />
         <Divider />
-        <Pie
-          data={selectedType === 'expense' ? expenseData : incomeData}
-          options={options}
-          height="280px"
-          width="250px"
-          style={{ margin: 'auto' }}
-        />
+        <PieWithNoDataGuard data={selectedType === 'expense' ? expenseData : incomeData} options={options} />
       </Stack>
     </Stack>
   )
+}
+
+const PieWithNoDataGuard = ({ data, options }: { data: ChartData<'pie'> | null; options: ChartOptions<'pie'> }) => {
+  if (!data || data.datasets[0].data.length === 0) return <NoData height="280px" />
+  return <Pie data={data} options={options} height="280px" width="250px" style={{ margin: 'auto' }} />
 }
 
 const StyledTypography = styled(Typography)`

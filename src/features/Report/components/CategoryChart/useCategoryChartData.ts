@@ -54,9 +54,13 @@ const useCategoryChartData = (transactions: Transaction[], theme: Theme) => {
   // e.g.) incomeSortedSums: [ {"給与": 500000 }, {"副収入": 10000}, ... ]
   const { expense: expenseSortedSums, income: incomeSortedSums } = calculateCategorySummaries(transactions)
 
+  // 0 円のカテゴリを除外するためのフィルタリング
+  const expenseFilteredSums = expenseSortedSums.filter((item) => Object.values(item)[0] > 0)
+  const incomeFilteredSums = incomeSortedSums.filter((item) => Object.values(item)[0] > 0)
+
   // --- 支出データの準備ここから ---
   // ソートされたラベルのみの配列を用意: e.g.) ["食費", "交際費"]
-  const expenseLabels = expenseSortedSums.map((item) => Object.keys(item)[0]) as ExpenseCategory[]
+  const expenseLabels = expenseFilteredSums.map((item) => Object.keys(item)[0]) as ExpenseCategory[]
 
   // マッピングを参照して各部分の色を準備
   const expenseBackgroundColors = expenseLabels.map((label) => expenseCategoryColorMap(theme).backgroundColor[label])
@@ -68,7 +72,7 @@ const useCategoryChartData = (transactions: Transaction[], theme: Theme) => {
     datasets: [
       {
         label: '支出',
-        data: expenseSortedSums.map((item) => Object.values(item)[0]),
+        data: expenseFilteredSums.map((item) => Object.values(item)[0]),
         backgroundColor: expenseBackgroundColors,
         borderColor: expenseBorderColors,
         borderWidth: 0, // 現状非表示
@@ -81,7 +85,7 @@ const useCategoryChartData = (transactions: Transaction[], theme: Theme) => {
   // --- 支出データの準備ここまで ---
 
   // --- 収入データの準備ここから ---
-  const incomeLabels = incomeSortedSums.map((item) => Object.keys(item)[0]) as IncomeCategory[]
+  const incomeLabels = incomeFilteredSums.map((item) => Object.keys(item)[0]) as IncomeCategory[]
   const incomeBackgroundColors = incomeLabels.map((label) => incomeCategoryColorMap(theme).backgroundColor[label])
   const incomeBorderColors = incomeLabels.map((label) => incomeCategoryColorMap(theme).borderColor[label])
   const incomeData: ChartData<'pie'> = {
@@ -89,7 +93,7 @@ const useCategoryChartData = (transactions: Transaction[], theme: Theme) => {
     datasets: [
       {
         label: '収入',
-        data: incomeSortedSums.map((item) => Object.values(item)[0]),
+        data: incomeFilteredSums.map((item) => Object.values(item)[0]),
         backgroundColor: incomeBackgroundColors,
         borderColor: incomeBorderColors,
         borderWidth: 0, // 現状非表示

@@ -108,8 +108,8 @@ export const useAccordion = (defaultState: boolean = false) => {
     contentRef: contentRefs[idRef.current],
     isOpen: accordions[idRef.current].open,
     contentHeight: accordions[idRef.current].height,
-    toggle: () => toggle(idRef.current)(),
-    open: () => open(idRef.current)(),
-    close: () => close(idRef.current)(),
+    toggle: toggle(idRef.current),
+    open: open(idRef.current),
+    close: close(idRef.current),
   }
 }

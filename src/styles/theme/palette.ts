@@ -17,7 +17,6 @@ const app = {
       contrastText: { main: c.blueGrey[900], light: c.blueGrey[900], dark: c.blueGrey[100] },
     },
     level2: {
-      // bg: { main: c.indigo[50], light: '#e4e9ed', dark: c.grey[900] },
       bg: { main: c.indigo[50], light: c.grey[100], dark: '#191919' },
       contrastText: { main: c.blueGrey[800], light: c.blueGrey[800], dark: c.blueGrey[200] },
     },
@@ -198,6 +197,14 @@ export const palette: PaletteOptions = {
     },
     dailySummary: {
       bg: app.lighterBg.level3.bg,
+    },
+    aiAdvisor: {
+      bg: { main: '#efefef', light: '#efefef', dark: '#121212' },
+      contrastText: app.lighterBg.level2.contrastText,
+      gradations: {
+        start: { main: c.blue[500], light: c.blue[500], dark: c.indigo[500] },
+        end: { main: c.purple[500], light: c.purple[500], dark: c.purple[200] },
+      },
     },
   },
 
