@@ -58,7 +58,7 @@ const StyledAlert = styled.div<{ $severity: AlertColor }>`
   display: flex;
   align-items: center;
   gap: 1rem;
-  max-height: 4rem;
+  max-height: 6rem;
 
   span {
     /* ２行に収まらなければ...で省略 */

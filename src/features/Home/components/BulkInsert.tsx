@@ -9,17 +9,17 @@ import type { TransactionFormValues } from '@shared/types'
 import { BareAccordionContent, BareAccordionHead } from '@ui/Accordion'
 
 const targetMonth = format(new Date(), 'yyyy-MM')
-// const targetMonth = '2025-01'
+// const targetMonth = '2024-12'
 const TRANSACTIONS: TransactionFormValues[] = [
   {
-    amount: '1000',
+    amount: '1500',
     type: 'expense',
     date: `${targetMonth}-02`,
     category: '食費',
     content: 'ランチ代、ラーメン',
   },
   {
-    amount: '3000',
+    amount: '4000',
     type: 'income',
     date: `${targetMonth}-03`,
     category: '副収入',
@@ -33,21 +33,21 @@ const TRANSACTIONS: TransactionFormValues[] = [
     content: '映画鑑賞、「街の上で」',
   },
   {
-    amount: '80000',
+    amount: '8000',
     type: 'income',
     date: `${targetMonth}-01`,
     category: 'お小遣い',
     content: '両親からのお小遣い',
   },
   {
-    amount: '120000',
+    amount: '10000',
     type: 'income',
     date: `${targetMonth}-05`,
     category: '副収入',
     content: 'フリマアプリ売上',
   },
   {
-    amount: '300000',
+    amount: '310000',
     type: 'income',
     date: `${targetMonth}-25`,
     category: '給与',
@@ -61,7 +61,7 @@ const TRANSACTIONS: TransactionFormValues[] = [
     content: 'ランチ代（弁当購入）',
   },
   {
-    amount: '3800',
+    amount: '8000',
     type: 'expense',
     date: `${targetMonth}-04`,
     category: '食費',
@@ -75,7 +75,7 @@ const TRANSACTIONS: TransactionFormValues[] = [
     content: '友人との飲み会',
   },
   {
-    amount: '1500',
+    amount: '500',
     type: 'expense',
     date: `${targetMonth}-06`,
     category: '日用品',
@@ -124,7 +124,7 @@ const TRANSACTIONS: TransactionFormValues[] = [
     content: 'カフェでのお茶代',
   },
   {
-    amount: '9000',
+    amount: '19000',
     type: 'expense',
     date: `${targetMonth}-14`,
     category: '交通費',
@@ -180,7 +180,7 @@ const TRANSACTIONS: TransactionFormValues[] = [
     content: 'コンビニで朝食',
   },
   {
-    amount: '120000',
+    amount: '1200',
     type: 'income',
     date: `${targetMonth}-02`,
     category: '副収入',
@@ -222,7 +222,7 @@ const TRANSACTIONS: TransactionFormValues[] = [
     content: '飲み会費用',
   },
   {
-    amount: '2500',
+    amount: '4000',
     type: 'expense',
     date: `${targetMonth}-06`,
     category: '日用品',

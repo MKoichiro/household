@@ -15,7 +15,11 @@ export const generateAIResponse = onCall(
     const apiKey = process.env.OPENAI_API_KEY;
     const openai = new OpenAI({apiKey});
 
-    const prompt = req.data.prompt as string;
+    const {prompt, userName} = req.data as {
+      prompt: string;
+      userName: string | null | undefined;
+    };
+
     if (!prompt) {
       throw new Error("Prompt が指定されていません");
     }
@@ -23,7 +27,21 @@ export const generateAIResponse = onCall(
     try {
       const response = await openai.responses.create({
         model: "gpt-4.1",
-        input: prompt,
+        temperature: 0.6, // 応答の多様性を制御するパラメータ。数値が低いほど再現性が高いが、創造性が低くなる。
+        max_output_tokens: 800, // だいたい600文字程度を念頭に。
+        input: [
+          {
+            role: "system",
+            content: `
+              あなたは家計簿アプリ（webアプリ）に組み込まれる、
+              ユーザー名"${userName}"さん専属の、家計管理専門のアドバイザーです。
+            `.trim(),
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
       });
       return {text: response.output_text};
     } catch (error) {

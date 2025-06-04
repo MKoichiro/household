@@ -115,6 +115,7 @@ const SignUp = () => {
               helperText={errors.password ? errors.password.message : ''}
               margin="normal"
               fullWidth
+              slotProps={{ htmlInput: { style: { fontSize: '16px' } } }}
             />
           )}
         />
@@ -132,6 +133,7 @@ const SignUp = () => {
               helperText={errors.passwordConfirmation ? errors.passwordConfirmation.message : ''}
               margin="normal"
               fullWidth
+              slotProps={{ htmlInput: { style: { fontSize: '16px' } } }}
             />
           )}
         />

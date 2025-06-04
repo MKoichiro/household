@@ -11,11 +11,11 @@ import { cpf } from '@styles/theme/helpers/colorPickers'
 import Snackbar from './Snackbar'
 
 const slideVariants = {
-  initial: { x: '-110%', maxHeight: '4rem' },
-  animate: { x: 0, maxHeight: '4rem', transition: { duration: 0.4 } },
+  initial: { x: '-110%', maxHeight: '6rem' },
+  animate: { x: 0, maxHeight: '6rem', transition: { duration: 0.4 } },
   exit: {
     x: [0, '-110%', '-110%'],
-    maxHeight: ['4rem', '4rem', 0],
+    maxHeight: ['6rem', '6rem', 0],
     transition: { duration: 0.4, times: [0, 0.5, 1], ease: 'easeOut' },
   },
 }

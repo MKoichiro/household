@@ -14,8 +14,6 @@ const LoadingOverlay = ({ isLoading = true }: { isLoading?: boolean }) => {
   )
 }
 
-export default LoadingOverlay
-
 const StyledDiv = styled.div`
   width: 60px;
   height: 60px;
@@ -81,3 +79,5 @@ const StyledDiv = styled.div`
     animation-delay: 600ms;
   }
 `
+
+export default LoadingOverlay

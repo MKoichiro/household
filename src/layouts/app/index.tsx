@@ -31,8 +31,6 @@ const AppLayout = () => {
   )
 }
 
-export default AppLayout
-
 const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
   margin-left: 0;
   transition: margin-left 300ms;
@@ -54,3 +52,5 @@ const Main = styled.main<{ $isNavigationMenuOpen: boolean }>`
     min-height: calc(100lvh - ${({ theme }) => theme.height.header.xl});
   }
 `
+
+export default AppLayout

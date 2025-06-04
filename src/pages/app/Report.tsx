@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import ReportPresenter from '@features/Report/Presenter'
 import { useTransaction } from '@shared/hooks/useContexts'
@@ -19,13 +19,14 @@ export interface ReportActions {
 const ReportContainer = () => {
   const { transactions, isLoading } = useTransaction()
   const [reportMonth, setReportMonth] = useState(new Date())
-  const monthlyTransactions = transactions.filter((t) => t.date.startsWith(formatMonth(reportMonth)))
+  const monthlyTransactions = useMemo(
+    () => transactions.filter((t) => t.date.startsWith(formatMonth(reportMonth))),
+    [transactions, reportMonth]
+  )
 
   useEffect(() => {
     const savedMonth = localStorage.getItem('reportMonth')
-    if (savedMonth) {
-      setReportMonth(new Date(savedMonth))
-    }
+    if (savedMonth) setReportMonth(new Date(savedMonth))
   }, [])
 
   const states: ReportStates = {

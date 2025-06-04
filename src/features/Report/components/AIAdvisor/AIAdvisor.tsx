@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { alpha, Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
-import { format } from 'date-fns'
+import { addMonths, format } from 'date-fns'
 import { httpsCallable } from 'firebase/functions'
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -8,8 +8,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { functions } from '@app/configs/firebase'
 import { AutoAwesomeIcon, AutoModeIcon, ExpandMoreIcon, HistoryIcon, TipsAndUpdatesIcon } from '@icons/index'
 import { useAccordion } from '@shared/hooks/useAccordion'
+import { useAuth, useTransaction } from '@shared/hooks/useContexts'
 import { useRemToPx } from '@shared/hooks/useRemToPx'
 import type { Transaction } from '@shared/types'
+import { formatMonth } from '@shared/utils/formatting'
 import { BareAccordionContent, BareAccordionHead } from '@ui/Accordion'
 
 import { createPrompt } from './createPrompt'
@@ -19,6 +21,7 @@ const STORAGE_KEY_PREFIX = 'aiAdvisorResult'
 
 interface GenerateResponseData {
   prompt: string
+  userName: string | null | undefined
 }
 
 interface GenerateResponseResult {
@@ -39,18 +42,33 @@ const AIAdvisor = ({ monthlyTransactions, reportMonth }: AIAdvisorProps) => {
   const { contentRef, isOpen, contentHeight, toggle, open, close } = useAccordion(false)
   const headerRef = useRef<HTMLDivElement>(null)
   const { remToPx } = useRemToPx()
+  const { user } = useAuth()
+  const { transactions } = useTransaction()
+  const prevMonthQuery = formatMonth(addMonths(reportMonth, -1))
+  const prevMonthlyTransactions = useMemo(
+    () => transactions.filter((t) => t.date.startsWith(prevMonthQuery)),
+    [transactions, prevMonthQuery]
+  )
 
   const initialResult: AIResult = { text: '', createdAt: null }
   const [result, setResult] = useState<AIResult>(initialResult)
   const [error, setError] = useState<ReactNode | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
+  const targetYear = String(reportMonth.getFullYear())
+  const targetMonth = String(reportMonth.getMonth() + 1)
+  const userName = user?.displayName
+
   // AI に渡すプロンプトを用意
   // 内部のデータ数に応じてデータ整形の計算量が増えるのでメモ化
-  const prompt = useMemo(() => createPrompt(monthlyTransactions), [monthlyTransactions])
+  const prompt = useMemo(
+    () => createPrompt(monthlyTransactions, prevMonthlyTransactions, userName, targetYear, targetMonth),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [reportMonth, userName]
+  )
 
   // 月ごとに、生成結果を保持しておくためのローカルストレージのキー
-  const storageKey = `${STORAGE_KEY_PREFIX}_${format(reportMonth, 'yyyy-MM')}`
+  const storageKey = `${STORAGE_KEY_PREFIX}_${targetYear}-${targetMonth.padStart(2, '0')}_${userName}`
 
   // NOTE: 結局、月を切り替えるときの処理なので、すべて親コンポーネントに外部化すれば、useEffect 不要で MonthSelector のハンドラに組み込める。
   useEffect(() => {
@@ -99,7 +117,7 @@ const AIAdvisor = ({ monthlyTransactions, reportMonth }: AIAdvisorProps) => {
     setError(null)
     setLoading(true)
     try {
-      const response = await generateAIResponseCallable({ prompt })
+      const response = await generateAIResponseCallable({ prompt, userName })
       const formatted = response.data.text.trim() // 先頭と末尾のホワイトスペースを削除
       const payload = { text: formatted, createdAt: new Date() }
       localStorage.setItem(storageKey, JSON.stringify(payload)) // ローカルストレージに保存
