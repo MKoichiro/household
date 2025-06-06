@@ -41,6 +41,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     },
     login: async (email: string, password: string) => {
       await signInWithEmailAndPassword(auth, email, password)
+      localStorage.removeItem('resendVerificationEmailDate') // ログイン時にメール再送信のカウントを削除
     },
     logout: async () => {
       if (isLogoutProcessing) return
