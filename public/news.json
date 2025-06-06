@@ -5,7 +5,7 @@
     "priority": 0,
     "title": "New Feature Release",
     "description": {
-      "plain": "2025/06/01 ～: 「AIアドバイザー機能」をリリースしました！！\uD83C\uDF89 潜在的な傾向を分析、パーソナライズされたアドバイスを提供します。この機能は、「月間レポート」のページから確認できます。",
+      "plain": "2025/06/01 ～: 「AIアドバイザー機能」をリリースしました（gpt-4.1使用）！！\uD83C\uDF89 あなたの消費活動における潜在的な傾向を分析し、パーソナライズされたアドバイスを提供します。この機能は、「月間レポート」のページから確認できます。",
       "html": "<u>We are excited</u> to announce the release of our <b>new feature</b> that <i>enhances user experience</i>."
     },
     "scope": "public",
